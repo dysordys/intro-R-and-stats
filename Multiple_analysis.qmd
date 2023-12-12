@@ -1,0 +1,201 @@
+# Nested data and multiple analysis {#sec-nest}
+
+## Motivating example
+
+This chapter is on performing statistical (or other) analyses *en masse*. To motivate the problem, let us start from a dataset, [`fruit_fly_wings.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/fruit_fly_wings.zip), that has been adapted from @Bolstadetal2015:
+
+```{r}
+#| message: false
+library(tidyverse)
+
+fly <- read_csv("fruit_fly_wings.csv")
+print(fly)
+```
+
+The data contain measurements on individual fruit flies, belonging to various species and either sex as indicated by the `Species` and `Sex` columns. Each individual is uniquely identified (`ID`), and the date of the measurement has also been recorded (`Date`). Most importantly, the length of the wing (`WingSize`) and the length of the L2 vein that runs across the wing (`L2Length`) have been recorded.
+
+What is the distribution of wing sizes across species and sexes? To begin answering this question, we can start with a plot:
+
+```{r}
+#| fig-height: 9
+ggplot(fly) +
+  aes(x = WingSize, y = Species, colour = Sex, fill = Sex) +
+  geom_boxplot(alpha = 0.2) +
+  scale_colour_manual(values = c("steelblue", "goldenrod")) +
+  scale_fill_manual(values = c("steelblue", "goldenrod")) +
+  xlab("Wing size") +
+  theme_bw()
+```
+
+Looking at this figure, it does appear as if females often had larger wings than males within the same species. The main question in this chapter is how we can test this---for instance, how would it be possible to perform a Wilcoxon rank sum test for all 55 species in the data?
+
+
+## Nested data frames
+
+We are by now used to the idea that the columns of tibbles can hold numbers, character strings, logical values, or even factors. But here is an interesting question: can a column of a tibble hold other tibbles?
+
+The short answer is yes. The somewhat longer answer is that this is possible, but not directly so. Instead, one has to make the column into a list (@sec-lists).^[The reason is that columns of tibbles must always hold elementary pieces of data. The way lists work is that they do not actually hold the information corresponding to their entries. Instead, they only contain references, or *pointers*, to where the information can be found in memory. Since lists only store these pointers (which can be represented by simple numbers) instead of the tibbles or other data structures inside them, they can be used without problems within tibbles.] While this could be done by hand using the `list` function, there are other options in the `tidyverse` which facilitate creating tibbles which have other tibbles in their columns. One of these is called `nest`. This function receives a name first, which will become the name of the newly-created column holding the sub-tibbles. Then, after an equality sign, one lists the columns, in a vector, which one would like to package into those sub-tibbles. For example, to keep `Species` as a separate column and wrap everything else into sub-tibbles, we can do:
+
+```{r}
+fly |> nest(data = c(ID, Date, Sex, WingSize, L2Length))
+```
+
+What do we see? We ended up with a tibble that has two columns. One is `Species` and has type character string. The other is `data` and has the type of list, as indicated by the `<list>` tag. The entries in this column are tibbles, with varying numbers of rows (as many as the number of individuals for the given species), and five columns; namely, those that we specified we wanted to nest. We can check and see what is inside these tibbles. For example, the contents of the first row (species: *D. acutila*) are:
+
+```{r}
+fly |>
+  nest(data = c(ID, Date, Sex, WingSize, L2Length)) |>
+  pull(data) |> # Get contents of just the "data" column
+  pluck(1) # Take the first of all those tibbles
+```
+
+So this sub-table contains the information that pertains to just *D. acutila* individuals.
+
+When choosing which columns to wrap into sub-tibbles with `nest`, all the tidy selection conventions and functionalities apply that one can use with the `select` function (@sec-select). So the above nesting could be equivalently and more simply be performed with:
+
+```{r}
+fly |> nest(data = !Species)
+```
+
+That is: apply the nesting to all columns that are *not* called `Species`. This can be used in more complicated cases as well. For example, if we wish to nest data pertaining to particular species-sex combinations, we can do the following:
+
+```{r}
+fly |> nest(data = !Species & !Sex)
+```
+
+where `nest(data = !Species & !Sex)` (nest all columns that are not `Species` and not `Sex`) is equivalent to the longer `nest(data = c(ID, Date, WingSize, L2Length))`.
+
+Finally, columns holding nested data can be unnested, meaning that their contents are expanded back into the original data frame. The function to do this with is called `unnest`:
+
+```{r}
+fly |> nest(data = !Species & !Sex) |> unnest(data)
+```
+
+
+## Performing statistical tests using nested data
+
+How can we test for all 55 fly species in this dataset whether there is a significant difference between average male and female wing lengths? The answer is to first nest the data using `fly |> nest(data = !Species)`, so that we end up with a table which has one row per each species. We then need to run a Wilcoxon rank sum test on each of them. But this we know how to do from @sec-map: we can rely on the `map` function.
+
+```{r}
+fly |>
+  nest(data = !Species) |>
+  mutate(test = map(data, function(x) wilcox.test(L2Length ~ Sex, data = x)))
+```
+
+And *voilà:* we now have the Wilcoxon rank sum test results in the column `test`, for each species! All we need to do is retrieve this information.
+
+Doing so is not completely straightforward, because `wilcox.test` does not return a data frame or tibble. Instead, it returns a complicated model fit object which cannot be unnested into the outer table. If we try, we get an error:
+
+```{r}
+#| error: true
+fly |>
+  nest(data = !Species) |>
+  mutate(test = map(data, function(x) wilcox.test(L2Length~Sex, data=x))) |>
+  unnest(test)
+```
+
+Fortunately, there is an easy way to convert the output of the Wilcoxon rank sum test into a tibble. The `broom` package is designed to do exactly this. It is part of the `tidyverse`, though it does not get automatically loaded with it. We load this package first:
+
+```{r}
+library(broom)
+```
+
+The function in this package that creates a tibble out of the results of statistical models (almost any model in fact, not just the Wilcoxon rank sum test) is called `tidy`. Let us see how it works. If we do a Wilcoxon rank sum test between females and males for the whole data (without distinguishing between species), we get:
+
+```{r}
+wilcox.test(WingSize ~ Sex, data = fly, conf.int = TRUE)
+```
+
+By applying the `tidy` function to this result, it gets converted into a tibble:
+
+```{r}
+wilcox.test(WingSize ~ Sex, data = fly, conf.int = TRUE) |> tidy()
+```
+
+So we can insert a step into our analysis pipeline which converts the `test` column into a list of data frames:
+
+```{r}
+fly |>
+  nest(data = !Species) |>
+  mutate(test = map(data, function(x) wilcox.test(L2Length~Sex, data=x))) |>
+  mutate(test = map(test, tidy)) |>
+  unnest(test)
+```
+
+And now we have the results. As an example, we can check the distribution of p-values: how often is there a statistically significant sex difference? Let us visualize this, by ordering the species based on p-values:
+
+```{r}
+#| fig-height: 9
+fly |>
+  nest(data = !Species) |>
+  mutate(test = map(data, function(x) wilcox.test(L2Length~Sex, data=x))) |>
+  mutate(test = map(test, tidy)) |>
+  unnest(test) |>
+  arrange(p.value) |>
+  mutate(Species = as_factor(Species)) |>
+  ggplot(aes(x = p.value, y = Species)) +
+  geom_col(colour = "steelblue", fill = "steelblue", alpha = 0.3) +
+  scale_x_continuous(name = "p-value", limits = c(0, 1)) +
+  theme_bw()
+```
+
+This graph shows that most species have very small p-values, but that there are four clear outliers. We can extract the names of these outlier species:
+
+```{r}
+outlierSpecies <- fly |>
+  nest(data = !Species) |>
+  mutate(test = map(data, function(x) wilcox.test(L2Length~Sex, data=x))) |>
+  mutate(test = map(test, tidy)) |>
+  unnest(test) |>
+  arrange(desc(p.value)) |>
+  slice(1:4) |> # Choose first 4 rows from the sorted table
+  pull(Species) # Get the 4 species names
+
+print(outlierSpecies)
+```
+
+And then we can plot the wing length data for just these ones:
+
+```{r}
+fly |>
+  filter(Species %in% outlierSpecies) |>
+  ggplot() +
+  aes(x = Sex, y = WingSize) +
+  geom_boxplot(colour = "steelblue", fill = "steelblue",
+               alpha = 0.2, outlier.shape = NA) +
+  geom_jitter(colour = "steelblue", alpha = 0.4) +
+  facet_grid(. ~ Species) +
+  theme_bw()
+```
+
+For `D_busckii`, `I_crucige`, and `N_sordida`, it is difficult not to conclude that the low p-values indicate the lack of a meaningful sex difference in wing length. For `Det_nigro` on the other hand, there are very few sampled individuals. Therefore one would most likely need more data to say.
+
+In summary, a very powerful way of analyzing data is to perform many analyses at once. To do so, one first has to nest the data. Then the analysis can be performed for every row with the help of the `map` function. Finally, one unnests the data and interprets the results. Often, an overview of the data will lead to insights that would have been difficult to gain otherwise. In our case, we saw that all but a handful of species exhibit a significant sex difference in wing length. For the few outliers, we saw that one of them lacks sufficient data, and therefore conclusions about this species should be postponed until more data are acquired.
+
+
+## Exercises
+
+1. Our analysis on the sex differences in the wing length of fruit flies ([`fruit_fly_wings.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/fruit_fly_wings.zip)) revealed whether there was a significant difference within each species. However, it did not say anything about which sex tends to have a longer wing. Perform this analysis here.
+    * Create a graph with the difference between mean female and mean male wing lengths along the x-axis, and the species along the y-axis. You can represent the difference of means in each species by a point (`geom_point`).
+    * How many species are there where females have longer wings on average? How many where males do?
+    * Which species shows the largest degree of sexual dimorphism?
+    * List the species where males have, on average, longer wings than females.
+
+2. The goal of the original study by @Bolstadetal2015 was to see the allometric relationship between wing length and the length of the L2 vein that runs across the wing, in different species of fruit flies.
+    * Obtain the slope from a linear regression between wing size and L2 vein length (which has been logged in the data) for each species and sex.
+    * Create a histogram of the regression slopes. What is the (approximate) distribution of the slopes?
+    * What is the mean and the standard deviation of the distribution of slopes? What is their range? Are the slopes all positive, all negative, or vary between the two? What does this tell you about the relationship between wing size and L2 vein length in general?
+    * Plot your results, with the regression slopes along the x-axis and the species-sex combination along the y-axis, sorted in the order of the regression slopes. Which species-sex combination has the largest slope? Which one has the smallest?
+
+3. The `gapminder` package contains information on the population size, average life expectancy, and per capita GDP for 142 countries, from 1952 to 2007 (in steps of 5 years). Download and install this package via `install.packages("gapminder")`, then load it with `library(gapminder)`. If you now type `gapminder` in the console, you should see a table with six columns. Here we will be focusing on the columns `country`, `continent`, `year`, and `pop` (the population size of the country in the given year). Now do the following exercises.
+    * Let us see if and when population growth has been exponential in these countries. If the growth of the population size is exponential, then the growth of its logarithm is linear. Therefore, as a first step, take the logarithms of all population sizes in the `pop` column.
+    * Nest the data by country and continent, and obtain a linear fit of log population size against year for each.
+    * Extract from this, not the slope or p-value, but a different measure of the model's quality: the proportion of variance explained (R^2^). Hint: you can do this with the `glance` function, which is part of the `broom` package. It works much in the same way as `tidy`, but extracts information about model quality instead of model parameters. The R^2^ value is contained in the column called `r.squared`.
+    * Make a plot with R^2^ along the x-axis and country along the y-axis, showing the R^2^ values by points. Colour the points based on the continent of the country.
+    * Make the same plot but first reorder the countries by `r.squared`.
+    * Which handful of countries stand out as having a particularly poor fit with the linear model? Make a plot of just the seven countries with the lowest R^2^ values. Let `year` be along the x-axis, the log population size along the y-axis, and the different countries be in separate facets. Bonus exercise: alongside these population curves, display also the predictions from the linear regressions.
+    * Which are the countries with the worst model fit? Do they tend to come from a particular continent or region? Given your knowledge of recent history, can you speculate on what the reasons could be for their deviations from exponential growth?
+
+4. In this exercise, we explore the goodness-of-fit of linear models between sepal and petal lengths in the `iris` dataset.
+    * First, visualize the data. Create a plot of the `iris` dataset, using points whose x-coordinate is sepal length and y-coordinate is petal length. Let them be colored by species. Finally, show linear regressions on the points belonging to each species, using `geom_smooth`.
+    * Obtain the slope of the fit for each species, and the associated p-value. Do this by first nesting the data by species, then fitting a linear model to each of them (with `map`), and extracting slopes and p-values by applying the `tidy` function in the `broom` package. Finally, `unnest` the data. What are the slopes? And are they significantly different from zero?

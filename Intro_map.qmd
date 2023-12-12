@@ -1,0 +1,202 @@
+# Higher-order functions and mapping {#sec-map}
+
+## Introduction
+
+```{r}
+#| message: false
+library(tidyverse) # Loading the tidyverse, before doing anything else
+```
+
+In @sec-functions we learned how to create user-defined functions. An example was provided in @sec-onewayanova, where we made our life easier by eliminating the need to always call `aov` before performing a Tukey test with `TukeyHSD`. Without the function, we must write:
+
+```{r}
+lm(weight ~ group, data = PlantGrowth) |> aov() |> TukeyHSD()
+```
+
+Instead, we can write a simple function that takes a linear model fit object as its input and produces the Tukey test as its output:
+
+```{r}
+tukeyTest <- function(modelFit) modelFit |> aov() |> TukeyHSD()
+```
+
+:::{.callout-note}
+Make sure to review @sec-functions, especially @sec-f1arg, if you need a refresher on how to define functions in R.
+:::
+
+Using this function, we can now simply write:
+
+```{r}
+lm(weight ~ group, data = PlantGrowth) |> tukeyTest()
+```
+
+Another useful function we can write helps use statistical procedures within a pipeline. As we have seen, most statistical functions take a formula as their first argument and the data as their second (and then they may take further, method-specific arguments as well, like `conf.int` in the function `wilcox.test`). Since the pipe operator `|>` is often used in conjunction with functions like `select`, `mutate`, `pivot_longer`, `summarise`, etc. which all return a data frame, it would be convenient to reverse the order of arguments in all statistical functions, with the data coming first and the formula coming second. In fact, such a function is easy to write. We could call it `tidystat`:
+
+```{r}
+tidystat <- function(data, formula, method) method(formula, data)
+```
+
+Here `method` is the statistical function we wish to use. For example:
+
+```{r}
+PlantGrowth |>
+  filter(group != "ctrl") |>
+  tidystat(weight ~ group, wilcox.test)
+```
+
+This is now fully equivalent to:
+
+```{r}
+PlantGrowth |>
+  filter(group != "ctrl") |>
+  wilcox.test(weight ~ group, data = _)
+```
+
+We can add a further improvement to the `tidystat` function. As it is, it can only take the formula and the data as inputs, but not any other, function-specific arguments. In R, there is a way of passing arbitrary extra arguments, using the ellipsis (`...`). We can redefine `tidystat` this way:
+
+```{r}
+tidystat <- function(data, formula, method, ...) {
+  method(formula, data, ...) # The ... means "possibly more arguments"
+}
+```
+
+And now, we can pass extra arguments that we would not have been able to do before. For instance, we can request confidence intervals from `wilcox.test`:
+
+```{r}
+PlantGrowth |>
+  filter(group != "ctrl") |>
+  tidystat(weight ~ group, wilcox.test, conf.int = TRUE, conf.level = 0.99)
+```
+
+From now on, we can use `tidystat` for performing various statistical procedures:
+
+```{r}
+#| message: false
+library(FSA) # For the Dunn test
+PlantGrowth |> tidystat(weight ~ group, lm) |> anova()
+PlantGrowth |> tidystat(weight ~ group, lm) |> tukeyTest()
+PlantGrowth |> tidystat(weight ~ group, kruskal.test)
+PlantGrowth |> tidystat(weight ~ group, dunnTest)
+```
+
+
+## Higher-order functions
+
+If we think about the `tidystat` function above, something strange has happened. We are used to the idea of functions taking numbers, character strings, logical values, or even data frames as their arguments. What we have not paid much attention to before is what happens if the input to a function is itself another function. Yet this is precisely what `tidystat` does: its `method` argument is a function object.
+
+In R, this is perfectly legal, and its use and interpretation is every bit as natural as it was in `tidystat`. Functions which take other functions as arguments are often called *higher-order functions*.^[Functions that return a function as their output are also called higher-order functions. For an example which both takes functions as arguments and produces a function as its output, check out the `compose` function from the `purrr` package (part of the `tidyverse`).] To emphasize again: there really is nothing special about such functions, and they can be used in much the same way as "ordinary" functions.
+
+One very natural example for a higher-order function is integration. An integral (at least in simple cases) takes three inputs: a function to integrate, a lower limit of integration, and an upper limit of integration. The output is the (sign-weighted) area under the function's curve, evaluated between the lower and upper limits. This is stressed even in the usual mathematical notation for integrals: when we write
+$$ \int_0^1 x^2 \,\text{d} x = \frac{1}{3}$$
+(a true statement), we show the lower and upper limits of 0 and 1 at the bottom and top of the integral sign, and the function to be integrated (in this case, $f(x) = x^2$) in between the integral sign and $\text{d} x$.
+
+If you do not know how integrals do their magic, there is no need to worry, because R has a built-in function called `integrate` to do the calculations for you. `integrate` takes the three arguments described above: the function to integrate, and the lower and upper limits of integration. To perform the above integral, we can write:
+
+```{r}
+# The squaring function: sqr(2) returns 4, sqr(4) returns 16, etc.
+sqr <- function(x) x^2
+# Perform the integral between 0 and 1:
+integrate(sqr, 0, 1)
+```
+
+The answer is indeed one-third.^[The error is included in the output because R's integration routine is purely numeric, so it algorithmically approximates the integral, and such procedures always have finite precision.] But there was no obligation to use the square function above. We could have used any other one. For instance, to compute the integral of the cosine function $\cos(x)$ between $0$ and $2\pi$, we can type:
+
+```{r}
+integrate(cos, 0, 2*pi)
+```
+
+We get the expected result of zero, within numerical error.
+
+One thing to know about function objects like `sqr` is that they do not need a name to be used. In the definition `sqr <- function(x) x^2`, we assigned the function object `function(x) x^2` to the symbol `sqr`, so we wouldn't have to write it out all the time. But since `sqr` is just a name that stands for `function(x) x^2`, calling `(function(x) x^2)(4)` is the same as calling `sqr(4)`, both returning 16. If a function is used only once within another (higher-order) function, then we might not wish to bother with naming the function separately. Thus, the following is exactly equivalent to integrating the `sqr` function:
+
+```{r}
+integrate(function(x) x^2, 0, 1)
+```
+
+Functions without names are often called *anonymous* functions. They are commonly used within other, higher-order functions. Their use is not mandatory: it is always possible to first define the function with a name, and then use that name instead (e.g., using `sqr` instead of `function(x) x^2`, after defining `sqr <- function(x) x^2`). However, they can be convenient, and it is also important to recognize them in R code written by others.
+
+
+## The `map` family of functions {#sec-mapfamily}
+
+The `purrr` package is a standard, automatically-loaded part of the `tidyverse`. It contains a large family of *mapping functions*. These allow one to perform repetitive tasks by applying the same function to all elements of a vector, list, or column in a data frame.
+
+To illustrate their use, how would we obtain the squares of all integers from 1 to 10? Using our earlier `sqr` function, we could painstakingly type out `sqr(1)`, then `sqr(2)`, and so on, up until `sqr(10)` (we ought to be grateful that the task was to obtain the squares of the first ten integers, instead of the first ten thousand). But there is no need to do this, as this is exactly what `map` can do. `map` takes two arguments: some data (e.g., a vector of values), and a function. It then applies that function to all data entries. So a much quicker way of obtaining the squares of all integers from 1 to 10 is this:
+
+```{r}
+map(1:10, sqr)
+```
+
+Or, in case we prefer anonymous functions and do not want to bother with defining our own `sqr` routine:
+
+```{r}
+map(1:10, function(x) x^2)
+```
+
+The results are all there, although they are prefaced by double-bracketed indices `[[1]]`, `[[2]]`, and so on. You may recall from @sec-lists that this is the notation used to reference the entries of lists. That is correct: `map` returns a list of values, not a vector. We will see momentarily that this can be very useful behavior, but here it can feel overkill. Fortunately, it is easy to get back a vector instead of a list. Since the entries of vectors must have a well-defined, uniform type (numeric, character string, logical, etc.), we have to tell R what kind of result we want. In our case, we want numeric results. The function to do this is called `map_dbl` ("map into double-precision numerical values"). It can be used just like `map`; the only difference between the two is that the output type changes from list to numeric vector:
+
+```{r}
+map_dbl(1:10, function(x) x^2)
+```
+
+Similarly, there are functions `map_chr`, `map_lgl`, and some others, which create vectors of the appropriate type. For example, to append the agglutination "-ing" to various verbs, we can do:
+
+```{r}
+c("attend", "visit", "support", "help", "savour") |>
+  map_chr(function(text) paste0(text, "ing"))
+```
+
+Interestingly, we could also try
+
+```{r}
+map_chr(1:10, function(x) x^2)
+```
+
+and see that, although the computations were performed correctly, the output was converted from numbers to character strings encoding those numbers.
+
+
+## Making use of `map` when vectorization fails
+
+One perhaps obvious criticism of `map` as we have used it is that its use was not really needed. Early on, we learned that when simple functions are applied to a vector of values, they get applied element-wise. This is called *vectorization*, and it is a very useful property of R. So `(1:10)^2`, in our case, achieves the same thing as `map_dbl(1:10, function(x) x^2)`. Similarly, if we simply write `cos(1:100)`, we get the cosine of all integers between 1 and 100 without having to type out `map_dbl(1:100, cos)`. So why bother with `map` then?
+
+The answer is that `map` can handle cases where vectorization is not available. Most *simple* functions in R are vectorized, but there are plenty of non-vectorizable operations. To give an example, let us start from a simple dataset: the `PlantGrowth` table we looked at before, but without the control `ctrl` group. This leaves just the two treatment groups `trt1` and `trt2`:
+
+```{r}
+plantTrt <- filter(PlantGrowth, group != "ctrl")
+print(plantTrt)
+```
+
+We might want to perform a Wilcoxon rank sum test on these data, but with a number of different confidence levels. A naive approach would be to supply the required confidence levels as a vector:
+
+```{r}
+#| error: true
+wilcox.test(weight ~ group, data = plantTrt,
+            conf.int = TRUE, conf.level = c(0.8, 0.9, 0.95, 0.99))
+```
+
+This generates an error: because of the way `wilcox.test` is internally implemented in R, it does not allow or recognize a vector input in place of `conf.level`. It must be a single number instead. This, however, can be overcome if we just use `map`:
+
+```{r}
+c(0.8, 0.9, 0.95, 0.99) |> # The vector of confidence levels
+  map(function(confLevel) wilcox.test(weight ~ group, data = plantTrt,
+                            conf.int = TRUE, conf.level = confLevel))
+```
+
+Notice that we used `map` and not `map_dbl` or `map_chr`, because `wilcox.test` returns a complex model object which cannot be coerced into a vector. This is precisely when `map`, which generates a list whose entries can be arbitrary, is especially useful. (Try the above with `map_dbl`; it will throw an error.) As a final comment, it would of course have been possible to define a function separately, instead of using the anonymous function above:
+
+```{r}
+wilcoxConf <- function(confLevel) {
+  wilcox.test(weight ~ group, data = plantTrt,
+              conf.int = TRUE, conf.level = confLevel)
+}
+
+c(0.8, 0.9, 0.95, 0.99) |> map(wilcoxConf)
+```
+
+
+## Exercises
+
+1. Start from the following sequence of values: `values <- seq(-5*pi, 5*pi, by = 0.01)` (a vector with values going from $-5\pi$ to $5\pi$, in steps of 0.01). Now do the following:
+    * Define a new vector, `x`, which contains the cosine (`cos`) of each value in `values`. Use `map_dbl`.
+    * Now define another vector, `y`, and again using `map_dbl`, compute the function `sin(t) + cos(14 * t / 5) / 5` for every value  *t* in `values`. You can either define this function separately to use inside `map_dbl`, or create it anonymously.
+    * Finally, create a tibble whose two columns are `x` and `y`, and plot them against each other using `geom_path`. See what you get!
+
+2. How does the integral of $\cos(x)$ change if the lower limit of integration is fixed at zero, but the upper limit gradually increases from $0$ to $2\pi$? Define a sequence of upper limits `upper <- seq(0, 2*pi, by = 0.1)`. Then, using `map_dbl`, create a vector `integrals` whose entries are the integral of $\cos(x)$ from zero to each upper limit. Finally, plot `integrals` against `upper`, using `geom_point` or `geom_line`. What is the function you see? (Note: the `integrate` function returns a complicated list object instead of just a single number. To access just the value of the integral, you can use `integrate(...)$value`, where `...` means all the arguments to the function you are supposed to write when solving the problem.)

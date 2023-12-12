@@ -1,0 +1,3 @@
+# Welcome {.unnumbered}
+
+Do you have any comments, suggestions for improvement, or errata? Feel free to send them to me at `dysordys@protonmail.com`.

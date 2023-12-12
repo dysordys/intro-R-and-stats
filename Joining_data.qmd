@@ -1,0 +1,193 @@
+# Joining data {#sec-join}
+
+## Merging two related tables into one
+
+So far, we have been working with a single table of data at a time. Often however, information about the same observation or experiment is scattered across multiple tables and files. In such cases, we sometimes want to *join* those separate tables into a single one. To illustrate how this can be done, let us create two simple tables. The first will contain the names of students, along with their chosen subject:
+
+```{r, message=FALSE}
+library(tidyverse)
+
+studies <- tibble(
+  name    = c("Sacha", "Gabe", "Alex"),
+  subject = c("Physics", "Chemistry", "Biology")
+)
+
+print(studies)
+```
+
+The second table contains slightly different information: it holds which year a given student is currently into their studies.
+
+```{r}
+stage <- tibble(
+  name = c("Sacha", "Alex", "Jamie"),
+  year = c(3, 1, 2)
+)
+
+print(stage)
+```
+
+Notice that, while Sacha and Alex appear in both tables, Gabe is only included in `studies` and Jamie only in `stage`. While in our tiny tables might seem like an avoidable oversight, such non-perfect alignment of data is often the norm when working with data spanning hundreds or more rows. Here, for the purposes of illustration, we use small tables, but the principles we learn here apply in a broader context as well.
+
+There are four commonly used ways of joining these tables into one single dataset. All of them follow the same general pattern: the arguments are two tibbles to be joined, plus a `by = ` argument which defines a *join specification* of the columns by which the tables should be joined. The join specification can be given using a helper function called `join_by`. It simply receives the names of the columns to use for joining.^[It can also do a lot more. You can check its help page (`?join_by`) after you finish reading this chapter---by that time, it will make much more sense.] The output is always a single tibble, containing some type of joining of the data. Let us now look at each joining method in detail.
+
+### `left_join`
+
+The `left_join` function keeps only those rows that appear in the *first* of the two tables to be joined:
+
+```{r}
+left_join(studies, stage, by = join_by(name))
+```
+
+There are two things to notice. First, Jamie is missing from the `name` column above, even though s/he did appear in the `stage` tibble. This is exactly the point of `left_join`: if a row entry in the joining column (specified in `by = join_by(...)`) does not appear in the *first* table listed in the arguments, then it is omitted. Second, the `year` entry for Gabe is `NA`. This is because Gabe is absent from the `stage` table, and therefore has no associated year of study. Rather than make up nonsense, R fills out such missing data with `NA` values.
+
+### `right_join`
+
+This function works just like `left_join`, except only those rows are retained which appear in the *second* of the two tables to be joined:
+
+```{r}
+right_join(studies, stage, by = join_by(name))
+```
+
+In other words, this is exactly the same as calling `left_join` with its first two arguments reversed:
+
+```{r}
+left_join(stage, studies, by = join_by(name))
+```
+
+The only difference is in the ordering of the columns, but the data contained in the tables are identical.
+
+In this case, the column `subject` is `NA` for Jamie. The reason is the same as it was before: since the `studies` table has no `name` entry for Jamie, the corresponding subject area is filled in with a missing value `NA`.
+
+### `inner_join`
+
+This function retains only those rows which appear in *both* tables to be joined. For our example, since Gabe only appears in `studies` and Jamie only in `stage`, they will be dropped by `inner_join` and only Sacha and Alex are retained (as they appear in both tables):
+
+```{r}
+inner_join(studies, stage, by = join_by(name))
+```
+
+### `full_join`
+
+The complement to `inner_join`, this function retains all rows in all tables, filling in missing values with `NA`s everywhere:
+
+```{r}
+full_join(studies, stage, by = join_by(name))
+```
+
+### Joining by multiple columns
+
+It is also possible to use the above joining functions specifying multiple columns to join data by. To illustrate how to do this and what this means, imagine that we slightly modify the student data. The first table will contain the name, study area, and year of study for each student. The second table will contain the name and study area of each student, plus whether they have passed their most recent exam:
+
+```{r}
+program  <- tibble(
+  name    = c("Sacha", "Gabe", "Alex"),
+  subject = c("Physics", "Chemistry", "Biology"),
+  year    = c(1, 3, 2)
+)
+
+print(program)
+```
+
+```{r}
+progress <- tibble(
+  name     = c("Sacha", "Gabe", "Jamie"),
+  subject  = c("Physics", "Chemistry", "Biology"),
+  examPass = c(TRUE, FALSE, TRUE)
+)
+
+print(progress)
+```
+
+And now, since the tables share not just one but two columns, it makes sense to join them using both. This can be done by specifying each column inside `join_by` in the `by = ` argument. For example, left-joining `program` and `progress` by both `name` and `subject` leads to a joint table in which all unique `name`-`subject` combinations found in `program` are retained, but those found only in `progress` are discarded:
+
+```{r}
+left_join(program, progress, by = join_by(name, subject))
+```
+
+The other joining functions also work as expected:
+
+```{r}
+right_join(program, progress, by = join_by(name, subject))
+```
+
+```{r}
+inner_join(program, progress, by = join_by(name, subject))
+```
+
+```{r}
+full_join(program, progress, by = join_by(name, subject))
+```
+
+
+## Binding rows and columns to a table
+
+Occasionally, a simpler problem presents itself: there is a single dataset, but its rows are contained across separate tables. For example, a table containing student names and subject areas might be spread across two tables, like this:
+
+```{r}
+studies1 <- tibble(
+  name    = c("Sacha", "Gabe", "Alex"),
+  subject = c("Physics", "Chemistry", "Biology")
+)
+
+print(studies1)
+```
+
+```{r}
+studies2 <- tibble(
+  name    = c("Jamie", "Ashley", "Dallas", "Jordan"),
+  subject = c("Geology", "Mathematics", "Philosophy", "Physics")
+)
+
+print(studies2)
+```
+
+The tables have the exact same structure, in that the column names and types are identical. It's just that the rows are, for some reason, disparate. To combine them together, we could recourse to full-joining the tables by both their columns:
+
+```{r}
+full_join(studies1, studies2, by = join_by(name, subject))
+```
+
+This, however, is not necessary. Whenever all we need to do is take two tables and stick their rows together, there is the simpler `bind_rows`:
+
+```{r}
+bind_rows(studies1, studies2)
+```
+
+Similarly, in case two tables have the same number of rows but different columns, one can stick their columns together using `bind_cols`. For example, suppose we have
+
+```{r}
+studies <- tibble(
+  name    = c("Sacha", "Gabe", "Alex"),
+  subject = c("Physics", "Chemistry", "Biology")
+)
+
+print(studies)
+```
+
+as well as a table with year of study and result of last exam only:
+
+```{r}
+yearExam <- tibble(
+  year     = c(3, 1, 2),
+  examPass = c(FALSE, TRUE, TRUE)
+)
+
+print(yearExam)
+```
+
+We can now join these using `bind_cols`:
+
+```{r}
+bind_cols(studies, yearExam)
+```
+
+
+## Exercises
+
+We have used the data of @Fauchaldetal2017 before in other exercises, in @sec-ggplot-exercises and @sec-moreggplot-exercises. As a reminder, they tracked the population size of various herds of caribou in North America over time, and correlated population cycling with the amount of vegetation and sea-ice cover. Two files from their data are [`pop_size.tsv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/pop_size.zip) (herd population sizes) and [`sea_ice.tsv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/sea_ice.zip) (sea ice cover per year and month).
+
+1. Load these two datasets into two variables. They could be called `pop` and `ice`, for instance. Look at the data to familiarize yourself with them. How many rows and columns are in each?
+
+2. Before doing anything else: how many rows will there be in the table that is the left join of `pop` and `ice`, based on the two columns `Herd` and `Year`? Perform the left join to see if you were correct. Where do you see `NA`s in the table, and why?
+
+3. Now do the same with right-joining, inner-joining, and full-joining `pop` and `ice`.

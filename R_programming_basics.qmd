@@ -1,0 +1,318 @@
+# R programming basics {#sec-basics}
+
+## Using R as a calculator
+
+As we have seen in @sec-simpcalc, R can be used as a glorified pocket calculator. Elementary operations work as expected: `+` and `-` are symbols for addition and subtraction, while `*` and `/` are multiplication and division. Thus, we can enter things such as `3 * 4 - 6 / 2 + 1` n the console, and press Enter (Return, on a Mac) to get the result:
+
+```{r}
+3 * 4 - 6 / 2 + 1
+```
+
+One even has exponentiation, denoted by the symbol `^`. To raise 2 to the 5th power, we enter
+
+```{r}
+2^5
+```
+
+Furthermore, one is not restricted to integers. It is possible to calculate with fractional numbers:
+
+```{r}
+1.62 * 34.56
+```
+
+::: {.callout-note}
+In line with Anglo-Saxon tradition, R uses decimal points instead of commas. A common mistake for people coming from other traditions is to type `1,62 * 34,56`. This will throw an error.
+:::
+
+R also has many basic mathematical functions built into it. For example, `sqrt` is the square root function; `cos` is the cosine function, `log` is the (natural) logarithm, `exp` is the exponential function, and so on. The following tables summarize the symbols for various arithmetic operations and basic mathematical functions built into R:
+
+    Symbol        Meaning       Example       Form in R
+  ---------- ----------------- -------------- -----------
+    `+`        addition         $1 + 3$       `1 + 3`
+    `-`        subtraction      $5 - 1$       `5 - 1`
+    `*`        multiplication   $2 \cdot 2$   `2 * 2`
+    `/`        division         $8 / 2$       `8 / 2`
+    `^`        raise to power   $2^2$         `2 ^ 2`
+                                           
+   Function      Meaning          Example       Form in R
+  ---------- ----------------- ---------------  -----------
+   `log`       natural log      $\log(4)$       `log(4)`
+   `exp`       exponential      $\text{e}^4$    `exp(4)`
+   `sqrt`      square root      $\sqrt{4}$      `sqrt(4)`
+   `log2`      base-2 log       $\log_2(4)$     `log2(4)`
+   `log10`     base-10 log      $\log_{10}(4)$  `log10(4)`
+   `sin`       sine (radians!)  $\sin(4)$       `sin(4)`
+   `abs`       absolute value   $|-4|$          `abs(-4)`
+
+Expressions built from these basic blocks can be freely combined. Try to calculate $3^{\log(4)} - \sin(\text{e}^2)$ for instance. To do so, we simply type the following and press Enter to get the result:
+
+```{r}
+3^log(4) - sin(exp(2))
+```
+
+Now obtain $\text{e}^{1.3} (4 - \sin(\pi / 3))$. Notice the parentheses enclosing $4 - \sin(\pi /3)$. This means, as usual, that this expression is evaluated first, before any of the other computations. It can be implemented in R the same way, by using parentheses:
+
+```{r}
+exp(1.3) * (4 - sin(3.14159 / 3))
+```
+
+Note also that you *do* need to indicate the symbol for multiplication between closing and opening parentheses: omitting this results in an error. Try it: entering `exp(1.3)(4 - sin(3.14159/3))` instead of `exp(1.3)*(4 - sin(3.14159/3))` throws an error message. Also, be mindful that `exp(1.3)*(4 - sin(3.14159/3))` is not the same as `exp(1.3)*4 - sin(3.14159/3)`. This is because multiplication takes precedence over addition and subtraction, meaning that multiplications and divisions are performed first, and additions/subtractions get executed only afterwards---unless, of course, we override this behaviour with parentheses. In general, whenever you are uncertain about the order of execution of operations, it can be useful to explicitly use parentheses, even if it turns out they aren't really necessary. For instance, you might be uncertain whether `3 * 6 + 2` first multiplies 3 by 6 and then adds 2 to the result, or if it first adds 2 to 6 and then multiplies that by 3. In that case, if you want to be absolutely sure that you perform the multiplication first, just write `(3 * 6) + 2`, explicitly indicating with the parentheses that the multiplication should be performed first---even though doing so would not be strictly necessary in this case.
+
+Incidentally, you do not need to type out `3.14159` to approximate $\pi$ in the mathematical expressions above. R has a built-in constant, `pi`, that you can use instead. Therefore, `exp(1.3)*(4 - sin(pi/3))` produces the same result as our earlier `exp(1.3)*(4 - sin(3.14159/3))`.
+
+Another thing to note is that the number of spaces between various operations is irrelevant. `4*(9-6)` is the same as `4*(9 - 6)`, or `4 * (9 - 6)`, or, for that matter, `4   * (9-    6)`. To the machine, they are all the same---it is only us, the human users, who might get confused by that last form...
+
+It is possible to get help on any function from the system itself. Type either `help(asin)` or the shorter `?asin` in the console to get information on the function `asin`, for instance. Whenever you are not sure how to use a certain function, just ask the computer.
+
+
+## Variables and types
+
+### Numerical variables and variable names {#sec-assignment}
+
+You can assign a value to a named variable, and then whenever you call on that variable, the assigned value will be substituted. For instance, to obtain the square root of 9, you can simply type `sqrt(9)`; or you can assign the value 9 to a variable first:
+
+```{r}
+x <- 9
+sqrt(x)
+```
+
+This will calculate the square root of `x`, and since `x` was defined as 9, we get `sqrt(9)`, or 3. The assignment symbol `<-` consists of a less-than symbol `<` and a minus sign `-` written next to each other. Together, they look like an arrow pointing towards the left, meaning that we assign the value on the right to the variable on the left of the arrow. A keyboard shortcut in RStudio to create this symbol is to press Alt and - together.
+
+The name for a variable can be almost anything, but a few restrictions apply. First, the name must consist only of letters, numbers, the period (`.`), and the underscore (`_`) character. Second, the variable's name cannot start with a number or an underscore. So `one_result` or `one.result` are fine variable names, but `1_result` or `_one_result` are not. Similarly, the name `crowns to $` is not valid because of the spaces and the dollar (`$`) symbol, neither of which are numbers, letters, period, or the underscore.
+
+Additionally, there are a few *reserved words* which have a special meaning in R, and therefore cannot be used as variable names. Examples are: `if`, `NA`, `TRUE`, `FALSE`, `NULL`, and `function`. You can see the complete list by typing `?Reserved`.
+
+However, one can override all these rules and give absolutely any name to a variable by enclosing it in backward tick marks (`` ` `  ``). So while `crowns to $` and `function` are not valid variable names, `` `crowns to $` `` and `` `function` `` are. For instance, you could type
+
+```{r}
+`crowns to $` <- 0.09 # Approximate SEK-to-USD exchange rate
+my_money <- 123 # Assumed to be given in Swedish crowns
+my_money_in_USD <- my_money * `crowns to $`
+print(my_money_in_USD)
+```
+
+to get our money's worth in US dollars. Note that the freedom of naming our variables whatever we wish comes at the price of having to always include them between back ticks to refer to them. It is entirely up to you whether you would like to use this feature or avoid it; however, be sure to recognize what it means when looking at R code written by others.
+
+Notice also that the above chunk of code includes *comments*, prefaced by the hash (`#`) symbol. Anything that comes after the hash symbol on a line is ignored by R; it is only there for other humans to read.
+
+
+:::{.callout-warning}
+The variable `my_money_in_USD` above was defined in terms of the two variables `my_money` and `` `crowns to $` ``. You might be wondering: if we change `my_money` to a different value by executing `my_money <- 1000` (say), does `my_money_in_USD` also get automatically updated? **The answer is no:** the value of `my_money_in_USD` will remain unchanged. In other words, variables are not automatically recalculated the way Excel formula cells are. To recompute `my_money_in_USD`, you will need to execute `` my_money_in_USD <- my_money * `crowns to $` `` again. This leads to a recurring theme in programming: while assigning variables is convenient, it also carries some dangers, in case we forget to appropriately update them. In this book we will be emphasizing a style of programming which avoids relying on (re-)assigning variables as much as possible.
+:::
+
+
+### Strings {#sec-strings}
+
+So far we have worked with numerical data. R can also work with textual information. In computer science, these are called *character strings*, or just *strings* for short. To assign a string to a variable, one has to enclose the text in quotes. For instance,
+
+```{r}
+#| eval: false
+s <- "Hello World!"
+```
+
+assigns the literal text `Hello World!` to the variable `s`. You can print it to screen either by just typing `s` at the console and pressing Enter, or typing `print(s)` and pressing Enter.
+
+One useful function that works on strings is `paste`, which makes a single string out of several ones (in computer lingo, this is known as *string concatenation*). For example, try
+
+```{r}
+s1 <- "Hello"
+s2 <- "World!"
+message <- paste(s1, s2)
+print(message)
+```
+
+The component strings are separated by a space, but this can be changed with the optional `sep` argument to the `paste` function:
+
+```{r}
+message <- paste(s1, s2, sep = "")
+print(message)
+```
+
+This results in `message` becoming `HelloWorld!`, without the space in between. Between the quotes, you can put any character (including nothing, like above), which will be used as a separator when merging the strings `s1` and `s2`. So specifying `sep = "-"` would have set `message` equal to `Hello-World!` (try it out and see how it works).
+
+It is important to remember that quotes distinguish information to be treated as text from information to be treated as numbers. Consider the following two variable assignments:
+
+```{r}
+#| eval: false
+a <- 6.7
+b <- "6.7"
+```
+
+Although they look superficially similar, `a` is the number 6.7 while `b` is the string "6.7", and the two are not equal! For instance, executing `2 * a` results in 13.4, but `2 * b` throws an error, because it does not make sense to multiply a bunch of text by 2.
+
+
+### Logical values
+
+Let us type the following into the console, and press Enter:
+
+```{r}
+2 > 1
+```
+
+We are asking the computer whether 2 is larger than 1. And it returns the answer: `TRUE`. By contrast, if we ask whether two is less than one, we get `FALSE`:
+
+```{r}
+2 < 1
+```
+
+Similar to "greater than" and "less than", there are other logical operations as well, such as "greater than or equal to", "equal to", "not equal to", and others. The table below lists the most common options.
+
+    Symbol     Meaning                  Example in R         Result
+  ---------- ----------------------- ----------------------- -----------
+    `<`        less than                `1 < 2`              `TRUE`
+    `>`        greater than             `1 > 2`              `FALSE`
+    `<=`       less than or equal       `2 <= 5.3`           `TRUE`
+    `>=`       greater than or equal    `4.2 >= 3.6`         `TRUE`
+    `==`       equal to                 `5 == 6`             `FALSE`
+    `!=`       not equal to             `5 != 6`             `TRUE`
+    `%in%`     is element of set        `2 %in% c(1, 2, 3)`  `TRUE`
+    `!`        logical NOT              `!(1 > 2)`           `TRUE`
+    `&`        logical AND              `(1 > 2) & (1 < 2)`  `FALSE`
+    `|`        logical OR               `(1 > 2) | (1 < 2)`  `TRUE`
+
+The `==` and `!=` operators can also be used with strings: `"Hello World" == "Hello World!"` returns `FALSE`, because the two strings are not exactly identical, differing in the final exclamation mark. Similarly, `"Hello World" != "Hello World!"` returns `TRUE`, because it is indeed true that the two strings are unequal.
+
+*Logical values* can either be `TRUE` or `FALSE`, with no other options.^[Technically, there is a third option: a logical value could be equal to `NA`, indicating missing data. Numerical and string variables can also be `NA` to show that their values are missing.] This is in contrast with numbers and character strings, which can take on a myriad different values. Note that `TRUE` and `FALSE` must be capitalized: `true`, `False`, or anything other than the fully capitalized forms will result in an error. Just like in the case of strings and numbers, logical values can be assigned to variables:
+
+```{r}
+lgl <- 3 > 4 # Since 3 > 4 is FALSE, lgl will be assigned FALSE
+print(!lgl) # lgl is FALSE, so !lgl ("not lgl") will be TRUE
+```
+
+The function `ifelse` takes advantage of logical values, doing different things depending on whether some condition is `TRUE` or `FALSE` ("*if* the condition is true *then* do something, *else* do some other thing"). It takes three arguments: the first is a condition, the second is the expression that gets executed only if the condition is true, and the third is the expression that executes only if the condition is false. To illustrate its use, we can apply it in a program that simulates a coin toss. R will generate *n* random numbers between 0 and 1 by invoking `runif(n)`. Here `runif` is a shorthand for "random-uniform", randomly generated numbers from a uniform distribution between 0 and 1. The function call `runif(1)` therefore produces a single random number, and we can interpret values less than 0.5 as having tossed heads, and other values as having tossed tails. The following lines implement this:
+
+```{r}
+#| echo: false
+set.seed(8766)
+```
+
+```{r}
+toss <- runif(1)
+coin <- ifelse(toss < 0.5, "heads", "tails")
+print(coin)
+```
+
+This time we happened to have tossed heads, but try re-running the above three lines over and over again, to see that the results keep coming up at random.
+
+::: {.callout-tip}
+In scientific applications, one often wants to create a sequence of random values that are *repeatable*. That is, while the sequence of `"heads"` and `"tails"` is random, the exact same sequence of values will be generated by any user who runs the R script. One can force such repeatability by setting the *random generator seed*. This seed is an integer value, and every choice will generate a different (but perfectly repeatable) random sequence. For instance, the random number generator can be seeded with the value 71 by typing `set.seed(71)`.
+
+To illustrate the difference between not seeding versus seeding the random number generator, here we run the coin-tossing program again, this time with eight tosses:
+
+```{r}
+toss <- runif(8)
+coin <- ifelse(toss < 0.5, "heads", "tails")
+print(coin)
+```
+
+If we now execute the same three lines again, we will naturally get a different result because the coin tosses are, after all, random:
+
+```{r}
+toss <- runif(8)
+coin <- ifelse(toss < 0.5, "heads", "tails")
+print(coin)
+```
+
+To ensure repeatability, we have to set the random number generator seed:
+
+```{r}
+set.seed(71) # Set the random number generator seed
+toss <- runif(8)
+coin <- ifelse(toss < 0.5, "heads", "tails")
+print(coin)
+```
+
+If we run the above four lines together again, we get the exact same sequence of tosses as before:
+
+```{r}
+set.seed(71) # Set the random number generator seed
+toss <- runif(8)
+coin <- ifelse(toss < 0.5, "heads", "tails")
+print(coin)
+```
+
+:::
+
+
+## Vectors
+
+A *vector* is simply a sequence of variables of the same type. That is, the sequence may consist of numbers *or* strings *or* logical values, but one cannot intermix them. The `c` function will create a vector in the following way:
+
+```{r}
+x <- c(2, 5, 1, 6, 4, 4, 3, 3, 2, 5)
+```
+
+This is a vector of numbers. If, after entering this line, you type `x` or `print(x)` and press Enter, all the values in the vector will appear on screen:
+
+```{r}
+x
+```
+
+What can you do if you want to display only the third entry? The way to do this is by applying brackets:
+
+```{r}
+x[3]
+```
+
+Never forget that vectors and its elements are simply variables! To show this, calculate the value of `x[1] * (x[2] + x[3])`, but before pressing Enter, guess what the result will be. Then check if you were correct. You can also try typing `x * 2`:
+
+```{r}
+x * 2
+```
+
+What happened? Now you performed an operation on the vector as a whole, i.e., you multiplied each element of the vector by two. Remember: you can perform all the elementary operations on vectors as well, and then the result will be obtained by applying the operation on each element separately.
+
+Certain functions are specific to vectors. Try `mean(x)` and `var(x)` for instance (if you are not sure what these do, just ask by typing `?mean` or `?var`). Some others to try: `max`, `min`, `length`, `sum`, and `prod`.
+
+One can quickly generate vectors of sequences of values, using one of two ways. First, the notation `1:10` generates a vector of integers ranging from 1 to 10 (inclusive), in steps of 1. Similarly, `2:7` generates the same vector as `c(2, 3, 4, 5, 6, 7)`, and so on. Second, the function `seq` generates sequences, starting with the first argument, ending with the second, in steps defined with the `by` argument. So calling
+
+```{r}
+seq(0, 3, by = 0.2)
+```
+
+creates a vector of numbers ranging from 0 to 3, in steps of 0.2.
+
+Just as one can create a vector of numerical values, it is also possible to create a vector of character strings or of logical values. For example:
+
+```{r}
+#| eval: false
+strVec <- c("I am the first string", "I am the second", "And I am the 3rd")
+```
+
+Now `strVec[1]` is simply equal to the string `"I am the first string"`, `strVec[2]` is equal to `"I am the second"`, and so on. Similarly, defining
+
+```{r}
+#| eval: false
+logicVec <- c(TRUE, FALSE, TRUE, TRUE)
+```
+
+gives a vector whose second entry, `logicVec[2]`, is equal to `FALSE`, and its other three entries are `TRUE`.
+
+
+## Exercises
+
+1. Which of the variable names below are valid, and why?
+    * `first.result.of_computation`
+    * `2nd.result.of_computation`
+    * `dsaqwerty`
+    * `dsaq werty`
+    * `` `dsaq werty` ``
+    * `break`
+    * `is this valid?...`
+    * `` `is this valid?...` ``
+    * `is_this_valid?...`
+    
+2. In a single line of R code, calculate the number of seconds in a leap year.
+
+3. Create a vector called `z`, with entries 1.2, 5, 3, 13.7, 6.66, and 4.2 (in that order). Then, by applying functions to this vector, obtain:
+    * Its smallest entry.
+    * Its largest entry.
+    * The sum of all its entries.
+    * The number of entries in the vector.
+    * The vector's entries sorted in increasing order (Hint: look up the function `sort`).
+    * The vector's entries sorted in decreasing order.
+    * The product of the fourth entry with the difference of the third and sixth entries. Then take the absolute value of the result.
+
+4. Define a vector of strings, called `s`, with the three entries `"the fat cat"`, `"sat on"`, and `"the mat"`.
+    * Combine these three strings into a single string, and print it on the screen. (Hint: look up the help page for the `paste` function, in particular its `collapse` argument.)
+    * Reverse the entries of `s`, so they come in the order `"the mat"`, `"sat on"`, and `"the fat cat"` (hint: check out the `rev` function). Then merge the three strings again into a single one, and print it on the screen.

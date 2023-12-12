@@ -1,0 +1,178 @@
+# Functions {#sec-functions}
+
+A *function* in R can be thought of as a black box which receives *inputs* and, depending on those inputs, produces some *output*. Vending machines provide a good working model of what a "function" is in computer science: depending on the inputs they receive (in the form of coins of various denomination, plus the buttons you press for a particular item) they give you some output (Mars bars, Coke, and the like). It's just that computer scientists like to refer to the inputs as "function arguments" or simply "arguments" instead of coins, and to the output as the "return value". Arguments are also often referred to as "parameters" to the function. The general workings of a function are illustrated below:
+
+```{mermaid}
+flowchart LR
+  A([argument 1]) --> F{FUNCTION}
+  B([argument 2]) --> F
+  C([argument 3]) --> F
+  D([...]) --> F
+  E([argument n]) --> F
+  F --> G([return value])
+```
+
+We have already seen some functions at work in R: for example, `sqrt`, `log`, and `exp` are all functions that take numbers and return some other number. In turn, the `paste` function (@sec-strings) takes one or more character strings and returns a single character string.
+
+When we ask a function to do something, we are *calling* the function. The arguments of functions are always enclosed in parentheses. For example, executing `sqrt(9)`, calls the built-in square root function. Its argument (or input, or parameter) is 9, and its return value is the square root of 9, which is 3.
+
+Just like vending machines, functions may not be as straightforward as described above, but could do other things than simply return a value. Vending machines happen to impose a decrease in the amount of available money in your pocket after they are used. This is a very real effect with implications for our future possibilities in the real world, but has nothing to do with the pressing of buttons and the items delivered by the machine. Similarly, functions in R may do other things than simply return a value: they may print messages on the screen, change the working directory, or load packages. We have already seen examples of functions having these side effects: `print` will display the value of a variable on screen, `setwd` sets your working directory and is not used for the value it returns, and `library` is used for its effect of loading R packages.
+
+While such effects are important to keep in mind (and can be useful), below we will focus on functions which simply receive an input and produce an output based on those inputs, without any other effects.
+
+## User-defined functions
+
+### How to define functions {#sec-f1arg}
+
+Thus far, we have been using many built-in functions in R, such as `exp`, `log`, `sqrt`, `seq`, `paste`, and others. However, it is also possible to define our own functions, which can then be used just like any built-in function. The way to do this is to first give a name to the function. The naming rules for functions are exactly the same as the naming rules for variables (@sec-assignment). Then we assign to this name the `function` keyword, followed by the function's arguments in parentheses, and then the R code comprising the function's body enclosed in curly braces `{}`. For example, here is a function which calculates the area of a circle with given radius:
+
+```{r}
+circleArea <- function(radius) {
+  area <- radius^2 * pi
+  return(area)
+}
+```
+
+The function implements the formula that the area of a circle is equal to $\pi$ times its radius squared. The `return` keyword determines what result the function will output when it finishes executing. In this case, the function returns the value of `area` that is created within the function. After running the above lines, the computer now knows and remembers the function. Calling `circleArea(3)` will, for example, calculate the area of a circle with radius 3, which is approximately 28.27433.
+
+One very important property of functions is that any variables defined within them (such as `area` above) are *local* to that function. This means that they are not visible from outside: even after calling the function, the variable `area` will not be accessible to the rest of the program, despite the fact that it was declared in the function. This helps us create programs with modular structure, where functions operate as black boxes: we can use them without looking inside.
+
+Two things are good to be aware of. First, the `return` keyword is optional in functions. If omitted, the final expression evaluated within the body of the function automatically becomes the return value. Second, the curly braces used in defining functions are not in fact specific to functions *per se*. Instead, the rule is as follows: an arbitrary block of code between curly braces, potentially made up of several expressions, is always treated as if it was one single expression. Its value is then by definition the final evaluated expression within the braces. This also means that the curly braces are superfluous whenever they contain only a single expression.
+
+This means that the definition of `circleArea` could be written in alternative forms as well, some being shorter than the one above. For starters, since a variable evaluates to the value it contains (naturally), one could simply remove `return` and have the same effect:
+
+```{r}
+circleArea <- function(radius) {
+  area <- radius^2 * pi
+  area
+}
+```
+
+But then, one may also think that it is not worth defining `area` just for the sake of being able to return it. One might as well simply return `radius^2 * pi` to begin with:
+
+```{r}
+circleArea <- function(radius) {
+  radius^2 * pi # Or, equivalently: return(radius^2 * pi)
+}
+```
+
+While the previous version of the function has better self-documentation (because by having named the intermediate variable `area`, we clarified its intended meaning and purpose), the latest one is more concise. Often, it is a question of taste which version one prefers. But there is an opportunity to compress even further. Since the purpose of the curly braces is to pretend that several expressions are just one single expression (its value being the last evaluated expression inside the braces), but the above function consists of just one expression anyway, the braces can be omitted:
+
+```{r}
+circleArea <- function(radius) radius^2 * pi
+```
+
+The four versions of `circleArea` are all equivalent from the point of view of the computer.
+
+### Functions with more than one argument
+
+One can define functions with more than one argument. For instance, here is a function that calculates the volume of a cylinder with given radius and height:
+
+```{r}
+cylinderVol <- function(radius, height) {
+  baseArea <- circleArea(radius)
+  volume <- baseArea * height
+  return(volume)
+}
+```
+
+Here we used the fact that the volume of a cylinder is the area of its base circle, times its height. Notice also that we made use of our earlier `circleArea` function within the body of `cylinderVol`. While this was not a necessity and we could have simply written `volume <- radius^2 * pi * height` above, this is generally speaking good practice: by constructing functions to solve smaller problems, one can write slightly more complicated functions which make use of those simpler ones. Then, one will be able to write even more complex functions using the slightly more complex ones in turn---and so on. We will discuss this principle in more detail below, in @sec-funccomp.
+
+When calling a function with multiple arguments, the default convention is that their order should follow the same pattern as in the function's definition. The function call `cylinderVol(2, 3)` means that `radius` will be set to 2 and `height` to 3, because that is the order in which the arguments were defined in `function(radius, height)`. But one can override this default ordering by explicitly naming arguments, as explained below.
+
+It is optional but possible to name the arguments explicitly. This means that calling `circleArea(3)` is the same as calling `circleArea(radius = 3)`, and calling `cylinderVol(2, 3)` is the same as calling `cylinderVol(radius = 2, height = 3)`. Even more is true: since naming the arguments removes any ambiguity about which argument is which, one may even call `cylinderVol(height = 3, radius = 2)`, with the arguments in reverse order, and this will still be equivalent to `cylinderVol(2, 3)`.
+
+While naming arguments this way is optional, doing so can increase the clarity of our programs. To give an example from a built-in function in R, take `log(5, 3)`. Does this function compute the base-5 logarithm of 3, or the base-3 logarithm of 5? While reading the documentation reveals that it is the latter, one can clarify this easily, because the second argument of `log` is called `base`, as seen from reading the help after typing `?log`. We can then write `log(5, base = 3)`, which is now easy to interpret: it is the base-3 logarithm of 5.
+
+```{r}
+log(5, base = 3)
+```
+
+It is also possible to define default values for one or more of the arguments to any function. If defaults are given, the user does not have to specify the value for that argument. It will then automatically be set to the default value instead. For example, one could rewrite the `cylinderVol` function to specify default values for `radius` and `height`. Making these defaults be 1 means we can write:
+
+```{r}
+cylinderVol <- function(radius = 1, height = 1) {
+  baseArea <- circleArea(radius)
+  volume <- baseArea * height
+  return(volume)
+}
+```
+
+If we now call `cylinderVol()` without specifying arguments, the defaults will be substituted for `radius` and `height`. Since both are equal to 1, the cylinder volume will simply be $\pi$ (about 3.14159), which is the result we get back. Alternatively, if we call `cylinderVol(radius = 2)`, then the function returns $4\pi$ (approximately 12.56637), because the default value of 1 is substituted in place of the unspecified `height` argument. Importantly, if we *don't* define default values and yet omit to specify one or more of those parameters, we get back an error message. For example, our earlier `circleArea` function had no default value for its argument `radius`, so leaving it unspecified throws an error:
+
+```{r}
+#| error: true
+circleArea()
+```
+
+
+## Function composition {#sec-funccomp}
+
+A function is like a vending machine: we give it some input(s), and it produces some output. The output itself may then be fed as input to another function---which in turn produces an output, which can be fed to yet another function, and so on. Chaining functions together in this manner is called the *composition* of functions. For example, we might need to take the square root of a number, then calculate the logarithm of the output, and finally, obtain the cosine of the result. This is as simple as writing `cos(log(sqrt(9)))`, if the number we start with is 9. More generally, one might even define a new function (let us call it `cls`, after the starting letters of `cos`, `log`, and `sqrt`) like this:
+
+```{r}
+#| eval: false
+cls <- function(x) {
+  return(cos(log(sqrt(x))))
+}
+```
+
+A remarkable property of composition is that the composed function (in this case, `cls`) is in many ways just like its constituents: it is also a black box which takes a single number as input and produces another number as its output. Putting it differently, if one did not know that the function `cls` was defined manually as the composition of three more "elementary" functions, and instead claimed it was just another elementary built-in function in R, there would be no way to tell the difference just based on the behaviour of the function itself. The composition of functions thus has the important property of *self-similarity*: if we manage to solve a problem through the composition of functions, then that solution itself will behave like an "elementary" function, and so can be used to solve even more complex problems via composition---and so on.
+
+If we conceive of a program written in R as a large lego building, then one can think of functions as the lego blocks out of which the whole construction is made up. Lego pieces are designed to fit well together, one can always combine them in various ways. Furthermore, any combination of lego pieces itself behaves like a more elementary lego piece: it can be fitted together with other pieces in much the same way. The composition of functions is analogous to building larger lego blocks out of simpler ones. Remarkably, just as the size of a lego block does not hamper our ability to stick them together, the composability of functions is retained regardless of how many more elementary pieces each of them consist of. Thus, the composition of functions is an excellent way of keeping the complexity of larger programs in hand.
+
+
+## Function piping {#sec-pipes}
+
+One problem with composing many functions together is that the order of application must be read backwards. An expression such as `sqrt(sin(cos(log(1))))` means: "take the square root of the sine of the cosine of the natural logarithm of 1". But it is more convenient for the human brain to think of it the other way round: we first take the log of 1, then the cosine of the result, then the sine of what we got, and finally the square root. The problem of interpreting composed functions gets more difficult when the functions have more than one argument. Even something as relatively simple as
+
+```{r}
+#| warning: false
+exp(mean(log(seq(-3, 11, by = 2)), na.rm = TRUE))
+```
+
+may cause one to stop and have to think about what this expression actually does---and it only involves the composition of four simple functions. One can imagine the difficulties of having to parse the composition of dozens of functions in this style.
+
+The expression `exp(mean(log(seq(-3, 11, by = 2)), na.rm = TRUE))` generates the numeric sequence -3, -1, 1, ..., 11 (jumping in steps of 2), and computes their geometric mean. To do so, it takes the logarithms of each value, takes their mean, and finally, exponentiates the result back. The problem is that the logarithm of a negative number does not exist,^[More precisely, it is not a real number. Just as with square roots, negative numbers have complex logarithms. In particular, $\log(-1) = \log(\text{e}^{\text{i}\pi}) = \text{i}\pi$ and $\sqrt{-1} = \text{i}$. Both are rigorously provable propositions, and they have profound if strange-looking consequences. For instance, $\log(-1)$ divided by $\sqrt{-1}$ is exactly $\pi$. This has prompted the 19th-century English mathematician [Augustus De Morgan](https://en.wikipedia.org/wiki/Augustus_De_Morgan) (1806-1871) to exclaim: "Imagine a person with a gift of ridicule [who might say:] first that a negative quantity has no logarithm; secondly that a negative quantity has no square root; thirdly that the first non-existent is to the second as the circumference of a circle is to the diameter." (Note: it is possible to compute with complex numbers in R. Try executing `log(-1 + 0i) / sqrt(-1 + 0i)` to verify De Morgan's result.)] and therefore, `log(-3)` and `log(-1)` both produce undefined results. Thus, when taking the `mean` of the logarithms, we must remove any such undefined values. This can be accomplished via an extra argument to `mean`, called `na.rm` ("NA-remove"). By default, this is set to `FALSE`, but by changing it to `TRUE`, undefined values are simply ignored when computing the mean. For example `mean(c(1, 2, 3, NA))` returns `NA`, because of the undefined entry in the vector; but `mean(c(1, 2, 3, NA), na.rm = TRUE)` returns 2, the result one gets after discarding the `NA` entry.
+
+But all this is quite difficult to see when looking at the expression
+
+```{r}
+#| eval: false
+exp(mean(log(seq(-3, 11, by = 2)), na.rm = TRUE))
+```
+
+Part of the reason is the awkward backwards order of function applications which makes it hard to see which function the argument `na.rm = TRUE` belongs to. Fortunately, there is a simple operator in R called a *pipe* (written `|>`), which allows one to write the same code in a more streamlined way. The pipe allows one to write function application in reverse order (first the argument and then the function), making the code more transparent. Formally, `x |> f()` is equivalent to `f(x)` for any function `f`. For example, `sqrt(9)` can also be written `9 |> sqrt()`. Thus, `sqrt(sin(cos(log(1))))` can be written as `1 |> log() |> cos() |> sin() |> sqrt()`, which reads straightforwardly as "start with the number 1; *then* take its log; *then* take the cosine of the result; *then* take the sine of that result; and *then*, finally, take the square root to obtain the final output". In general, it helps to pronounce `|>` as "then".^[This built-in pipe `|>` has only been available since R 4.1. Upgrade your R version if necessary. Alternatively, you can use another pipe operator that is provided by the `magrittr` package. It is written `%>%` instead of `|>`, but otherwise works identically (at least at this level; we will be mentioning some of the subtler differences in @sec-dot). To use the `magrittr` pipe, install the package first with `install.packages("magrittr")` and then load it with `library(magrittr)`. Now you can use `%>%`. Incidentally, the package name `magrittr` is an allusion to Belgian surrealist artist René Magritte (1898-1967) because of his famous painting [La trahison des images](https://en.wikipedia.org/wiki/The_Treachery_of_Images).]
+
+The pipe also works for functions with multiple arguments. In that case, `x |> f(y, ...)` is equivalent to `f(x, y, ...)`. That is, the pipe refers to the function's first argument (though, as we will see in @sec-dot, it is possible to override this). Instead of the awkward and hard-to-read `mean(log(seq(-3, 11, by = 2)), na.rm = TRUE)`, we can therefore write:
+
+```{r, warning=FALSE}
+seq(-3, 11, by = 2) |>
+  log() |>
+  mean(na.rm = TRUE) |>
+  exp()
+```
+
+This is fully equivalent to the traditional form, but is much more readable, because the functions are written in the order in which they actually get applied. Moreover, even though the program is built only from the composition of functions, it reads straightforwardly as if it was a sequence of imperative instructions: we start from the vector of integers `c(-3, -1, 1, 3, 5, 7, 9, 11)`; *then* we take the logarithm of each; *then* we take their average, discarding any invalid entries (produced in this case by taking the logarithm of negative numbers); and *then*, finally, we exponentiate the result back to obtain the geometric mean.
+
+::: {.callout-tip}
+One can create the pipe symbol `|>` with the keyboard shortcut Ctrl+Shift+M (Cmd+Shift+M on a Mac). In case you get the symbol `%>%` instead, do the following: in RStudio, click on the **Tools** menu at the top, and select **Global options**. A new menu will pop up. Click on **Code** in the panel on the left, and tick the box **Use native pipe operator, |> (requires R 4.1+)**. (In case you cannot see this option, then you are likely using a version of R earlier than 4.1; you should upgrade your R installation.)
+:::
+
+
+## Exercises
+
+1. Assume you have a population of some organism in which one given allele of some gene is the only one available in the gene pool. If a new mutant organism with a different, selectively advantageous allele appears, it would be reasonable to conclude that the new allele will fix in the population and eliminate the original one over time. This, however, is not necessarily true, because a very rare allele might succumb to being eliminated by chance, regardless of how advantageous it is. According to the famous formula of [Motoo Kimura](https://en.wikipedia.org/wiki/Motoo_Kimura) (1924-1994), the probability of such a new allele eventually fixing in the population is given as:
+    $$ P = \frac{1 - \text{e}^{-s}}{1 - \text{e}^{-2Ns}} $$
+    [e.g., @Gillespie2004]. Here *P* is the probability of eventual fixation, *s* is the selection differential (the degree to which the new allele is advantageous over the original one), and *N* is the effective population size.
+    * Write a function that implements this formula. It should take the selection differential *s* and the effective population size *N* as parameters, and return the fixation probability as its result.
+    * A selection differential of 0.5 is very strong (though not unheard of). What is the likelihood that an allele with that level of advantage will fix in a population of 1000 individuals? Interpret the result.
+    
+2. A text is *palindromic* if it reads backwards the same as it reads forwards. For example, "deified", "racecar", and "step on no pets" are palindromic texts. Assume that you are given some text in all lowercase, broken up by characters. For instance, you could be given the vector `c("n", "o", "o", "n")` (a palindrome) or `c("h", "e", "l", "l", "o")` (not a palindrome).
+    * Write a function which checks whether the vector encodes a palindromic text. The function should return `TRUE` if the text is a palindrome, and `FALSE` otherwise. (Hint: reverse the text, collapse both the original and the reversed vectors into single strings, and then compare them using logical equality.)
+    * Modify the function to allow for both upper- and lowercase text, treating case as irrelevant (i.e., `"A"` is treated to be equal to `"a"` when evaluating whether the text is palindromic). One simple way to do this is to convert each character of the text into lowercase, and use this standardized text for reversing and comparing with. Look up the function `tolower`, and implement this improvement in your palindrome checker function.
+    * If you haven't done so already: try to rewrite your function to rely as much on function composition as possible.
+    
+3. Write a function called `contrary` which takes a string as input, and prepends it with the string `"un"`. That is, `contrary("satisfactory")` should return `"unsatisfactory"`, `contrary("kind")` should return `"unkind"`, and so on.
+
+4. Modify the function `contrary` you wrote above. In general, it should prepend `"un"` to the input as before. However, if the input string already starts with `"un"`, it should return the string unchanged. That is, `contrary("disclosed")` should still return `"undisclosed"`, but `contrary("undisclosed")` should return `"undisclosed"` instead of `"unundisclosed"`. (Hint: look up the `substr` function, and use `ifelse`.)

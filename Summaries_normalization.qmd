@@ -1,0 +1,234 @@
+# Summary statistics and tidy data {#sec-normalization}
+
+@sec-wrangling introduced the basics of manipulating data. Here we continue by learning how one can efficiently compute summary statistics over a dataset. Additionally, we will take a look at the concept of *tidy data*. The two are not independent: as we will see, tidy data admit to calculating summaries much more efficiently than non-tidy data.
+
+We will be relying on the file [`pop_data.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/pop_data.zip). Download the file and set your working directory to the folder where you saved it. This is a comma-separated file (CSV), so you can load it using `read_csv`. As usual, we first load the `tidyverse` package:
+
+```{r}
+#| message: false
+library(tidyverse)
+```
+
+And now we may use the `tidyverse` functionalities, such as `read_csv`:
+
+```{r}
+#| message: false
+pop <- read_csv("pop_data.csv")
+```
+
+The data we just loaded contain population densities of three species at two spatial patches (A and B) at various points in time, ranging from 1 to 50 in steps of 1:
+
+```{r}
+pop
+```
+
+One can now perform various manipulations on these data, by using the functions we have learned about in @sec-wrangling. For instance, we could create a new column called `total` which contains the total community density (sum of the three species' population densities) at each point in time and each location:
+
+```{r}
+mutate(pop, total = species1 + species2 + species3)
+```
+
+As a reminder, this can be written equivalently using pipes as
+
+```{r}
+pop |> mutate(total = species1 + species2 + species3)
+```
+
+
+## Creating summary data
+
+One can create summaries of data using the `summarise` function. This will simply apply some function to a column. For example, to calculate the average population density of species 1 in `pop`, across both time and patches, one can write
+
+```{r}
+pop |> summarise(meanDensity1 = mean(species1))
+```
+
+Here `meanDensity1` is the name of the new column to be created, and the `mean` function is our summary function, collapsing the data into a single number.
+
+So far, this is not particularly interesting; in fact, the exact same effect would have been achieved by typing the shorter `mean(pop$species1)` instead. The real power of `summarise` comes through when combined with `group_by`. This groups the data based on the given grouping variables. Let us see how this works in practice:
+
+```{r}
+#| message: false
+pop |> group_by(patch)
+```
+
+Seemingly nothing has happened; the only difference is the extra line of comment above, before the printed table, saying `Groups: patch [2]`. What this means is that the rows of the data were internally split into two groups. The first have `"A"` as their patch, and the second have `"B"`. Whenever one groups data using `group_by`, rows which share the same unique combination of the grouping variables now belong together, and *subsequent* operations will act separately on each group instead of acting on the table as a whole (which is what we have been doing so far). That is, `group_by` does not actually alter the data; it only alters the behavior of the functions applied to the grouped data.
+
+If we group not just by `patch` but also by `time`, the comment above the table will read `Groups: patch, time [100]`:
+
+```{r}
+#| message: false
+pop |> group_by(patch, time)
+```
+
+This is because there are 100 unique combinations of patch and time: two different `patch` values (`"A"` and `"B"`), and fifty points in time (1, 2, ..., 50). So we have "patch A, time 1" as group 1, "patch B, time 1" as group 2, "patch A, time 2" as group 3, and so on until "patch B, time 50" as our group 100.
+
+As mentioned, functions that are applied to grouped data will act on the groups separately. To return to the example of calculating the mean population density of species 1 in the two patches, we can write:
+
+```{r}
+#| message: false
+pop |>
+  group_by(patch) |>
+  summarise(meanDensity1 = mean(species1))
+```
+
+One may obtain multiple summary statistics within the same `summarise` function. Below we compute both the mean and the standard deviation of the densities per patch:
+
+```{r}
+#| message: false
+pop |>
+  group_by(patch) |>
+  summarise(meanDensity1 = mean(species1), sdDensity1 = sd(species1))
+```
+
+Let us see what happens if we calculate the mean density of species 1---but grouping by `time` instead of `patch`:
+
+```{r}
+#| message: false
+pop |>
+  group_by(time) |>
+  summarise(meanDensity1 = mean(species1))
+```
+
+The resulting table has 50 rows---half the number of rows in the original data, but many more than the two rows we get after grouping by `patch`. The reason is that there are 50 unique time points, and so the average is now computed over those rows which share `time`. But there are only two rows per moment of time: the rows corresponding to patch A and patch B. When we call `summarise` after having grouped by `time`, the averages are computed over the densities in these two rows only, per group. That is why here we end up with a table which has a single row per point in time.
+
+
+:::{.callout-warning}
+One common mistake when first encountering grouping and summaries is to assume that if we call `group_by(patch)`, then the subsequent summaries will be taken over patches. *This is not the case*, and it is important to take a moment to understand why. When we apply `group_by(patch)`, we are telling R to treat different patch values as group indicators. Therefore, when creating a summary, only the patch identities are retained from the original data, to which the newly calculated summary statistics are added. This means that the subsequent summaries are taken over everything *except* the patches. This should be clear after comparing the outputs of
+
+```{r}
+#| eval: false
+pop |> group_by(patch) |> summarise(meanDensity1 = mean(species1))
+```
+
+and
+
+```{r}
+#| eval: false
+pop |> group_by(time) |> summarise(meanDensity1 = mean(species1))
+```
+
+The first distinguishes the rows of the data only by `patch`, and therefore the average is taken over time. The second distinguishes the rows by `time`, so the average is taken over the patches. Run the two expressions again to see the difference between them!
+:::
+
+
+We can use functions such as `mutate` or `filter` on grouped data. For example, we might want to know the difference of species 1's density from its average *in each patch*. Doing the following does not quite do what we want:
+
+```{r}
+pop |> mutate(species1Diff = species1 - mean(species1))
+```
+
+This will put the difference of species 1's density from its mean density across both time and patches into the new column `species1Diff`. That is not the same as calculating the difference from the mean in a given patch---patch A for rows corresponding to patch A, and patch B for the others. To achieve this, all one needs to do is to group the data by `patch` before invoking `mutate`:
+
+```{r}
+pop |>
+  group_by(patch) |>
+  mutate(species1Diff = species1 - mean(species1))
+```
+
+Comparing this with the previous table, we see that the values in the `species1Diff` column are now different, because this time the differences are taken with respect to the average densities per each patch.
+
+Finally, since `group_by` changes subsequent behaviour, we eventually want to get rid of the grouping in our data. This can be done with the function `ungroup`. For example:
+
+```{r}
+#| message: false
+pop |>
+  group_by(patch) |>
+  mutate(species1Diff = species1 - mean(species1)) |>
+  ungroup()
+```
+
+It is good practice to always `ungroup` the data after we have calculated what we wanted using the group structure. Otherwise, subsequent calculations could be influenced by the grouping in unexpected ways.
+
+
+## Tidy data {#sec-tidy}
+
+In science, we often strive to work with *tidy data* (also known as *long-format data* or *normal-form data*). A dataset is tidy if:
+
+1. Each variable is in its own column;
+2. Each observation is in its own row.
+
+Tidy data are suitable for performing operations, statistics, and plotting on. Furthermore, tidy data have a certain well-groomed feel to them, in the sense that their organization always follows the same general pattern regardless of the type of dataset one studies. Paraphrasing Tolstoy: tidy data are all alike; by contrast, every non-tidy dataset tends to be messy in its own unique way.
+
+The `tidyverse` offers a simple and convenient way of putting data in tidy format. The `pop` table from the previous section is not tidy, because although each variable is in its own column, it is not true that each observation is in its own row. Instead, each row contains three observations: the densities of species 1, 2, and 3 at a given time and place. To tidy up these data, we create *key-value pairs*. We merge the columns for species densities into just two new ones. The first of these (the *key*) indicates whether it is species 1, or 2, or 3 which the given row refers to. The second column (the *value*) contains the population density of the given species. Such key-value pairs are created by the function `pivot_longer`:
+
+```{r}
+pop |>
+  pivot_longer(cols = c(species1, species2, species3),
+               names_to = "species",
+               values_to = "density")
+```
+
+The function `pivot_longer` takes three arguments in addition to the first (data) argument that we may pipe in, like above. First, `cols` is the list of columns to be converted into key-value pairs. It uses the same tidy selection mechanisms as the function `select`; see @sec-select. (This means that `cols = starts_with("species")` could also have been used.) Second, the argument `names_to` is the name of the new key column, specified as a character string. And third, `values_to` is the name of the new value column, also as a character string.
+
+The above table is now in tidy form: each column records a single variable, and each row contains a single observation. Notice that, unlike the original `pop` which had 100 rows and 5 columns, the tidy version has 300 rows and 4 columns. This is natural: since the number of columns was reduced, there must be some extra rows to prevent the loss of information. And one should notice another benefit to casting the data in tidy format: it forces one to explicitly specify what was measured. By having named the value column `density`, we now know that the numbers 8.43, 6.62, etc. are density measurements. By contrast, it is not immediately obvious what these same numbers mean under the columns `species1`, `species2`, ... in the original data.
+
+It is possible to undo the effect `pivot_longer`. To do so, use `pivot_wider`:
+
+```{r}
+pop |>
+  pivot_longer(cols = starts_with("species"),
+               names_to = "species",
+               values_to = "density") |>
+  pivot_wider(names_from = "species", values_from = "density")
+```
+
+The two named arguments of `pivot_wider` above are `names_from` (which specifies the column from which the names for the new columns will be taken), and `values_from` (the column whose values will be used to fill in the rows under those new columns).
+
+As a remark, one could make the data even "wider", by not only making columns out of the population densities, but the densities at a given patch. Doing so is simple: one just needs to specify both the `species` and `patch` columns from which the new column names will be compiled.
+
+```{r}
+pop |>
+  pivot_longer(cols = starts_with("species"),
+               names_to = "species",
+               values_to = "density") |>
+  pivot_wider(names_from = c("species", "patch"), values_from = "density")
+```
+
+If tidy data are what we strive for, what is the practical use of `pivot_wider`? There are two answers to this question. First, while non-tidy data are indeed less efficient from a computational and data analysis standpoint, they are often more human-readable. For example, the `pop` table is easy to read despite the lack of tidiness, because each row corresponds to a given time and place. By tidying the data, information referring to any given time and place will be spread out over multiple (in our case, three) rows---one for each species. While this is preferable from a data analysis point of view, it can be more difficult to digest visually. Second, wide data lend themselves very well to a class of statistical techniques called *multivariate analysis*. In case one wants to perform multivariate analysis, wide-format data are often better than tidy data. We will see an example application of this in @sec-ancova.
+
+Finally, it is worth noting the power of tidy data in, e.g., generating summary statistics. To obtain the mean and the standard deviation of the population densities for each species in each patch, all one has to do is this:
+
+```{r}
+#| message: false
+pop |>
+  # Tidy up the data:
+  pivot_longer(cols = starts_with("species"),
+               names_to = "species",
+               values_to = "density") |>
+  # Group data by both species and patch:
+  group_by(patch, species) |>
+  # Obtain statistics:
+  summarise(meanDensity = mean(density), sdDensity = sd(density)) |>
+  # Don't forget to ungroup the data at the end:
+  ungroup()
+```
+
+
+## Exercises
+
+The first set of problems relies on the `iris` dataset---the same that we used in the previous chapter's exercises (@sec-wrangling-exercises). Convert the `iris` data to a tibble with the `as_tibble` function, and assign it to a variable.
+
+1. Create a new column in the `iris` dataset which contains the difference of petal lengths from the average of the whole dataset.
+
+2. Create a new column in the `iris` dataset which contains the difference of petal lengths from the average *of each species*. (Hint: `group_by` the species and then `mutate`!)
+
+3. Create a table where the rows are the three species, and the columns are: average petal length, variance of petal length, average sepal length, and variance of sepal length (each across flowers of the corresponding species).
+
+4. Create key-value pairs in the `iris` dataset for the petal characteristics. In other words, have a column called `Petal.Trait` (whose values are either `Petal.Length` or `Petal.Width`), and another column called `Petal.Value` (with the length/width values).
+
+5. Repeat the same exercise, but now for sepal traits.
+
+6. Finally, do it for both petal and sepal traits simultaneously, to obtain a fully tidy form of the `iris` data. That is, the key column (call it `Flower.Trait`) will have the values `Petal.Length`, `Petal.Width`, `Sepal.Length`, and `Sepal.Width`. And the value column (which you can call `Trait.Value`) will have the corresponding measurements.
+
+The subsequent exercises use the Galápagos land snail data from the previous two chapters (see @sec-snail to review the description of the data).
+
+7. What is the average shell size of the whole community? What is its standard deviation? How about the average and standard deviation of shell shape?
+
+8. What is the average shell size / shell shape of the community in each habitat type (humid/arid)?
+
+9. What is the average shell size / shell shape in each unique combination of species and habitat type?
+
+10. Based on your answer to the previous question: how many species are there which live in both arid and humid environments?
+
+11. Organize the `size` and `shape` columns in key-value pairs: instead of the original `size` and `shape`, have a column called `trait` (which will either be `"size"` or `"shape"`) and another column called `value` which holds the corresponding measurement.
