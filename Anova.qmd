@@ -2,7 +2,7 @@
 
 ## The Kruskal--Wallis and Dunn tests
 
-The tools of @sec-wilcox allow us to compare two groups of data. But what do we do when we have more than two groups? For example, we might wish to know how different treatments influence plant growth, as measured by dry weight. If there are two treatments, then there will be three (instead of two) groups, because the treatments will be compared with a control group which does not receive treatment.
+The tools of  @sec-wilcox allow us to compare two groups of data. But what do we do when we have more than two groups? For example, we might wish to know how different treatments influence plant growth, as measured by dry weight. If there are two treatments, then there will be three (instead of two) groups, because the treatments will be compared with a control group which does not receive treatment.
 
 Such a dataset is in fact built into R, and is called `PlantGrowth`:
 
