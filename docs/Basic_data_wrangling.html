@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Introduction to data analysis and visualization with R - 5&nbsp; Basic data manipulation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./Summaries_normalization.html" rel="next">
+<link href="./Data_reading.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Intro_R_RStudio.html">Part I: Processing and visualizing data with R</a></li><li class="breadcrumb-item"><a href="./Basic_data_wrangling.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Basic data manipulation</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introduction to data analysis and visualization with R</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Part I: Processing and visualizing data with R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Intro_R_RStudio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to R and RStudio</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./R_programming_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R programming basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Data_reading.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reading tabular data from disk</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Basic_data_wrangling.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Basic data manipulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Summaries_normalization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Summary statistics and tidy data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Creating_figures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Creating publication-grade figures</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Further_plotting_options.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Some further plotting options; introducing factors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Joining_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Joining data</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Part II: Statistical inference</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Intro_statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introducing statistical inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Linear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Anova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Anova_two_way.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Intro_map.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Multiple_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">References</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./References.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">References</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#important-functions-for-transforming-data" id="toc-important-functions-for-transforming-data" class="nav-link active" data-scroll-target="#important-functions-for-transforming-data"><span class="header-section-number">5.1</span> Important functions for transforming data</a>
+  <ul class="collapse">
+  <li><a href="#sec-select" id="toc-sec-select" class="nav-link" data-scroll-target="#sec-select"><span class="header-section-number">5.1.1</span> <code>select</code></a></li>
+  <li><a href="#filter" id="toc-filter" class="nav-link" data-scroll-target="#filter"><span class="header-section-number">5.1.2</span> <code>filter</code></a></li>
+  <li><a href="#slice" id="toc-slice" class="nav-link" data-scroll-target="#slice"><span class="header-section-number">5.1.3</span> <code>slice</code></a></li>
+  <li><a href="#rename" id="toc-rename" class="nav-link" data-scroll-target="#rename"><span class="header-section-number">5.1.4</span> <code>rename</code></a></li>
+  <li><a href="#arrange" id="toc-arrange" class="nav-link" data-scroll-target="#arrange"><span class="header-section-number">5.1.5</span> <code>arrange</code></a></li>
+  <li><a href="#sec-mutate" id="toc-sec-mutate" class="nav-link" data-scroll-target="#sec-mutate"><span class="header-section-number">5.1.6</span> <code>mutate</code></a></li>
+  <li><a href="#sec-distinct" id="toc-sec-distinct" class="nav-link" data-scroll-target="#sec-distinct"><span class="header-section-number">5.1.7</span> <code>distinct</code></a></li>
+  </ul></li>
+  <li><a href="#using-pipes-to-our-advantage" id="toc-using-pipes-to-our-advantage" class="nav-link" data-scroll-target="#using-pipes-to-our-advantage"><span class="header-section-number">5.2</span> Using pipes to our advantage</a></li>
+  <li><a href="#sec-wrangling-exercises" id="toc-sec-wrangling-exercises" class="nav-link" data-scroll-target="#sec-wrangling-exercises"><span class="header-section-number">5.3</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-wrangling" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Basic data manipulation</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="important-functions-for-transforming-data" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="important-functions-for-transforming-data"><span class="header-section-number">5.1</span> Important functions for transforming data</h2>
+<p>Let us start by loading the <code>tidyverse</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.2     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.1     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+</div>
+<p>As seen from the message output above, the <code>dplyr</code> package is part of the <code>tidyverse</code> and gets loaded by default. It allows one to arrange and manipulate data efficiently. The basic functions one should know are <code>select</code>, <code>filter</code>, <code>slice</code>, <code>rename</code>, <code>arrange</code>, and <code>mutate</code>. Additionally, a useful (though not as commonly used) function is <code>distinct</code>, also explained below. We will use the <a href="https://raw.githubusercontent.com/dysordys/data-with-R/main/data/island-FL-csv.zip"><code>island-FL.csv</code></a> data file we worked with in <a href="Data_reading.html"><span>Chapter&nbsp;4</span></a>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>snailDat <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"island-FL.csv"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(snailDat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 4
+   habitat species      size  shape
+   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;
+ 1 humid   ustulatus    17.1 -0.029
+ 2 humid   ustulatus    20.1 -0.001
+ 3 humid   ustulatus    16.3  0.014
+ 4 arid    calvus       13.7 -0.043
+ 5 humid   nux          21.9 -0.042
+ 6 humid   ustulatus    16.8 -0.023
+ 7 humid   ustulatus    19.2  0.014
+ 8 humid   ustulatus    16.0  0.042
+ 9 arid    galapaganus  18.9  0.011
+10 humid   nux          26.6  0    
+# ℹ 213 more rows</code></pre>
+</div>
+</div>
+<p>Now we will give examples of each of the functions <code>select</code>, <code>filter</code>, <code>slice</code>, <code>rename</code>, <code>arrange</code>, <code>mutate</code>, and <code>distinct</code>. They all work similarly in that the first argument they take is the data, in the form of a tibble. Their other arguments, and what they each do, are explained below.</p>
+<section id="sec-select" class="level3" data-number="5.1.1">
+<h3 data-number="5.1.1" class="anchored" data-anchor-id="sec-select"><span class="header-section-number">5.1.1</span> <code>select</code></h3>
+<p>This function chooses <em>columns</em> of the data. The second and subsequent arguments of the function are the columns which should be retained. For example, <code>select(snailDat, species)</code> will keep only the <code>species</code> column of <code>snailDat</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(snailDat, species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 1
+   species    
+   &lt;chr&gt;      
+ 1 ustulatus  
+ 2 ustulatus  
+ 3 ustulatus  
+ 4 calvus     
+ 5 nux        
+ 6 ustulatus  
+ 7 ustulatus  
+ 8 ustulatus  
+ 9 galapaganus
+10 nux        
+# ℹ 213 more rows</code></pre>
+</div>
+</div>
+<p>It is also possible to deselect columns, by prepending a minus sign (<code>-</code>) in front of the column names. To drop the <code>species</code> column, we can type:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(snailDat, <span class="sc">-</span>species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 3
+   habitat  size  shape
+   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 humid    17.1 -0.029
+ 2 humid    20.1 -0.001
+ 3 humid    16.3  0.014
+ 4 arid     13.7 -0.043
+ 5 humid    21.9 -0.042
+ 6 humid    16.8 -0.023
+ 7 humid    19.2  0.014
+ 8 humid    16.0  0.042
+ 9 arid     18.9  0.011
+10 humid    26.6  0    
+# ℹ 213 more rows</code></pre>
+</div>
+</div>
+<p>Now we are left with only the columns <code>habitat</code>, <code>size</code>, and <code>shape</code>. One can also select and deselect multiple columns in a similar vein. For example, <code>select(snailDat, -species, -habitat)</code> removes both columns and leaves only <code>size</code>, and <code>shape</code> (try it).</p>
+<p>There are several other options within <code>select</code>, which mostly help with selecting several columns at a time fulfilling certain criteria. The collection of these options and methods is called <em>tidy selection</em>. First of all, tidy selection allows one to specify, as character strings, what the column names should start or end with, using <code>starts_with</code> and <code>ends_with</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(snailDat, <span class="fu">starts_with</span>(<span class="st">"s"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 3
+   species      size  shape
+   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;
+ 1 ustulatus    17.1 -0.029
+ 2 ustulatus    20.1 -0.001
+ 3 ustulatus    16.3  0.014
+ 4 calvus       13.7 -0.043
+ 5 nux          21.9 -0.042
+ 6 ustulatus    16.8 -0.023
+ 7 ustulatus    19.2  0.014
+ 8 ustulatus    16.0  0.042
+ 9 galapaganus  18.9  0.011
+10 nux          26.6  0    
+# ℹ 213 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(snailDat, <span class="fu">starts_with</span>(<span class="st">"sh"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 1
+    shape
+    &lt;dbl&gt;
+ 1 -0.029
+ 2 -0.001
+ 3  0.014
+ 4 -0.043
+ 5 -0.042
+ 6 -0.023
+ 7  0.014
+ 8  0.042
+ 9  0.011
+10  0    
+# ℹ 213 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(snailDat, <span class="fu">ends_with</span>(<span class="st">"e"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 2
+    size  shape
+   &lt;dbl&gt;  &lt;dbl&gt;
+ 1  17.1 -0.029
+ 2  20.1 -0.001
+ 3  16.3  0.014
+ 4  13.7 -0.043
+ 5  21.9 -0.042
+ 6  16.8 -0.023
+ 7  19.2  0.014
+ 8  16.0  0.042
+ 9  18.9  0.011
+10  26.6  0    
+# ℹ 213 more rows</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(snailDat, <span class="fu">ends_with</span>(<span class="st">"pe"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 1
+    shape
+    &lt;dbl&gt;
+ 1 -0.029
+ 2 -0.001
+ 3  0.014
+ 4 -0.043
+ 5 -0.042
+ 6 -0.023
+ 7  0.014
+ 8  0.042
+ 9  0.011
+10  0    
+# ℹ 213 more rows</code></pre>
+</div>
+</div>
+<p>Similarly, the function <code>contains</code> can select columns which contain some string anywhere in their names. For example, <code>select(snailDat, ends_with("pe"))</code> above only selected the <code>shape</code> column, but <code>select(snailDat, contains("pe"))</code> additionally selects <code>species</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(snailDat, <span class="fu">contains</span>(<span class="st">"pe"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 2
+   species      shape
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 ustulatus   -0.029
+ 2 ustulatus   -0.001
+ 3 ustulatus    0.014
+ 4 calvus      -0.043
+ 5 nux         -0.042
+ 6 ustulatus   -0.023
+ 7 ustulatus    0.014
+ 8 ustulatus    0.042
+ 9 galapaganus  0.011
+10 nux          0    
+# ℹ 213 more rows</code></pre>
+</div>
+</div>
+<p>One can combine these selection methods using the <code>&amp;</code> (“and”), <code>|</code> (“or”), and <code>!</code> (“not”) logical operators. To select all columns which start with <code>"s"</code> but do not contain the letter <code>"z"</code> in their names:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(snailDat, <span class="fu">starts_with</span>(<span class="st">"s"</span>) <span class="sc">&amp;</span> <span class="sc">!</span><span class="fu">contains</span>(<span class="st">"z"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 2
+   species      shape
+   &lt;chr&gt;        &lt;dbl&gt;
+ 1 ustulatus   -0.029
+ 2 ustulatus   -0.001
+ 3 ustulatus    0.014
+ 4 calvus      -0.043
+ 5 nux         -0.042
+ 6 ustulatus   -0.023
+ 7 ustulatus    0.014
+ 8 ustulatus    0.042
+ 9 galapaganus  0.011
+10 nux          0    
+# ℹ 213 more rows</code></pre>
+</div>
+</div>
+<p>The following selects columns that either contain <code>"ha"</code> in their names, or end with the letter <code>"s"</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(snailDat, <span class="fu">contains</span>(<span class="st">"ha"</span>) <span class="sc">|</span> <span class="fu">ends_with</span>(<span class="st">"s"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 3
+   habitat  shape species    
+   &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;      
+ 1 humid   -0.029 ustulatus  
+ 2 humid   -0.001 ustulatus  
+ 3 humid    0.014 ustulatus  
+ 4 arid    -0.043 calvus     
+ 5 humid   -0.042 nux        
+ 6 humid   -0.023 ustulatus  
+ 7 humid    0.014 ustulatus  
+ 8 humid    0.042 ustulatus  
+ 9 arid     0.011 galapaganus
+10 humid    0     nux        
+# ℹ 213 more rows</code></pre>
+</div>
+</div>
+<p>Finally, it is possible to select a range of columns, using the colon (<code>:</code>) operator. To select the columns <code>species</code> and <code>shape</code>, along with any columns in between them, we write:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(snailDat, species<span class="sc">:</span>shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 3
+   species      size  shape
+   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;
+ 1 ustulatus    17.1 -0.029
+ 2 ustulatus    20.1 -0.001
+ 3 ustulatus    16.3  0.014
+ 4 calvus       13.7 -0.043
+ 5 nux          21.9 -0.042
+ 6 ustulatus    16.8 -0.023
+ 7 ustulatus    19.2  0.014
+ 8 ustulatus    16.0  0.042
+ 9 galapaganus  18.9  0.011
+10 nux          26.6  0    
+# ℹ 213 more rows</code></pre>
+</div>
+</div>
+<p>Such range selection can also be combined with the logical operations above. For instance, to select the range from <code>habitat</code> to <code>species</code>, as well as any columns whose name contains the letter <code>"z"</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">select</span>(snailDat, habitat<span class="sc">:</span>species <span class="sc">|</span> <span class="fu">contains</span>(<span class="st">"z"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 3
+   habitat species      size
+   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;
+ 1 humid   ustulatus    17.1
+ 2 humid   ustulatus    20.1
+ 3 humid   ustulatus    16.3
+ 4 arid    calvus       13.7
+ 5 humid   nux          21.9
+ 6 humid   ustulatus    16.8
+ 7 humid   ustulatus    19.2
+ 8 humid   ustulatus    16.0
+ 9 arid    galapaganus  18.9
+10 humid   nux          26.6
+# ℹ 213 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="filter" class="level3" data-number="5.1.2">
+<h3 data-number="5.1.2" class="anchored" data-anchor-id="filter"><span class="header-section-number">5.1.2</span> <code>filter</code></h3>
+<p>While <code>select</code> chooses columns, <code>filter</code> chooses rows from the data. As with all these functions, the first argument of <code>filter</code> is the tibble to be filtered. The second argument is a logical condition on the columns. Those rows which satisfy the condition are retained; the rest are dropped. Thus, <code>filter</code> keeps only those rows of the data which fulfill some condition.</p>
+<p>For example, to retain only those individuals from <code>snailDat</code> whose shell size is at least 29:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">filter</span>(snailDat, size <span class="sc">&gt;=</span> <span class="dv">29</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  habitat species       size  shape
+  &lt;chr&gt;   &lt;chr&gt;        &lt;dbl&gt;  &lt;dbl&gt;
+1 humid   unifasciatus  33.8 -0.07 
+2 humid   unifasciatus  31.7 -0.115
+3 humid   unifasciatus  30.9 -0.074
+4 humid   unifasciatus  31.9 -0.071
+5 humid   nux           29.2 -0.01 
+6 humid   unifasciatus  32.0 -0.087</code></pre>
+</div>
+</div>
+<p>The filtered data have only 6 rows instead of the original 223—this is the number of snail individuals with a very large shell size. As seen, five of these belong in the species <em>Naesiotus unifasciatus</em>, and only one in the species <em>Naesiotus nux</em>.</p>
+</section>
+<section id="slice" class="level3" data-number="5.1.3">
+<h3 data-number="5.1.3" class="anchored" data-anchor-id="slice"><span class="header-section-number">5.1.3</span> <code>slice</code></h3>
+<p>With <code>slice</code>, one can choose rows of the data, just like with <code>filter</code>. Unlike with <code>filter</code> however, <code>slice</code> receives a vector of row indices to retain instead of a condition to be tested on each row. So, for example, if one wanted to keep only the first, second, and fifth rows, then one can do so with <code>slice</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">slice</span>(snailDat, <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 4
+  habitat species    size  shape
+  &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;
+1 humid   ustulatus  17.1 -0.029
+2 humid   ustulatus  20.1 -0.001
+3 humid   nux        21.9 -0.042</code></pre>
+</div>
+</div>
+<p>(Note: the numbers in front of the rows in the output generated by tibbles always pertain to the row numbers of the <em>current table</em>, not the one from which they were created. So the row labels <code>1</code>, <code>2</code>, <code>3</code> above simply enumerate the rows of the sliced data. The actual rows still correspond to rows 1, 2, and 5 in the original <code>snailDat</code>.)</p>
+</section>
+<section id="rename" class="level3" data-number="5.1.4">
+<h3 data-number="5.1.4" class="anchored" data-anchor-id="rename"><span class="header-section-number">5.1.4</span> <code>rename</code></h3>
+<p>The <code>rename</code> function simply gives new names to existing columns. The first argument, as always, is the tibble in which the column(s) should be renamed. The subsequent arguments follow the pattern <code>new_name = old_name</code> in replacing column names. For example, in the land snail data, the arid and humid habitats are often referred to as arid or humid <em>zones</em>. To rename <code>habitat</code> to <code>zone</code>, we simply write:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rename</span>(snailDat, <span class="at">zone =</span> habitat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 4
+   zone  species      size  shape
+   &lt;chr&gt; &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;
+ 1 humid ustulatus    17.1 -0.029
+ 2 humid ustulatus    20.1 -0.001
+ 3 humid ustulatus    16.3  0.014
+ 4 arid  calvus       13.7 -0.043
+ 5 humid nux          21.9 -0.042
+ 6 humid ustulatus    16.8 -0.023
+ 7 humid ustulatus    19.2  0.014
+ 8 humid ustulatus    16.0  0.042
+ 9 arid  galapaganus  18.9  0.011
+10 humid nux          26.6  0    
+# ℹ 213 more rows</code></pre>
+</div>
+</div>
+<p>Multiple columns can also be renamed. To change all column names to start with capital letters:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rename</span>(snailDat,</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">Habitat =</span> habitat, <span class="at">Species =</span> species, <span class="at">Size =</span> size, <span class="at">Shape =</span> shape)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 4
+   Habitat Species      Size  Shape
+   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;
+ 1 humid   ustulatus    17.1 -0.029
+ 2 humid   ustulatus    20.1 -0.001
+ 3 humid   ustulatus    16.3  0.014
+ 4 arid    calvus       13.7 -0.043
+ 5 humid   nux          21.9 -0.042
+ 6 humid   ustulatus    16.8 -0.023
+ 7 humid   ustulatus    19.2  0.014
+ 8 humid   ustulatus    16.0  0.042
+ 9 arid    galapaganus  18.9  0.011
+10 humid   nux          26.6  0    
+# ℹ 213 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="arrange" class="level3" data-number="5.1.5">
+<h3 data-number="5.1.5" class="anchored" data-anchor-id="arrange"><span class="header-section-number">5.1.5</span> <code>arrange</code></h3>
+<p>This function rearranges the rows of the data, in increasing order of the column given as the second argument. For example, to arrange in increasing order of <code>size</code>, we write:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(snailDat, size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 4
+   habitat species  size  shape
+   &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 arid    calvus   12.3 -0.019
+ 2 arid    calvus   12.9 -0.039
+ 3 arid    calvus   13.5 -0.012
+ 4 arid    calvus   13.7 -0.018
+ 5 arid    calvus   13.7 -0.043
+ 6 arid    calvus   13.9  0.01 
+ 7 arid    calvus   14.1 -0.027
+ 8 arid    calvus   14.1 -0.016
+ 9 arid    calvus   14.3 -0.011
+10 arid    calvus   14.4  0.002
+# ℹ 213 more rows</code></pre>
+</div>
+</div>
+<p>To arrange in decreasing order, there is a small helper function called <code>desc</code>. Arranging by <code>desc(size)</code> instead of <code>size</code> will arrange the rows in decreasing order of <code>size</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(snailDat, <span class="fu">desc</span>(size))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 4
+   habitat species       size  shape
+   &lt;chr&gt;   &lt;chr&gt;        &lt;dbl&gt;  &lt;dbl&gt;
+ 1 humid   unifasciatus  33.8 -0.07 
+ 2 humid   unifasciatus  32.0 -0.087
+ 3 humid   unifasciatus  31.9 -0.071
+ 4 humid   unifasciatus  31.7 -0.115
+ 5 humid   unifasciatus  30.9 -0.074
+ 6 humid   nux           29.2 -0.01 
+ 7 humid   unifasciatus  28.8 -0.075
+ 8 humid   unifasciatus  28.5 -0.088
+ 9 humid   nux           27.7 -0.05 
+10 humid   unifasciatus  27.7 -0.047
+# ℹ 213 more rows</code></pre>
+</div>
+</div>
+<p>It is also perfectly possible to arrange by a column whose type is character string. In that case, the system will sort the rows in alphabetical order—or reverse alphabetical order in case <code>desc</code> is applied. For example, to sort in alphabetical order of species names:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(snailDat, species)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 4
+   habitat species  size  shape
+   &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 arid    calvus   13.7 -0.043
+ 2 arid    calvus   17.9 -0.024
+ 3 arid    calvus   13.9  0.01 
+ 4 arid    calvus   16.5 -0.004
+ 5 arid    calvus   16.6 -0.006
+ 6 arid    calvus   16.1  0.01 
+ 7 arid    calvus   18.2 -0.003
+ 8 arid    calvus   12.9 -0.039
+ 9 arid    calvus   17.3  0.002
+10 arid    calvus   14.1 -0.027
+# ℹ 213 more rows</code></pre>
+</div>
+</div>
+<p>And to sort in reverse alphabetical order:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(snailDat, <span class="fu">desc</span>(species))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 4
+   habitat species    size  shape
+   &lt;chr&gt;   &lt;chr&gt;     &lt;dbl&gt;  &lt;dbl&gt;
+ 1 humid   ustulatus  17.1 -0.029
+ 2 humid   ustulatus  20.1 -0.001
+ 3 humid   ustulatus  16.3  0.014
+ 4 humid   ustulatus  16.8 -0.023
+ 5 humid   ustulatus  19.2  0.014
+ 6 humid   ustulatus  16.0  0.042
+ 7 humid   ustulatus  15.4 -0.016
+ 8 humid   ustulatus  16.3 -0.017
+ 9 humid   ustulatus  16.7 -0.034
+10 humid   ustulatus  17.0 -0.018
+# ℹ 213 more rows</code></pre>
+</div>
+</div>
+<p>Notice that when we sort the rows by <code>species</code>, there are many ties—rows with the same value of <code>species</code>. In those cases, <code>arrange</code> will not be able to decide which rows should come earlier, and so any ordering that was present before invoking <code>arrange</code> will be retained. In case we would like to break the ties, we can give further sorting variables, as the third, fourth, etc. arguments to <code>arrange</code>. To sort the data by <code>species</code>, and to resolve ties in order of increasing <code>size</code>, we write:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(snailDat, species, size)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 4
+   habitat species  size  shape
+   &lt;chr&gt;   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;
+ 1 arid    calvus   12.3 -0.019
+ 2 arid    calvus   12.9 -0.039
+ 3 arid    calvus   13.5 -0.012
+ 4 arid    calvus   13.7 -0.018
+ 5 arid    calvus   13.7 -0.043
+ 6 arid    calvus   13.9  0.01 
+ 7 arid    calvus   14.1 -0.027
+ 8 arid    calvus   14.1 -0.016
+ 9 arid    calvus   14.3 -0.011
+10 arid    calvus   14.4  0.002
+# ℹ 213 more rows</code></pre>
+</div>
+</div>
+<p>This causes the table to be sorted primarily by <code>species</code>, but in case there are ties (equal <code>species</code> between multiple rows), they will be resolved in priority of <code>size</code>—first the smallest and then increasingly larger individuals.</p>
+</section>
+<section id="sec-mutate" class="level3" data-number="5.1.6">
+<h3 data-number="5.1.6" class="anchored" data-anchor-id="sec-mutate"><span class="header-section-number">5.1.6</span> <code>mutate</code></h3>
+<p>The <code>mutate</code> function allows us to create new columns from existing ones. We may apply any function or operator we learned about to existing columns, and the result of the computation will go into the new column. We do this in the second argument of <code>mutate</code> (the first, as always, is the data tibble) by first giving a name to the column, then writing <code>=</code>, and then the desired computation. For example, we could create a new column indicating whether a snail is “large” (has a shell size above some threshold—say, 25) or “small”. We can do this using the <code>ifelse</code> function within <code>mutate</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(snailDat, <span class="at">shellSize =</span> <span class="fu">ifelse</span>(size <span class="sc">&gt;</span> <span class="dv">25</span>, <span class="st">"large"</span>, <span class="st">"small"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 5
+   habitat species      size  shape shellSize
+   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;    
+ 1 humid   ustulatus    17.1 -0.029 small    
+ 2 humid   ustulatus    20.1 -0.001 small    
+ 3 humid   ustulatus    16.3  0.014 small    
+ 4 arid    calvus       13.7 -0.043 small    
+ 5 humid   nux          21.9 -0.042 small    
+ 6 humid   ustulatus    16.8 -0.023 small    
+ 7 humid   ustulatus    19.2  0.014 small    
+ 8 humid   ustulatus    16.0  0.042 small    
+ 9 arid    galapaganus  18.9  0.011 small    
+10 humid   nux          26.6  0     large    
+# ℹ 213 more rows</code></pre>
+</div>
+</div>
+<p>The original columns of the data are retained, but we now also have the additional <code>shellSize</code> column.</p>
+<p>One very common transformation on quantities such as <code>size</code> and <code>shape</code> is to <em>standardize</em> them: subtract the overall mean from each entry and then divide the result by the standard deviation. This makes the quantities unitless with mean 0 and standard deviation 1. This is how one can perform this standardization with <code>mutate</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(snailDat,</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">stdSize =</span> (size <span class="sc">-</span> <span class="fu">mean</span>(size)) <span class="sc">/</span> <span class="fu">sd</span>(size),</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">stdShape =</span> (shape <span class="sc">-</span> <span class="fu">mean</span>(shape)) <span class="sc">/</span> <span class="fu">sd</span>(shape))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 223 × 6
+   habitat species      size  shape stdSize stdShape
+   &lt;chr&gt;   &lt;chr&gt;       &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+ 1 humid   ustulatus    17.1 -0.029  -0.660 -0.575  
+ 2 humid   ustulatus    20.1 -0.001   0.124  0.00343
+ 3 humid   ustulatus    16.3  0.014  -0.858  0.313  
+ 4 arid    calvus       13.7 -0.043  -1.55  -0.864  
+ 5 humid   nux          21.9 -0.042   0.609 -0.844  
+ 6 humid   ustulatus    16.8 -0.023  -0.723 -0.451  
+ 7 humid   ustulatus    19.2  0.014  -0.113  0.313  
+ 8 humid   ustulatus    16.0  0.042  -0.943  0.892  
+ 9 arid    galapaganus  18.9  0.011  -0.183  0.251  
+10 humid   nux          26.6  0       1.85   0.0241 
+# ℹ 213 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="sec-distinct" class="level3" data-number="5.1.7">
+<h3 data-number="5.1.7" class="anchored" data-anchor-id="sec-distinct"><span class="header-section-number">5.1.7</span> <code>distinct</code></h3>
+<p>While not as important as the previous six functions, <code>distinct</code> can also be useful. It takes as its input a tibble, and removes all rows that contain exact copies of any other row. For example, we might wonder how many different species there are in <code>snailDat</code>. One way to answer this is to <code>select</code> the <code>species</code> column only, and then apply <code>distinct</code> to remove duplicated entries:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">distinct</span>(<span class="fu">select</span>(snailDat, species))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 1
+  species     
+  &lt;chr&gt;       
+1 ustulatus   
+2 calvus      
+3 nux         
+4 galapaganus 
+5 unifasciatus
+6 invalidus   
+7 rugulosus   </code></pre>
+</div>
+</div>
+<p>So each individual in the data comes from one of the above seven species.</p>
+</section>
+</section>
+<section id="using-pipes-to-our-advantage" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="using-pipes-to-our-advantage"><span class="header-section-number">5.2</span> Using pipes to our advantage</h2>
+<p>Let us take a slightly more complicated (and quite typical) data analysis task. We want to answer the question: how many species are there with at least some individuals whose standardized shell size is larger than a threshold—say, 2? This corresponds to individuals whose size is two standard deviations above the community average.</p>
+<p>To obtain an answer, we could first <code>mutate</code> a new column that contains the standardized shell size for each individual. We can then <code>filter</code> for those rows only for which this is greater than 2. Afterwards, we can use <code>select</code> to choose just the <code>species</code> column. This will likely have repeated entries (because multiple individuals from the same species could have a standardized size greater than 2), so as a final step, we should remove duplicated rows with <code>distinct</code>.</p>
+<p>Since <code>mutate</code>, <code>filter</code>, <code>select</code>, <code>distinct</code>, etc. are just ordinary functions, they do not “modify” data. They merely take a tibble as input (plus other arguments) and return another tibble. They do not do anything to the original input data. In order for R not to forget their result immediately after they are computed, they have to be stored in variables. So one way of implementing the solution might rely on repeated assignments, as below:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>mutatedDat <span class="ot">&lt;-</span> <span class="fu">mutate</span>(snailDat, <span class="at">stdSize =</span> (size <span class="sc">-</span> <span class="fu">mean</span>(size)) <span class="sc">/</span> <span class="fu">sd</span>(size))</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>filteredDat <span class="ot">&lt;-</span> <span class="fu">filter</span>(mutatedDat, stdSize <span class="sc">&gt;</span> <span class="dv">2</span>)</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>onlySpeciesDat <span class="ot">&lt;-</span> <span class="fu">select</span>(filteredDat, species)</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>speciesListDat <span class="ot">&lt;-</span> <span class="fu">distinct</span>(onlySpeciesDat)</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(speciesListDat)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 1
+  species     
+  &lt;chr&gt;       
+1 unifasciatus
+2 nux         </code></pre>
+</div>
+</div>
+<p>It turns out that only two out of the seven species have individuals with shells that large.</p>
+<p>While this solution works, it requires inventing arbitrary variable names at every step, or else overwriting variables. For such a short example, this is not problematic, but doing the same for a long pipeline of dozens of steps could get confusing, as well as dangerous due to the repeatedly modified variables.</p>
+<p>Another possible solution is to rely on function composition (<a href="Functions.html#sec-funccomp"><span>Section&nbsp;3.2</span></a>). Applying repeated composition is straightforward—in principle. In practice, when composing many functions together, things can get unwieldy quite quickly. Let us see what such a solution looks like:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="fu">distinct</span>(</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">filter</span>(</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(snailDat, <span class="at">stdSize =</span> (size <span class="sc">-</span> <span class="fu">mean</span>(size)) <span class="sc">/</span> <span class="fu">sd</span>(size)),</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>      stdSize <span class="sc">&gt;</span> <span class="dv">2</span></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>    species</span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 1
+  species     
+  &lt;chr&gt;       
+1 unifasciatus
+2 nux         </code></pre>
+</div>
+</div>
+<p>The expression is highly unpleasant: to a human reader, it is not at all obvious what is happening above. It would be nice to clarify this workflow if possible.</p>
+<p>It turns out that one can do this by making use of the pipe operator <code>|&gt;</code> from <a href="Functions.html#sec-pipes"><span>Section&nbsp;3.3</span></a>. As a reminder: for any function <code>f</code> and function argument <code>x</code>, <code>f(x, y, ...)</code> is the same as <code>x |&gt; f(y, ...)</code>, where the <code>...</code> denote potential further arguments to <code>f</code>. That is, the first argument of the function can be moved from the argument list to in front of the function, before the pipe symbol. The <code>tidyverse</code> functions take the data as their first argument, which means that the use of pipes allow us to very conveniently chain together multiple steps of data analysis. In our case, we can rewrite the above (quite confusing) code block in a much more transparent way:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>snailDat <span class="sc">|&gt;</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">stdSize =</span> (size <span class="sc">-</span> <span class="fu">mean</span>(size)) <span class="sc">/</span> <span class="fu">sd</span>(size)) <span class="sc">|&gt;</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(stdSize <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Again, the pipe <code>|&gt;</code> should be pronounced <em>then</em>. We take the data, <em>then</em> we mutate it, <em>then</em> we filter for large-shelled individuals, <em>then</em> we select one of the columns, and <em>then</em> we remove all duplicated entries in that column. In performing these steps, each function both receives and returns data. Thus, by starting out with the original <code>snailDat</code>, we no longer need to write out the data argument of the functions explicitly. Instead, the pipe takes care of that automatically for us, making the functions receive as their first input the piped-in data, and in turn producing transformed data as their output—which becomes the input for the next function in line.</p>
+<p>In fact, there is no need to even assign <code>snailDat</code>. The pipe can just as well start with <code>read_csv</code> to load the dataset:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_csv</span>(<span class="st">"island-FL.csv"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">stdSize =</span> (size <span class="sc">-</span> <span class="fu">mean</span>(size)) <span class="sc">/</span> <span class="fu">sd</span>(size)) <span class="sc">|&gt;</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(stdSize <span class="sc">&gt;</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species) <span class="sc">|&gt;</span></span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">distinct</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 1
+  species     
+  &lt;chr&gt;       
+1 unifasciatus
+2 nux         </code></pre>
+</div>
+</div>
+</section>
+<section id="sec-wrangling-exercises" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="sec-wrangling-exercises"><span class="header-section-number">5.3</span> Exercises</h2>
+<ol type="1">
+<li><p>The <a href="https://raw.githubusercontent.com/dysordys/data-with-R/main/data/Smith2003_data.zip"><code>Smith2003_data.txt</code></a> dataset we worked with in <a href="Data_reading.html#sec-reading-exercises"><span>Section&nbsp;4.8</span></a> occasionally has the entry <code>-999</code> in its last three columns. This stands for unavailable data. As discussed in <a href="Functions.html#sec-pipes"><span>Section&nbsp;3.3</span></a>, in R there is a built-in way of referring to such information: by setting a variable to <code>NA</code>. Modify these columns using <code>mutate</code> so that the entries which are equal to <code>-999</code> are replaced with <code>NA</code>.</p></li>
+<li><p>After replacing <code>-999</code> values with <code>NA</code>, remove all rows from the data which contain one or more <code>NA</code> values (hint: look up the function <code>drop_na</code>). How many rows are retained? And what was the original number of rows?</p></li>
+</ol>
+<p>The <code>iris</code> dataset is a built-in table in R. It contains measurements of petal and sepal characteristics from three flower species belonging to the genus <em>Iris</em> (<a href="https://en.wikipedia.org/wiki/Iris_setosa"><em>I. setosa</em></a>, <a href="https://en.wikipedia.org/wiki/Iris_versicolor"><em>I. versicolor</em></a>, and <a href="https://en.wikipedia.org/wiki/Iris_virginica"><em>I. virginica</em></a>). If you type <code>iris</code> in the console, you will see the dataset displayed. In solving the problems below, feel free to use the all-important <a href="https://nyu-cdsc.github.io/learningr/assets/data-transformation.pdf"><code>dplyr</code> cheat sheet</a>.</p>
+<ol start="3" type="1">
+<li><p>The format of the data is not a <code>tibble</code>, but a <code>data.frame</code>. As mentioned in <a href="Data_reading.html"><span>Chapter&nbsp;4</span></a>, the two are basically the same for practical purposes, though internally <code>tibble</code>s do offer some advantages. Convert the <code>iris</code> data frame into a tibble. (Hint: look up the <code>as_tibble</code> function.)</p></li>
+<li><p>Verify that there are indeed three distinct species in the data (hint: combine <code>select</code> and <code>distinct</code> in an appropriate way).</p></li>
+<li><p>Select the columns containing petal and sepal length, and species identity.</p></li>
+<li><p>Get those rows of the data with petal length less than 4 cm, but sepal length greater than 4 cm.</p></li>
+<li><p>Sort the data by increasing petal length, breaking ties by decreasing order of sepal length.</p></li>
+<li><p>Create a new column called <code>MeanLength</code>. It should contain the average of the petal and sepal length (i.e., petal length plus sepal length, divided by 2) of each individual flower.</p></li>
+<li><p>Perform the operations from exercises 5-8 sequentially, in a single long function call, using function composition via pipes.</p></li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./Data_reading.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reading tabular data from disk</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./Summaries_normalization.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Summary statistics and tidy data</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
