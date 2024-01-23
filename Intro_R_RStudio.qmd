@@ -142,12 +142,30 @@ RStudio:
 
 -   [RStudio documentation](http://rstudio.org/docs/)
 
-## Exercises
+## Exercises {#sec-intro-exercises}
 
-1. Create a folder named `data_analysis_in_R` on your computer and set it as the working directory in R. Make certain that the working directory has indeed been set properly.
+1.  Create a folder named `data-with-R` on your computer and set it as the working directory in R. Make certain that the working directory has indeed been set properly.
+2.  Use the RStudio file browser to set the working directory somewhere else on your hard drive, and then set it back to the `data-with-R` folder you created earlier. Make sure it is being set properly at each step.
+3.  Install an R package called `vegan`, using `install.packages` as discussed in @sec-packages. (The `vegan` package contains various utilities for community ecology.)
+4.  Load the `vegan` package invoking `library(vegan)`. Afterwards, try unloading and then loading the `vegan` package again, using the **Packages** panel in RStudio this time.
+5.  Create a simple text file (you can do this via **File** $\blacktriangleright$ **New File** $\blacktriangleright$ **Text File** from the main menu bar at the top) and put the following in it:
 
-2. Use the RStudio file browser to set the working directory somewhere else on your hard drive, and then set it back to the `data_analysis_in_R` folder you created earlier. Make sure it is being set properly at each step.
+    ```
+    A dozen, a gross, and a score
+    Plus three times the square root of four
+      Divided by seven
+      Plus five times eleven
+    Is nine squared and not a bit more.
+    ```
 
-3. Install an R package called `vegan`, using `install.packages` as discussed in @sec-packages. (The `vegan` package contains various utilities for community ecology.)
+    Now save this file as `limerick.txt` in the `data-with-R` folder you created earlier.
+6.  Create a new R script file (**File** $\blacktriangleright$ **New File** $\blacktriangleright$ **R Script**) and enter the following:
 
-4. Load the `vegan` package invoking `library(vegan)`. Afterwards, try unloading and then loading the `vegan` package again, using the **Packages** panel in RStudio this time.
+    ```{r}
+    #| eval: false
+    readLines("limerick.txt") |>
+      paste(collapse = "\n") |>
+      writeLines()
+    ```
+    
+    Save the file as `read-limerick.R` in the same folder (data-with-R). Run it and see what happens. If all goes well, it should display the contents of the file on the screen. (Hint: if you run into trouble, you most likely will need to set the working directory appropriately.)
