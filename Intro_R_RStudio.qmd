@@ -148,24 +148,26 @@ RStudio:
 2.  Use the RStudio file browser to set the working directory somewhere else on your hard drive, and then set it back to the `data-with-R` folder you created earlier. Make sure it is being set properly at each step.
 3.  Install an R package called `vegan`, using `install.packages` as discussed in @sec-packages. (The `vegan` package contains various utilities for community ecology.)
 4.  Load the `vegan` package invoking `library(vegan)`. Afterwards, try unloading and then loading the `vegan` package again, using the **Packages** panel in RStudio this time.
-5.  Create a simple text file (you can do this via **File** $\blacktriangleright$ **New File** $\blacktriangleright$ **Text File** from the main menu bar at the top) and put the following in it:
+5.  Create a simple text file (you can do this via **File** $\blacktriangleright$ **New File** $\blacktriangleright$ **Text File** from the main menu bar at the top) and put the following secret message in it:
 
     ```
-    A dozen, a gross, and a score
-    Plus three times the square root of four
-      Divided by seven
-      Plus five times eleven
-    Is nine squared and not a bit more.
+    A cnydm, z fqnrr, zmc z rbnqd
+    Pktr sgqdd shldr sgd rptzqd qnns ne entq
+      Dhuhcdc ax rdudm
+      Pktr ehud shldr dkdudm
+    Ir mhmd rptzqdc zmc mns z ahs lnqd.
     ```
 
-    Now save this file as `limerick.txt` in the `data-with-R` folder you created earlier.
+    Now save this file as `message.txt` in the `data-with-R` folder you created earlier.
 6.  Create a new R script file (**File** $\blacktriangleright$ **New File** $\blacktriangleright$ **R Script**) and enter the following:
 
     ```{r}
     #| eval: false
-    readLines("limerick.txt") |>
-      paste(collapse = "\n") |>
+    readLines("message.txt") |>
+      chartr(paste(letters, collapse = ""),
+             paste(c(letters[-1], "a"), collapse = ""),
+             x = _) |>
       writeLines()
     ```
     
-    Save the file as `read-limerick.R` in the same folder (data-with-R). Run it and see what happens. If all goes well, it should display the contents of the file on the screen. (Hint: if you run into trouble, you most likely will need to set the working directory appropriately.)
+    Save the file as `read-message.R` in the same folder (data-with-R). Run it and see what happens. If all goes well, it should decipher the message from the previous exercise and print it on your screen. (Hint: if you run into trouble, you might need to set the working directory appropriately.)
