@@ -136,8 +136,7 @@ expand_grid(V = c(10, 20, 30), # This function creates a tibble with all
   group_by(V, K) |>
   mutate(uptake = V * concentration / (K + concentration)) |>
   ungroup() |>
-  ggplot() +
-  aes(x = concentration, y = uptake) +
+  ggplot(aes(x = concentration, y = uptake)) +
   geom_line(colour = "steelblue") +
   facet_grid(V ~ K, labeller = label_both) +
   theme_bw()

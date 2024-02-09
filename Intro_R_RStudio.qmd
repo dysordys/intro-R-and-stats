@@ -145,9 +145,13 @@ RStudio:
 ## Exercises {#sec-intro-exercises}
 
 1.  Create a folder named `data-with-R` on your computer and set it as the working directory in R. Make certain that the working directory has indeed been set properly.
+
 2.  Use the RStudio file browser to set the working directory somewhere else on your hard drive, and then set it back to the `data-with-R` folder you created earlier. Make sure it is being set properly at each step.
+
 3.  Install an R package called `vegan`, using `install.packages` as discussed in @sec-packages. (The `vegan` package contains various utilities for community ecology.)
+
 4.  Load the `vegan` package invoking `library(vegan)`. Afterwards, try unloading and then loading the `vegan` package again, using the **Packages** panel in RStudio this time.
+
 5.  Create a simple text file (you can do this via **File** $\blacktriangleright$ **New File** $\blacktriangleright$ **Text File** from the main menu bar at the top) and put the following secret message in it:
 
     ```
@@ -159,6 +163,7 @@ RStudio:
     ```
 
     Now save this file as `message.txt` in the `data-with-R` folder you created earlier.
+
 6.  Create a new R script file (**File** $\blacktriangleright$ **New File** $\blacktriangleright$ **R Script**) and enter the following:
 
     ```{r}

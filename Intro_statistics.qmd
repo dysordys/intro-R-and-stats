@@ -17,8 +17,8 @@ print(bird, n = Inf)
 A quick visualization below looks promising, with individuals on the smaller island indeed appearing to be smaller:
 
 ```{r}
-ggplot(bird) +
-  aes(x = island, y = weight) +
+bird |>
+  ggplot(aes(x = island, y = weight)) +
   geom_boxplot(colour = "steelblue", fill = "steelblue",
                alpha = 0.2, outlier.shape = NA) +
   geom_jitter(alpha = 0.4, width = 0.05, colour = "steelblue") +
@@ -124,7 +124,8 @@ In other situations, the choice of test may matter more. The data in [`t_wilcox_
 #| message: false
 example <- read_csv("t_wilcox_example.csv")
 
-ggplot(example, aes(x = measurement)) +
+example |>
+  ggplot(aes(x = measurement)) +
   geom_histogram(bins = 25, alpha = 0.3,
                  colour = "steelblue", fill = "steelblue") +
   facet_wrap(~ group, labeller = label_both) +

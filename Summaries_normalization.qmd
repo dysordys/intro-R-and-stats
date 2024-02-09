@@ -209,25 +209,25 @@ pop |>
 
 The first set of problems relies on the `iris` dataset---the same that we used in the previous chapter's exercises (@sec-wrangling-exercises). Convert the `iris` data to a tibble with the `as_tibble` function, and assign it to a variable.
 
-1. Create a new column in the `iris` dataset which contains the difference of petal lengths from the average of the whole dataset.
+1.  Create a new column in the `iris` dataset which contains the difference of petal lengths from the average of the whole dataset.
 
-2. Create a new column in the `iris` dataset which contains the difference of petal lengths from the average *of each species*. (Hint: `group_by` the species and then `mutate`!)
+2.  Create a new column in the `iris` dataset which contains the difference of petal lengths from the average *of each species*. (Hint: `group_by` the species and then `mutate`!)
 
-3. Create a table where the rows are the three species, and the columns are: average petal length, variance of petal length, average sepal length, and variance of sepal length (each across flowers of the corresponding species).
+3.  Create a table where the rows are the three species, and the columns are: average petal length, total spread of petal length (difference between the largest and smallest values), average sepal length, and total spread of sepal length. Each of these should be calculated across flowers of the corresponding species.
 
-4. Create key-value pairs in the `iris` dataset for the petal characteristics. In other words, have a column called `Petal.Trait` (whose values are either `Petal.Length` or `Petal.Width`), and another column called `Petal.Value` (with the length/width values).
+4.  Create key-value pairs in the `iris` dataset for the petal characteristics. In other words, have a column called `Petal.Trait` (whose values are either `Petal.Length` or `Petal.Width`), and another column called `Petal.Value` (with the length/width values).
 
-5. Repeat the same exercise, but now for sepal traits.
+5.  Repeat the same exercise, but now for sepal traits.
 
-6. Finally, do it for both petal and sepal traits simultaneously, to obtain a fully tidy form of the `iris` data. That is, the key column (call it `Flower.Trait`) will have the values `Petal.Length`, `Petal.Width`, `Sepal.Length`, and `Sepal.Width`. And the value column (which you can call `Trait.Value`) will have the corresponding measurements.
+6.  Finally, do it for both petal and sepal traits simultaneously, to obtain a fully tidy form of the `iris` data. That is, the key column (call it `Flower.Trait`) will have the values `Petal.Length`, `Petal.Width`, `Sepal.Length`, and `Sepal.Width`. And the value column (which you can call `Trait.Value`) will have the corresponding measurements.
 
 The subsequent exercises use the Galápagos land snail data from the previous two chapters (see @sec-snail to review the description of the data).
 
-7. What is the average shell size of the whole community? What is its standard deviation? How about the average and standard deviation of shell shape?
+7.  What is the average shell size of the whole community? What is its total spread (the difference between the largest and smallest values)? How about the average and total spread of shell shape?
 
-8. What is the average shell size / shell shape of the community in each habitat type (humid/arid)?
+8.  What is the average shell size / shell shape of the community in each habitat type (humid/arid)?
 
-9. What is the average shell size / shell shape in each unique combination of species and habitat type?
+9.  What is the average shell size / shell shape in each unique combination of species and habitat type?
 
 10. Based on your answer to the previous question: how many species are there which live in both arid and humid environments?
 

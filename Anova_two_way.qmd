@@ -18,8 +18,7 @@ As seen, there are three dosage levels (0.5, 1, and 2) and two types of suppleme
 ```{r}
 as_tibble(ToothGrowth) |>
   mutate(dose = as_factor(dose)) |>
-  ggplot() +
-  aes(x = supp, y = len) +
+  ggplot(aes(x = supp, y = len)) +
   geom_boxplot(alpha = 0.2, outlier.shape = NA,
                colour = "steelblue", fill = "steelblue") +
   geom_jitter(alpha = 0.4, width = 0.05, colour = "steelblue") +
@@ -116,8 +115,7 @@ ToothGrowth |>
 ```{r}
 as_tibble(ToothGrowth) |>
   mutate(dose = as_factor(dose)) |>
-  ggplot() +
-  aes(x = dose, y = len) +
+  ggplot(aes(x = dose, y = len)) +
   geom_boxplot(alpha = 0.2, outlier.shape = NA,
                colour = "steelblue", fill = "steelblue") +
   geom_jitter(alpha = 0.4, width = 0.05, colour = "steelblue") +
@@ -129,8 +127,7 @@ Similarly, the difference between the two supplement types appears to be real (t
 
 ```{r}
 as_tibble(ToothGrowth) |>
-  ggplot() +
-  aes(x = supp, y = len) +
+  ggplot(aes(x = supp, y = len)) +
   geom_boxplot(alpha = 0.2, outlier.shape = NA,
                colour = "steelblue", fill = "steelblue") +
   geom_jitter(alpha = 0.4, width = 0.05, colour = "steelblue") +

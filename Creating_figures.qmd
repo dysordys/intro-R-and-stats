@@ -22,29 +22,44 @@ as_tibble(iris)
 Let us, as a first step, create a plot where sepal length (x-axis) is plotted against petal length (y-axis), with the points referring to different species shown in different colors: 
 
 ```{r}
-ggplot(iris) +
-  aes(x = Sepal.Length, y = Petal.Length, colour = Species) +
+ggplot(
+  data = iris,
+  mapping = aes(x = Sepal.Length, y = Petal.Length, colour = Species)
+) +
   geom_point()
 ```
 
-Here we defined the **data** (`iris`; feel free to use pipes, as in `iris |> ggplot() + ...`), then the **aesthetic mappings** with `aes()`, and finally the **geometry** of how to display the data with `geom_point()`. The important thing to remember is that the aesthetic mappings are all those aspects of the figure that are governed by the data. For instance, if you wanted to set the color of all points to blue, this would not be an aesthetic mapping, because it applies regardless of what the data are (in case you want to do this, you would have to specify `geom_point(colour = "blue")` in the last line). The **geometry** of your plot governs the overall visual arrangement of your data (points, lines, histograms, etc). There are many different `geom_`s; we will learn about some here, but when in doubt, Google and a [`ggplot2` cheat sheet](https://nyu-cdsc.github.io/learningr/assets/data-visualization-2.1.pdf) are your best friends.
+The `ggplot` function takes two inputs: the **data** (in this case, the `iris` table) and the **aesthetic mappings** (`mapping`). On top of this, we add on the **geometry** of how to display the data---in this case, with `geom_point()`.
+
+The aesthetic mappings are always defined via the `aes` helper function. What are these "aesthetic mappings"? The important thing to remember is that the aesthetic mappings are all those aspects of the figure that are governed by the data. For instance, if you wanted to set the color of all points to blue, this would not be an aesthetic mapping, because it applies regardless of what the data are (in case you want to do this, you would have to specify `geom_point(colour = "blue")` in the last line).
+
+The **geometry** of your plot governs the overall visual arrangement of your data (points, lines, histograms, etc). There are many different `geom_`s; we will learn about some here, but when in doubt, Google and a [`ggplot2` cheat sheet](https://nyu-cdsc.github.io/learningr/assets/data-visualization-2.1.pdf) are your best friends.
+
+The above code is often written by piping the data into the `ggplot` function. Then, since the `mapping` argument is always given via the `aes` function, one usually omits naming this argument:
+
+```{r}
+iris |>
+  ggplot(aes(x = Sepal.Length, y = Petal.Length, colour = Species)) +
+  geom_point()
+```
+
+is the most common form one writes the function call to `ggplot`.
 
 To look at a different kind of geometry, let us create a histogram of the petal lengths. This is done using `geom_histogram`:
 
 ```{r}
 #| message: false
 iris |>
-  ggplot() +
-  aes(x = Petal.Length) +
+  ggplot(aes(x = Petal.Length)) +
   geom_histogram()
 ```
 
-Before looking at the result, notice that the different "grammatical" components of the plot (aesthetics, geometry) are *added* to the plot, using the `+` symbol for addition. A common source of error is to accidentally keep using the pipe operator `|>` even within a plot. The rule of thumb is that after invoking `ggplot`, one must use `+` to compose the various graph elements, but outside of that, the usual `|>` is used for function composition. If one uses `|>` instead of `+` within a plot, R will give back a confusing message instead of graphics:
+Before looking at the result, notice that the different "grammatical" components of the plot (aesthetics, geometry) are *added* to the plot, using the `+` symbol for addition. A common source of error is to accidentally keep using the pipe operator `|>` even within a plot. The rule of thumb is that after invoking `ggplot`, one must use `+` to compose the various graph elements, but outside of that, the usual `|>` is used for function composition. If one uses `|>` instead of `+` within a plot, R will give back an error message instead of graphics:
 
 ```{r}
+#| error: true
 iris |>
-  ggplot() |>
-  aes(x = Petal.Length) |>
+  ggplot(aes(x = Petal.Length)) |>
   geom_histogram()
 ```
 
@@ -55,8 +70,7 @@ Let us now look at the plot above. We see two clusters of data. Why is that? One
 ```{r}
 #| message: false
 iris |>
-  ggplot() +
-  aes(x = Petal.Length, colour = Species) +
+  ggplot(aes(x = Petal.Length, colour = Species)) +
   geom_histogram()
 ```
 
@@ -65,8 +79,7 @@ iris |>
 ```{r}
 #| message: false
 iris |>
-  ggplot() +
-  aes(x = Petal.Length, colour = Species, fill = Species) +
+  ggplot(aes(x = Petal.Length, colour = Species, fill = Species)) +
   geom_histogram()
 ```
 
@@ -77,8 +90,7 @@ It may be easier to interpret the histogram if all bars start at the bottom, eve
 ```{r}
 #| message: false
 iris |>
-  ggplot() +
-  aes(x = Petal.Length, colour = Species, fill = Species) +
+  ggplot(aes(x = Petal.Length, colour = Species, fill = Species)) +
   geom_histogram(position = "identity")
 ```
 
@@ -87,8 +99,7 @@ iris |>
 ```{r}
 #| message: false
 iris |>
-  ggplot() +
-  aes(x = Petal.Length, colour = Species, fill = Species) +
+  ggplot(aes(x = Petal.Length, colour = Species, fill = Species)) +
   geom_histogram(position = "identity", alpha = 0.2)
 ```
 
@@ -96,8 +107,7 @@ There are plenty of other `geom_`s as well, such as `geom_boxplot`, `geom_violin
 
 ```{r}
 iris |>
-  ggplot() +
-  aes(x = Species, y = Petal.Length) +
+  ggplot(aes(x = Species, y = Petal.Length)) +
   geom_boxplot()
 ```
 
@@ -105,8 +115,8 @@ Although this is sufficient, one should feel free to make the plots prettier. Fo
 
 ```{r}
 iris |>
-  ggplot() +
-  aes(x = Species, y = Petal.Length, colour = Species, fill = Species) +
+  ggplot(aes(x = Species, y = Petal.Length,
+             colour = Species, fill = Species)) +
   geom_boxplot(alpha = 0.2) +
   theme_bw()
 ```
@@ -114,24 +124,27 @@ iris |>
 
 ## Summaries and confidence intervals {#sec-CI}
 
-Providing appropriate information on experimental errors is a hallmark of any credible scientific graph. Choose a type of error based on the conclusion that you want the reader to draw. While the standard deviation represents the dispersion of the data, the standard error and confidence intervals report the certainty of the estimate of a value (e.g., certainty in estimating the mean). Let us see examples of each.
+Providing appropriate information on experimental errors is a hallmark of any credible scientific graph. Choose a type of error based on the conclusion that you want the reader to draw. For example, one can show the largest and smallest values in the dataset apart from the average.
 
-Let us first obtain the mean and the standard deviation of the petal lengths for each species. We then would like to plot them. To do this, we proceed by creating a workflow which first uses `group_by` and `summarise` to obtain the required statistics (means and standard deviations), and then uses these data for plotting. One can include all these steps in a logical workflow:
+Here we will display the average petal length of each species together with the largest and smallest values. To do so, we first obtain the mean, maximum, and minimum of the petal lengths for each species. We then plot them. So we first `group_by` the species and `summarise` to obtain the required statistics (means and standard deviations), and hand these data over for plotting. One can include all these steps in a logical workflow:
 
 ```{r}
 #| message: false
 iris |>
   group_by(Species) |> # Perform summary calculations for each species
   summarise(mP = mean(Petal.Length), # Mean petal length
-            sP = sd(Petal.Length)) |> # Standard deviation of petal length
+            minP = min(Petal.Length), # Minimum petal length
+            maxP = max(Petal.Length)) |> # Maximum petal length
   ungroup() |> # Ungroup data
-  ggplot() + # Start plotting
-  aes(x = Species, y = mP, ymin = mP - sP, ymax = mP + sP) + # Mean +/- sd
+  # Start plotting:
+  ggplot(aes(x = Species, y = mP, ymin = minP, ymax = maxP)) +
   geom_point() + # This takes the y aesthetic, for plotting the mean
   geom_errorbar(width = 0.2) # Takes the ymin and ymax aesthetics
 ```
 
-Note that the y-axis label is not very descriptive. This is because it inherited the name of the corresponding data column, `mP`. There are multiple ways to change it; the simplest is to add `ylab("Petal length")` to the plot. Another way of doing so is discussed in @sec-moreggplot.
+Note that the y-axis label is not very descriptive. This is because it inherited the name of the corresponding data column, `mP`. There are multiple ways to change it; the simplest is to add `labs(y = "Petal length")` to the plot. Another way of doing so is discussed in @sec-moreggplot.
+
+Another way of characterizing uncertainty is to turn away from the spread of values in the actual raw data and instead focus on the uncertainty of an estimated quantity such as the mean. The rest of this subsection shows how to calculate confidence intervals for estimated means, and is intended for those who are already familiar with basic statistical concepts.
 
 In case we want to calculate the 95% confidence intervals of the mean values, we first obtain some necessary summary statistics: the number of observations (sample size) in each group; the standard error of the mean (standard deviation divided by the square root of the sample size); and finally, the confidence interval itself (read off from the *t*-distribution, with one fewer degrees of freedom than the sample size). We can then include these confidence intervals on top of the mean values:
 
@@ -145,12 +158,10 @@ iris |>
             SEM = sP / sqrt(N), # Standard error of the mean
             CI = SEM * qt(1 - 0.025, N - 1)) |> # Confidence interval,
                  # read off at 1 - 0.025 because +/- 2.5% adds up to 5%
-  ggplot() +
-  aes(x = Species, y = mP, ymin = mP - CI, ymax = mP + CI) +
-  geom_point(colour = "steelblue", fill = "steelblue") +
-  geom_errorbar(width = 0.2, colour = "steelblue") +
-  ylab("Petal length") +
-  theme_bw()
+  ggplot(aes(x = Species, y = mP, ymin = mP - CI, ymax = mP + CI)) +
+  geom_point() +
+  geom_errorbar(width = 0.2) +
+  ylab("Petal length")
 ```
 
 In the literature, it is common to encounter bar-and-whisker plots to represent the same information as above. These replace the points showing the means with bars that start from zero. One should be aware of how to read and make such graphs. This is almost trivially simple: all one needs to do is replace `geom_point` with `geom_col`.
@@ -164,13 +175,11 @@ iris |>
             N = n(),
             SEM = sP / sqrt(N),
             CI = SEM * qt(1 - 0.025, N - 1)) |>
-  ggplot() +
-  aes(x = Species, y = mP, ymin = mP - CI, ymax = mP + CI) +
+  ggplot(aes(x = Species, y = mP, ymin = mP - CI, ymax = mP + CI)) +
   # Below we change geom_point to geom_col (for "column"):
   geom_col(alpha = 0.4, colour = "steelblue", fill = "steelblue") +
   geom_errorbar(width = 0.2, colour = "steelblue") +
-  ylab("Petal length") +
-  theme_bw()
+  ylab("Petal length")
 ```
 
 :::{.callout-warning}
@@ -180,12 +189,11 @@ While means and their confidence intervals are often displayed with bar-and-whis
 tibble(Species = c("species 1", "species 2"),
        Average = c(148, 152),
        CI = c(0.8, 0.9)) |>
-  ggplot() +
-  aes(x = Species, y = Average, ymin = Average - CI, ymax = Average + CI) +
+  ggplot(aes(x = Species, y = Average,
+             ymin = Average - CI, ymax = Average + CI)) +
   geom_col(alpha = 0.4, colour = "steelblue", fill = "steelblue") +
   geom_errorbar(width = 0.2, colour = "steelblue") +
-  ylab("Trait value") +
-  theme_bw()
+  ylab("Trait value")
 ```
 
 It is impossible to see whether there are any relevant differences between the two species. The following is exactly the same, but with the mean values shown with points instead of bars:
@@ -194,12 +202,11 @@ It is impossible to see whether there are any relevant differences between the t
 tibble(Species = c("species 1", "species 2"),
        Average = c(148, 152),
        CI = c(0.8, 0.9)) |>
-  ggplot() +
-  aes(x = Species, y = Average, ymin = Average - CI, ymax = Average + CI) +
+  ggplot(aes(x = Species, y = Average,
+             ymin = Average - CI, ymax = Average + CI)) +
   geom_point(colour = "steelblue") +
   geom_errorbar(width = 0.2, colour = "steelblue") +
-  ylab("Trait value") +
-  theme_bw()
+  ylab("Trait value")
 ```
 
 It is now obvious that the two observations are distinct. Due to this problem, my recommendation is to avoid bar-and-whisker plots and simply use point-and-whisker plots instead.

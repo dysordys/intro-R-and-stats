@@ -12,8 +12,7 @@ snails <- read_csv("island-FL.csv")
 
 snails |>
   filter(species == "nux") |>
-  ggplot() +
-  aes(x = size, y = shape) +
+  ggplot(aes(x = size, y = shape)) +
   geom_point(colour = "steelblue") +
   theme_bw()
 ```
@@ -24,8 +23,7 @@ The question we want to answer using this plot is whether larger shells (indicat
 #| message: false
 snails |>
   filter(species == "nux") |>
-  ggplot() +
-  aes(x = size, y = shape) +
+  ggplot(aes(x = size, y = shape)) +
   geom_point(colour = "steelblue") +
   geom_smooth(method = lm, se = FALSE, colour = "goldenrod") +
   theme_bw()
@@ -110,8 +108,7 @@ The second purpose is to be able to say whether there is any actual relationship
 ```{r}
 snails |>
   filter(species == "nux") |>
-  ggplot() +
-  aes(x = size, y = shape) +
+  ggplot(aes(x = size, y = shape)) +
   geom_point(colour = "steelblue") +
   theme_bw()
 ```
@@ -203,8 +200,7 @@ To give an example of what not-so-good diagnostics might look like, let us repea
 ```{r}
 snails |>
   filter(species == "galapaganus") |> # Choose a different species
-  ggplot() +
-  aes(x = size, y = shape) +
+  ggplot(aes(x = size, y = shape)) +
   geom_point(colour = "steelblue") +
   geom_smooth(method = lm, se = FALSE, colour = "goldenrod") +
   theme_bw()
@@ -247,8 +243,7 @@ We can now visualize each set, along with linear fits:
 ```{r}
 #| message: false
 ans_long |>
-  ggplot() +
-  aes(x = x, y = y, colour = set) +
+  ggplot(aes(x = x, y = y, colour = set)) +
   geom_point() +
   geom_smooth(method = lm, se = FALSE) +
   facet_wrap(~ set, nrow = 2, labeller = label_both) +

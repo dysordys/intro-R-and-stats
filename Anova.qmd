@@ -16,8 +16,8 @@ PlantGrowth |> as_tibble() |> print(n = Inf)
 (The `PlantGrowth` data are in the form of a data frame instead of a tibble; hence we convert it above by using `as_tibble`.) We see that each group consists of ten observations, and we have three groups: the control (`ctrl`) treatment 1 (`trt1`), and treatment 2 (`trt2`). As usual, we visualize the data first, before doing any tests:
 
 ```{r}
-ggplot(PlantGrowth) +
-  aes(x = group, y = weight) +
+PlantGrowth |>
+  ggplot(aes(x = group, y = weight)) +
   geom_boxplot(colour = "steelblue", fill = "steelblue",
                alpha = 0.2, outlier.shape = NA) +
   geom_jitter(alpha = 0.4, width = 0.05, colour = "steelblue") +

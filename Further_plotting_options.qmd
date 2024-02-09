@@ -8,8 +8,8 @@ In @sec-ggplot we learned about aesthetic mappings and various `geom_` options s
 #| message: false
 library(tidyverse)
 
-ggplot(iris) +
-  aes(x = Sepal.Length, y = Petal.Length) +
+iris |>
+  ggplot(aes(x = Sepal.Length, y = Petal.Length)) +
   geom_point() +
   geom_smooth()
 ```
@@ -18,8 +18,8 @@ While such fits are occasionally useful, we often want a linear least-squares re
 
 ```{r}
 #| message: false
-ggplot(iris) +
-  aes(x = Sepal.Length, y = Petal.Length) +
+iris |>
+  ggplot(aes(x = Sepal.Length, y = Petal.Length)) +
   geom_point() +
   geom_smooth(method = lm)
 ```
@@ -28,8 +28,8 @@ Linear regression lines are usually shown without the confidence intervals (the 
 
 ```{r}
 #| message: false
-ggplot(iris) +
-  aes(x = Sepal.Length, y = Petal.Length) +
+iris |>
+  ggplot(aes(x = Sepal.Length, y = Petal.Length)) +
   geom_point() +
   geom_smooth(method = lm, se = FALSE)
 ```
@@ -38,8 +38,8 @@ What happens if we color the data points by species? Let us add `colour = Specie
 
 ```{r}
 #| message: false
-ggplot(iris) +
-  aes(x = Sepal.Length, y = Petal.Length, colour = Species) +
+iris |>
+  ggplot(aes(x = Sepal.Length, y = Petal.Length, colour = Species)) +
   geom_point() +
   geom_smooth(method = lm, se = FALSE)
 ```
@@ -50,8 +50,8 @@ Notice also that a color legend was automatically created and appended to the ri
 
 ```{r}
 #| message: false
-ggplot(iris) +
-  aes(x = Sepal.Length, y = Petal.Length, colour = Species) +
+iris |>
+  ggplot(aes(x = Sepal.Length, y = Petal.Length, colour = Species)) +
   geom_point() +
   geom_smooth(method = lm, se = FALSE) +
   theme(legend.position = "left") # Or: "top", "bottom", "right", "none"
@@ -63,8 +63,8 @@ A word of caution: in case the legend positioning is matched with a generic them
 
 ```{r}
 #| message: false
-ggplot(iris) +
-  aes(x = Sepal.Length, y = Petal.Length, colour = Species) +
+iris |>
+  ggplot(aes(x = Sepal.Length, y = Petal.Length, colour = Species)) +
   geom_point() +
   geom_smooth(method = lm, se = FALSE) +
   theme(legend.position = "left") + # Position legend at the left
@@ -75,8 +75,8 @@ But this one does:
 
 ```{r}
 #| message: false
-ggplot(iris) +
-  aes(x = Sepal.Length, y = Petal.Length, colour = Species) +
+iris |>
+  ggplot(aes(x = Sepal.Length, y = Petal.Length, colour = Species)) +
   geom_point() +
   geom_smooth(method = lm, se = FALSE) +
   theme_bw() + # This defines the general theme
@@ -90,8 +90,7 @@ The aesthetic mappings of a graph (x-axis, y-axis, color, fill, size, shape, alp
 
 ```{r}
 iris |>
-  ggplot() +
-  aes(x = Species, y = Petal.Length) +
+  ggplot(aes(x = Species, y = Petal.Length)) +
   geom_boxplot()
 ```
 
@@ -101,8 +100,7 @@ As an example, let us scale the y-axis of the previous graph in the following wa
 
 ```{r}
 iris |>
-  ggplot() +
-  aes(x = Species, y = Petal.Length) +
+  ggplot(aes(x = Species, y = Petal.Length)) +
   geom_boxplot() +
   scale_y_continuous(name = "Petal length [cm]",
                      limits = c(0, 7),
@@ -113,8 +111,7 @@ What should we do if, for some reason, we would additionally like the "3.5" in t
 
 ```{r}
 iris |>
-  ggplot() +
-  aes(x = Species, y = Petal.Length) +
+  ggplot(aes(x = Species, y = Petal.Length)) +
   geom_boxplot() +
   scale_y_continuous(name = "Petal length [cm]",
                      limits = c(0, 7),
@@ -126,8 +123,7 @@ The x-axis can be scaled similarly. One important difference though is that here
 
 ```{r}
 iris |>
-  ggplot() +
-  aes(x = Species, y = Petal.Length) +
+  ggplot(aes(x = Species, y = Petal.Length)) +
   geom_boxplot() +
   scale_y_continuous(name = "Petal length [cm]",
                      limits = c(0, 7),
@@ -140,8 +136,7 @@ Alternatively, one could also redefine the labels and get an equally good graph:
 
 ```{r}
 iris |>
-  ggplot() +
-  aes(x = Species, y = Petal.Length) +
+  ggplot(aes(x = Species, y = Petal.Length)) +
   geom_boxplot() +
   scale_y_continuous(name = "Petal length [cm]",
                      limits = c(0, 7),
@@ -161,8 +156,8 @@ Other aesthetic mappings can also be adjusted, such as `colour`, `fill`, `size`,
 
 ```{r}
 iris |>
-  ggplot() +
-  aes(x = Species, y = Petal.Length, colour = Species, fill = Species) +
+  ggplot(aes(x = Species, y = Petal.Length,
+             colour = Species, fill = Species)) +
   geom_boxplot(alpha = 0.2) +
   scale_y_continuous(name = "Petal length [cm]",
                      limits = c(0, 7),
@@ -191,8 +186,7 @@ The table has two columns: `month` and `average_temperature_C`, giving the mean 
 ```{r}
 #| message: false
 read_csv("temperature_Linkoping.csv") |>
-  ggplot() +
-  aes(x = month, y = average_temperature_C) +
+  ggplot(aes(x = month, y = average_temperature_C)) +
   geom_point(colour = "steelblue") +
   scale_y_continuous(name = "average temperature (Celsius)") +
   theme_bw()
@@ -206,8 +200,7 @@ One very convenient way of assigning factor levels is through the `tidyverse` fu
 #| message: false
 read_csv("temperature_Linkoping.csv") |>
   mutate(month = as_factor(month)) |>
-  ggplot() +
-  aes(x = month, y = average_temperature_C) +
+  ggplot(aes(x = month, y = average_temperature_C)) +
   geom_point(colour = "steelblue") +
   scale_y_continuous(name = "average temperature (Celsius)") +
   theme_bw()
@@ -220,8 +213,7 @@ It is also possible to take a factor and reassign its levels manually. This can 
 read_csv("temperature_Linkoping.csv") |>
   mutate(month = fct_relevel(month, "Jan", "Feb", "Mar", "Apr", "May", "Jun",
                              "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")) |>
-  ggplot() +
-  aes(x = month, y = average_temperature_C) +
+  ggplot(aes(x = month, y = average_temperature_C)) +
   geom_point(colour = "steelblue") +
   scale_y_continuous(name = "average temperature (Celsius)") +
   theme_bw()
@@ -238,8 +230,7 @@ Plots can be *faceted* (subplots created and arranged in a grid layout) based on
 ```{r}
 #| message: false
 iris |>
-  ggplot() +
-  aes(x = Petal.Length) +
+  ggplot(aes(x = Petal.Length)) +
   geom_histogram()
 ```
 
@@ -248,8 +239,7 @@ This way, one cannot see which part of the histogram belongs to which species. O
 ```{r}
 #| message: false
 iris |>
-  ggplot() +
-  aes(x = Petal.Length) +
+  ggplot(aes(x = Petal.Length)) +
   geom_histogram() +
   facet_grid(. ~ Species)
 ```
@@ -259,8 +249,7 @@ The component `facet_grid(x ~ y)` means that the data will be grouped based on c
 ```{r}
 #| message: false
 iris |>
-  ggplot() +
-  aes(x = Petal.Length) +
+  ggplot(aes(x = Petal.Length)) +
   geom_histogram() +
   facet_grid(Species ~ .)
 ```
@@ -271,12 +260,12 @@ To illustrate how to make a two-dimensional grid of facets, let us put the `iris
 
 ```{r}
 as_tibble(iris) |>
-  pivot_longer(cols = c(Sepal.Length,Sepal.Width,Petal.Length,Petal.Width),
+  pivot_longer(cols = !Species,
                names_to = "Trait",
                values_to = "Measurement")
 ```
 
-As seen, now the `Measurement` in every row is characterized by two other variables: `Species` and `Trait` (i.e., whether the given value refers to the sepal length, petal width etc. of the given species). We can create a histogram of each measured trait for each species now, in a remarkably simple way:
+(We specified the columns for tidying via `!Species`, meaning all columns *except* `Species` are selected.) As seen, now the `Measurement` in every row is characterized by two other variables: `Species` and `Trait` (i.e., whether the given value refers to the sepal length, petal width etc. of the given species). We can create a histogram of each measured trait for each species now, in a remarkably simple way:
 
 ```{r}
 #| message: false
@@ -284,8 +273,7 @@ as_tibble(iris) |>
   pivot_longer(cols = c(Sepal.Length,Sepal.Width,Petal.Length,Petal.Width),
                names_to = "Trait",
                values_to = "Measurement") |>
-  ggplot() +
-  aes(x = Measurement) +
+  ggplot(aes(x = Measurement)) +
   geom_histogram() +
   facet_grid(Species ~ Trait)
 ```
@@ -315,8 +303,8 @@ In case you would like to save a figure that is not the last one that was genera
 
 ```{r}
 #| eval: false
-p <- ggplot(iris) + # Assign the ggplot object to the variable p
-  aes(x = Petal.Length) +
+p <- iris |> # Assign the ggplot object to the variable p
+  ggplot(aes(x = Petal.Length)) +
   geom_histogram()
 ```
 

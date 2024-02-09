@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -547,11 +547,10 @@ F-statistic: 30.52 on 7 and 76 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(V, K) <span class="sc">|&gt;</span></span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">uptake =</span> V <span class="sc">*</span> concentration <span class="sc">/</span> (K <span class="sc">+</span> concentration)) <span class="sc">|&gt;</span></span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> concentration, <span class="at">y =</span> uptake) <span class="sc">+</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">colour =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(V <span class="sc">~</span> K, <span class="at">labeller =</span> label_both) <span class="sc">+</span></span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> concentration, <span class="at">y =</span> uptake)) <span class="sc">+</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">colour =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(V <span class="sc">~</span> K, <span class="at">labeller =</span> label_both) <span class="sc">+</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Nonlinear_regression_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -665,7 +664,7 @@ $myTable
  residual sum-of-squares: 319.2
 
 Number of iterations to convergence: 6 
-Achieved convergence tolerance: 9.728e-06</code></pre>
+Achieved convergence tolerance: 9.723e-06</code></pre>
 </div>
 </div>
 <p>Observe that in the formula, we use the column name <code>conc</code> when we want to use the data inside that column, but use made-up names (in this case, <code>V</code> and <code>K</code>) for the unknown parameters we are trying to obtain. Their starting values were filled in from our earlier visual estimation. From these starting values, the best fitting solution is found. We see that their values are 51.36 for <span class="math inline">\(V\)</span> and 136.32 for <span class="math inline">\(K\)</span>.</p>
@@ -686,7 +685,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 Residual standard error: 4.099 on 19 degrees of freedom
 
 Number of iterations to convergence: 6 
-Achieved convergence tolerance: 9.728e-06</code></pre>
+Achieved convergence tolerance: 9.723e-06</code></pre>
 </div>
 </div>
 <p>As in the case of linear regression, the statistical analysis will only be reliable if the assumptions of the independence, normality, and homoscedasticity of the residuals are maintained.</p>

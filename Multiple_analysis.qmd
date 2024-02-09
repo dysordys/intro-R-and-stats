@@ -18,8 +18,8 @@ What is the distribution of wing sizes across species and sexes? To begin answer
 
 ```{r}
 #| fig-height: 9
-ggplot(fly) +
-  aes(x = WingSize, y = Species, colour = Sex, fill = Sex) +
+fly |>
+  ggplot(aes(x = WingSize, y = Species, colour = Sex, fill = Sex)) +
   geom_boxplot(alpha = 0.2) +
   scale_colour_manual(values = c("steelblue", "goldenrod")) +
   scale_fill_manual(values = c("steelblue", "goldenrod")) +
@@ -159,8 +159,7 @@ And then we can plot the wing length data for just these ones:
 ```{r}
 fly |>
   filter(Species %in% outlierSpecies) |>
-  ggplot() +
-  aes(x = Sex, y = WingSize) +
+  ggplot(aes(x = Sex, y = WingSize)) +
   geom_boxplot(colour = "steelblue", fill = "steelblue",
                alpha = 0.2, outlier.shape = NA) +
   geom_jitter(colour = "steelblue", alpha = 0.4) +
