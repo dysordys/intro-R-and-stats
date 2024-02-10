@@ -174,18 +174,18 @@ We used the built-in color names `"steelblue"`, `"goldenrod"`, and `"forestgreen
 
 ## Reordering labels using factors {#sec-factors}
 
-In the previous examples, the order of text labels was always automatically determined. The basic rule in R is that the ordering follows the alphabet: the default is for `setosa` to precede `versicolor`, which will be followed by `virginica`. This default ordering can be inconvenient, however. Consider the data file [`temperature_Linkoping.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/temperature_Linkoping.zip) of average temperatures per month, measured in the town of Linköping, Sweden:
+In the previous examples, the order of text labels was always automatically determined. The basic rule in R is that the ordering follows the alphabet: the default is for `setosa` to precede `versicolor`, which will be followed by `virginica`. This default ordering can be inconvenient, however. Consider the data file [`temp-Lin.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/temp-Lin.zip) of average temperatures per month, measured in the town of Linköping, Sweden:
 
 ```{r}
 #| message: false
-read_csv("temperature_Linkoping.csv")
+read_csv("temp-Lin.csv")
 ```
 
 The table has two columns: `month` and `average_temperature_C`, giving the mean temperature in each month across years 1991-2021.^[Data from <https://climate-data.org>.] So far so good. However, if we plot this with months along the x-axis and temperature along the y-axis, we run into trouble because R displays items by alphabetical instead of chronological order:
 
 ```{r}
 #| message: false
-read_csv("temperature_Linkoping.csv") |>
+read_csv("temp-Lin.csv") |>
   ggplot(aes(x = month, y = average_temperature_C)) +
   geom_point(colour = "steelblue") +
   scale_y_continuous(name = "average temperature (Celsius)") +
@@ -198,7 +198,7 @@ One very convenient way of assigning factor levels is through the `tidyverse` fu
 
 ```{r}
 #| message: false
-read_csv("temperature_Linkoping.csv") |>
+read_csv("temp-Lin.csv") |>
   mutate(month = as_factor(month)) |>
   ggplot(aes(x = month, y = average_temperature_C)) +
   geom_point(colour = "steelblue") +
@@ -210,7 +210,7 @@ It is also possible to take a factor and reassign its levels manually. This can 
 
 ```{r}
 #| message: false
-read_csv("temperature_Linkoping.csv") |>
+read_csv("temp-Lin.csv") |>
   mutate(month = fct_relevel(month, "Jan", "Feb", "Mar", "Apr", "May", "Jun",
                              "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")) |>
   ggplot(aes(x = month, y = average_temperature_C)) +
