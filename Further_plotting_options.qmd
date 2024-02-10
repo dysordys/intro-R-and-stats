@@ -181,12 +181,12 @@ In the previous examples, the order of text labels was always automatically dete
 read_csv("temp-Lin.csv")
 ```
 
-The table has two columns: `month` and `average_temperature_C`, giving the mean temperature in each month across years 1991-2021.^[Data from <https://climate-data.org>.] So far so good. However, if we plot this with months along the x-axis and temperature along the y-axis, we run into trouble because R displays items by alphabetical instead of chronological order:
+The table has two columns: `month` and `temp_C`, giving the mean temperature in each month across years 1991-2021.^[Data from <https://climate-data.org>.] So far so good. However, if we plot this with months along the x-axis and temperature along the y-axis, we run into trouble because R displays items by alphabetical instead of chronological order:
 
 ```{r}
 #| message: false
 read_csv("temp-Lin.csv") |>
-  ggplot(aes(x = month, y = average_temperature_C)) +
+  ggplot(aes(x = month, y = temp_C)) +
   geom_point(colour = "steelblue") +
   scale_y_continuous(name = "average temperature (Celsius)") +
   theme_bw()
@@ -200,7 +200,7 @@ One very convenient way of assigning factor levels is through the `tidyverse` fu
 #| message: false
 read_csv("temp-Lin.csv") |>
   mutate(month = as_factor(month)) |>
-  ggplot(aes(x = month, y = average_temperature_C)) +
+  ggplot(aes(x = month, y = temp_C)) +
   geom_point(colour = "steelblue") +
   scale_y_continuous(name = "average temperature (Celsius)") +
   theme_bw()
@@ -213,7 +213,7 @@ It is also possible to take a factor and reassign its levels manually. This can 
 read_csv("temp-Lin.csv") |>
   mutate(month = fct_relevel(month, "Jan", "Feb", "Mar", "Apr", "May", "Jun",
                              "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")) |>
-  ggplot(aes(x = month, y = average_temperature_C)) +
+  ggplot(aes(x = month, y = temp_C)) +
   geom_point(colour = "steelblue") +
   scale_y_continuous(name = "average temperature (Celsius)") +
   theme_bw()
