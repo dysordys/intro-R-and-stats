@@ -57,6 +57,26 @@ Now, press the Up arrow on the keyboard. You will notice that the `2 + 2` you ty
 
 (The `[1]` at the beginning of the result just means that the following number is at position 1 of a vector. In this case, the vector only has one element, but when R needs to print out a long vector, it splits it into multiple lines tells you at the beginning of each line what position you are at.)
 
+In case you press Enter/Return before completing a calculation, the prompt symbol `>` changes to a `+` (which looks like an addition symbol but does not actually represent addition or any other operation). This lets you know that R is awaiting the completion of an expression instead of fresh input. For example, if we multiply 2 with 3 but press Enter after the multiplication symbol, we see this:
+
+```{r}
+#| eval: false
+> 2 *
++
+```
+
+You now have two options. First, you can press the Escape key to cancel the current calculation altogether. In that case, the prompt will return to being `>`, and the fact that you wanted to multiply 2 with something is forgotten. Otherwise, you can complete the formula and simply enter `3`, which will then be interpreted as the continuation of `2 *`:
+
+```{r}
+#| eval: false
+> 2 *
++ 3
+[1] 6
+>
+```
+
+The result, 6, is now displayed in the console, and the new prompt `>` beneath means that the console is ready for a fresh input.
+
 Before going deeper into R programming, we need to discuss a few things to enable you to get around R and RStudio more easily.
 
 ### Writing R scripts
