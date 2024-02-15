@@ -18,7 +18,7 @@ book:
       - Creating_figures.qmd
       - Further_plotting_options.qmd
       - Joining_data.qmd
-    - part: "Part II: Statistical inference"
+    - part: "Part II: Introductory statistics"
       chapters:
       - Intro_statistics.qmd
       - Linear_regression.qmd
