@@ -15,6 +15,8 @@ It would be impossible, if not very expensive, to collect data from all units in
 
 <!-- SOMETHING ABOUT BIAS?? -->
 
+<!-- {{< video https://www.youtube.com/watch?v=8UJl2RpeV24 >}} -->
+
 ## Variable types
 The `pop` data set contains 5 variables of different types. A variable type is used to describe what type of information we can find within it and determines how we can further analyze the variable. We can separate variables into two main groups; *qualitative* and *quantitative* variables. 
 

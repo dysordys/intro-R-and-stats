@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="György Barabás &amp; Isak Hietala">
 
-<title>Introduction to data analysis and visualization with R</title>
+<title>Introduction to data analysis and visualization with R - 10&nbsp; Introducing statistics</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -31,7 +64,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./01_Intro_R_RStudio.html" rel="next">
+<link href="./40_Intro_adv_statistics.html" rel="next">
+<link href="./09_Joining_data.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -62,6 +96,8 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -74,7 +110,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Welcome</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20_Intro_statistics.html">Part II: Introductory statistics</a></li><li class="breadcrumb-item"><a href="./20_Intro_statistics.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introducing statistics</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -101,7 +137,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Welcome</span></a>
   </div>
 </li>
@@ -181,7 +217,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./20_Intro_statistics.html" class="sidebar-item-text sidebar-link">
+  <a href="./20_Intro_statistics.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introducing statistics</span></span></a>
   </div>
 </li>
@@ -267,7 +303,7 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome</a></li>
+  <li><a href="#variable-types" id="toc-variable-types" class="nav-link active" data-scroll-target="#variable-types"><span class="header-section-number">10.1</span> Variable types</a></li>
   </ul>
 </nav>
     </div>
@@ -276,19 +312,13 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Introduction to data analysis and visualization with R</h1>
+<h1 class="title"><span id="sec-stats-intro" class="quarto-section-identifier"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introducing statistics</span></span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>György Barabás &amp; Isak Hietala </p>
-          </div>
-  </div>
     
   
     
@@ -297,9 +327,45 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="welcome" class="level1 unnumbered">
-<h1 class="unnumbered">Welcome</h1>
-<p>Do you have any comments, suggestions for improvement, or errata? Feel free to send them to me at <code>dysordys@protonmail.com</code>.</p>
+<p>When given a data set (such as the snail data in <a href="04_Data_reading.html"><span>Chapter&nbsp;4</span></a>) it is difficult or even impossible to look at the entire set and understand the information therein. It is therefore important to be able to describe aspects of the data, the different variables and observations through the use of statistical measurements. This has in part been covered in <a href="06_Summaries_normalization.html"><span>Chapter&nbsp;6</span></a> but we will now take a more statistical approach to summarizing and describing data.</p>
+<p>First we will start by reading the <a href="https://raw.githubusercontent.com/dysordys/data-with-R/main/data/pop_data.zip"><code>pop_data.csv</code></a> file again. The data set contain population densities of three species at two spatial patches (A and B) at various points in time, ranging from 1 to 50 in steps of 1.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"pop_data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This data set is a <em>sample</em> from a larger <em>population</em> and while it is not clear how the <em>units</em> in the sample (the different time points) have been selected, we can assume that they have been randomly selected from the population of all possible units.</p>
+<p>It would be impossible, if not very expensive, to collect data from all units in a population which means that we in practice work on samples of data. We are still interested in making conclusions about the population but these will be made from a smaller set of units that we actually can collect data from. The information we collect will be dependent on the units selected for the sample and any two samples will contain different units if the <em>sampling procedure</em> is done with any kind of <em>randomization</em>. This inherent randomness is a vital aspect of <em>statistical inference</em> which will be covered in a later chapter.</p>
+<!-- SOMETHING ABOUT BIAS?? -->
+<!--  -->
+<section id="variable-types" class="level2" data-number="10.1">
+<h2 data-number="10.1" class="anchored" data-anchor-id="variable-types"><span class="header-section-number">10.1</span> Variable types</h2>
+<p>The <code>pop</code> data set contains 5 variables of different types. A variable type is used to describe what type of information we can find within it and determines how we can further analyze the variable. We can separate variables into two main groups; <em>qualitative</em> and <em>quantitative</em> variables.</p>
+<p>Qualitative variables are those describing categories, for example nationalities, gender or colors. In our <code>pop</code> data the variable <code>patch</code> is qualitative as it describes a label used for patches of land. If we would choose to label the two patches as 1 and 2, the variable itself would still be qualitative as the numbers do not have a numeric meaning.</p>
+<p>Quantitative variables are those describing real numbers, for example the number of siblings, height, or final times in a 100 m race. The numbers represent real numeric values instead of just labels. There are two sub-types of quantitative variables; discrete and continuous. A discrete variable contain values of whole number or a limited amount of decimals. The number of siblings would be a discrete variable as you cannot have 2.32451 siblings and cannot measure the value with an infinite amount of decimals. Continuous variables on the other hand are able to be measured with this amount of detail, such as a person’s height that could be measured with a lot of detail.</p>
+<p>In our data set the three species’ density variables are considered continuous quantitative variables as they represent a real numeric value and they can be measured with infinite amount of decimals. Even though the loaded data set contain values with only two decimals, this is only done for rounding purposes and does not prevent the variable itself to be measured with infinite amount of decimals.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that we differentiate from the variable types used within programming in earlier chapters and types used to describe variables within statistics. Some terminology is similar but the biggest difference is that within programming we differentiate between various types of quantitative (numeric) variables based on the amount of information they store on the disk.</p>
+<p>A quick conversion between the two areas would be:</p>
+<ul>
+<li><code>character</code> <span class="math inline">\(\rightarrow\)</span> qualitative</li>
+<li><code>logical</code> <span class="math inline">\(\rightarrow\)</span> qualitative</li>
+<li><code>numeric</code> <span class="math inline">\(\rightarrow\)</span> quantitative (discrete or continuous)</li>
+<li><code>integer</code> <span class="math inline">\(\rightarrow\)</span> discrete quantitative</li>
+</ul>
+</div>
+</div>
+<!-- ## Measures of center -->
+<!-- Depending on the type of variable -->
 
 
 </section>
@@ -540,10 +606,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./09_Joining_data.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Joining data</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./01_Intro_R_RStudio.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to R and RStudio</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./40_Intro_adv_statistics.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Introducing statistical inference</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

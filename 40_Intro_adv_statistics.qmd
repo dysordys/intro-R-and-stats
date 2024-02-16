@@ -1,4 +1,4 @@
-# Introducing statistical inference
+# Introducing statistical inference {#sec-wilcox}
 ## Introductory example and the Wilcoxon rank sum test {#sec-example-wilcox}
 
 In this chapter we will take a first look at statistical tests of a very simple kind: comparing two groups of data. To illustrate why statistical inference is needed in such comparisons, let us take a look at a fictive dataset ([`fictive_bird_example.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/fictive_bird_example.zip)) which contains equally fictive weight measurements of different bird individuals from the same species. The birds are assumed to come from two islands, a larger and a smaller one. The question is: do the data provide evidence of *insular dwarfism*---the phenomenon that the body sizes of species tend to decline on small islands over evolutionary time?
