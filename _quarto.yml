@@ -9,7 +9,7 @@ book:
     - index.qmd
     - part: "Part I: Processing and visualizing data with R"
       chapters:
-      - Intro_R_RStudio.qmd
+      - 1_Intro_R_RStudio.qmd
       - R_programming_basics.qmd
       - Functions.qmd
       - Data_reading.qmd
@@ -21,6 +21,9 @@ book:
     - part: "Part II: Introductory statistics"
       chapters:
       - Intro_statistics.qmd
+    - part: "Part III: Advanced statistics"
+      chapters:
+      - Intro_adv_statistics.qmd
       - Linear_regression.qmd
       - Anova.qmd
       - Anova_two_way.qmd

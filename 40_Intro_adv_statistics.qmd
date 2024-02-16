@@ -1,38 +1,4 @@
-# Introducing statistics {#sec-stats-intro}
-When given a data set (such as the snail data in @sec-reading) it is difficult or even impossible to look at the entire set and understand the information therein. It is therefore important to be able to describe aspects of the data, the different variables and observations through the use of statistical measurements. This has in part been covered in @sec-normalization but we will now take a more statistical approach to summarizing and describing data.
-
-First we will start by reading the [`pop_data.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/pop_data.zip) file again. The data set contain population densities of three species at two spatial patches (A and B) at various points in time, ranging from 1 to 50 in steps of 1.
-```{r, message=FALSE}
-require(tidyverse)
-
-pop <- read_csv("pop_data.csv")
-
-```
-
-This data set is a *sample* from a larger *population* and while it is not clear how the *units* in the sample (the different time points) have been selected, we can assume that they have been randomly selected from the population of all possible units.
-
-It would be impossible, if not very expensive, to collect data from all units in a population which means that we in practice work on samples of data. We are still interested in making conclusions about the population but these will be made from a smaller set of units that we actually can collect data from. The information we collect will be dependent on the units selected for the sample and any two samples will contain different units if the *sampling procedure* is done with any kind of *randomization*. This inherent randomness is a vital aspect of *statistical inference* which will be covered in a later chapter.
-
-<!-- SOMETHING ABOUT BIAS?? -->
-
-## Variable types
-The `pop` data set contains 5 variables of different types. A variable type is used to describe what type of information we can find within it and determines how we can further analyze the variable. We can separate variables into two main groups; *qualitative* and *quantitative* variables. 
-
-Qualitative variables are those describing categories, for example nationalities, gender or colors. In our `pop` data the variable `patch` is qualitative as it describes a label used for patches of land. If we would choose to label the two patches as 1 and 2, the variable itself would still be qualitative as the numbers do not have a numeric meaning.
-
-Quantitative variables are those describing real numbers, for example the number of siblings, height, or final times in a 100 m race. The numbers represent real numeric values instead of just labels. There are two sub-types of quantitative variables; discrete and continuous. A discrete variable contain values of whole number or a limited amount of decimals. The number of siblings would be a discrete variable as you cannot have 2.32451 siblings and cannot measure the value with an infinite amount of decimals. Continuous variables on the other hand are able to be measured with this amount of detail, such as a person's height that could be measured with a lot of detail.
-
-In our data set the three species' density variables are considered continuous quantitative variables as they represent a real numeric value and they can be measured with infinite amount of decimals. Even though the loaded data set contain values with only two decimals, this is only done for rounding purposes and does not prevent the variable itself to be measured with infinite amount of decimals.
-
-:::{.callout-note}
-Note that we differentiate from the variable types used within programming in earlier chapters and types used to describe variables within statistics. Some terminology is similar but the biggest difference is that within programming we differentiate between various types of quantitative (numeric) variables based on the amount of information they store on the disk.
-:::
-
-
-<!-- ## Measures of center -->
-<!-- Depending on the type of variable -->
-
-
+# Introducing statistical inference
 ## Introductory example and the Wilcoxon rank sum test {#sec-example-wilcox}
 
 In this chapter we will take a first look at statistical tests of a very simple kind: comparing two groups of data. To illustrate why statistical inference is needed in such comparisons, let us take a look at a fictive dataset ([`fictive_bird_example.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/fictive_bird_example.zip)) which contains equally fictive weight measurements of different bird individuals from the same species. The birds are assumed to come from two islands, a larger and a smaller one. The question is: do the data provide evidence of *insular dwarfism*---the phenomenon that the body sizes of species tend to decline on small islands over evolutionary time?
