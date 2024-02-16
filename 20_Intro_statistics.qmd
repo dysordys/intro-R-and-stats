@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # Introducing statistics {#sec-stats-intro}
 When given a data set (such as the snail data in @sec-reading) it is difficult or even impossible to look at the entire set and understand the information therein. It is therefore important to be able to describe aspects of the data, the different variables and observations through the use of statistical measurements. This has in part been covered in @sec-normalization but we will now take a more statistical approach to summarizing and describing data.
 
@@ -11,7 +16,9 @@ pop <- read_csv("pop_data.csv")
 
 This data set is a *sample* from a larger *population* and while it is not clear how the *units* in the sample (the different time points) have been selected, we can assume that they have been randomly selected from the population of all possible units.
 
-It would be impossible, if not very expensive, to collect data from all units in a population which means that we in practice work on samples of data. We are still interested in making conclusions about the population but these will be made from a smaller set of units that we actually can collect data from. The information we collect will be dependent on the units selected for the sample and any two samples will contain different units if the *sampling procedure* is done with any kind of *randomization*. This inherent randomness is a vital aspect of *statistical inference* which will be covered in a later chapter.
+It would be impossible, if not very expensive, to collect data from all units in a population which means that we in practice work on samples of data. We are still interested in making conclusions about the population but these will be made from a smaller set of units that we actually can collect data from. The information we collect will be dependent on the units selected for the sample and any two samples will contain different units if the *sampling procedure* is done with any kind of *randomization*. 
+
+Properties or descriptive statistics calculated on the population are called *parameters* (*parameter* in singular) and these will have the same value because the population contains all units we are interested in. In the sample we instead calculate *statistics* (*statistic* in singular) which is an *estimate* of the population parameter. The value of a statistic will also be different depending on the sample drawn and this inherent randomness is a vital aspect of *statistical inference* which will be covered in a later chapter.
 
 <!-- SOMETHING ABOUT BIAS?? -->
 
@@ -54,12 +61,66 @@ Quantitative variables can also be split into two different scales; *interval* a
 - The ratio scale does have a defined zero point which extends the possibility to calculate ratios between values. We can say that the density of one species ($0.1$) can be twice the size of the density of another ($0.05$) because the value of 0 actually means that there is no presence of the species in the patch of land being measured.
 
 :::{.callout-important}
-There is only one instance where the scale of the variable is implemented in R (we can create ordered factors following an ordinal scale) but otherwise this information is not saved in an R-object. This makes the knowledge of the scale, and what type of operations or methods can be used, very important for the analyst to know when programming. Otherwise it is very easy to end up 
+There is only one instance where the scale of the variable is implemented in R (we can create ordered factors following an ordinal scale) but otherwise this information is not saved in an R-object. This makes the knowledge of the scale, and what type of operations or methods can be used, very important for the analyst to know when programming. Otherwise it is very easy to end up in situations where we present or calculate inappropriate values or visualizations.
 :::
 
+## Summarizing a variable
+There are two main ways to summarize a variable; either visualize the *distribution* of it or present different descriptive statistics that provides information about different aspects of the variable.
 
+### Distributions
+We have already looked at different ways to visualize a distribution of a variable in @sec-ggplot which we can summarize as follows.
 
-<!-- ## Measures of center -->
-<!-- Depending on the type of variable -->
+A qualitative variable should be visualized using a bar plot. If the variable follows the ordinal scale, the categories on the x-axis should follow the same order. If the variable follows the nominal scale we do not have to follow any specific order of the categories, but it is usually nice to order them alphabetically or in descending order based on the (relative) frequency of the category.
 
+```{r fig.width = 4, fig.height=3, fig.cap = "Distribution of patches of land with their absolute frequency."}
+
+ggplot(pop) + aes(x = patch) + geom_bar() +
+  theme_bw() + labs(x = "Patch", y = "Count")
+
+```
+When visualizing the distribution it is customary to use the relative frequency (%) of each category instead of the absolute frequency (count). This can be done directly in the `ggplot`-process without the need for additional data processing prior to the visualization. In this case, the default calculation done is `count`ing the number of occurrences of each category and the height (y) of the bars being defined by the count. The `after_stat()` function allows for calculations to be after the counting has been completed and `count / sum(count)` would calculate the relative frequency of each category compared to the total number of observations. If we multiply this value with $100$, we can show the percent of observations of each category.  
+
+```{r fig.width = 4, fig.height=3, fig.cap = "Distribution of patches of land with their relative frequency."}
+
+ggplot(pop) + 
+  ## Changes the calculation of the y-axis to (count / sum(count)) * 100 instead of the default, count
+  aes(x = patch, y = after_stat(count / sum(count))*100) +
+  geom_bar() +
+  theme_bw() + 
+  labs(x = "Patch", y = "Percent")
+
+```
+A quantitative variable can be visualized in two different ways depending on the variable type. A discrete variable, which per definition only can assume whole (or a set number of decimals) numbers, can be visualized using a bar plot because it usually contains a finite number of unique values and at the same time cannot have values in between. A continuous variable can be measured with infinite amount of decimal places which means that there exist an infinite amount of unique values. Instead of having an infinite amount of bars in a bar plot, we group adjacent values together into intervals and create a histogram.
+
+```{r fig.width=4, fig.height=3, fig.cap="The distribution of the densitites of three different species."}
+
+## Groups the values for simpler visualization
+pop |> 
+  pivot_longer(
+    -c(patch,time)
+  ) |> 
+ggplot() + aes(x = value) + 
+  geom_histogram(binwidth = 0.5) + 
+  theme_bw() + 
+  ## Groups the histogram based on species
+  facet_grid(rows = vars(name)) +
+  labs(x = "Population Density", y = "Count")
+
+```
+
+We do not differentiate between a variable following a interval or ratio scale when visualizing a distribution but it is something to take into account when interpreting the plots. For example if a variable follows the interval scale, we could not state that 'the values are split into two main groups, one twice the value of the other'.
+
+Another way to visualize a continuous variable is by using a box(-and-whiskers) plot but this type of plot requires information about different measures of the variable, so we will return to this visualization later in this chapter.
+
+### Measures of center
+A simple way to summarize the position of a variable is a *measure of center*. As the name implies, it describes where on the unit scale the values are centered around and gives an indication of the magnitude (level) of the values. 
+
+The most common measure of center is the mean which can be calculated on a continuous variable. The mean of a sample 
+\begin{align*}
+  \bar{x} = \frac{\sum_{i = 1}^n{x_i}}{n}
+\end{align*}
+
+:::{.callout-warning}
+It is probable that you will find summaries where a mean has been calculated on a discrete variable. Even though this can mathematically be done
+:::
 
