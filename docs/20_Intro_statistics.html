@@ -110,7 +110,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20_Intro_statistics.html">Part II: Introductory statistics</a></li><li class="breadcrumb-item"><a href="./20_Intro_statistics.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introducing statistics</span></a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20_Intro_statistics.html">Part II: Introductory statistics (UNDER CONSTRUCTION)</a></li><li class="breadcrumb-item"><a href="./20_Intro_statistics.html"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introducing statistics</span></a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -209,7 +209,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Part II: Introductory statistics</span></a>
+ <span class="menu-text">Part II: Introductory statistics (UNDER CONSTRUCTION)</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -304,6 +304,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
    
   <ul>
   <li><a href="#variable-types" id="toc-variable-types" class="nav-link active" data-scroll-target="#variable-types"><span class="header-section-number">10.1</span> Variable types</a></li>
+  <li><a href="#variable-scales" id="toc-variable-scales" class="nav-link" data-scroll-target="#variable-scales"><span class="header-section-number">10.2</span> Variable scales</a></li>
   </ul>
 </nav>
     </div>
@@ -358,12 +359,27 @@ Note
 <p>A quick conversion between the two areas would be:</p>
 <ul>
 <li><code>character</code> <span class="math inline">\(\rightarrow\)</span> qualitative</li>
+<li><code>Factor</code> <span class="math inline">\(\rightarrow\)</span> qualitative</li>
 <li><code>logical</code> <span class="math inline">\(\rightarrow\)</span> qualitative</li>
 <li><code>numeric</code> <span class="math inline">\(\rightarrow\)</span> quantitative (discrete or continuous)</li>
 <li><code>integer</code> <span class="math inline">\(\rightarrow\)</span> discrete quantitative</li>
 </ul>
 </div>
 </div>
+</section>
+<section id="variable-scales" class="level2" data-number="10.2">
+<h2 data-number="10.2" class="anchored" data-anchor-id="variable-scales"><span class="header-section-number">10.2</span> Variable scales</h2>
+<p>In addition to describing what values we can expect in a variable, we can also use a variable <em>scale</em> to get information how the values relate to one another. Both the type and scale of a variable are important aspects to define or learn before analyzing the variable to know which methods are suitable.</p>
+<p>Qualitative variables can be split into two different scales; <em>nominal</em> and <em>ordinal</em>.</p>
+<ul>
+<li><p>The nominal scale is defined by categories that <strong>cannot</strong> be ordered in any logical way, for instance it cannot be said that one patch of land is ‘better’ than the other.[^Note that there might exist other information, such as the size of the patches, that can be used to order the categories, but then we are ordering based on another variable and not the categories themselves.]</p></li>
+<li><p>The ordinal scale is defined by categories that <strong>can</strong> be ordered. Sizes of clothes are a good example of categories that can be ordered in such a way that the size continually increases (S &lt; M &lt; L), however we cannot define how much the difference actually is or if the difference is the same between two different adjacent categories.[^A quantitative variable could be considered following an ordinal scale if the measurements are intervals (0-4, 5-9, 10-19, etc.).]</p></li>
+</ul>
+<p>Quantitative variables can also be split into two different scales; <em>interval</em> and <em>ratio</em>.</p>
+<ul>
+<li><p>The interval scale is a continuation of the ordinal scale where values can be ordered but with the added definition that differences can be calculated between values. An interval scale does not have a defined zero point where the thing being measured does not exist, for example temperature (<span class="math inline">\(^\circ\)</span>C).</p></li>
+<li><p>The ratio scale does have a defined zero point which extends the possibility to calculate ratios between values. We can say that the density of one species (<span class="math inline">\(0.1\)</span>) can be twice the size of the density of another (<span class="math inline">\(0.05\)</span>) because the value of 0 actually means that there is no presence of the species in the patch of land being measured.</p></li>
+</ul>
 <!-- ## Measures of center -->
 <!-- Depending on the type of variable -->
 

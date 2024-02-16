@@ -32,10 +32,31 @@ Note that we differentiate from the variable types used within programming in ea
 A quick conversion between the two areas would be:
 
 - `character` $\rightarrow$ qualitative
+- `Factor` $\rightarrow$ qualitative
 - `logical` $\rightarrow$ qualitative
 - `numeric` $\rightarrow$ quantitative (discrete or continuous)
 - `integer` $\rightarrow$ discrete quantitative
 :::
+
+## Variable scales
+In addition to describing what values we can expect in a variable, we can also use a variable *scale* to get information how the values relate to one another. Both the type and scale of a variable are important aspects to define or learn before analyzing the variable to know which methods are suitable.
+
+Qualitative variables can be split into two different scales; *nominal* and *ordinal*. 
+
+- The nominal scale is defined by categories that **cannot** be ordered in any logical way, for instance it cannot be said that one patch of land is 'better' than the other.[^Note that there might exist other information, such as the size of the patches, that can be used to order the categories, but then we are ordering based on another variable and not the categories themselves.]
+
+- The ordinal scale is defined by categories that **can** be ordered. Sizes of clothes are a good example of categories that can be ordered in such a way that the size continually increases  (S < M < L), however we cannot define how much the difference actually is or if the difference is the same between two different adjacent categories.[^A quantitative variable could be considered following an ordinal scale if the measurements are intervals (0-4, 5-9, 10-19, etc.).]
+
+Quantitative variables can also be split into two different scales; *interval* and *ratio*.
+
+- The interval scale is a continuation of the ordinal scale where values can be ordered but with the added definition that differences can be calculated between values. An interval scale does not have a defined zero point where the thing being measured does not exist, for example temperature ($^\circ$C). 
+
+- The ratio scale does have a defined zero point which extends the possibility to calculate ratios between values. We can say that the density of one species ($0.1$) can be twice the size of the density of another ($0.05$) because the value of 0 actually means that there is no presence of the species in the patch of land being measured.
+
+:::{.callout-important}
+There is only one instance where the scale of the variable is implemented in R (we can create ordered factors following an ordinal scale) but otherwise this information is not saved in an R-object. This makes the knowledge of the scale, and what type of operations or methods can be used, very important for the analyst to know when programming. Otherwise it is very easy to end up 
+:::
+
 
 
 <!-- ## Measures of center -->

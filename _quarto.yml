@@ -18,7 +18,7 @@ book:
       - 07_Creating_figures.qmd
       - 08_Further_plotting_options.qmd
       - 09_Joining_data.qmd
-    - part: "Part II: Introductory statistics"
+    - part: "Part II: Introductory statistics (UNDER CONSTRUCTION)"
       chapters:
       - 20_Intro_statistics.qmd
     - part: "Part III: Advanced statistics"
