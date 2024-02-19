@@ -115,12 +115,14 @@ Another way to visualize a continuous variable is by using a box(-and-whiskers) 
 ### Measures of center
 A simple way to summarize the position of a variable is a *measure of center*. As the name implies, it describes where on the unit scale the values are centered around and gives an indication of the magnitude (level) of the values. 
 
-The most common measure of center is the mean which can be calculated on a continuous variable. The mean of a sample 
+The most common measure of center is the mean which can be calculated on a continuous variable. The mean of a sample is calculated as:
 \begin{align*}
   \bar{x} = \frac{\sum_{i = 1}^n{x_i}}{n}
 \end{align*}
 
+where $\bar{x}$ (spoken as x bar) is the statistic that aims to estimate the population mean $\mu$ (the Greek letter mu). 
+
 :::{.callout-warning}
-It is probable that you will find summaries where a mean has been calculated on a discrete variable. Even though this can mathematically be done
+Even though it is mathematically possible to calculate a mean of a discrete variable, the resulting value would not be a valid value. For instance the mean number of siblings of a person could be calculated to $1.6$ but you would not expect a randomly selected person to have $1$ full and $6/10$ of another sibling. The mean is therefore not interpretable on this type of variable. 
 :::
 
