@@ -29,7 +29,7 @@ The `pop` data set contains 5 variables of different types. A variable type is u
 
 Qualitative variables are those describing categories, for example nationalities, gender or colors. In our `pop` data the variable `patch` is qualitative as it describes a label used for patches of land. If we would choose to label the two patches as 1 and 2, the variable itself would still be qualitative as the numbers do not have a numeric meaning.
 
-Quantitative variables are those describing real numbers, for example the number of siblings, height, or final times in a 100 m race. The numbers represent real numeric values instead of just labels. There are two sub-types of quantitative variables; discrete and continuous. A discrete variable contain values of whole number or a limited amount of decimals. The number of siblings would be a discrete variable as you cannot have 2.32451 siblings and cannot measure the value with an infinite amount of decimals. Continuous variables on the other hand are able to be measured with this amount of detail, such as a person's height that could be measured with a lot of detail.
+Quantitative variables are those describing real numbers, for example the number of siblings, height, or final times in a 100 m race. The numbers represent real numeric values instead of just labels. There are two sub-types of quantitative variables; discrete and continuous. A discrete variable contain values of whole number or a limited amount of decimals. The number of siblings would be a discrete variable as you cannot have $2.32451$ siblings and cannot measure the value with an infinite amount of decimals. Continuous variables on the other hand are able to be measured with this amount of detail, such as a person's height that could be measured with a lot of detail.
 
 In our data set the three species' density variables are considered continuous quantitative variables as they represent a real numeric value and they can be measured with infinite amount of decimals. Even though the loaded data set contain values with only two decimals, this is only done for rounding purposes and does not prevent the variable itself to be measured with infinite amount of decimals.
 
@@ -50,15 +50,15 @@ In addition to describing what values we can expect in a variable, we can also u
 
 Qualitative variables can be split into two different scales; *nominal* and *ordinal*. 
 
-- The nominal scale is defined by categories that **cannot** be ordered in any logical way, for instance it cannot be said that one patch of land is 'better' than the other.[^Note that there might exist other information, such as the size of the patches, that can be used to order the categories, but then we are ordering based on another variable and not the categories themselves.]
+- The nominal scale is defined by categories that **cannot** be ordered in any logical way, for instance it cannot be said that one patch of land is 'better' than the other.^[Note that there might exist other information, such as the size of the patches, that can be used to order the categories, but then we are ordering based on another variable and not the categories themselves.]
 
-- The ordinal scale is defined by categories that **can** be ordered. Sizes of clothes are a good example of categories that can be ordered in such a way that the size continually increases  (S < M < L), however we cannot define how much the difference actually is or if the difference is the same between two different adjacent categories.[^A quantitative variable could be considered following an ordinal scale if the measurements are intervals (0-4, 5-9, 10-19, etc.).]
+- The ordinal scale is defined by categories that **can** be ordered. Sizes of clothes are a good example of categories that can be ordered in such a way that the size continually increases  (S < M < L), however we cannot define how much the difference actually is or if the difference is the same between two different adjacent categories.^[A quantitative variable could be considered following an ordinal scale if the measurements are intervals (0-4, 5-9, 10-19, etc.).]
 
 Quantitative variables can also be split into two different scales; *interval* and *ratio*.
 
 - The interval scale is a continuation of the ordinal scale where values can be ordered but with the added definition that differences can be calculated between values. An interval scale does not have a defined zero point where the thing being measured does not exist, for example temperature ($^\circ$C). 
 
-- The ratio scale does have a defined zero point which extends the possibility to calculate ratios between values. We can say that the density of one species ($0.1$) can be twice the size of the density of another ($0.05$) because the value of 0 actually means that there is no presence of the species in the patch of land being measured.
+- The ratio scale does have a defined zero point which extends the possibility to calculate ratios between values. We can say that the density of one species ($0.1$) can be twice the size of the density of another ($0.05$) because the value of $0$ actually means that there is no presence of the species in the patch of land being measured.
 
 :::{.callout-important}
 There is only one instance where the scale of the variable is implemented in R (we can create ordered factors following an ordinal scale) but otherwise this information is not saved in an R-object. This makes the knowledge of the scale, and what type of operations or methods can be used, very important for the analyst to know when programming. Otherwise it is very easy to end up in situations where we present or calculate inappropriate values or visualizations.
@@ -102,7 +102,7 @@ pop |>
 ggplot() + aes(x = value) + 
   geom_histogram(binwidth = 0.5) + 
   theme_bw() + 
-  ## Groups the histogram based on species
+  ## Facets the histogram based on species
   facet_grid(rows = vars(name)) +
   labs(x = "Population Density", y = "Count")
 
@@ -115,7 +115,8 @@ Another way to visualize a continuous variable is by using a box(-and-whiskers) 
 ### Measures of center
 A simple way to summarize the position of a variable is a *measure of center*. As the name implies, it describes where on the unit scale the values are centered around and gives an indication of the magnitude (level) of the values. 
 
-The most common measure of center is the mean which can be calculated on a continuous variable. The mean of a sample is calculated as:
+#### Mean
+The most common measure of center is the mean which can be calculated on a continuous variable. The mean of a sample is calculated as
 \begin{align*}
   \bar{x} = \frac{\sum_{i = 1}^n{x_i}}{n}
 \end{align*}
@@ -123,6 +124,107 @@ The most common measure of center is the mean which can be calculated on a conti
 where $\bar{x}$ (spoken as x bar) is the statistic that aims to estimate the population mean $\mu$ (the Greek letter mu). 
 
 :::{.callout-warning}
-Even though it is mathematically possible to calculate a mean of a discrete variable, the resulting value would not be a valid value. For instance the mean number of siblings of a person could be calculated to $1.6$ but you would not expect a randomly selected person to have $1$ full and $6/10$ of another sibling. The mean is therefore not interpretable on this type of variable. 
+Even though it is mathematically possible to calculate a mean of a discrete variable, the resulting value would not be an actual value of the variable. For instance the mean number of siblings of a person could be calculated to $1.6$ but you would not expect a randomly selected person to have $1$ full and $6/10$ of another sibling. The mean is therefore not interpretable on this type of variable. 
 :::
+
+Using the function `mean()`, alongside other `dplyr` functions, we can calculate the mean density of each of the different species in our data set.
+
+```{r}
+
+pop |> 
+  pivot_longer(
+    -c(patch,time),
+    # Gives proper names to the transformed variables
+    names_to = "Species",
+    values_to = "Density"
+  ) |> 
+  group_by(Species) |> 
+  summarize(
+    mean = mean(Density)
+  )
+
+```
+
+Each mean shows the position of the center for each variable (species) which can also be added to the visualization.
+
+```{r fig.width=4, fig.height=3, fig.cap="The distribution of three different species with marked means in red."}
+
+## Groups the values for simpler visualization
+pop |> 
+  pivot_longer(
+    -c(patch,time),
+    names_to = "Species",
+    values_to = "Density"
+  ) |> 
+  # Adds mean values to the data set prior to visualization
+  group_by(Species) |> 
+  mutate(
+    mean = mean(Density)
+  ) |> 
+ggplot() + aes(x = Density) + 
+  geom_histogram(binwidth = 0.5) + 
+  theme_bw() + 
+  # Facets the histogram based on species
+  facet_grid(rows = vars(Species)) +
+  labs(x = "Population Density", y = "Count") +
+  # Adds lines for the mean values of each variable
+  geom_segment(
+    # Defines boundaries for the segment
+    aes(
+      x = mean, xend = mean, 
+      y = 0, yend = 50
+      ),
+    linewidth = 1,
+    color = "red"
+  )
+
+```
+
+The mean gives us a measure of the center of the data, but as we can see in the visualizations sometimes the mean by itself misrepresents the data as a whole. For example the mean of `Species 2` is $`r mean(pop$species2) |> round(2)`%$ but the values of the variable are grouped either lower or higher than this value. The mean itself isn't actually an observed value. Compare this to the mean of `Species 1` ($`r mean(pop$species1) |> round(2)`%$) which actually falls within the values the variable has. This mean is better at describing the variable as a whole. 
+
+We would not have been able to draw these conclusions without visualizing the variable and this shows the importance of visualizations when describing data.
+
+#### Median
+Another instance when the mean misrepresents a variable's center is if there are *outliers* present in the data. An outlier is an observation that is located far away from the majority of the other observations. Their effect on the mean is moving the mean towards the direction of the outliers and thereby shifting the center away from the majority of the observations. This would be identified if we visualized the distribution alongside the mean but we can also use another measure of center as an alternative.
+
+The *median* is robust against outliers, it is not affected by them, and describes the middle observation if we were to sort the values in increasing size. Any extreme small or large value would not affect position of the middle value, which is what the median is.
+
+We can calculate the position of the median by
+\begin{align*}
+  position = \frac{n + 1}{2}
+\end{align*}
+
+which would result in either a whole number (if $n$ is odd) or a half number (if $n$ is even). The median would be the value of or between the position(s) calculated. The process of calculating the median can be done step by step as follows:
+
+```{r}
+
+# Sorts the densities from lowest to largest
+sort(pop$species1)
+
+# Finds the position of the median
+n <- length(pop$species1)
+
+# The position is 50.5
+position <- (n + 1)/2
+
+# Using the vector index find observation 50 and 51
+sort(pop$species1)[c(50, 51)]
+
+# The median is the mean of the two observations
+sort(pop$species1)[c(50, 51)] |> 
+  mean()
+
+```
+
+This becomes tedious to do multiple times but thankfully the function `median()` does everything all at once. Using the function the median value is also $`r median(pop$species1)`$.^[We would expect the same value as the function uses the same process as shown earlier.]
+
+#### Quantiles
+A generalization of the median is a *quantile* which aims to divide the ordered values into a specific number of parts and we can consider the median a quantile where the data is split up into two equal sized parts. Other common quantiles are *quartiles* which divide the data into four (quarters) equal sized parts.
+
+The first (splits data into 25% | 75%) and third quartile (splits 75% | 25%) can be used as additional measures to gain information about different positions.
+
+:::{.callout-note}
+The second quartile is actually just the median as it splits the data into two equally sized parts, 50% | 50%, the same as we defined in the median.
+:::
+
 
