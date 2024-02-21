@@ -72,7 +72,9 @@ We have already looked at different ways to visualize a distribution of a variab
 
 A qualitative variable should be visualized using a bar plot. If the variable follows the ordinal scale, the categories on the x-axis should follow the same order. If the variable follows the nominal scale we do not have to follow any specific order of the categories, but it is usually nice to order them alphabetically or in descending order based on the (relative) frequency of the category.
 
-```{r fig.width = 4, fig.height=3, fig.cap = "Distribution of patches of land with their absolute frequency."}
+```{r fig.width = 4, fig.height=3}
+#| label: fig-dist-abs
+#| fig-cap: Distribution of patches of land with their absolute frequency.
 
 ggplot(pop) + aes(x = patch) + geom_bar() +
   theme_bw() + labs(x = "Patch", y = "Count")
@@ -80,7 +82,10 @@ ggplot(pop) + aes(x = patch) + geom_bar() +
 ```
 When visualizing the distribution it is customary to use the relative frequency (%) of each category instead of the absolute frequency (count). This can be done directly in the `ggplot`-process without the need for additional data processing prior to the visualization. In this case, the default calculation done is `count`ing the number of occurrences of each category and the height (y) of the bars being defined by the count. The `after_stat()` function allows for calculations to be after the counting has been completed and `count / sum(count)` would calculate the relative frequency of each category compared to the total number of observations. If we multiply this value with $100$, we can show the percent of observations of each category.  
 
-```{r fig.width = 4, fig.height=3, fig.cap = "Distribution of patches of land with their relative frequency."}
+```{r fig.width = 4, fig.height=3}
+#| label: fig-dist-rel
+#| fig-cap: Distribution of patches of land with their relative frequency.
+
 
 ggplot(pop) + 
   ## Changes the calculation of the y-axis to (count / sum(count)) * 100 instead of the default, count
@@ -92,7 +97,9 @@ ggplot(pop) +
 ```
 A quantitative variable can be visualized in two different ways depending on the variable type. A discrete variable, which per definition only can assume whole (or a set number of decimals) numbers, can be visualized using a bar plot because it usually contains a finite number of unique values and at the same time cannot have values in between. A continuous variable can be measured with infinite amount of decimal places which means that there exist an infinite amount of unique values. Instead of having an infinite amount of bars in a bar plot, we group adjacent values together into intervals and create a histogram.
 
-```{r fig.width=4, fig.height=3, fig.cap="The distribution of the densitites of three different species."}
+```{r fig.width=4, fig.height=3}
+#| label: fig-dist
+#| fig-cap: The distribution of densitites for three different species.
 
 ## Groups the values for simpler visualization
 pop |> 
@@ -147,7 +154,10 @@ pop |>
 
 Each mean shows the position of the center for each variable (species) which can also be added to the visualization.
 
-```{r fig.width=4, fig.height=3, fig.cap="The distribution of three different species with marked means in red."}
+```{r fig.width=4, fig.height=3}
+#| label: fig-dist-mean
+#| fig-cap: The density distribution of three different species with marked means in red.
+
 
 ## Groups the values for simpler visualization
 pop |> 
@@ -161,53 +171,56 @@ pop |>
   mutate(
     mean = mean(Density)
   ) |> 
+  ## Begins visualization
 ggplot() + aes(x = Density) + 
   geom_histogram(binwidth = 0.5) + 
   theme_bw() + 
   # Facets the histogram based on species
   facet_grid(rows = vars(Species)) +
   labs(x = "Population Density", y = "Count") +
-  # Adds lines for the mean values of each variable
+  # Adds a custom segment to the visualization
   geom_segment(
-    # Defines boundaries for the segment
     aes(
+      # Defines the start and end values of the segment
       x = mean, xend = mean, 
       y = 0, yend = 50
       ),
+    # Defines the width and color of the segment
     linewidth = 1,
     color = "red"
   )
 
 ```
 
-The mean gives us a measure of the center of the data, but as we can see in the visualizations sometimes the mean by itself misrepresents the data as a whole. For example the mean of `Species 2` is $`r mean(pop$species2) |> round(2)`%$ but the values of the variable are grouped either lower or higher than this value. The mean itself isn't actually an observed value. Compare this to the mean of `Species 1` ($`r mean(pop$species1) |> round(2)`%$) which actually falls within the values the variable has. This mean is better at describing the variable as a whole. 
+The mean gives us a measure of the center of the data, but as we can see in the visualizations sometimes the mean by itself misrepresents the data as a whole. For example the mean of `Species 2` is $`r mean(pop$species2) |> round(2)`$% but the values of the variable are grouped either lower or higher than this value. The mean itself isn't actually close to an observed value. Compare this to the mean of `Species 1` ($`r mean(pop$species1) |> round(2)`$%) which actually falls close to observed values. The mean is better at describing this variable than the previous.
 
 We would not have been able to draw these conclusions without visualizing the variable and this shows the importance of visualizations when describing data.
 
 #### Median
-Another instance when the mean misrepresents a variable's center is if there are *outliers* present in the data. An outlier is an observation that is located far away from the majority of the other observations. Their effect on the mean is moving the mean towards the direction of the outliers and thereby shifting the center away from the majority of the observations. This would be identified if we visualized the distribution alongside the mean but we can also use another measure of center as an alternative.
+Another instance when the mean misrepresents a variable's center is if there are *outliers* present in the data. An outlier is an observation that is located far away from the majority of the other observations. They affect the mean by moving the measure towards the direction of the outliers and thereby shifting the center away from the majority of the observations. This could be identified if we visualized the distribution alongside the mean but we can also use another measure of center as an alternative.
 
-The *median* is robust against outliers, it is not affected by them, and describes the middle observation if we were to sort the values in increasing size. Any extreme small or large value would not affect position of the middle value, which is what the median is.
+The *median* is robust against outliers, it is not affected by them, and describes the middle observation if we were to order the values in increasing size. Any extreme small or large value would not affect position of the middle observation.
 
 We can calculate the position of the median by
 \begin{align*}
   position = \frac{n + 1}{2}
 \end{align*}
 
-which would result in either a whole number (if $n$ is odd) or a half number (if $n$ is even). The median would be the value of or between the position(s) calculated. The process of calculating the median can be done step by step as follows:
+which would result in either a whole number (if $n$ is odd) or a half number (if $n$ is even). The median would be the value of or between the position(s) found. The process of calculating the median can be done step by step as follows:
 
 ```{r}
 
-# Sorts the densities from lowest to largest
+# Order the densities from lowest to largest
 sort(pop$species1)
 
-# Finds the position of the median
+# Find the position of the median
 n <- length(pop$species1)
 
-# The position is 50.5
 position <- (n + 1)/2
 
-# Using the vector index find observation 50 and 51
+# The position is 50.5
+
+# Use vector indexing to find observation 50 and 51
 sort(pop$species1)[c(50, 51)]
 
 # The median is the mean of the two observations
@@ -219,7 +232,7 @@ sort(pop$species1)[c(50, 51)] |>
 This becomes tedious to do multiple times but thankfully the function `median()` does everything all at once. Using the function the median value is also $`r median(pop$species1)`$.^[We would expect the same value as the function uses the same process as shown earlier.]
 
 #### Quantiles
-A generalization of the median is a *quantile* which aims to divide the ordered values into a specific number of parts and we can consider the median a quantile where the data is split up into two equal sized parts. Other common quantiles are *quartiles* which divide the data into four (quarters) equal sized parts.
+A generalization of the median is a *quantile* which aims to divide the ordered values into a specific number of parts. For example, we can consider the median a quantile where the data is split up into two equal sized parts. Other common quantiles are *quartiles* which divide the data into four (quarters) equal sized parts.
 
 The first (splits data into 25% | 75%) and third quartile (splits 75% | 25%) can be used as additional measures to gain information about different positions.
 
@@ -227,4 +240,19 @@ The first (splits data into 25% | 75%) and third quartile (splits 75% | 25%) can
 The second quartile is actually just the median as it splits the data into two equally sized parts, 50% | 50%, the same as we defined in the median.
 :::
 
+The function `quantile()` is used to calculate specific quantiles of a variable via the argument `probs` that can be given one or more numeric values. If we want to calculate the three quartiles we would give the values `c(0.25, 0.50, 0.75)`.
 
+```{r}
+
+quartiles <- 
+  quantile(
+    pop$species1,
+    probs = c(0.25, 0.50, 0.75)
+  )
+
+quartiles
+
+```
+
+### Measures of spread or uncertainty
+As we saw in @fig-dist-mean, the measure of a center by itself does not provide the full picture of a variable. Species 1 and 2 had about the same mean value but the values of the observations are spread very different. When summarizing a variable it is also important to describe the spread of the values, the amount of variation they have.
