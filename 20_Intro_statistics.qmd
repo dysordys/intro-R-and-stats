@@ -255,4 +255,51 @@ quartiles
 ```
 
 ### Measures of spread or uncertainty
-As we saw in @fig-dist-mean, the measure of a center by itself does not provide the full picture of a variable. Species 1 and 2 had about the same mean value but the values of the observations are spread very different. When summarizing a variable it is also important to describe the spread of the values, the amount of variation they have.
+As we saw in @fig-dist-mean, the measure of a center by itself does not provide the full picture of a variable. Species 1 and 2 had about the same mean value but the values of the observations are spread very different. When summarizing a variable it is also important to describe the spread of the values, the amount of variation they have, as it gives a sense of how two variables with the same mean might differ.
+
+#### Standard deviation
+The *standard deviation* can be seen as the 'average distance from the mean', that is how far away from the mean do we expect a randomly selected value from the variable to be. The formula for the standard deviation is:
+\begin{align*}
+  s = \sqrt{\frac{\sum_{i = 1}^n{(x_i - \bar{x})^2}}{n - 1}}
+\end{align*}
+
+where $x_i$ is each observed value, $\bar{x}$ is the mean and $n$ is the number of observations.
+
+We can understand why the standard deviation is seen as an average by going through each step of the calculation. First we calculate the difference between the observed value and the mean where values further from the mean result in a bigger difference (negative or positive). 
+
+```{r}
+
+meanSpecies1 <- mean(pop$species1)
+
+pop$species1 - meanSpecies1
+
+```
+
+When calculating the average distance we need all values to be positive (you cannot have a negative distance) so we square all the values, making them all positive.
+
+```{r}
+
+(pop$species1 - meanSpecies1)^2
+
+```
+
+Next we sum all the squared differences so we get a sense of the total (squared) distance from every observation to the mean.
+
+```{r}
+
+(pop$species1 - meanSpecies1)^2 |> 
+  sum()
+
+```
+
+To get an average (squared) distance, we then divide by the number of observations or at least something that depends on the number of observations.^[We will return to why we do not use $n$ directly in a later chapter.]
+
+```{r}
+
+n <- length(pop$species1)
+
+(pop$species1 - meanSpecies1)^2 |> 
+  sum() / (n - 1)
+
+```
+
