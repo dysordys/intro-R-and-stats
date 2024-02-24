@@ -217,34 +217,34 @@ It is now obvious that the two observations are distinct. Due to this problem, m
 
 @Fauchaldetal2017 tracked the population size of various herds of caribou in North America over time, and correlated population cycling with the amount of vegetation and sea-ice cover. The part of their data that we will use consists of two files: [`pop_size.tsv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/pop_size.zip) (data on herd population sizes), and [`sea_ice.tsv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/sea_ice.zip) (on sea levels of sea ice cover per year and month).
 
-1. The file `sea_ice.tsv` is in human-readable, wide format. Note however that the rule "each set of observations is stored in its own row" is violated. We would like to organize the data in a tidy tibble with four columns: `Herd`, `Year`, `Month`, and `Cover`. To this end, apply the function `pivot_longer` to columns 3-14 in the tibble, gathering the names of the months in the new column `Month` and the values in the new column `Cover`.
+1.  The file `sea_ice.tsv` is in human-readable, wide format. Note however that the rule "each set of observations is stored in its own row" is violated. We would like to organize the data in a tidy tibble with four columns: `Herd`, `Year`, `Month`, and `Cover`. To this end, apply the function `pivot_longer` to columns 3-14 in the tibble, gathering the names of the months in the new column `Month` and the values in the new column `Cover`.
 
-2. Use `pop_size.tsv` to make a plot of herd sizes through time. Let the x-axis be Year, the y-axis be population size. Show different herds in different colors. For the geometry, use points.
+2.  Use `pop_size.tsv` to make a plot of herd sizes through time. Let the x-axis be Year, the y-axis be population size. Show different herds in different colors. For the geometry, use points.
 
-3. The previous plot is actually not that easy to see and interpret. To make it better, add a `line` geometry as well, which will connect the points with lines.
+3.  The previous plot is actually not that easy to see and interpret. To make it better, add a `line` geometry as well, which will connect the points with lines.
 
-4. Make a histogram out of all population sizes in the data.
+4.  Make a histogram out of all population sizes in the data.
 
-5. Make the same histogram, but break it down by herd, using a different color and fill for each herd.
+5.  Make the same histogram, but break it down by herd, using a different color and fill for each herd.
 
-6. Instead of a histogram, make a density plot with the same data and display (look up `geom_density` if needed).
+6.  Instead of a histogram, make a density plot with the same data and display (look up `geom_density` if needed).
 
-7. Make box plots of the population size of each herd. Along the x-axis, each herd should be separately displayed; the y-axis should be population size. The box plots should summarize population sizes across all years.
+7.  Make box plots of the population size of each herd. Along the x-axis, each herd should be separately displayed; the y-axis should be population size. The box plots should summarize population sizes across all years.
 
-8. Let us go back to `sea_ice.tsv`. Make the following plot. Along the x-axis, have `Year`. Along the y-axis, `Month`. Then, for each month-year pair, color the given part of the plot darker for lower ice cover and lighter for more. (Hint: look up `geom_tile` if needed.) Finally, make sure to do all this only for the herd with the label `WAH` (filter the data before plotting).
+8.  Let us go back to `sea_ice.tsv`. Make the following plot. Along the x-axis, have `Year`. Along the y-axis, `Month`. Then, for each month-year pair, color the given part of the plot darker for lower ice cover and lighter for more. (Hint: look up `geom_tile` if needed.) Finally, make sure to do all this only for the herd with the label `WAH` (filter the data before plotting).
 
 The following plotting exercises use the Galápagos land snail data (@sec-snail).
 
-9. Create a density plot (`geom_density`) with shell size along the x-axis and the corresponding density of individuals along the y-axis. How much overlap is there between the sizes of the different species?
+9.  Create a density plot (`geom_density`) with shell size along the x-axis and the corresponding density of individuals along the y-axis. How much overlap is there between the sizes of the different species?
 
-10. Repeat the above exercise, but use the standardized size instead of the raw measurements. As a reminder, this means subtracting out the mean from each entry, and dividing the results by the standard deviation (@sec-mutate). Make sure to have clean, descriptive axis labels on the plot. What is the difference between this figure and the one obtained in the previous exercise using the non-standardized size values?
+10. Repeat the above exercise, but use the standardized size instead of the raw measurements. As a reminder, this means subtracting out the minimum from each entry, and dividing the results by the difference of the maximum and minimum entries (@sec-mutate). Make sure to have clean, descriptive axis labels on the plot. What is the difference between this figure and the one obtained in the previous exercise using the non-standardized size values?
 
 11. Now do exercises 9-10 for shell shape instead of size.
 
-12. Create a scatterplot with `size` along the x-axis and `shape` along the y-axis. Each individual should be a point on the graph.
+12. Create a scatter plot with `size` along the x-axis and `shape` along the y-axis. Each individual should be a point on the graph.
 
 13. Repeat the same, but use the standardized `size` and `shape` measurements along the axes. Compare the figures. In what do they differ?
 
-14. Create the same scatterplot with standardized `size` along the x-axis and `shape` along the y-axis, but with the points colored based on `habitat`. That is, individuals found in `humid` environments should all have one color, and those found in `arid` regions should have another. Do you see any patterns, in terms of whether certain shell sizes or shapes are more associated with a given type of habitat?
+14. Create the same scatter plot with standardized `size` along the x-axis and `shape` along the y-axis, but with the points colored based on `habitat`. That is, individuals found in `humid` environments should all have one color, and those found in `arid` regions should have another. Do you see any patterns, in terms of whether certain shell sizes or shapes are more associated with a given type of habitat?
 
 15. Modify the previous plot by coloring the points based on species instead of habitat. How much trait overlap is there between individuals belonging to different species? How do you interpret this result, especially in light of what you previously saw in exercises 9-11?

@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -305,6 +305,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#variable-types" id="toc-variable-types" class="nav-link active" data-scroll-target="#variable-types"><span class="header-section-number">10.1</span> Variable types</a></li>
   <li><a href="#variable-scales" id="toc-variable-scales" class="nav-link" data-scroll-target="#variable-scales"><span class="header-section-number">10.2</span> Variable scales</a></li>
+  <li><a href="#summarizing-a-variable" id="toc-summarizing-a-variable" class="nav-link" data-scroll-target="#summarizing-a-variable"><span class="header-section-number">10.3</span> Summarizing a variable</a>
+  <ul class="collapse">
+  <li><a href="#distributions" id="toc-distributions" class="nav-link" data-scroll-target="#distributions"><span class="header-section-number">10.3.1</span> Distributions</a></li>
+  <li><a href="#measures-of-center" id="toc-measures-of-center" class="nav-link" data-scroll-target="#measures-of-center"><span class="header-section-number">10.3.2</span> Measures of center</a></li>
+  <li><a href="#measures-of-spread-or-uncertainty" id="toc-measures-of-spread-or-uncertainty" class="nav-link" data-scroll-target="#measures-of-spread-or-uncertainty"><span class="header-section-number">10.3.3</span> Measures of spread or uncertainty</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -336,14 +342,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"pop_data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This data set is a <em>sample</em> from a larger <em>population</em> and while it is not clear how the <em>units</em> in the sample (the different time points) have been selected, we can assume that they have been randomly selected from the population of all possible units.</p>
-<p>It would be impossible, if not very expensive, to collect data from all units in a population which means that we in practice work on samples of data. We are still interested in making conclusions about the population but these will be made from a smaller set of units that we actually can collect data from. The information we collect will be dependent on the units selected for the sample and any two samples will contain different units if the <em>sampling procedure</em> is done with any kind of <em>randomization</em>. This inherent randomness is a vital aspect of <em>statistical inference</em> which will be covered in a later chapter.</p>
+<p>It would be impossible, if not very expensive, to collect data from all units in a population which means that we in practice work on samples of data. We are still interested in making conclusions about the population but these will be made from a smaller set of units that we actually can collect data from. The information we collect will be dependent on the units selected for the sample and any two samples will contain different units if the <em>sampling procedure</em> is done with any kind of <em>randomization</em>.</p>
+<p>Properties or descriptive statistics calculated on the population are called <em>parameters</em> (<em>parameter</em> in singular) and these will have the same value because the population contains all units we are interested in. In the sample we instead calculate <em>statistics</em> (<em>statistic</em> in singular) which is an <em>estimate</em> of the population parameter. The value of a statistic will also be different depending on the sample drawn and this inherent randomness is a vital aspect of <em>statistical inference</em> which will be covered in a later chapter.</p>
 <!-- SOMETHING ABOUT BIAS?? -->
 <!--  -->
 <section id="variable-types" class="level2" data-number="10.1">
 <h2 data-number="10.1" class="anchored" data-anchor-id="variable-types"><span class="header-section-number">10.1</span> Variable types</h2>
 <p>The <code>pop</code> data set contains 5 variables of different types. A variable type is used to describe what type of information we can find within it and determines how we can further analyze the variable. We can separate variables into two main groups; <em>qualitative</em> and <em>quantitative</em> variables.</p>
 <p>Qualitative variables are those describing categories, for example nationalities, gender or colors. In our <code>pop</code> data the variable <code>patch</code> is qualitative as it describes a label used for patches of land. If we would choose to label the two patches as 1 and 2, the variable itself would still be qualitative as the numbers do not have a numeric meaning.</p>
-<p>Quantitative variables are those describing real numbers, for example the number of siblings, height, or final times in a 100 m race. The numbers represent real numeric values instead of just labels. There are two sub-types of quantitative variables; discrete and continuous. A discrete variable contain values of whole number or a limited amount of decimals. The number of siblings would be a discrete variable as you cannot have 2.32451 siblings and cannot measure the value with an infinite amount of decimals. Continuous variables on the other hand are able to be measured with this amount of detail, such as a person’s height that could be measured with a lot of detail.</p>
+<p>Quantitative variables are those describing real numbers, for example the number of siblings, height, or final times in a 100 m race. The numbers represent real numeric values instead of just labels. There are two sub-types of quantitative variables; discrete and continuous. A discrete variable contain values of whole number or a limited amount of decimals. The number of siblings would be a discrete variable as you cannot have <span class="math inline">\(2.32451\)</span> siblings and cannot measure the value with an infinite amount of decimals. Continuous variables on the other hand are able to be measured with this amount of detail, such as a person’s height that could be measured with a lot of detail.</p>
 <p>In our data set the three species’ density variables are considered continuous quantitative variables as they represent a real numeric value and they can be measured with infinite amount of decimals. Even though the loaded data set contain values with only two decimals, this is only done for rounding purposes and does not prevent the variable itself to be measured with infinite amount of decimals.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -372,18 +379,336 @@ Note
 <p>In addition to describing what values we can expect in a variable, we can also use a variable <em>scale</em> to get information how the values relate to one another. Both the type and scale of a variable are important aspects to define or learn before analyzing the variable to know which methods are suitable.</p>
 <p>Qualitative variables can be split into two different scales; <em>nominal</em> and <em>ordinal</em>.</p>
 <ul>
-<li><p>The nominal scale is defined by categories that <strong>cannot</strong> be ordered in any logical way, for instance it cannot be said that one patch of land is ‘better’ than the other.[^Note that there might exist other information, such as the size of the patches, that can be used to order the categories, but then we are ordering based on another variable and not the categories themselves.]</p></li>
-<li><p>The ordinal scale is defined by categories that <strong>can</strong> be ordered. Sizes of clothes are a good example of categories that can be ordered in such a way that the size continually increases (S &lt; M &lt; L), however we cannot define how much the difference actually is or if the difference is the same between two different adjacent categories.[^A quantitative variable could be considered following an ordinal scale if the measurements are intervals (0-4, 5-9, 10-19, etc.).]</p></li>
+<li><p>The nominal scale is defined by categories that <strong>cannot</strong> be ordered in any logical way, for instance it cannot be said that one patch of land is ‘better’ than the other.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p></li>
+<li><p>The ordinal scale is defined by categories that <strong>can</strong> be ordered. Sizes of clothes are a good example of categories that can be ordered in such a way that the size continually increases (S &lt; M &lt; L), however we cannot define how much the difference actually is or if the difference is the same between two different adjacent categories.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p></li>
 </ul>
 <p>Quantitative variables can also be split into two different scales; <em>interval</em> and <em>ratio</em>.</p>
 <ul>
 <li><p>The interval scale is a continuation of the ordinal scale where values can be ordered but with the added definition that differences can be calculated between values. An interval scale does not have a defined zero point where the thing being measured does not exist, for example temperature (<span class="math inline">\(^\circ\)</span>C).</p></li>
-<li><p>The ratio scale does have a defined zero point which extends the possibility to calculate ratios between values. We can say that the density of one species (<span class="math inline">\(0.1\)</span>) can be twice the size of the density of another (<span class="math inline">\(0.05\)</span>) because the value of 0 actually means that there is no presence of the species in the patch of land being measured.</p></li>
+<li><p>The ratio scale does have a defined zero point which extends the possibility to calculate ratios between values. We can say that the density of one species (<span class="math inline">\(0.1\)</span>) can be twice the size of the density of another (<span class="math inline">\(0.05\)</span>) because the value of <span class="math inline">\(0\)</span> actually means that there is no presence of the species in the patch of land being measured.</p></li>
 </ul>
-<!-- ## Measures of center -->
-<!-- Depending on the type of variable -->
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There is only one instance where the scale of the variable is implemented in R (we can create ordered factors following an ordinal scale) but otherwise this information is not saved in an R-object. This makes the knowledge of the scale, and what type of operations or methods can be used, very important for the analyst to know when programming. Otherwise it is very easy to end up in situations where we present or calculate inappropriate values or visualizations.</p>
+</div>
+</div>
+</section>
+<section id="summarizing-a-variable" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="summarizing-a-variable"><span class="header-section-number">10.3</span> Summarizing a variable</h2>
+<p>There are two main ways to summarize a variable; either visualize the <em>distribution</em> of it or present different descriptive statistics that provides information about different aspects of the variable.</p>
+<section id="distributions" class="level3" data-number="10.3.1">
+<h3 data-number="10.3.1" class="anchored" data-anchor-id="distributions"><span class="header-section-number">10.3.1</span> Distributions</h3>
+<p>We have already looked at different ways to visualize a distribution of a variable in <a href="07_Creating_figures.html"><span>Chapter&nbsp;7</span></a> which we can summarize as follows.</p>
+<p>A qualitative variable should be visualized using a bar plot. If the variable follows the ordinal scale, the categories on the x-axis should follow the same order. If the variable follows the nominal scale we do not have to follow any specific order of the categories, but it is usually nice to order them alphabetically or in descending order based on the (relative) frequency of the category.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pop) <span class="sc">+</span> <span class="fu">aes</span>(<span class="at">x =</span> patch) <span class="sc">+</span> <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Patch"</span>, <span class="at">y =</span> <span class="st">"Count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-dist-abs" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="20_Intro_statistics_files/figure-html/fig-dist-abs-1.png" class="img-fluid figure-img" width="384"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.1: Distribution of patches of land with their absolute frequency.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>When visualizing the distribution it is customary to use the relative frequency (%) of each category instead of the absolute frequency (count). This can be done directly in the <code>ggplot</code>-process without the need for additional data processing prior to the visualization. In this case, the default calculation done is <code>count</code>ing the number of occurrences of each category and the height (y) of the bars being defined by the count. The <code>after_stat()</code> function allows for calculations to be after the counting has been completed and <code>count / sum(count)</code> would calculate the relative frequency of each category compared to the total number of observations. If we multiply this value with <span class="math inline">\(100\)</span>, we can show the percent of observations of each category.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(pop) <span class="sc">+</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Changes the calculation of the y-axis to (count / sum(count)) * 100 instead of the default, count</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> patch, <span class="at">y =</span> <span class="fu">after_stat</span>(count <span class="sc">/</span> <span class="fu">sum</span>(count))<span class="sc">*</span><span class="dv">100</span>) <span class="sc">+</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Patch"</span>, <span class="at">y =</span> <span class="st">"Percent"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-dist-rel" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="20_Intro_statistics_files/figure-html/fig-dist-rel-1.png" class="img-fluid figure-img" width="384"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.2: Distribution of patches of land with their relative frequency.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A quantitative variable can be visualized in two different ways depending on the variable type. A discrete variable, which per definition only can assume whole (or a set number of decimals) numbers, can be visualized using a bar plot because it usually contains a finite number of unique values and at the same time cannot have values in between. A continuous variable can be measured with infinite amount of decimal places which means that there exist an infinite amount of unique values. Instead of having an infinite amount of bars in a bar plot, we group adjacent values together into intervals and create a histogram.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Groups the values for simpler visualization</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">|&gt;</span> </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fu">c</span>(patch,time)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">aes</span>(<span class="at">x =</span> value) <span class="sc">+</span> </span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Facets the histogram based on species</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">rows =</span> <span class="fu">vars</span>(name)) <span class="sc">+</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Population Density"</span>, <span class="at">y =</span> <span class="st">"Count"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-dist" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="20_Intro_statistics_files/figure-html/fig-dist-1.png" class="img-fluid figure-img" width="384"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.3: The distribution of densitites for three different species.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We do not differentiate between a variable following a interval or ratio scale when visualizing a distribution but it is something to take into account when interpreting the plots. For example if a variable follows the interval scale, we could not state that ‘the values are split into two main groups, one twice the value of the other’.</p>
+<p>Another way to visualize a continuous variable is by using a box(-and-whiskers) plot but this type of plot requires information about different measures of the variable, so we will return to this visualization later in this chapter.</p>
+</section>
+<section id="measures-of-center" class="level3" data-number="10.3.2">
+<h3 data-number="10.3.2" class="anchored" data-anchor-id="measures-of-center"><span class="header-section-number">10.3.2</span> Measures of center</h3>
+<p>A simple way to summarize the position of a variable is a <em>measure of center</em>. As the name implies, it describes where on the unit scale the values are centered around and gives an indication of the magnitude (level) of the values.</p>
+<section id="mean" class="level4">
+<h4 class="anchored" data-anchor-id="mean">Mean</h4>
+<p>The most common measure of center is the mean which can be calculated on a continuous variable. The mean of a sample is calculated as <span class="math display">\[\begin{align*}
+  \bar{x} = \frac{\sum_{i = 1}^n{x_i}}{n}
+\end{align*}\]</span></p>
+<p>where <span class="math inline">\(\bar{x}\)</span> (spoken as x bar) is the statistic that aims to estimate the population mean <span class="math inline">\(\mu\)</span> (the Greek letter mu).</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Even though it is mathematically possible to calculate a mean of a discrete variable, the resulting value would not be an actual value of the variable. For instance the mean number of siblings of a person could be calculated to <span class="math inline">\(1.6\)</span> but you would not expect a randomly selected person to have <span class="math inline">\(1\)</span> full and <span class="math inline">\(6/10\)</span> of another sibling. The mean is therefore not interpretable on this type of variable.</p>
+</div>
+</div>
+<p>Using the function <code>mean()</code>, alongside other <code>dplyr</code> functions, we can calculate the mean density of each of the different species in our data set.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fu">c</span>(patch,time),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Gives proper names to the transformed variables</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Species"</span>,</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Density"</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Species) <span class="sc">|&gt;</span> </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(Density)</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  Species   mean
+  &lt;chr&gt;    &lt;dbl&gt;
+1 species1  5.30
+2 species2  4.56
+3 species3  7.04</code></pre>
+</div>
+</div>
+<p>Each mean shows the position of the center for each variable (species) which can also be added to the visualization.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Groups the values for simpler visualization</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">|&gt;</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fu">c</span>(patch,time),</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Species"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Density"</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Adds mean values to the data set prior to visualization</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Species) <span class="sc">|&gt;</span> </span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(Density)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Begins visualization</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">aes</span>(<span class="at">x =</span> Density) <span class="sc">+</span> </span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.5</span>) <span class="sc">+</span> </span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Facets the histogram based on species</span></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">rows =</span> <span class="fu">vars</span>(Species)) <span class="sc">+</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Population Density"</span>, <span class="at">y =</span> <span class="st">"Count"</span>) <span class="sc">+</span></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Adds a custom segment to the visualization</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Defines the start and end values of the segment</span></span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> mean, <span class="at">xend =</span> mean, </span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> <span class="dv">0</span>, <span class="at">yend =</span> <span class="dv">50</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>      ),</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Defines the width and color of the segment</span></span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="dv">1</span>,</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"red"</span></span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-dist-mean" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="20_Intro_statistics_files/figure-html/fig-dist-mean-1.png" class="img-fluid figure-img" width="384"></p>
+<figcaption class="figure-caption">Figure&nbsp;10.4: The density distribution of three different species with marked means in red.</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The mean gives us a measure of the center of the data, but as we can see in the visualizations sometimes the mean by itself misrepresents the data as a whole. For example the mean of <code>Species 2</code> is <span class="math inline">\(4.56\)</span>% but the values of the variable are grouped either lower or higher than this value. The mean itself isn’t actually close to an observed value. Compare this to the mean of <code>Species 1</code> (<span class="math inline">\(5.3\)</span>%) which actually falls close to observed values. The mean is better at describing this variable than the previous.</p>
+<p>We would not have been able to draw these conclusions without visualizing the variable and this shows the importance of visualizations when describing data.</p>
+</section>
+<section id="median" class="level4">
+<h4 class="anchored" data-anchor-id="median">Median</h4>
+<p>Another instance when the mean misrepresents a variable’s center is if there are <em>outliers</em> present in the data. An outlier is an observation that is located far away from the majority of the other observations. They affect the mean by moving the measure towards the direction of the outliers and thereby shifting the center away from the majority of the observations. This could be identified if we visualized the distribution alongside the mean but we can also use another measure of center as an alternative.</p>
+<p>The <em>median</em> is robust against outliers, it is not affected by them, and describes the middle observation if we were to order the values in increasing size. Any extreme small or large value would not affect position of the middle observation.</p>
+<p>We can calculate the position of the median by <span class="math display">\[\begin{align*}
+  position = \frac{n + 1}{2}
+\end{align*}\]</span></p>
+<p>which would result in either a whole number (if <span class="math inline">\(n\)</span> is odd) or a half number (if <span class="math inline">\(n\)</span> is even). The median would be the value of or between the position(s) found. The process of calculating the median can be done step by step as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Order the densities from lowest to largest</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(pop<span class="sc">$</span>species1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1]  0.47  0.55  0.64  0.74  0.84  0.96  1.08  1.22  1.36  1.51  1.66  1.81
+ [13]  1.96  2.10  2.23  2.36  2.47  2.58  2.68  2.78  2.88  3.00  3.13  3.30
+ [25]  3.51  3.79  4.17  4.26  4.26  4.27  4.29  4.30  4.34  4.36  4.40  4.43
+ [37]  4.49  4.53  4.58  4.66  4.67  4.69  4.80  4.82  4.91  5.02  5.02  5.12
+ [49]  5.21  5.27  5.29  5.35  5.36  5.41  5.46  5.49  5.51  5.51  5.51  5.52
+ [61]  5.52  5.52  5.52  5.53  5.53  5.53  5.54  5.54  5.55  5.55  5.55  5.55
+ [73]  5.55  5.58  5.99  6.20  6.49  7.09  7.17  7.76  8.11  8.43  8.88  9.41
+ [85]  9.72  9.88  9.96  9.99 10.01 10.02 10.04 10.05 10.06 10.08 10.09 10.10
+ [97] 10.11 10.12 10.12 10.13</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the position of the median</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(pop<span class="sc">$</span>species1)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>position <span class="ot">&lt;-</span> (n <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># The position is 50.5</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Use vector indexing to find observation 50 and 51</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(pop<span class="sc">$</span>species1)[<span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">51</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5.27 5.29</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The median is the mean of the two observations</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sort</span>(pop<span class="sc">$</span>species1)[<span class="fu">c</span>(<span class="dv">50</span>, <span class="dv">51</span>)] <span class="sc">|&gt;</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5.28</code></pre>
+</div>
+</div>
+<p>This becomes tedious to do multiple times but thankfully the function <code>median()</code> does everything all at once. Using the function the median value is also <span class="math inline">\(5.28\)</span>.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+</section>
+<section id="quantiles" class="level4">
+<h4 class="anchored" data-anchor-id="quantiles">Quantiles</h4>
+<p>A generalization of the median is a <em>quantile</em> which aims to divide the ordered values into a specific number of parts. For example, we can consider the median a quantile where the data is split up into two equal sized parts. Other common quantiles are <em>quartiles</em> which divide the data into four (quarters) equal sized parts.</p>
+<p>The first (splits data into 25% | 75%) and third quartile (splits 75% | 25%) can be used as additional measures to gain information about different positions.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The second quartile is actually just the median as it splits the data into two equally sized parts, 50% | 50%, the same as we defined in the median.</p>
+</div>
+</div>
+<p>The function <code>quantile()</code> is used to calculate specific quantiles of a variable via the argument <code>probs</code> that can be given one or more numeric values. If we want to calculate the three quartiles we would give the values <code>c(0.25, 0.50, 0.75)</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>quartiles <span class="ot">&lt;-</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">quantile</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    pop<span class="sc">$</span>species1,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>quartiles</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   25%    50%    75% 
+3.7200 5.2800 6.0425 </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="measures-of-spread-or-uncertainty" class="level3" data-number="10.3.3">
+<h3 data-number="10.3.3" class="anchored" data-anchor-id="measures-of-spread-or-uncertainty"><span class="header-section-number">10.3.3</span> Measures of spread or uncertainty</h3>
+<p>As we saw in <a href="#fig-dist-mean">Figure&nbsp;<span>10.4</span></a>, the measure of a center by itself does not provide the full picture of a variable. Species 1 and 2 had about the same mean value but the values of the observations are spread very different. When summarizing a variable it is also important to describe the spread of the values, the amount of variation they have, as it gives a sense of how two variables with the same mean might differ.</p>
+<section id="standard-deviation" class="level4">
+<h4 class="anchored" data-anchor-id="standard-deviation">Standard deviation</h4>
+<p>The <em>standard deviation</em> can be seen as the ‘average distance from the mean’, that is how far away from the mean do we expect a randomly selected value from the variable to be. The formula for the standard deviation is: <span class="math display">\[\begin{align*}
+  s = \sqrt{\frac{\sum_{i = 1}^n{(x_i - \bar{x})^2}}{n - 1}}
+\end{align*}\]</span></p>
+<p>where <span class="math inline">\(x_i\)</span> is each observed value, <span class="math inline">\(\bar{x}\)</span> is the mean and <span class="math inline">\(n\)</span> is the number of observations.</p>
+<p>We can understand why the standard deviation is seen as an average by going through each step of the calculation. First we calculate the difference between the observed value and the mean where values further from the mean result in a bigger difference (negative or positive).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>meanSpecies1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(pop<span class="sc">$</span>species1)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>pop<span class="sc">$</span>species1 <span class="sc">-</span> meanSpecies1</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1]  3.1254  4.8254  2.4554  4.8154  1.7854  4.8154  1.1854  4.8054  0.6854
+ [10]  4.7954  0.2754  4.7854 -0.0346  4.7754 -0.2846  4.7554 -0.4846  4.7454
+ [19] -0.6446  4.7354 -0.7746  4.7154 -0.8746  4.7054 -0.9446  4.6854 -1.0046
+ [28]  4.6554 -1.0346  4.5754 -1.0446  4.4154 -1.0446  4.1054 -1.0146  3.5754
+ [37] -0.9646  2.8054 -0.9046  1.8654 -0.8146  0.8954 -0.7246  0.0454 -0.6146
+ [46] -0.6346 -0.5046 -1.1346 -0.3946 -1.5146 -0.2846 -1.7946 -0.1846 -2.0046
+ [55] -0.0946 -2.1746 -0.0146 -2.3046  0.0554 -2.4246  0.1054 -2.5246  0.1554
+ [64] -2.6246  0.1854 -2.7246  0.2154 -2.8346  0.2254 -2.9446  0.2454 -3.0746
+ [73]  0.2454 -3.2046  0.2454 -3.3446  0.2454 -3.4946  0.2454 -3.6446  0.2354
+ [82] -3.7946  0.2354 -3.9446  0.2254 -4.0846  0.2254 -4.2246  0.2154 -4.3446
+ [91]  0.2154 -4.4646  0.2154 -4.5646  0.2054 -4.6646  0.2054 -4.7546  0.2054
+[100] -4.8346</code></pre>
+</div>
+</div>
+<p>When calculating the average distance we need all values to be positive (you cannot have a negative distance) so we square all the values, making them all positive.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>(pop<span class="sc">$</span>species1 <span class="sc">-</span> meanSpecies1)<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  [1]  9.76812516 23.28448516  6.02898916 23.18807716  3.18765316 23.18807716
+  [7]  1.40517316 23.09186916  0.46977316 22.99586116  0.07584516 22.90005316
+ [13]  0.00119716 22.80444516  0.08099716 22.61382916  0.23483716 22.51882116
+ [19]  0.41550916 22.42401316  0.60000516 22.23499716  0.76492516 22.14078916
+ [25]  0.89226916 21.95297316  1.00922116 21.67274916  1.07039716 20.93428516
+ [31]  1.09118916 19.49575716  1.09118916 16.85430916  1.02941316 12.78348516
+ [37]  0.93045316  7.87026916  0.81830116  3.47971716  0.66357316  0.80174116
+ [43]  0.52504516  0.00206116  0.37773316  0.40271716  0.25462116  1.28731716
+ [49]  0.15570916  2.29401316  0.08099716  3.22058916  0.03407716  4.01842116
+ [55]  0.00894916  4.72888516  0.00021316  5.31118116  0.00306916  5.87868516
+ [61]  0.01110916  6.37360516  0.02414916  6.88852516  0.03437316  7.42344516
+ [67]  0.04639716  8.03495716  0.05080516  8.67066916  0.06022116  9.45316516
+ [73]  0.06022116 10.26946116  0.06022116 11.18634916  0.06022116 12.21222916
+ [79]  0.06022116 13.28310916  0.05541316 14.39898916  0.05541316 15.55986916
+ [85]  0.05080516 16.68395716  0.05080516 17.84724516  0.04639716 18.87554916
+ [91]  0.04639716 19.93265316  0.04639716 20.83557316  0.04218916 21.75849316
+ [97]  0.04218916 22.60622116  0.04218916 23.37335716</code></pre>
+</div>
+</div>
+<p>Next we sum all the squared differences so we get a sense of the total (squared) distance from every observation to the mean.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>(pop<span class="sc">$</span>species1 <span class="sc">-</span> meanSpecies1)<span class="sc">^</span><span class="dv">2</span> <span class="sc">|&gt;</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 746.0575</code></pre>
+</div>
+</div>
+<p>To get an average (squared) distance, we then divide by the number of observations or at least something that depends on the number of observations.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(pop<span class="sc">$</span>species1)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>(pop<span class="sc">$</span>species1 <span class="sc">-</span> meanSpecies1)<span class="sc">^</span><span class="dv">2</span> <span class="sc">|&gt;</span> </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>() <span class="sc">/</span> (n <span class="sc">-</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7.535934</code></pre>
+</div>
+</div>
 
 
+</section>
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Note that there might exist other information, such as the size of the patches, that can be used to order the categories, but then we are ordering based on another variable and not the categories themselves.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>A quantitative variable could be considered following an ordinal scale if the measurements are intervals (0-4, 5-9, 10-19, etc.).<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>We would expect the same value as the function uses the same process as shown earlier.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>We will return to why we do not use <span class="math inline">\(n\)</span> directly in a later chapter.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->

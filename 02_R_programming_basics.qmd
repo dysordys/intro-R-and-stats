@@ -262,7 +262,7 @@ x * 2
 
 What happened? Now you performed an operation on the vector as a whole, i.e., you multiplied each element of the vector by two. Remember: you can perform all the elementary operations on vectors as well, and then the result will be obtained by applying the operation on each element separately.
 
-Certain functions are specific to vectors. Try `mean(x)` and `var(x)` for instance (if you are not sure what these do, just ask by typing `?mean` or `?var`). Some others to try: `max`, `min`, `length`, `sum`, and `prod`.
+Certain functions are specific to vectors. Try `mean(x)` and `max(x)` for instance (if you are not sure what these do, just ask by typing `?mean` or `?max`). Some others to try: `min`, `median`, `sum`, `prod`, and `length`.
 
 One can quickly generate vectors of sequences of values, using one of two ways. First, the notation `1:10` generates a vector of integers ranging from 1 to 10 (inclusive), in steps of 1. Similarly, `2:7` generates the same vector as `c(2, 3, 4, 5, 6, 7)`, and so on. Second, the function `seq` generates sequences, starting with the first argument, ending with the second, in steps defined with the `by` argument. So calling
 
@@ -292,15 +292,15 @@ gives a vector whose second entry, `logicVec[2]`, is equal to `FALSE`, and its o
 ## Exercises
 
 1.  Which of the variable names below are valid, and why?
-    - `first.result.of_computation`
-    - `2nd.result.of_computation`
-    - `dsaqwerty`
-    - `dsaq werty`
-    - `` `dsaq werty` ``
-    - `break`
-    - `is this valid?...`
-    - `` `is this valid?...` ``
-    - `is_this_valid?...`
+    -   `first.result.of_computation`
+    -   `2nd.result.of_computation`
+    -   `dsaqwerty`
+    -   `dsaq werty`
+    -   `` `dsaq werty` ``
+    -   `break`
+    -   `is this valid?...`
+    -   `` `is this valid?...` ``
+    -   `is_this_valid?...`
 
 2.  In a single line of R code, calculate the number of seconds in a leap year.
 
@@ -313,14 +313,14 @@ gives a vector whose second entry, `logicVec[2]`, is equal to `FALSE`, and its o
 6.  The breeder's equation states that the response to selection (how much the average trait of a population changes in one generation) is equal to the selection differential (mean difference of the selected parents' traits from the population average) times the heritability of the trait (a number between 0 and 1, documenting the fraction of the variation in the trait due to genetic vs. other, non-heritable factors). In terms of an equation: $R = S \cdot h^2$, where $R$ is the response to selection, $S$ is the selection differential, and $h^2$ is the heritability. Assume now that a constant selection differential of $S = 0.5$ is applied to wing length in a population of crickets, where the mean wing length is initially 8 millimeters. The heritability is $h^2 = 0.74$. What will be the mean wing length in the population after one generation? After two generations? After three generations?
 
 7.  Create a vector called `z`, with entries 1.2, 5, 3, 13.7, 6.66, and 4.2 (in that order). Then, by applying functions to this vector, obtain:
-    - Its smallest entry.
-    - Its largest entry.
-    - The sum of all its entries.
-    - The number of entries in the vector.
-    - The vector's entries sorted in increasing order (Hint: look up the function `sort`).
-    - The vector's entries sorted in decreasing order.
-    - The product of the fourth entry with the difference of the third and sixth entries. Then take the absolute value of the result.
+    -   Its smallest entry.
+    -   Its largest entry.
+    -   The sum of all its entries.
+    -   The number of entries in the vector.
+    -   The vector's entries sorted in increasing order (Hint: look up the function `sort`).
+    -   The vector's entries sorted in decreasing order.
+    -   The product of the fourth entry with the difference of the third and sixth entries. Then take the absolute value of the result.
 
 8.  Define a vector of strings, called `s`, with the three entries `"the fat cat"`, `"sat on"`, and `"the mat"`.
-    - Combine these three strings into a single string, and print it on the screen. (Hint: look up the help page for the `paste` function, in particular its `collapse` argument.)
-    - Reverse the entries of `s`, so they come in the order `"the mat"`, `"sat on"`, and `"the fat cat"` (hint: check out the `rev` function). Then merge the three strings again into a single one, and print it on the screen.
+    -   Combine these three strings into a single string, and print it on the screen. (Hint: look up the help page for the `paste` function, in particular its `collapse` argument.)
+    -   Reverse the entries of `s`, so they come in the order `"the mat"`, `"sat on"`, and `"the fat cat"` (hint: check out the `rev` function). Then merge the three strings again into a single one, and print it on the screen.

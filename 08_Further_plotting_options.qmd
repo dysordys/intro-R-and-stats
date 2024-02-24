@@ -178,14 +178,14 @@ In the previous examples, the order of text labels was always automatically dete
 
 ```{r}
 #| message: false
-read_csv("temp-Lin.csv")
+read_delim("temp-Lin.csv", delim = ",")
 ```
 
 The table has two columns: `month` and `temp_C`, giving the mean temperature in each month across years 1991-2021.^[Data from <https://climate-data.org>.] So far so good. However, if we plot this with months along the x-axis and temperature along the y-axis, we run into trouble because R displays items by alphabetical instead of chronological order:
 
 ```{r}
 #| message: false
-read_csv("temp-Lin.csv") |>
+read_delim("temp-Lin.csv", delim = ",") |>
   ggplot(aes(x = month, y = temp_C)) +
   geom_point(colour = "steelblue") +
   scale_y_continuous(name = "average temperature (Celsius)") +
@@ -198,7 +198,7 @@ One very convenient way of assigning factor levels is through the `tidyverse` fu
 
 ```{r}
 #| message: false
-read_csv("temp-Lin.csv") |>
+read_delim("temp-Lin.csv", delim = ",") |>
   mutate(month = as_factor(month)) |>
   ggplot(aes(x = month, y = temp_C)) +
   geom_point(colour = "steelblue") +
@@ -210,7 +210,7 @@ It is also possible to take a factor and reassign its levels manually. This can 
 
 ```{r}
 #| message: false
-read_csv("temp-Lin.csv") |>
+read_delim("temp-Lin.csv", delim = ",") |>
   mutate(month = fct_relevel(month, "Jan", "Feb", "Mar", "Apr", "May", "Jun",
                              "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")) |>
   ggplot(aes(x = month, y = temp_C)) +
@@ -320,14 +320,14 @@ ggsave(filename = "graph.pdf", plot = p, width = 4, height = 3)
 
 Let us revisit the data of @Fauchaldetal2017 which we used in @sec-ggplot-exercises, tracking the population size of various herds of caribou in North America over time and correlating population cycling with the amount of vegetation and sea-ice cover. Using the file [`sea_ice.tsv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/sea_ice.zip) (sea ice cover per year and month for each caribou herd), do the following:
 
-1. One exercise from @sec-ggplot-exercises was to plot `Year` along the x-axis and `Month` along the y-axis, with color tile shading indicating the level of ice cover for the herd labeled `WAH` in each month-year pair (using `geom_tile`). The resulting graph had an obvious weakness: the months along the y-axis were not in proper chronological order. Fix this problem by converting the `Month` column from character strings to factors whose levels go from January to December.
+1.  One exercise from @sec-ggplot-exercises was to plot `Year` along the x-axis and `Month` along the y-axis, with color tile shading indicating the level of ice cover for the herd labeled `WAH` in each month-year pair (using `geom_tile`). The resulting graph had an obvious weakness: the months along the y-axis were not in proper chronological order. Fix this problem by converting the `Month` column from character strings to factors whose levels go from January to December.
 
-2. Create a similar plot, but do not filter for one single herd. Instead, have each herd occupy a different facet (sub-plot). Do this with the different herds making up a single row of facets, and then a single column of them.
+2.  Create a similar plot, but do not filter for one single herd. Instead, have each herd occupy a different facet (sub-plot). Do this with the different herds making up a single row of facets, and then a single column of them.
 
-3. Since there are 11 different herds altogether, neither the row-wise nor the column-wise arrangement of the facets above is very satisfying: there are too many of them next to one another. Try re-plotting the results, but instead of `facet_grid`, use `facet_wrap(~ Herd)` which allows one to lay out the facets in several rows. (As usual, look up the help pages of `facet_wrap` if needed.)
+3.  Since there are 11 different herds altogether, neither the row-wise nor the column-wise arrangement of the facets above is very satisfying: there are too many of them next to one another. Try re-plotting the results, but instead of `facet_grid`, use `facet_wrap(~ Herd)` which allows one to lay out the facets in several rows. (As usual, look up the help pages of `facet_wrap` if needed.)
 
 The remaining exercises use the Galápagos land snail data (@sec-snail).
 
-4. Create a plot with standardized `size` along the x-axis, standardized `shape` along the y-axis, each individual represented by a point colored by `species`, and with two facets corresponding to humid and arid `habitat` types. The facets should be side by side. How does this figure influence the interpretation you had in @sec-ggplot-exercises, exercise 15? That is: does the splitting of communities based on habitat type increase or decrease the overlap between different species?
+4.  Create a plot with standardized `size` along the x-axis (you can review what standardization means in @sec-mutate), standardized `shape` along the y-axis, each individual represented by a point colored by `species`, and with two facets corresponding to humid and arid `habitat` types. The facets should be side by side. How does this figure influence the interpretation you had in @sec-ggplot-exercises, exercise 15? That is: does the splitting of communities based on habitat type increase or decrease the overlap between different species?
 
-5. Re-create the previous plot with the two side-by-side facets, but in reverse order: the `humid` facet should be on the left and `arid` on the right. (Hint: convert `habitat` to factors!)
+5.  Re-create the previous plot with the two side-by-side facets, but in reverse order: the `humid` facet should be on the left and `arid` on the right. (Hint: convert `habitat` to factors!)

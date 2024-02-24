@@ -8,79 +8,130 @@ Let us start by loading the `tidyverse`:
 library(tidyverse)
 ```
 
-As seen from the message output above, the `dplyr` package is part of the `tidyverse` and gets loaded by default. It allows one to arrange and manipulate data efficiently. The basic functions one should know are `select`, `filter`, `slice`, `rename`, `arrange`, and `mutate`. Additionally, a useful (though not as commonly used) function is `distinct`, also explained below. We will use the [`island-FL.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/island-FL-csv.zip) data file we worked with in @sec-reading:
+As seen from the message output above, the `dplyr` package is part of the `tidyverse` and gets loaded by default. It allows one to arrange and manipulate data efficiently. Some of the functions manipulate the data based on its columns, and others do so based on its rows. The basic column-manipulating functions one should know are `select`, `rename`, and `mutate`. The row-manipulating ones are `filter`, `slice`, `arrange`, and `distinct`. Each of these functions work similarly in that:
+
+-   The first argument they take is the data, in the form of a tibble;
+-   Their other arguments are given in terms of the column names of the data;
+-   They return another tibble.
+
+We now explain each of these below. We will use the [`island-FL.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/island-FL-csv.zip) data file we worked with in @sec-reading:
 
 ```{r}
 #| message: false
-snailDat <- read_csv("island-FL.csv")
-print(snailDat)
+snails <- read_delim("island-FL.csv", delim = ",")
+print(snails)
 ```
-
-Now we will give examples of each of the functions `select`, `filter`, `slice`, `rename`, `arrange`, `mutate`, and `distinct`. They all work similarly in that the first argument they take is the data, in the form of a tibble. Their other arguments, and what they each do, are explained below.
 
 ### `select` {#sec-select}
 
-This function chooses *columns* of the data. The second and subsequent arguments of the function are the columns which should be retained. For example, `select(snailDat, species)` will keep only the `species` column of `snailDat`:
+This function chooses *columns* of the data. The second and subsequent arguments of the function are the columns which should be retained. For example, `select(snails, species)` will keep only the `species` column of `snails`:
 
 ```{r}
-select(snailDat, species)
+select(snails, species)
 ```
 
-It is also possible to deselect columns, by prepending a minus sign (`-`) in front of the column names. To drop the `species` column, we can type:
+It is also possible to deselect columns, by prepending an exclamation mark (`!`) in front of the column names. To drop the `species` column, we can type:
 
 ```{r}
-select(snailDat, -species)
+select(snails, !species)
 ```
 
-Now we are left with only the columns `habitat`, `size`, and `shape`. One can also select and deselect multiple columns in a similar vein. For example, `select(snailDat, -species, -habitat)` removes both columns and leaves only `size`, and `shape` (try it).
+Now we are left with only the columns `habitat`, `size`, and `shape`.
 
-There are several other options within `select`, which mostly help with selecting several columns at a time fulfilling certain criteria. The collection of these options and methods is called *tidy selection*. First of all, tidy selection allows one to specify, as character strings, what the column names should start or end with, using `starts_with` and `ends_with`:
+There are several other options within `select`, which mostly help with selecting several columns at a time fulfilling certain criteria. The collection of these options and methods is called *tidy selection*. First of all, it is possible to select a range of columns using the colon (`:`) operator. The following selection will choose the columns `species` and `shape`, and everything in between (which in this case is the column `size`):
 
 ```{r}
-select(snailDat, starts_with("s"))
-select(snailDat, starts_with("sh"))
-select(snailDat, ends_with("e"))
-select(snailDat, ends_with("pe"))
+select(snails, species:shape)
 ```
 
-Similarly, the function `contains` can select columns which contain some string anywhere in their names. For example, `select(snailDat, ends_with("pe"))` above only selected the `shape` column, but `select(snailDat, contains("pe"))` additionally selects `species`:
+Second, tidy selection allows one to specify, as character strings, what the column names should start or end with, using `starts_with` and `ends_with`:
 
 ```{r}
-select(snailDat, contains("pe"))
+select(snails, starts_with("s"))
+select(snails, starts_with("sh"))
+select(snails, ends_with("e"))
+select(snails, ends_with("pe"))
 ```
 
-One can combine these selection methods using the `&` ("and"), `|` ("or"), and `!` ("not") logical operators. To select all columns which start with `"s"` but do not contain the letter `"z"` in their names:
+Similarly, the function `contains` can select columns which contain some string anywhere in their names. For example, `select(snails, ends_with("pe"))` above only selected the `shape` column, but `select(snails, contains("pe"))` additionally selects `species`:
 
 ```{r}
-select(snailDat, starts_with("s") & !contains("z"))
+select(snails, contains("pe"))
+```
+
+Third, one can combine these selection methods using the `&` ("and"), `|` ("or"), and `!` ("not") logical operators. To select columns called either `size` or `shape` (i.e., selecting those two and no others):
+
+```{r}
+select(snails, size | shape)
+```
+
+To select all columns which start with `"s"` but do not contain the letter `"z"` in their names:
+
+```{r}
+select(snails, starts_with("s") & !contains("z"))
 ```
 
 The following selects columns that either contain `"ha"` in their names, or end with the letter `"s"`:
 
 ```{r}
-select(snailDat, contains("ha") | ends_with("s"))
+select(snails, contains("ha") | ends_with("s"))
 ```
 
-Finally, it is possible to select a range of columns, using the colon (`:`) operator. To select the columns `species` and `shape`, along with any columns in between them, we write:
+One can even combine range selection with the logical operations above. For instance, to select the range from `habitat` to `species`, as well as any columns whose name contains the letter `"z"`:
 
 ```{r}
-select(snailDat, species:shape)
+select(snails, habitat:species | contains("z"))
 ```
 
-Such range selection can also be combined with the logical operations above. For instance, to select the range from `habitat` to `species`, as well as any columns whose name contains the letter `"z"`:
+Finally, there is a way to select all columns, with the `everything` helper function:
 
 ```{r}
-select(snailDat, habitat:species | contains("z"))
+select(snails, everything())
+```
+
+### `rename`
+
+The `rename` function simply gives new names to existing columns. The first argument, as always, is the tibble in which the column(s) should be renamed. The subsequent arguments follow the pattern `new_name = old_name` in replacing column names. For example, in the land snail data, the arid and humid habitats are often referred to as arid or humid *zones*. To rename `habitat` to `zone`, we simply write:
+
+```{r}
+rename(snails, zone = habitat)
+```
+
+Multiple columns can also be renamed. To change all column names to start with capital letters:
+
+```{r}
+rename(snails,
+       Habitat = habitat, Species = species, Size = size, Shape = shape)
+```
+
+### `mutate` {#sec-mutate}
+
+The `mutate` function allows us to create new columns from existing ones. We may apply any function or operator we learned about to existing columns, and the result of the computation will go into the new column. We do this in the second argument of `mutate` (the first, as always, is the data tibble) by first giving a name to the column, then writing `=`, and then the desired computation. For example, we could create a new column indicating whether a snail is "large" (has a shell size above some threshold---say, 25) or "small". We can do this using the `ifelse` function within `mutate`:
+
+```{r}
+mutate(snails, shellSize = ifelse(size > 25, "large", "small"))
+```
+
+The original columns of the data are retained, but we now also have the additional `shellSize` column.
+
+One very common transformation on quantities such as `size` and `shape` is to *standardize* them. There are various methods for standardization, but all of them entail shifting the data in some way, and making them unitless. One example for such standardization is to change the measurement scale such that all measured values fall in the range from 0 to 1. This can be achieved in two steps: first, we subtract off the *minimum* value in the data from every entry (this ensures that no point falls below 0), and then we divide each of these shifted values by the *difference* between the maximum and the minimum values (which squeezes the points between 0 and 1). Here is how one can perform this standardization with `mutate`:
+
+```{r}
+mutate(
+  snails,
+  stdSize  = (size  - min(size))  / (max(size)  - min(size)),
+  stdShape = (shape - min(shape)) / (max(shape) - min(shape))
+)
 ```
 
 ### `filter`
 
 While `select` chooses columns, `filter` chooses rows from the data. As with all these functions, the first argument of `filter` is the tibble to be filtered. The second argument is a logical condition on the columns. Those rows which satisfy the condition are retained; the rest are dropped. Thus, `filter` keeps only those rows of the data which fulfill some condition.
 
-For example, to retain only those individuals from `snailDat` whose shell size is at least 29:
+For example, to retain only those individuals from `snails` whose shell size is at least 29:
 
 ```{r}
-filter(snailDat, size >= 29)
+filter(snails, size >= 29)
 ```
 
 The filtered data have only 6 rows instead of the original 223---this is the number of snail individuals with a very large shell size. As seen, five of these belong in the species *Naesiotus unifasciatus*, and only one in the species *Naesiotus nux*.
@@ -90,84 +141,51 @@ The filtered data have only 6 rows instead of the original 223---this is the num
 With `slice`, one can choose rows of the data, just like with `filter`. Unlike with `filter` however, `slice` receives a vector of row indices to retain instead of a condition to be tested on each row. So, for example, if one wanted to keep only the first, second, and fifth rows, then one can do so with `slice`:
 
 ```{r}
-slice(snailDat, c(1, 2, 5))
+slice(snails, c(1, 2, 5))
 ```
 
-(Note: the numbers in front of the rows in the output generated by tibbles always pertain to the row numbers of the *current table*, not the one from which they were created. So the row labels `1`, `2`, `3` above simply enumerate the rows of the sliced data. The actual rows still correspond to rows 1, 2, and 5 in the original `snailDat`.)
-
-### `rename`
-
-The `rename` function simply gives new names to existing columns. The first argument, as always, is the tibble in which the column(s) should be renamed. The subsequent arguments follow the pattern `new_name = old_name` in replacing column names. For example, in the land snail data, the arid and humid habitats are often referred to as arid or humid *zones*. To rename `habitat` to `zone`, we simply write:
-
-```{r}
-rename(snailDat, zone = habitat)
-```
-
-Multiple columns can also be renamed. To change all column names to start with capital letters:
-
-```{r}
-rename(snailDat,
-       Habitat = habitat, Species = species, Size = size, Shape = shape)
-```
+(Note: the numbers in front of the rows in the output generated by tibbles always pertain to the row numbers of the *current table*, not the one from which they were created. So the row labels `1`, `2`, `3` above simply enumerate the rows of the sliced data. The actual rows still correspond to rows 1, 2, and 5 in the original `snails`.)
 
 ### `arrange`
 
 This function rearranges the rows of the data, in increasing order of the column given as the second argument. For example, to arrange in increasing order of `size`, we write:
 
 ```{r}
-arrange(snailDat, size)
+arrange(snails, size)
 ```
 
 To arrange in decreasing order, there is a small helper function called `desc`. Arranging by `desc(size)` instead of `size` will arrange the rows in decreasing order of `size`:
 
 ```{r}
-arrange(snailDat, desc(size))
+arrange(snails, desc(size))
 ```
 
 It is also perfectly possible to arrange by a column whose type is character string. In that case, the system will sort the rows in alphabetical order---or reverse alphabetical order in case `desc` is applied. For example, to sort in alphabetical order of species names:
 
 ```{r}
-arrange(snailDat, species)
+arrange(snails, species)
 ```
 
 And to sort in reverse alphabetical order:
 
 ```{r}
-arrange(snailDat, desc(species))
+arrange(snails, desc(species))
 ```
 
 Notice that when we sort the rows by `species`, there are many ties---rows with the same value of `species`. In those cases, `arrange` will not be able to decide which rows should come earlier, and so any ordering that was present before invoking `arrange` will be retained. In case we would like to break the ties, we can give further sorting variables, as the third, fourth, etc. arguments to `arrange`. To sort the data by `species`, and to resolve ties in order of increasing `size`, we write:
 
 ```{r}
-arrange(snailDat, species, size)
+arrange(snails, species, size)
 ```
 
 This causes the table to be sorted primarily by `species`, but in case there are ties (equal `species` between multiple rows), they will be resolved in priority of `size`---first the smallest and then increasingly larger individuals.
 
-### `mutate` {#sec-mutate}
-
-The `mutate` function allows us to create new columns from existing ones. We may apply any function or operator we learned about to existing columns, and the result of the computation will go into the new column. We do this in the second argument of `mutate` (the first, as always, is the data tibble) by first giving a name to the column, then writing `=`, and then the desired computation. For example, we could create a new column indicating whether a snail is "large" (has a shell size above some threshold---say, 25) or "small". We can do this using the `ifelse` function within `mutate`:
-
-```{r}
-mutate(snailDat, shellSize = ifelse(size > 25, "large", "small"))
-```
-
-The original columns of the data are retained, but we now also have the additional `shellSize` column.
-
-One very common transformation on quantities such as `size` and `shape` is to *standardize* them: subtract the overall mean from each entry and then divide the result by the standard deviation. This makes the quantities unitless with mean 0 and standard deviation 1. This is how one can perform this standardization with `mutate`:
-
-```{r}
-mutate(snailDat,
-       stdSize = (size - mean(size)) / sd(size),
-       stdShape = (shape - mean(shape)) / sd(shape))
-```
-
 ### `distinct` {#sec-distinct}
 
-While not as important as the previous six functions, `distinct` can also be useful. It takes as its input a tibble, and removes all rows that contain exact copies of any other row. For example, we might wonder how many different species there are in `snailDat`. One way to answer this is to `select` the `species` column only, and then apply `distinct` to remove duplicated entries:
+While not as important as the previous six functions, `distinct` can also be useful. It takes as its input a tibble, and removes all rows that contain exact copies of any other row. For example, we might wonder how many different species there are in `snails`. One way to answer this is to `select` the `species` column only, and then apply `distinct` to remove duplicated entries:
 
 ```{r}
-distinct(select(snailDat, species))
+distinct(select(snails, species))
 ```
 
 So each individual in the data comes from one of the above seven species.
@@ -175,83 +193,92 @@ So each individual in the data comes from one of the above seven species.
 
 ## Using pipes to our advantage
 
-Let us take a slightly more complicated (and quite typical) data analysis task. We want to answer the question: how many species are there with at least some individuals whose standardized shell size is larger than a threshold---say, 2? This corresponds to individuals whose size is two standard deviations above the community average.
+Let us take a slightly more complicated version of the above task. We are still looking for all the species in the data, but we want to display their names with the genus name *Naesiotus* added, and then sort the names in alphabetical order. We can break down the solution into the following steps that should be executed in sequence:
 
-To obtain an answer, we could first `mutate` a new column that contains the standardized shell size for each individual. We can then `filter` for those rows only for which this is greater than 2. Afterwards, we can use `select` to choose just the `species` column. This will likely have repeated entries (because multiple individuals from the same species could have a standardized size greater than 2), so as a final step, we should remove duplicated rows with `distinct`.
+-   Choose the `species` column from the data and discard all the others. This can be done using `select`.
+-   Remove duplicate rows with `distinct`, so that each species appears only once.
+-   Add `"Naesiotus"` to the name of each species, e.g., using the `paste` function (@sec-strings) within `mutate`.
+-   Finally, sort the names in alphabetical order with `arrange`.
 
-Since `mutate`, `filter`, `select`, `distinct`, etc. are just ordinary functions, they do not "modify" data. They merely take a tibble as input (plus other arguments) and return another tibble. They do not do anything to the original input data. In order for R not to forget their result immediately after they are computed, they have to be stored in variables. So one way of implementing the solution might rely on repeated assignments, as below:
+Since `select`, `mutate`, `arrange`, etc. are just ordinary functions, they do not "modify" data. They merely take a tibble as input (plus other arguments) and return another tibble. They do not do anything to the original input data. In order for R not to forget their result immediately after they are computed, they have to be stored in variables. So one way of implementing the solution might rely on repeated assignments, as below:
 
 ```{r}
-mutatedDat <- mutate(snailDat, stdSize = (size - mean(size)) / sd(size))
-filteredDat <- filter(mutatedDat, stdSize > 2)
-onlySpeciesDat <- select(filteredDat, species)
-speciesListDat <- distinct(onlySpeciesDat)
-print(speciesListDat)
+snailSpecies <- select(snails, species)
+snailUnique <- distinct(snailSpecies)
+snailNamesFull <- mutate(snailUnique,
+                   species = paste("Naesiotus", species))
+snailNamesSorted <- arrange(snailNamesFull, species)
+print(snailNamesSorted)
 ```
 
-It turns out that only two out of the seven species have individuals with shells that large.
-
-While this solution works, it requires inventing arbitrary variable names at every step, or else overwriting variables. For such a short example, this is not problematic, but doing the same for a long pipeline of dozens of steps could get confusing, as well as dangerous due to the repeatedly modified variables.
+As seen, this solution works. However, it requires inventing arbitrary variable names at every step. For such a short example, this is not problematic, but doing the same for a long pipeline of dozens of steps could get confusing. One solution to this problem could be to not use different names, but instead keep overwriting `snails` at every step. But this can lead to other problems arising from the fact that the value of `snails` might not be what we expect at any given time. While the solution with repeated assignments is viable, there ought to be better options out there.
 
 Another possible solution is to rely on function composition (@sec-funccomp). Applying repeated composition is straightforward---in principle. In practice, when composing many functions together, things can get unwieldy quite quickly. Let us see what such a solution looks like:
 
 ```{r}
-distinct(
-  select(
-    filter(
-      mutate(snailDat, stdSize = (size - mean(size)) / sd(size)),
-      stdSize > 2
+arrange(
+  mutate(
+    distinct(
+      select(snails, species)
     ),
-    species
-  )
+    species = paste("Naesiotus", species)
+  ),
+  species
 )
 ```
 
 The expression is highly unpleasant: to a human reader, it is not at all obvious what is happening above. It would be nice to clarify this workflow if possible.
 
-It turns out that one can do this by making use of the pipe operator `|>` from @sec-pipes. As a reminder: for any function `f` and function argument `x`, `f(x, y, ...)` is the same as `x |> f(y, ...)`, where the `...` denote potential further arguments to `f`. That is, the first argument of the function can be moved from the argument list to in front of the function, before the pipe symbol. The `tidyverse` functions take the data as their first argument, which means that the use of pipes allow us to very conveniently chain together multiple steps of data analysis. In our case, we can rewrite the above (quite confusing) code block in a much more transparent way:
+It turns out that one can do this by making use of the pipe operator `|>` from @sec-pipes. As a reminder: for any function `f` and function argument `x`, `f(x, y, ...)` is the same as `x |> f(y, ...)`, where the `...` denote potential further arguments to `f`. That is, the first argument of the function can be moved from the argument list to in front of the function, before the pipe symbol. The `tidyverse` functions take a tibble as their first argument and always return another tibble. This means that the use of pipes allow us to very conveniently chain together multiple steps of data analysis. In our case, we can rewrite the above (quite confusing) code block in a much more transparent way:
 
 ```{r}
 #| eval: false
-snailDat |>
-  mutate(stdSize = (size - mean(size)) / sd(size)) |>
-  filter(stdSize > 2) |>
+snails |>
   select(species) |>
-  distinct()
+  distinct() |>
+  mutate(species = paste("Naesiotus", species)) |>
+  arrange(species)
 ```
 
-Again, the pipe `|>` should be pronounced *then*. We take the data, *then* we mutate it, *then* we filter for large-shelled individuals, *then* we select one of the columns, and *then* we remove all duplicated entries in that column. In performing these steps, each function both receives and returns data. Thus, by starting out with the original `snailDat`, we no longer need to write out the data argument of the functions explicitly. Instead, the pipe takes care of that automatically for us, making the functions receive as their first input the piped-in data, and in turn producing transformed data as their output---which becomes the input for the next function in line.
+Again, the pipe `|>` should be pronounced *then*. We take the data, *then* we select one of its columns only, *then* we remove all duplicated entries in that column, *then* we modify the entries of that column to include the genus name, and *then* we rearrange the rows in alphabetical order. In performing these steps, each function both receives and returns data. Thus, by starting out with the original `snails`, **we no longer need to write out the data argument of the functions explicitly.** Instead, the pipe takes care of that automatically for us, making the functions receive as their first input the piped-in data, and in turn producing transformed data as their output---which becomes the input for the next function in line.
 
-In fact, there is no need to even assign `snailDat`. The pipe can just as well start with `read_csv` to load the dataset:
+In fact, there is no need to even assign `snails`. The pipe can just as well start with `read_delim` to load the dataset:
 
 ```{r}
 #| message: false
-read_csv("island-FL.csv") |>
-  mutate(stdSize = (size - mean(size)) / sd(size)) |>
-  filter(stdSize > 2) |>
+read_delim("island-FL.csv", delim = ",") |>
   select(species) |>
-  distinct()
+  distinct() |>
+  mutate(species = paste("Naesiotus", species)) |>
+  arrange(species)
 ```
 
 
 ## Exercises {#sec-wrangling-exercises}
 
-1. The [`Smith2003_data.txt`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/Smith2003_data.zip) dataset we worked with in @sec-reading-exercises occasionally has the entry `-999` in its last three columns. This stands for unavailable data. As discussed in @sec-pipes, in R there is a built-in way of referring to such information: by setting a variable to `NA`. Modify these columns using `mutate` so that the entries which are equal to `-999` are replaced with `NA`.
+1.  The [`Smith2003_data.txt`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/Smith2003_data.zip) dataset we worked with in @sec-reading-exercises occasionally has the entry `-999` in its last three columns. This stands for unavailable data. As discussed in @sec-pipes, in R there is a built-in way of referring to such information: by setting a variable to `NA`. Modify these columns using `mutate` so that the entries which are equal to `-999` are replaced with `NA`.
 
-2. After replacing `-999` values with `NA`, remove all rows from the data which contain one or more `NA` values (hint: look up the function `drop_na`). How many rows are retained? And what was the original number of rows?
+2.  After replacing `-999` values with `NA`, remove all rows from the data which contain one or more `NA` values (hint: look up the function `drop_na`). How many rows are retained? And what was the original number of rows?
 
 The `iris` dataset is a built-in table in R. It contains measurements of petal and sepal characteristics from three flower species belonging to the genus *Iris* ([*I. setosa*](https://en.wikipedia.org/wiki/Iris_setosa), [*I. versicolor*](https://en.wikipedia.org/wiki/Iris_versicolor), and [*I. virginica*](https://en.wikipedia.org/wiki/Iris_virginica)). If you type `iris` in the console, you will see the dataset displayed. In solving the problems below, feel free to use the all-important [`dplyr` cheat sheet](https://nyu-cdsc.github.io/learningr/assets/data-transformation.pdf).
 
-3. The format of the data is not a `tibble`, but a `data.frame`. As mentioned in @sec-reading, the two are basically the same for practical purposes, though internally `tibble`s do offer some advantages. Convert the `iris` data frame into a tibble. (Hint: look up the `as_tibble` function.)
+3.  The format of the data is not a `tibble`, but a `data.frame`. As mentioned in @sec-reading, the two are basically the same for practical purposes, though internally `tibble`s do offer some advantages. Convert the `iris` data frame into a tibble. (Hint: look up the `as_tibble` function.)
 
-4. Verify that there are indeed three distinct species in the data (hint: combine `select` and `distinct` in an appropriate way).
+4.  Verify that there are indeed three distinct species in the data (hint: combine `select` and `distinct` in an appropriate way).
 
-5. Select the columns containing petal and sepal length, and species identity.
+5.  Select the columns containing petal and sepal length, and species identity.
 
-6. Get those rows of the data with petal length less than 4 cm, but sepal length greater than 4 cm.
+6.  Get those rows of the data with petal length less than 4 cm, but sepal length greater than 4 cm.
 
-7. Sort the data by increasing petal length, breaking ties by decreasing order of sepal length.
+7.  Sort the data in reverse alphabetical order of species names, but within each species, sort them by increasing petal width. After you are done, add petal length as yet another sorting variable that breaks ties with respect to petal width. If all went well, your result should begin with the following rows:
+    ```{r}
+    #| echo: false
+    as_tibble(iris) |>
+      arrange(desc(Species), Petal.Width, Petal.Length) |>
+      head(n = 10) |>
+      knitr::kable()
+    ```
 
-8. Create a new column called `MeanLength`. It should contain the average of the petal and sepal length (i.e., petal length plus sepal length, divided by 2) of each individual flower.
+8.  Create a new column called `MeanLength`. It should contain the sum of the petal and sepal length for each individual flower, divided by two (that is, the average of the petal and sepal length for each flower).
 
-9. Perform the operations from exercises 5-8 sequentially, in a single long function call, using function composition via pipes.
+9.  Perform the operations from exercises 5-8 sequentially, in a single long function call, chaining the different functions together using pipes.

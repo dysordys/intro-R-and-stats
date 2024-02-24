@@ -146,7 +146,8 @@ Part of the reason is the awkward backwards order of function applications which
 
 The pipe also works for functions with multiple arguments. In that case, `x |> f(y, ...)` is equivalent to `f(x, y, ...)`. That is, the pipe refers to the function's first argument (though, as we will see in @sec-dot, it is possible to override this). Instead of the awkward and hard-to-read `mean(log(seq(-3, 11, by = 2)), na.rm = TRUE)`, we can therefore write:
 
-```{r, warning=FALSE}
+```{r}
+#| warning: false
 seq(-3, 11, by = 2) |>
   log() |>
   mean(na.rm = TRUE) |>
@@ -156,23 +157,32 @@ seq(-3, 11, by = 2) |>
 This is fully equivalent to the traditional form, but is much more readable, because the functions are written in the order in which they actually get applied. Moreover, even though the program is built only from the composition of functions, it reads straightforwardly as if it was a sequence of imperative instructions: we start from the vector of integers `c(-3, -1, 1, 3, 5, 7, 9, 11)`; *then* we take the logarithm of each; *then* we take their average, discarding any invalid entries (produced in this case by taking the logarithm of negative numbers); and *then*, finally, we exponentiate the result back to obtain the geometric mean.
 
 ::: {.callout-tip}
-One can create the pipe symbol `|>` with the keyboard shortcut Ctrl+Shift+M (Cmd+Shift+M on a Mac). In case you get the symbol `%>%` instead, do the following: in RStudio, click on the **Tools** menu at the top, and select **Global options**. A new menu will pop up. Click on **Code** in the panel on the left, and tick the box **Use native pipe operator, |> (requires R 4.1+)**. (In case you cannot see this option, then you are likely using a version of R earlier than 4.1; you should upgrade your R installation.)
+You can create the pipe symbol `|>` with the keyboard shortcut Ctrl+Shift+M (Cmd+Shift+M on a Mac). In case you get the symbol `%>%` instead, do the following: in RStudio, click on the **Tools** menu at the top, and select **Global options**. A new menu will pop up. Click on **Code** in the panel on the left, and tick the box **Use native pipe operator, |> (requires R 4.1+)**. (In case you cannot see this option, then you are likely using a version of R earlier than 4.1; you should upgrade your R installation.)
 :::
 
 
 ## Exercises
 
-1. Assume you have a population of some organism in which one given allele of some gene is the only one available in the gene pool. If a new mutant organism with a different, selectively advantageous allele appears, it would be reasonable to conclude that the new allele will fix in the population and eliminate the original one over time. This, however, is not necessarily true, because a very rare allele might succumb to being eliminated by chance, regardless of how advantageous it is. According to the famous formula of [Motoo Kimura](https://en.wikipedia.org/wiki/Motoo_Kimura) (1924-1994), the probability of such a new allele eventually fixing in the population is given as:
+1.  Write a function called `inc` which takes a single number as its input and increments it by 1. That is, `inc(0)` should return 1, `inc(4)` should return 5, and so on.
+
+2.  Assume you have a population of some organism in which one given allele of some gene is the only one available in the gene pool. If a new mutant organism with a different, selectively advantageous allele appears, it would be reasonable to conclude that the new allele will fix in the population and eliminate the original one over time. This, however, is not necessarily true, because a very rare allele might succumb to being eliminated by chance, regardless of how advantageous it is. According to the famous formula of [Motoo Kimura](https://en.wikipedia.org/wiki/Motoo_Kimura) (1924-1994), the probability of such a new allele eventually fixing in the population is given as:
     $$ P = \frac{1 - \text{e}^{-s}}{1 - \text{e}^{-2Ns}} $$
     [e.g., @Gillespie2004]. Here *P* is the probability of eventual fixation, *s* is the selection differential (the degree to which the new allele is advantageous over the original one), and *N* is the effective population size.
-    * Write a function that implements this formula. It should take the selection differential *s* and the effective population size *N* as parameters, and return the fixation probability as its result.
-    * A selection differential of 0.5 is very strong (though not unheard of). What is the likelihood that an allele with that level of advantage will fix in a population of 1000 individuals? Interpret the result.
-    
-2. A text is *palindromic* if it reads backwards the same as it reads forwards. For example, "deified", "racecar", and "step on no pets" are palindromic texts. Assume that you are given some text in all lowercase, broken up by characters. For instance, you could be given the vector `c("n", "o", "o", "n")` (a palindrome) or `c("h", "e", "l", "l", "o")` (not a palindrome).
-    * Write a function which checks whether the vector encodes a palindromic text. The function should return `TRUE` if the text is a palindrome, and `FALSE` otherwise. (Hint: reverse the text, collapse both the original and the reversed vectors into single strings, and then compare them using logical equality.)
-    * Modify the function to allow for both upper- and lowercase text, treating case as irrelevant (i.e., `"A"` is treated to be equal to `"a"` when evaluating whether the text is palindromic). One simple way to do this is to convert each character of the text into lowercase, and use this standardized text for reversing and comparing with. Look up the function `tolower`, and implement this improvement in your palindrome checker function.
-    * If you haven't done so already: try to rewrite your function to rely as much on function composition as possible.
-    
-3. Write a function called `contrary` which takes a string as input, and prepends it with the string `"un"`. That is, `contrary("satisfactory")` should return `"unsatisfactory"`, `contrary("kind")` should return `"unkind"`, and so on.
+    -   Write a function that implements this formula. It should take the selection differential *s* and the effective population size *N* as parameters, and return the fixation probability as its result. (Hint: the mathematical notation $\text{e}^{x}$ can be written `exp(x)` in R.)
+    -   A selection differential of 0.5 is very strong (though not unheard of). What is the likelihood that an allele with that level of advantage will fix in a population of 1000 individuals? Interpret the result.
+
+3.  Write a function called `contrary` which takes a character string as input, and prepends it with the string `"un"`. That is, `contrary("satisfactory")` should return `"unsatisfactory"`, `contrary("kind")` should return `"unkind"`, and so on. (Hint: for merging two strings into a single string, check out the `paste` function.)
 
 4. Modify the function `contrary` you wrote above. In general, it should prepend `"un"` to the input as before. However, if the input string already starts with `"un"`, it should return the string unchanged. That is, `contrary("disclosed")` should still return `"undisclosed"`, but `contrary("undisclosed")` should return `"undisclosed"` instead of `"unundisclosed"`. (Hint: look up the `substr` function, and use `ifelse`.)
+
+5.  A text is *palindromic* if it reads backwards the same as it reads forwards. For example, "deified", "racecar", and "step on no pets" are palindromes. Assume that you are given some text, in the form of a character string, in all lowercase. For instance, you could be given the string `"noon"` (a palindrome) or `"hello"` (not a palindrome). Here is an outline of a function which checks whether the string is a palindrome:
+    ```{r}
+    #| eval: false
+    isPalindrome <- function(text) {
+      textAsVector <- strsplit(text, split = "")[[1]]
+      ...
+    }
+    ```
+    The `strsplit(text, split = "")[[1]]` part takes the string represented by the input variable `text` and breaks it up into a vector of individual characters. Try it out: for example, `strsplit("madam", split = "")[[1]]` takes the word `"madam"` and splits it into its individual characters `c("m", "a", "d", "a", "m")`. (Feel free to look up the help page of `strsplit`, but otherwise, you do not need to worry about how it does its magic.) After defining `textAsVector`, the rest of the function's definition is missing. Your task is to complete the function, so that it returns `TRUE` if the supplied text is a palindrome and `FALSE` otherwise. (Hint: reverse the vector `textAsVector`, collapse both the original and the reversed vectors into single strings, and then compare them using logical equality.)
+
+6.  Modify the `isPalindrome` function to allow for both upper- and lowercase text, treating case as irrelevant (i.e., `"A"` is treated to be equal to `"a"` when evaluating whether the text is palindromic). One simple way to do this is to convert each character of the text into lowercase, and use this standardized text for reversing and comparing with. Look up the function `tolower`, and implement this improvement in your palindrome checker function.

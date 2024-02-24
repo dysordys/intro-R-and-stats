@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -209,7 +209,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Part II: Introductory statistics</span></a>
+ <span class="menu-text">Part II: Introductory statistics (UNDER CONSTRUCTION)</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -333,7 +333,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="the-kruskalwallis-and-dunn-tests" class="level2" data-number="13.1">
 <h2 data-number="13.1" class="anchored" data-anchor-id="the-kruskalwallis-and-dunn-tests"><span class="header-section-number">13.1</span> The Kruskal–Wallis and Dunn tests</h2>
-<p>The tools of <span class="quarto-unresolved-ref">?sec-wilcox</span> allow us to compare two groups of data. But what do we do when we have more than two groups? For example, we might wish to know how different treatments influence plant growth, as measured by dry weight. If there are two treatments, then there will be three (instead of two) groups, because the treatments will be compared with a control group which does not receive treatment.</p>
+<p>The tools of <a href="40_Intro_adv_statistics.html"><span>Chapter&nbsp;11</span></a> allow us to compare two groups of data. But what do we do when we have more than two groups? For example, we might wish to know how different treatments influence plant growth, as measured by dry weight. If there are two treatments, then there will be three (instead of two) groups, because the treatments will be compared with a control group which does not receive treatment.</p>
 <p>Such a dataset is in fact built into R, and is called <code>PlantGrowth</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -555,7 +555,7 @@ trt2-trt1  0.865  0.1737839 1.5562161 0.0120064</code></pre>
 <section id="sec-lmaov" class="level2" data-number="13.3">
 <h2 data-number="13.3" class="anchored" data-anchor-id="sec-lmaov"><span class="header-section-number">13.3</span> ANOVA and linear regression</h2>
 <p>At first glance, it appears strange that the function performing an ANOVA is the same as the one doing linear regression, <code>lm</code>. Aren’t the two methods very different from one another? After all, ANOVA compares data in different groups, whereas linear regression fits a line to a bunch of data points.</p>
-<p>As surprising as it may sound, the two are not different. There is a way of formulating an ANOVA which is exactly analogous to a linear model. To illustrate this idea, let us first consider a dataset with just two groups of data. The fictive bird data from <span class="quarto-unresolved-ref">?sec-wilcox</span> (<a href="https://raw.githubusercontent.com/dysordys/data-with-R/main/data/fictive_bird_example.zip"><code>fictive_bird_example.csv</code></a>) will work well:</p>
+<p>As surprising as it may sound, the two are not different. There is a way of formulating an ANOVA which is exactly analogous to a linear model. To illustrate this idea, let us first consider a dataset with just two groups of data. The fictive bird data from <a href="40_Intro_adv_statistics.html"><span>Chapter&nbsp;11</span></a> (<a href="https://raw.githubusercontent.com/dysordys/data-with-R/main/data/fictive_bird_example.zip"><code>fictive_bird_example.csv</code></a>) will work well:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>bird <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"fictive_bird_example.csv"</span>)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(bird, <span class="at">n =</span> <span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>

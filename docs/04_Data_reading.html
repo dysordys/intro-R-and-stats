@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -226,7 +226,7 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Part II: Introductory statistics</span></a>
+ <span class="menu-text">Part II: Introductory statistics (UNDER CONSTRUCTION)</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -367,10 +367,10 @@ div.csl-indent {
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ dplyr     1.1.4     ✔ readr     2.1.4
 ✔ forcats   1.0.0     ✔ stringr   1.5.1
 ✔ ggplot2   3.4.4     ✔ tibble    3.2.1
-✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.0
 ✔ purrr     1.0.2     
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
@@ -782,7 +782,7 @@ humid,nux,26.59,0</code></pre>
 </div>
 <p>We can now load Excel files with the function <code>read_excel()</code>. At the start, we downloaded an Excel version of the land snail data, called <a href="https://raw.githubusercontent.com/dysordys/data-with-R/main/data/island-FL-xlsx.zip"><code>island-FL.xlsx</code></a>. It holds the exact same data as the original CSV file, just saved in Excel format for instructive purposes. Let us load this file:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_excel</span>(<span class="st">"island-FL.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">read_excel</span>(<span class="st">"island-FL.xlsx"</span>, <span class="at">sheet =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 223 × 4
    habitat species      size  shape
@@ -800,7 +800,7 @@ humid,nux,26.59,0</code></pre>
 # ℹ 213 more rows</code></pre>
 </div>
 </div>
-<p>The function <code>read_excel</code> has several further options. For example, given an Excel table with multiple sheets, one can specify which one to import, using the <code>sheet</code> argument. Check the help page of <code>read_excel</code>, and experiment with its options.</p>
+<p>The <code>sheet</code> argument specifies which sheet of an Excel file we are importing (this file has only one of them, so technically the <code>sheet = 1</code> argument would have been optional). It can also be given as a character string, specifying the name of the sheet to be imported. The function <code>read_excel</code> has several further options as well—check its help page via <code>?read_excel</code> for more information.</p>
 </section>
 <section id="writing-data-to-files" class="level2" data-number="4.7">
 <h2 data-number="4.7" class="anchored" data-anchor-id="writing-data-to-files"><span class="header-section-number">4.7</span> Writing data to files</h2>

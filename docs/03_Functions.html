@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -231,7 +231,7 @@ div.csl-indent {
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Part II: Introductory statistics</span></a>
+ <span class="menu-text">Part II: Introductory statistics (UNDER CONSTRUCTION)</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -495,26 +495,30 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>One can create the pipe symbol <code>|&gt;</code> with the keyboard shortcut Ctrl+Shift+M (Cmd+Shift+M on a Mac). In case you get the symbol <code>%&gt;%</code> instead, do the following: in RStudio, click on the <strong>Tools</strong> menu at the top, and select <strong>Global options</strong>. A new menu will pop up. Click on <strong>Code</strong> in the panel on the left, and tick the box <strong>Use native pipe operator, |&gt; (requires R 4.1+)</strong>. (In case you cannot see this option, then you are likely using a version of R earlier than 4.1; you should upgrade your R installation.)</p>
+<p>You can create the pipe symbol <code>|&gt;</code> with the keyboard shortcut Ctrl+Shift+M (Cmd+Shift+M on a Mac). In case you get the symbol <code>%&gt;%</code> instead, do the following: in RStudio, click on the <strong>Tools</strong> menu at the top, and select <strong>Global options</strong>. A new menu will pop up. Click on <strong>Code</strong> in the panel on the left, and tick the box <strong>Use native pipe operator, |&gt; (requires R 4.1+)</strong>. (In case you cannot see this option, then you are likely using a version of R earlier than 4.1; you should upgrade your R installation.)</p>
 </div>
 </div>
 </section>
 <section id="exercises" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="exercises"><span class="header-section-number">3.4</span> Exercises</h2>
 <ol type="1">
+<li><p>Write a function called <code>inc</code> which takes a single number as its input and increments it by 1. That is, <code>inc(0)</code> should return 1, <code>inc(4)</code> should return 5, and so on.</p></li>
 <li><p>Assume you have a population of some organism in which one given allele of some gene is the only one available in the gene pool. If a new mutant organism with a different, selectively advantageous allele appears, it would be reasonable to conclude that the new allele will fix in the population and eliminate the original one over time. This, however, is not necessarily true, because a very rare allele might succumb to being eliminated by chance, regardless of how advantageous it is. According to the famous formula of <a href="https://en.wikipedia.org/wiki/Motoo_Kimura">Motoo Kimura</a> (1924-1994), the probability of such a new allele eventually fixing in the population is given as: <span class="math display">\[ P = \frac{1 - \text{e}^{-s}}{1 - \text{e}^{-2Ns}} \]</span> <span class="citation" data-cites="Gillespie2004">(e.g., <a href="99_References.html#ref-Gillespie2004" role="doc-biblioref">Gillespie 2004</a>)</span>. Here <em>P</em> is the probability of eventual fixation, <em>s</em> is the selection differential (the degree to which the new allele is advantageous over the original one), and <em>N</em> is the effective population size.</p>
 <ul>
-<li>Write a function that implements this formula. It should take the selection differential <em>s</em> and the effective population size <em>N</em> as parameters, and return the fixation probability as its result.</li>
+<li>Write a function that implements this formula. It should take the selection differential <em>s</em> and the effective population size <em>N</em> as parameters, and return the fixation probability as its result. (Hint: the mathematical notation <span class="math inline">\(\text{e}^{x}\)</span> can be written <code>exp(x)</code> in R.)</li>
 <li>A selection differential of 0.5 is very strong (though not unheard of). What is the likelihood that an allele with that level of advantage will fix in a population of 1000 individuals? Interpret the result.</li>
 </ul></li>
-<li><p>A text is <em>palindromic</em> if it reads backwards the same as it reads forwards. For example, “deified”, “racecar”, and “step on no pets” are palindromic texts. Assume that you are given some text in all lowercase, broken up by characters. For instance, you could be given the vector <code>c("n", "o", "o", "n")</code> (a palindrome) or <code>c("h", "e", "l", "l", "o")</code> (not a palindrome).</p>
-<ul>
-<li>Write a function which checks whether the vector encodes a palindromic text. The function should return <code>TRUE</code> if the text is a palindrome, and <code>FALSE</code> otherwise. (Hint: reverse the text, collapse both the original and the reversed vectors into single strings, and then compare them using logical equality.)</li>
-<li>Modify the function to allow for both upper- and lowercase text, treating case as irrelevant (i.e., <code>"A"</code> is treated to be equal to <code>"a"</code> when evaluating whether the text is palindromic). One simple way to do this is to convert each character of the text into lowercase, and use this standardized text for reversing and comparing with. Look up the function <code>tolower</code>, and implement this improvement in your palindrome checker function.</li>
-<li>If you haven’t done so already: try to rewrite your function to rely as much on function composition as possible.</li>
-</ul></li>
-<li><p>Write a function called <code>contrary</code> which takes a string as input, and prepends it with the string <code>"un"</code>. That is, <code>contrary("satisfactory")</code> should return <code>"unsatisfactory"</code>, <code>contrary("kind")</code> should return <code>"unkind"</code>, and so on.</p></li>
+<li><p>Write a function called <code>contrary</code> which takes a character string as input, and prepends it with the string <code>"un"</code>. That is, <code>contrary("satisfactory")</code> should return <code>"unsatisfactory"</code>, <code>contrary("kind")</code> should return <code>"unkind"</code>, and so on. (Hint: for merging two strings into a single string, check out the <code>paste</code> function.)</p></li>
 <li><p>Modify the function <code>contrary</code> you wrote above. In general, it should prepend <code>"un"</code> to the input as before. However, if the input string already starts with <code>"un"</code>, it should return the string unchanged. That is, <code>contrary("disclosed")</code> should still return <code>"undisclosed"</code>, but <code>contrary("undisclosed")</code> should return <code>"undisclosed"</code> instead of <code>"unundisclosed"</code>. (Hint: look up the <code>substr</code> function, and use <code>ifelse</code>.)</p></li>
+<li><p>A text is <em>palindromic</em> if it reads backwards the same as it reads forwards. For example, “deified”, “racecar”, and “step on no pets” are palindromes. Assume that you are given some text, in the form of a character string, in all lowercase. For instance, you could be given the string <code>"noon"</code> (a palindrome) or <code>"hello"</code> (not a palindrome). Here is an outline of a function which checks whether the string is a palindrome:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>isPalindrome <span class="ot">&lt;-</span> <span class="cf">function</span>(text) {</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  textAsVector <span class="ot">&lt;-</span> <span class="fu">strsplit</span>(text, <span class="at">split =</span> <span class="st">""</span>)[[<span class="dv">1</span>]]</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code>strsplit(text, split = "")[[1]]</code> part takes the string represented by the input variable <code>text</code> and breaks it up into a vector of individual characters. Try it out: for example, <code>strsplit("madam", split = "")[[1]]</code> takes the word <code>"madam"</code> and splits it into its individual characters <code>c("m", "a", "d", "a", "m")</code>. (Feel free to look up the help page of <code>strsplit</code>, but otherwise, you do not need to worry about how it does its magic.) After defining <code>textAsVector</code>, the rest of the function’s definition is missing. Your task is to complete the function, so that it returns <code>TRUE</code> if the supplied text is a palindrome and <code>FALSE</code> otherwise. (Hint: reverse the vector <code>textAsVector</code>, collapse both the original and the reversed vectors into single strings, and then compare them using logical equality.)</p></li>
+<li><p>Modify the <code>isPalindrome</code> function to allow for both upper- and lowercase text, treating case as irrelevant (i.e., <code>"A"</code> is treated to be equal to <code>"a"</code> when evaluating whether the text is palindromic). One simple way to do this is to convert each character of the text into lowercase, and use this standardized text for reversing and comparing with. Look up the function <code>tolower</code>, and implement this improvement in your palindrome checker function.</p></li>
 </ol>
 
 

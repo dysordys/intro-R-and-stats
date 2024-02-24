@@ -255,10 +255,10 @@ library(readxl)
 We can now load Excel files with the function `read_excel()`. At the start, we downloaded an Excel version of the land snail data, called [`island-FL.xlsx`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/island-FL-xlsx.zip). It holds the exact same data as the original CSV file, just saved in Excel format for instructive purposes. Let us load this file:
 
 ```{r}
-read_excel("island-FL.xlsx")
+read_excel("island-FL.xlsx", sheet = 1)
 ```
 
-The function `read_excel` has several further options. For example, given an Excel table with multiple sheets, one can specify which one to import, using the `sheet` argument. Check the help page of `read_excel`, and experiment with its options.
+The `sheet` argument specifies which sheet of an Excel file we are importing (this file has only one of them, so technically the `sheet = 1` argument would have been optional). It can also be given as a character string, specifying the name of the sheet to be imported. The function `read_excel` has several further options as well---check its help page via `?read_excel` for more information.
 
 
 ## Writing data to files
@@ -282,17 +282,17 @@ where `/path/to/file.csv` should be replaced by the path and file name with whic
 
 ## Exercises {#sec-reading-exercises}
 
-1. @Goldbergetal2010 collected data on self-incompatibility in the family Solanaceae (nightshades). It contains a list of 356 species, along with a column determining self-incompatibility status (0: self-incompatible; 1: self-compatible; 2-5: more complicated selfing scenarios). The data are in the file [`Goldberg2010_data.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/Goldberg2010_data-csv.zip). An equivalent version is available in [`Goldberg2010_data.xlsx`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/Goldberg2010_data-xlsx.zip), with the only difference that it is saved in Excel format.
+1.  @Goldbergetal2010 collected data on self-incompatibility in the family Solanaceae (nightshades). It contains a list of 356 species, along with a column determining self-incompatibility status (0: self-incompatible; 1: self-compatible; 2-5: more complicated selfing scenarios). The data are in the file [`Goldberg2010_data.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/Goldberg2010_data-csv.zip). An equivalent version is available in [`Goldberg2010_data.xlsx`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/Goldberg2010_data-xlsx.zip), with the only difference that it is saved in Excel format.
     -   Read the file `Goldberg2010_data.csv` using `read_delim`.
     -   Read the file `Goldberg2010_data.csv` using `read_csv`.
     -   Read the Excel file `Goldberg2010_data.xlsx` using `read_excel` from the `readxl` package.
     -   Read the file `Goldberg2010_data.csv` using `read_csv`, and assign it to a variable called `goldbergDat`.
     -   Extract the species names (first column, called `Species`) from `goldbergDat` as a vector of character strings, using the `$` notation. What are the 42nd and 137th entries of this vector?
 
-2. The data file [`ladybugs.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/ladybugs.zip) contains information on whether ladybugs sampled from rural versus industrial areas tend to be red or black morphs. Black morphs are thought to be an adaptation to more polluted industrial environments where the dark coloration provides better camouflage. The file is comma-separated and lacks headers. The meanings of the columns are, in order: habitat type, site code where the sampling was done, morph color, and the number of individuals sampled.
+2.  The data file [`ladybugs.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/ladybugs.zip) contains information on whether ladybugs sampled from rural versus industrial areas tend to be red or black morphs. Black morphs are thought to be an adaptation to more polluted industrial environments where the dark coloration provides better camouflage. The file is comma-separated and lacks headers. The meanings of the columns are, in order: habitat type, site code where the sampling was done, morph color, and the number of individuals sampled.
     -   Load this file into a tibble in R, and give the following names to its columns: `habitat`, `site`, `morph`, and `number`.
     -   Extract the last column (`number`) as a vector and calculate its mean and variance.
 
-3. @Smithetal2003 compiled a database of the body masses of mammals of the late Quaternary period. The data are in the file [`Smith2003_data.txt`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/Smith2003_data.zip). The column names are not specified in the file, but they are, in order: Continent (AF=Africa, etc.), Status (extinct, historical, introduction, or extant), Order, Family, Genus, Species, Base-10 Log Mass, Combined Mass (grams), and Reference (numbers, referring to a numerically ordered list of published works---no need to worry about the details).
+3.  @Smithetal2003 compiled a database of the body masses of mammals of the late Quaternary period. The data are in the file [`Smith2003_data.txt`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/Smith2003_data.zip). The column names are not specified in the file, but they are, in order: Continent (AF=Africa, etc.), Status (extinct, historical, introduction, or extant), Order, Family, Genus, Species, Base-10 Log Mass, Combined Mass (grams), and Reference (numbers, referring to a numerically ordered list of published works---no need to worry about the details).
     -   What is the delimiter in this data file?
     -   Load the data and give appropriate names to its columns, based on the information above.
