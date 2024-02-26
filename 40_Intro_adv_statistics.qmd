@@ -51,7 +51,7 @@ bird |>
   ggplot(aes(x = island, y = mean, ymin = mean - CI, ymax = mean + CI)) +
   geom_point(color = "steelblue") +
   geom_errorbar(color = "steelblue", width = 0.2) +
-  ylab("mean and 95% confidence interval") +
+  labs(y = "mean and 95% confidence interval") +
   theme_bw()
 ```
 

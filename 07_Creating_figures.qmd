@@ -11,112 +11,137 @@ This last claim needs to be qualified somewhat. It is more accurate to say that 
 
 ## Basic `ggplot2` usage
 
-To see how `ggplot2` works, let us load `tidyverse`, and then use the built-in `iris` dataset to create some figures. As a reminder, here is what the data look like:
+To see how `ggplot2` works, let us load `tidyverse`, and then use the Galápagos land snail dataset to create some figures. As a reminder, here is what the data look like:
 
 ```{r}
 #| message: false
 library(tidyverse)
-as_tibble(iris)
+
+snails <- read_delim("island-FL.csv", delim = ",")
+print(snails)
 ```
 
-Let us, as a first step, create a plot where sepal length (x-axis) is plotted against petal length (y-axis), with the points referring to different species shown in different colors: 
+Let us, as a first step, create a plot where shell shape (y-axis) is plotted against shell size (x-axis), with the points referring to different habitats shown in different colors: 
 
 ```{r}
 ggplot(
-  data = iris,
-  mapping = aes(x = Sepal.Length, y = Petal.Length, color = Species)
+  data = snails,
+  mapping = aes(x = size, y = shape, color = habitat)
 ) +
   geom_point()
 ```
 
-The `ggplot` function takes two inputs: the **data** (in this case, the `iris` table) and the **aesthetic mappings** (`mapping`). On top of this, we add on the **geometry** of how to display the data---in this case, with `geom_point()`.
+The `ggplot` function takes two inputs: the **data** (in this case, the `snails` table) and the **aesthetic mappings** (`mapping`). On top of this, we add on the **geometry** of how to display the data---in this case, with `geom_point()`.
 
 The aesthetic mappings are always defined via the `aes` helper function. What are these "aesthetic mappings"? The important thing to remember is that the aesthetic mappings are all those aspects of the figure that are governed by the data. For instance, if you wanted to set the color of all points to blue, this would not be an aesthetic mapping, because it applies regardless of what the data are (in case you want to do this, you would have to specify `geom_point(color = "blue")` in the last line).
 
 The **geometry** of your plot governs the overall visual arrangement of your data (points, lines, histograms, etc). There are many different `geom_`s; we will learn about some here, but when in doubt, Google and a [`ggplot2` cheat sheet](https://nyu-cdsc.github.io/learningr/assets/data-visualization-2.1.pdf) are your best friends.
 
-The above code is often written by piping the data into the `ggplot` function. Then, since the `mapping` argument is always given via the `aes` function, one usually omits naming this argument:
+The above program is often written by piping the data into the `ggplot` function. Then, since the `mapping` argument is always given via the `aes` function, one usually omits naming this argument:
 
 ```{r}
-iris |>
-  ggplot(aes(x = Sepal.Length, y = Petal.Length, color = Species)) +
+snails |>
+  ggplot(aes(x = size, y = shape, color = habitat)) +
   geom_point()
 ```
 
-is the most common form one writes the function call to `ggplot`.
+This is the most common form we will write a function call to `ggplot`.
 
-To look at a different kind of geometry, let us create a histogram of the petal lengths. This is done using `geom_histogram`:
+The plot above immediately reveals some interesting facts about the data. For example, the largest shell sizes are found in the humid habitats, whereas snails with the largest shell shape parameters (indicating long and slender shells) are found only in the arid regions. These are exactly the kinds of information we are trying to glean out using plots, because they would have been difficult or even impossible to see just from the raw data in the table.
 
-```{r}
-#| message: false
-iris |>
-  ggplot(aes(x = Petal.Length)) +
-  geom_histogram()
-```
-
-Before looking at the result, notice that the different "grammatical" components of the plot (aesthetics, geometry) are *added* to the plot, using the `+` symbol for addition. A common source of error is to accidentally keep using the pipe operator `|>` even within a plot. The rule of thumb is that after invoking `ggplot`, one must use `+` to compose the various graph elements, but outside of that, the usual `|>` is used for function composition. If one uses `|>` instead of `+` within a plot, R will give back an error message instead of graphics:
+Notice that the different "grammatical" components are *added* to the plot, using the `+` symbol for addition. A common source of error is to accidentally keep using the pipe operator `|>` even within a plot. The rule of thumb is that after invoking `ggplot`, one must use `+` to compose the various graph elements, but outside of that, the usual `|>` is used for function composition. If one uses `|>` instead of `+` within a plot, R will give back an error message instead of graphics:
 
 ```{r}
 #| error: true
-iris |>
-  ggplot(aes(x = Petal.Length)) |>
-  geom_histogram()
+snails |>
+  ggplot(aes(x = size, y = shape, color = habitat)) |>
+  geom_point()
 ```
 
 Just be sure to remember this so you can correct the mistake, should you accidentally run up against it.
 
-Let us now look at the plot above. We see two clusters of data. Why is that? One might suspect that this is because of a species-level difference. To check if that is the case, let us color the histogram by species:
+To look at a different kind of geometry, let us create a histogram of the shell shape measurements. This is done using `geom_histogram`:
 
 ```{r}
 #| message: false
-iris |>
-  ggplot(aes(x = Petal.Length, color = Species)) +
+snails |>
+  ggplot(aes(x = shape)) +
   geom_histogram()
 ```
 
-(A color legend was created automatically on the right.) This changes the color of the outline of the histograms, but not the color of their fill. To do so, we need to change the `fill` color as well, which is a separate aesthetic property:
+The default number of bins in a histogram is 30, but that might not always be the best choice. Here, for example, there are some erratic-looking jumps that have more to do with having too few observations per bin than with the actual data themselves. To change the number of bins, we have two options. We can use the `bins` argument to `geom_histogram` to explicitly specify how many bins we want in the plot:
 
 ```{r}
-#| message: false
-iris |>
-  ggplot(aes(x = Petal.Length, color = Species, fill = Species)) +
-  geom_histogram()
+snails |>
+  ggplot(aes(x = shape)) +
+  geom_histogram(bins = 15)
 ```
 
-This is fine, but now the histogram bars of different species are stacked on top of one another. This means that, for example at around a petal length of 5 cm where individuals of both *Iris versicolor* and *I. virginica* are found, the green bar on top of the blue one does not begin from the bottom of the y-axis at 0, but from wherever the blue bar ends and the green one begins (in our case, from around 10 upwards). So the number of *I. versicolor* individuals in the 5 cm bin is not 12, but only 2.
-
-It may be easier to interpret the histogram if all bars start at the bottom, even if this means that the bars will now overlap to an extent. To achieve this overlap, one simply has to add the argument `position = "identity"` to `geom_histogram`:
+And the histogram now looks much more well-behaved. The other option is to specify the width of each individual bin, using the `binwidth` argument:
 
 ```{r}
-#| message: false
-iris |>
-  ggplot(aes(x = Petal.Length, color = Species, fill = Species)) +
-  geom_histogram(position = "identity")
+snails |>
+  ggplot(aes(x = shape)) +
+  geom_histogram(binwidth = 0.02)
 ```
 
-(There are other options as well, such as `position = "dodge"` -- feel free to experiment. In general, you can learn what options each of the `geom_`s have by taking a look at their help pages, or by asking Google.) The figure above is almost perfect; the one remaining problem is that the bars belonging to different species cover each other completely. So let us change the fill's *transparency*, which is called `alpha` in ggplot. The `alpha` property can take on any value between 0 (fully transparent object, to the point of invisibility) to 1 (fully solid object with no transparency, like above; this is the default). Setting it to 0.2 (say) will finally fully reveal the distribution of each species:
+What do we do to make the plot prettier---e.g., to change the color of the bins to something else? One can give the `color` argument to `geom_histogram`:
 
 ```{r}
-#| message: false
-iris |>
-  ggplot(aes(x = Petal.Length, color = Species, fill = Species)) +
-  geom_histogram(position = "identity", alpha = 0.2)
+snails |>
+  ggplot(aes(x = shape)) +
+  geom_histogram(bins = 15, color = "navy")
 ```
 
-There are plenty of other `geom_`s as well, such as `geom_boxplot`, `geom_violin`, etc. Let us try `geom_boxplot` for instance. Let us create one box plot of the distribution of petal lengths for each species. Putting the species along the x-axis and petal length along the y-axis:
+And now the plot is navy blue - at least in outline. To change the color of the fill, one must also change the `fill` argument:
 
 ```{r}
-iris |>
-  ggplot(aes(x = Species, y = Petal.Length)) +
+snails |>
+  ggplot(aes(x = shape)) +
+  geom_histogram(bins = 15, color = "navy", fill = "navy")
+```
+
+One can make the fill color partially or completely transparent, too. The level of transparency is controlled by the `alpha` argument. It is 0 for fully transparent fills and 1 for fully opaque ones. The default value is 1, but one can reduce this for more transparency:
+
+```{r}
+snails |>
+  ggplot(aes(x = shape)) +
+  geom_histogram(bins = 15, color = "navy", fill = "navy", alpha = 0.6)
+```
+
+Reducing transparency further, we get:
+
+```{r}
+snails |>
+  ggplot(aes(x = shape)) +
+  geom_histogram(bins = 15, color = "navy", fill = "navy", alpha = 0.3)
+```
+
+And, for full transparency:
+
+```{r}
+snails |>
+  ggplot(aes(x = shape)) +
+  geom_histogram(bins = 15, color = "navy", fill = "navy", alpha = 0)
+```
+
+The arguments `color`, `fill`, and `alpha` can also appear inside the aesthetic mappings. Why didn't they here? Because, as stated, aesthetic mappings are those aspects of a plot that are governed by the data. But here, the color, fill, and transparency levels do not depend on the data: they have been chosen independently, to be constant values.
+
+Incidentally, there are many built-in color names in R. One can see the full list by invoking `colors()` in the R console - there are hundreds of them. To see what those colors actually look like, [this website](https://r-charts.com/colors) has a good overview.
+
+There are plenty of other `geom_`s as well, such as `geom_boxplot`, `geom_violin`, etc. Let us try `geom_boxplot` for instance. Let us create one box plot of the distribution of shell shapes for each habitat (arid and humid). Putting habitat along the x-axis and shell shape along the y-axis:
+
+```{r}
+snails |>
+  ggplot(aes(x = habitat, y = shape)) +
   geom_boxplot()
 ```
 
-Although this is sufficient, one should feel free to make the plots prettier. For instance, one could use colors, like before. One can also use different themes. There are pre-defined themes such as `theme_classic()`, `theme_bw()`, and so on. For example, using `theme_bw()` gets rid of the default gray background and replaces it with a white one. The version of the graph below applies this theme, and also changes the color and fill to be based on species identity:
+Although this is sufficient, one should feel free to make the plots prettier. For instance, one could use colors and fills, like before. One can also use different themes. There are pre-defined themes such as `theme_classic()`, `theme_bw()`, and so on. For example, using `theme_bw()` gets rid of the default gray background and replaces it with a white one. The version of the graph below applies this theme, and also changes the color and fill to be based on habitat:
 
 ```{r}
-iris |>
-  ggplot(aes(x = Species, y = Petal.Length,
-             color = Species, fill = Species)) +
+snails |>
+  ggplot(aes(x = habitat, y = shape, color = habitat, fill = habitat)) +
   geom_boxplot(alpha = 0.2) +
   theme_bw()
 ```
@@ -161,7 +186,7 @@ iris |>
   ggplot(aes(x = Species, y = mP, ymin = mP - CI, ymax = mP + CI)) +
   geom_point() +
   geom_errorbar(width = 0.2) +
-  ylab("Petal length")
+  labs(y = "Petal length")
 ```
 
 In the literature, it is common to encounter bar-and-whisker plots to represent the same information as above. These replace the points showing the means with bars that start from zero. One should be aware of how to read and make such graphs. This is almost trivially simple: all one needs to do is replace `geom_point` with `geom_col`.
@@ -179,7 +204,7 @@ iris |>
   # Below we change geom_point to geom_col (for "column"):
   geom_col(alpha = 0.4, color = "steelblue", fill = "steelblue") +
   geom_errorbar(width = 0.2, color = "steelblue") +
-  ylab("Petal length")
+  labs(y = "Petal length")
 ```
 
 :::{.callout-warning}
@@ -193,7 +218,7 @@ tibble(Species = c("species 1", "species 2"),
              ymin = Average - CI, ymax = Average + CI)) +
   geom_col(alpha = 0.4, color = "steelblue", fill = "steelblue") +
   geom_errorbar(width = 0.2, color = "steelblue") +
-  ylab("Trait value")
+  labs(y = "Trait value")
 ```
 
 It is impossible to see whether there are any relevant differences between the two species. The following is exactly the same, but with the mean values shown with points instead of bars:
@@ -206,7 +231,7 @@ tibble(Species = c("species 1", "species 2"),
              ymin = Average - CI, ymax = Average + CI)) +
   geom_point(color = "steelblue") +
   geom_errorbar(width = 0.2, color = "steelblue") +
-  ylab("Trait value")
+  labs(y = "Trait value")
 ```
 
 It is now obvious that the two observations are distinct. Due to this problem, my recommendation is to avoid bar-and-whisker plots and simply use point-and-whisker plots instead.

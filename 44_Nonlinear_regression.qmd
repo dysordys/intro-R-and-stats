@@ -21,7 +21,7 @@ as_tibble(CO2) |>
                alpha = 0.2, outlier.shape = NA) +
   geom_jitter(color = "steelblue", alpha = 0.5, width = 0.05) +
   facet_grid(Type ~ Treatment) +
-  ylab("uptake rate") +
+  labs(y = "uptake rate") +
   theme_bw() +
   theme(axis.title.x = element_blank(), # The x-axis is meaningless here,
         axis.ticks.x = element_blank(), # so remove title, tick marks,
