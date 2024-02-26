@@ -24,14 +24,14 @@ Let us, as a first step, create a plot where sepal length (x-axis) is plotted ag
 ```{r}
 ggplot(
   data = iris,
-  mapping = aes(x = Sepal.Length, y = Petal.Length, colour = Species)
+  mapping = aes(x = Sepal.Length, y = Petal.Length, color = Species)
 ) +
   geom_point()
 ```
 
 The `ggplot` function takes two inputs: the **data** (in this case, the `iris` table) and the **aesthetic mappings** (`mapping`). On top of this, we add on the **geometry** of how to display the data---in this case, with `geom_point()`.
 
-The aesthetic mappings are always defined via the `aes` helper function. What are these "aesthetic mappings"? The important thing to remember is that the aesthetic mappings are all those aspects of the figure that are governed by the data. For instance, if you wanted to set the color of all points to blue, this would not be an aesthetic mapping, because it applies regardless of what the data are (in case you want to do this, you would have to specify `geom_point(colour = "blue")` in the last line).
+The aesthetic mappings are always defined via the `aes` helper function. What are these "aesthetic mappings"? The important thing to remember is that the aesthetic mappings are all those aspects of the figure that are governed by the data. For instance, if you wanted to set the color of all points to blue, this would not be an aesthetic mapping, because it applies regardless of what the data are (in case you want to do this, you would have to specify `geom_point(color = "blue")` in the last line).
 
 The **geometry** of your plot governs the overall visual arrangement of your data (points, lines, histograms, etc). There are many different `geom_`s; we will learn about some here, but when in doubt, Google and a [`ggplot2` cheat sheet](https://nyu-cdsc.github.io/learningr/assets/data-visualization-2.1.pdf) are your best friends.
 
@@ -39,7 +39,7 @@ The above code is often written by piping the data into the `ggplot` function. T
 
 ```{r}
 iris |>
-  ggplot(aes(x = Sepal.Length, y = Petal.Length, colour = Species)) +
+  ggplot(aes(x = Sepal.Length, y = Petal.Length, color = Species)) +
   geom_point()
 ```
 
@@ -70,7 +70,7 @@ Let us now look at the plot above. We see two clusters of data. Why is that? One
 ```{r}
 #| message: false
 iris |>
-  ggplot(aes(x = Petal.Length, colour = Species)) +
+  ggplot(aes(x = Petal.Length, color = Species)) +
   geom_histogram()
 ```
 
@@ -79,7 +79,7 @@ iris |>
 ```{r}
 #| message: false
 iris |>
-  ggplot(aes(x = Petal.Length, colour = Species, fill = Species)) +
+  ggplot(aes(x = Petal.Length, color = Species, fill = Species)) +
   geom_histogram()
 ```
 
@@ -90,7 +90,7 @@ It may be easier to interpret the histogram if all bars start at the bottom, eve
 ```{r}
 #| message: false
 iris |>
-  ggplot(aes(x = Petal.Length, colour = Species, fill = Species)) +
+  ggplot(aes(x = Petal.Length, color = Species, fill = Species)) +
   geom_histogram(position = "identity")
 ```
 
@@ -99,7 +99,7 @@ iris |>
 ```{r}
 #| message: false
 iris |>
-  ggplot(aes(x = Petal.Length, colour = Species, fill = Species)) +
+  ggplot(aes(x = Petal.Length, color = Species, fill = Species)) +
   geom_histogram(position = "identity", alpha = 0.2)
 ```
 
@@ -116,7 +116,7 @@ Although this is sufficient, one should feel free to make the plots prettier. Fo
 ```{r}
 iris |>
   ggplot(aes(x = Species, y = Petal.Length,
-             colour = Species, fill = Species)) +
+             color = Species, fill = Species)) +
   geom_boxplot(alpha = 0.2) +
   theme_bw()
 ```
@@ -126,13 +126,13 @@ iris |>
 
 Providing appropriate information on experimental errors is a hallmark of any credible scientific graph. Choose a type of error based on the conclusion that you want the reader to draw. For example, one can show the largest and smallest values in the dataset apart from the average.
 
-Here we will display the average petal length of each species together with the largest and smallest values. To do so, we first obtain the mean, maximum, and minimum of the petal lengths for each species. We then plot them. So we first `group_by` the species and `summarise` to obtain the required statistics (means and standard deviations), and hand these data over for plotting. One can include all these steps in a logical workflow:
+Here we will display the average petal length of each species together with the largest and smallest values. To do so, we first obtain the mean, maximum, and minimum of the petal lengths for each species. We then plot them. So we first `group_by` the species and `summarize` to obtain the required statistics (means and standard deviations), and hand these data over for plotting. One can include all these steps in a logical workflow:
 
 ```{r}
 #| message: false
 iris |>
   group_by(Species) |> # Perform summary calculations for each species
-  summarise(mP = mean(Petal.Length), # Mean petal length
+  summarize(mP = mean(Petal.Length), # Mean petal length
             minP = min(Petal.Length), # Minimum petal length
             maxP = max(Petal.Length)) |> # Maximum petal length
   ungroup() |> # Ungroup data
@@ -152,7 +152,7 @@ In case we want to calculate the 95% confidence intervals of the mean values, we
 #| message: false
 iris |>
   group_by(Species) |>
-  summarise(mP = mean(Petal.Length), # Mean petal length per species
+  summarize(mP = mean(Petal.Length), # Mean petal length per species
             sP = sd(Petal.Length), # Standard deviation per species
             N = n(), # Sample size (number of observations) per species
             SEM = sP / sqrt(N), # Standard error of the mean
@@ -170,15 +170,15 @@ In the literature, it is common to encounter bar-and-whisker plots to represent 
 #| message: false
 iris |>
   group_by(Species) |>
-  summarise(mP = mean(Petal.Length),
+  summarize(mP = mean(Petal.Length),
             sP = sd(Petal.Length),
             N = n(),
             SEM = sP / sqrt(N),
             CI = SEM * qt(1 - 0.025, N - 1)) |>
   ggplot(aes(x = Species, y = mP, ymin = mP - CI, ymax = mP + CI)) +
   # Below we change geom_point to geom_col (for "column"):
-  geom_col(alpha = 0.4, colour = "steelblue", fill = "steelblue") +
-  geom_errorbar(width = 0.2, colour = "steelblue") +
+  geom_col(alpha = 0.4, color = "steelblue", fill = "steelblue") +
+  geom_errorbar(width = 0.2, color = "steelblue") +
   ylab("Petal length")
 ```
 
@@ -191,8 +191,8 @@ tibble(Species = c("species 1", "species 2"),
        CI = c(0.8, 0.9)) |>
   ggplot(aes(x = Species, y = Average,
              ymin = Average - CI, ymax = Average + CI)) +
-  geom_col(alpha = 0.4, colour = "steelblue", fill = "steelblue") +
-  geom_errorbar(width = 0.2, colour = "steelblue") +
+  geom_col(alpha = 0.4, color = "steelblue", fill = "steelblue") +
+  geom_errorbar(width = 0.2, color = "steelblue") +
   ylab("Trait value")
 ```
 
@@ -204,8 +204,8 @@ tibble(Species = c("species 1", "species 2"),
        CI = c(0.8, 0.9)) |>
   ggplot(aes(x = Species, y = Average,
              ymin = Average - CI, ymax = Average + CI)) +
-  geom_point(colour = "steelblue") +
-  geom_errorbar(width = 0.2, colour = "steelblue") +
+  geom_point(color = "steelblue") +
+  geom_errorbar(width = 0.2, color = "steelblue") +
   ylab("Trait value")
 ```
 

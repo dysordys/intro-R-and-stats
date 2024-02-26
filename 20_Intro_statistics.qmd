@@ -1,232 +1,216 @@
----
-output: html_document
-editor_options: 
-  chunk_output_type: console
----
 # Introducing statistics {#sec-stats-intro}
-When given a data set (such as the snail data in @sec-reading) it is difficult or even impossible to look at the entire set and understand the information therein. It is therefore important to be able to describe aspects of the data, the different variables and observations through the use of statistical measurements. This has in part been covered in @sec-normalization but we will now take a more statistical approach to summarizing and describing data.
 
-First we will start by reading the [`pop_data.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/pop_data.zip) file again. The data set contain population densities of three species at two spatial patches (A and B) at various points in time, ranging from 1 to 50 in steps of 1.
-```{r, message=FALSE}
-require(tidyverse)
+When given a dataset (such as the snail data in @sec-snail), it is difficult or even impossible to look at the entire set and understand the information therein. It is therefore important to be able to describe aspects of the data, such as the different variables and observations, through the use of statistical measurements. This has in part been covered in @sec-normalization, but we will now take a more statistical approach to summarizing and describing data.
+
+We will start by reading the [`pop_data.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/pop_data.zip) file again. The dataset contains population densities of three species at two spatial patches (A and B) at various points in time, ranging from 1 to 50 in steps of 1.
+```{r}
+#| message: false
+library(tidyverse)
 
 pop <- read_csv("pop_data.csv")
 
 ```
 
-This data set is a *sample* from a larger *population* and while it is not clear how the *units* in the sample (the different time points) have been selected, we can assume that they have been randomly selected from the population of all possible units.
+This dataset is a *sample* from a larger *population,*^["Population" in the statistical sense of the word is not to be confused with "population" from ecology. It simply means the complete set of all entities out there which we take our smaller sample from.] and while it is not clear how the *units* in the sample (the different time points) have been selected, we can assume that they have been randomly selected from the population of all possible units.
 
-It would be impossible, if not very expensive, to collect data from all units in a population which means that we in practice work on samples of data. We are still interested in making conclusions about the population but these will be made from a smaller set of units that we actually can collect data from. The information we collect will be dependent on the units selected for the sample and any two samples will contain different units if the *sampling procedure* is done with any kind of *randomization*. 
+It would be impossible, if not very expensive, to collect data from all units in a population. This means that in practice we work with samples of data. We are still interested in making conclusions about the population, but these will be made from a smaller set of units that we can actually collect data from. The information we collect will depend on the units selected for the sample, and any two samples will contain different units if the *sampling procedure* is done with any kind of *randomization*. 
 
-Properties or descriptive statistics calculated on the population are called *parameters* (*parameter* in singular) and these will have the same value because the population contains all units we are interested in. In the sample we instead calculate *statistics* (*statistic* in singular) which is an *estimate* of the population parameter. The value of a statistic will also be different depending on the sample drawn and this inherent randomness is a vital aspect of *statistical inference* which will be covered in a later chapter.
+Properties or descriptive statistics calculated on the population are called *parameters* (*parameter* in singular), and these will have the same value because the population contains all units we are interested in. In the sample we instead calculate *statistics* (*statistic* in singular) which is an *estimate* of the population parameter. The value of a statistic will also be different depending on the sample drawn and this inherent randomness is a vital aspect of *statistical inference* which will be covered in a later chapter.
 
 <!-- SOMETHING ABOUT BIAS?? -->
 
 <!-- {{< video https://www.youtube.com/watch?v=8UJl2RpeV24 >}} -->
 
+
 ## Variable types
-The `pop` data set contains 5 variables of different types. A variable type is used to describe what type of information we can find within it and determines how we can further analyze the variable. We can separate variables into two main groups; *qualitative* and *quantitative* variables. 
 
-Qualitative variables are those describing categories, for example nationalities, gender or colors. In our `pop` data the variable `patch` is qualitative as it describes a label used for patches of land. If we would choose to label the two patches as 1 and 2, the variable itself would still be qualitative as the numbers do not have a numeric meaning.
+The `pop` dataset contains 5 variables of different types. A variable type is used to describe what type of information we can find within it and determines how we can further analyze the variable. We can separate variables into two main groups: *qualitative* and *quantitative* variables. 
 
-Quantitative variables are those describing real numbers, for example the number of siblings, height, or final times in a 100 m race. The numbers represent real numeric values instead of just labels. There are two sub-types of quantitative variables; discrete and continuous. A discrete variable contain values of whole number or a limited amount of decimals. The number of siblings would be a discrete variable as you cannot have $2.32451$ siblings and cannot measure the value with an infinite amount of decimals. Continuous variables on the other hand are able to be measured with this amount of detail, such as a person's height that could be measured with a lot of detail.
+*Qualitative* variables are those describing categories---for example nationalities, sex, blood type, etc. In our `pop` data the variable `patch` is qualitative, as it describes a label used for patches of land. If we would choose to label the two patches as 1 and 2, the variable itself would still be qualitative as the numbers do not have a numeric meaning.
 
-In our data set the three species' density variables are considered continuous quantitative variables as they represent a real numeric value and they can be measured with infinite amount of decimals. Even though the loaded data set contain values with only two decimals, this is only done for rounding purposes and does not prevent the variable itself to be measured with infinite amount of decimals.
+*Quantitative* variables are those describing real numbers, for example height, weight, or final times in a 100 m race. The numbers represent real numeric values instead of just labels. There are two sub-types of quantitative variables; discrete and continuous. A discrete variable may only take on integer (i.e., whole number) values, or a limited amount of decimals. The number of siblings would be a discrete variable, as one cannot have $2.32451$ siblings and cannot measure the value with an infinite amount of decimals. Continuous variables on the other hand can be measured with this amount of detail. An example would be a person's height.
+
+In our dataset the three species' density variables (number of individuals per unit area) are considered continuous quantitative variables, as they represent a real numeric value that can be measured with infinite amount of decimals. Even though the loaded dataset contain values with only two decimals, this is only done for rounding purposes and does not prevent the variable itself to be measured with infinite amount of decimals.
 
 :::{.callout-note}
 Note that we differentiate from the variable types used within programming in earlier chapters and types used to describe variables within statistics. Some terminology is similar but the biggest difference is that within programming we differentiate between various types of quantitative (numeric) variables based on the amount of information they store on the disk.
 
-A quick conversion between the two areas would be:
+A quick conversion between the two terminologies would be:
 
-- `character` $\rightarrow$ qualitative
-- `Factor` $\rightarrow$ qualitative
-- `logical` $\rightarrow$ qualitative
-- `numeric` $\rightarrow$ quantitative (discrete or continuous)
-- `integer` $\rightarrow$ discrete quantitative
+Type in R    Type in statistics
+------------ ----------------------------
+`character`  qualitative
+`factor`     qualitative
+`logical`    qualitative
+`numeric`    quantitative (discrete or continuous)
+`integer`    discrete quantitative
 :::
+
 
 ## Variable scales
+
 In addition to describing what values we can expect in a variable, we can also use a variable *scale* to get information how the values relate to one another. Both the type and scale of a variable are important aspects to define or learn before analyzing the variable to know which methods are suitable.
 
-Qualitative variables can be split into two different scales; *nominal* and *ordinal*. 
+Qualitative variables can have one of two different scales: *nominal* and *ordinal*. 
 
-- The nominal scale is defined by categories that **cannot** be ordered in any logical way, for instance it cannot be said that one patch of land is 'better' than the other.^[Note that there might exist other information, such as the size of the patches, that can be used to order the categories, but then we are ordering based on another variable and not the categories themselves.]
+-   The nominal scale is defined by categories that **cannot** be ordered in any logical way. For instance it cannot be said that one patch comes "before" the other, or that it is "better" in any way.^[Note that there might exist other information, such as the size of the patches, that can be used to order the categories, but then we are ordering based on another variable and not the categories themselves.]
 
-- The ordinal scale is defined by categories that **can** be ordered. Sizes of clothes are a good example of categories that can be ordered in such a way that the size continually increases  (S < M < L), however we cannot define how much the difference actually is or if the difference is the same between two different adjacent categories.^[A quantitative variable could be considered following an ordinal scale if the measurements are intervals (0-4, 5-9, 10-19, etc.).]
+-   The ordinal scale is defined by categories that **can** be ordered. Sizes of clothes are a good example of categories that can be ordered in such a way that the size continually increases  (S < M < L). However, we cannot define how much the difference actually is, or if the difference is the same between any two adjacent categories.^[A quantitative variable can be thought of as following an ordinal scale if the measurements are intervals---e.g., 0-4, 5-9, 10-19, etc.]
 
-Quantitative variables can also be split into two different scales; *interval* and *ratio*.
+Quantitative variables can also have one of two different scales: *interval* and *ratio*.
 
-- The interval scale is a continuation of the ordinal scale where values can be ordered but with the added definition that differences can be calculated between values. An interval scale does not have a defined zero point where the thing being measured does not exist, for example temperature ($^\circ$C). 
+- The interval scale is an upgrade to the ordinal scale, where values are still ordered but additionally the *difference* between any two distinct values is also meaningful. An example would be temperature measured in Celsius degrees: the difference between any two temperature values is itself always meaningful. Note however that the *actual* values, by themselves, need not mean anything. For example, a temperature of 0&deg;C does not mean that the thing measured does not exist. In fact, one might as well define the zero point to be anywhere else, and it is purely by convention that it is set to the freezing point of water under normal atmospheric pressure.
 
-- The ratio scale does have a defined zero point which extends the possibility to calculate ratios between values. We can say that the density of one species ($0.1$) can be twice the size of the density of another ($0.05$) because the value of $0$ actually means that there is no presence of the species in the patch of land being measured.
+- The ratio scale does have a defined zero point, which creates the possibility for calculating ratios between values. We can say that the density of one species (0.2) can be twice the size of the density of another (0.1) because the value of 0 actually means that there is no presence of the species at all.
 
 :::{.callout-important}
-There is only one instance where the scale of the variable is implemented in R (we can create ordered factors following an ordinal scale) but otherwise this information is not saved in an R-object. This makes the knowledge of the scale, and what type of operations or methods can be used, very important for the analyst to know when programming. Otherwise it is very easy to end up in situations where we present or calculate inappropriate values or visualizations.
+There is only one instance where the scale of the variable is implemented in R; namely, when we create ordered factors following an ordinal scale (@sec-factors). Otherwise this information is not saved in an R object. This makes the knowledge of the scale, and what type of operations one can use with it, very important to know when programming. Ignoring this makes it very easy to end up in situations where we calculate inappropriate values.
 :::
+
 
 ## Summarizing a variable
-There are two main ways to summarize a variable; either visualize the *distribution* of it or present different descriptive statistics that provides information about different aspects of the variable.
+
+There are two main ways to summarize a variable; either visualize its *distribution*, or present various descriptive statistics that provide information about the variable.
 
 ### Distributions
+
 We have already looked at different ways to visualize a distribution of a variable in @sec-ggplot which we can summarize as follows.
 
-A qualitative variable should be visualized using a bar plot. If the variable follows the ordinal scale, the categories on the x-axis should follow the same order. If the variable follows the nominal scale we do not have to follow any specific order of the categories, but it is usually nice to order them alphabetically or in descending order based on the (relative) frequency of the category.
-
-```{r fig.width = 4, fig.height=3}
-#| label: fig-dist-abs
-#| fig-cap: Distribution of patches of land with their absolute frequency.
-
-ggplot(pop) + aes(x = patch) + geom_bar() +
-  theme_bw() + labs(x = "Patch", y = "Count")
-
-```
-When visualizing the distribution it is customary to use the relative frequency (%) of each category instead of the absolute frequency (count). This can be done directly in the `ggplot`-process without the need for additional data processing prior to the visualization. In this case, the default calculation done is `count`ing the number of occurrences of each category and the height (y) of the bars being defined by the count. The `after_stat()` function allows for calculations to be after the counting has been completed and `count / sum(count)` would calculate the relative frequency of each category compared to the total number of observations. If we multiply this value with $100$, we can show the percent of observations of each category.  
-
-```{r fig.width = 4, fig.height=3}
-#| label: fig-dist-rel
-#| fig-cap: Distribution of patches of land with their relative frequency.
-
-
-ggplot(pop) + 
-  ## Changes the calculation of the y-axis to (count / sum(count)) * 100 instead of the default, count
-  aes(x = patch, y = after_stat(count / sum(count))*100) +
-  geom_bar() +
-  theme_bw() + 
-  labs(x = "Patch", y = "Percent")
-
-```
-A quantitative variable can be visualized in two different ways depending on the variable type. A discrete variable, which per definition only can assume whole (or a set number of decimals) numbers, can be visualized using a bar plot because it usually contains a finite number of unique values and at the same time cannot have values in between. A continuous variable can be measured with infinite amount of decimal places which means that there exist an infinite amount of unique values. Instead of having an infinite amount of bars in a bar plot, we group adjacent values together into intervals and create a histogram.
-
-```{r fig.width=4, fig.height=3}
-#| label: fig-dist
-#| fig-cap: The distribution of densitites for three different species.
-
-## Groups the values for simpler visualization
-pop |> 
-  pivot_longer(
-    -c(patch,time)
-  ) |> 
-ggplot() + aes(x = value) + 
-  geom_histogram(binwidth = 0.5) + 
-  theme_bw() + 
-  ## Facets the histogram based on species
-  facet_grid(rows = vars(name)) +
-  labs(x = "Population Density", y = "Count")
-
-```
-
-We do not differentiate between a variable following a interval or ratio scale when visualizing a distribution but it is something to take into account when interpreting the plots. For example if a variable follows the interval scale, we could not state that 'the values are split into two main groups, one twice the value of the other'.
-
-Another way to visualize a continuous variable is by using a box(-and-whiskers) plot but this type of plot requires information about different measures of the variable, so we will return to this visualization later in this chapter.
-
-### Measures of center
-A simple way to summarize the position of a variable is a *measure of center*. As the name implies, it describes where on the unit scale the values are centered around and gives an indication of the magnitude (level) of the values. 
-
-#### Mean
-The most common measure of center is the mean which can be calculated on a continuous variable. The mean of a sample is calculated as
-\begin{align*}
-  \bar{x} = \frac{\sum_{i = 1}^n{x_i}}{n}
-\end{align*}
-
-where $\bar{x}$ (spoken as x bar) is the statistic that aims to estimate the population mean $\mu$ (the Greek letter mu). 
-
-:::{.callout-warning}
-Even though it is mathematically possible to calculate a mean of a discrete variable, the resulting value would not be an actual value of the variable. For instance the mean number of siblings of a person could be calculated to $1.6$ but you would not expect a randomly selected person to have $1$ full and $6/10$ of another sibling. The mean is therefore not interpretable on this type of variable. 
-:::
-
-Using the function `mean()`, alongside other `dplyr` functions, we can calculate the mean density of each of the different species in our data set.
+A qualitative variable can be visualized using a bar plot---or, if a bar plot is not appropriate (@sec-CI), then by using points. If the variable follows the ordinal scale, the categories on the x-axis should follow the same order. If the variable follows the nominal scale we do not have to follow any specific order of the categories, but it is usually nice to order them either alphabetically or in descending order based on the (relative) frequency of the category.
 
 ```{r}
+pop |>
+  ggplot(aes(x = patch)) +
+  geom_bar(fill = "steelblue") +
+  theme_bw()
+```
 
+In this instance a bar plot was entirely appropriate, but here is the same figure using points instead:
+
+```{r}
+pop |>
+  group_by(patch) |>
+  summarize(count = n()) |>
+  ungroup() |>
+  ggplot(aes(x = patch, y = count)) +
+  geom_point(color = "steelblue") +
+  theme_bw()
+```
+
+The latter plot makes it absolutely clear that the number of units in each patch are equal. By contrast, it is not necessarily easy to tell from a bar plot whether there is a small difference between the heights of the bars.
+
+When visualizing the distribution, it is customary to use the relative frequency (%) of each category instead of their absolute frequency (count). This can be done directly in the `ggplot`-process without the need for additional data processing prior to the visualization. In this case, the default calculation done is `count`ing the number of occurrences of each category and the height (y) of the bars being defined by the count. The `after_stat()` function allows for calculations after the counting has been completed. for example, `count / sum(count)` would calculate the relative frequency of each category compared to the total number of observations. If we multiply this value by 100, we can show the percent of observations of each category.  
+
+```{r}
+pop |>
+  # The after_stat below changes the calculation of the y-axis to
+  # (count / sum(count)) * 100, instead of the default, which is count
+  ggplot(aes(x = patch, y = after_stat(count / sum(count)) * 100)) +
+  geom_bar(fill = "steelblue") +
+  # Fix the y-axis marks to display percentages:
+  scale_y_continuous(name = "percent", labels = paste0(0:5 * 10, "%")) +
+  theme_bw()
+```
+
+A quantitative variable can be visualized in two different ways depending on the variable type. A discrete variable, which per definition only can assume whole (or a set number of decimals) numbers, can be visualized using a bar plot because it usually contains a finite number of unique values and at the same time cannot have values in between. A continuous variable can be measured with infinite amount of decimal places which means that there exist an infinite amount of unique values. Instead of having an infinite number of bars in a bar plot, we group adjacent values together into intervals and create a histogram.
+
+```{r}
 pop |> 
-  pivot_longer(
-    -c(patch,time),
-    # Gives proper names to the transformed variables
-    names_to = "Species",
-    values_to = "Density"
-  ) |> 
-  group_by(Species) |> 
-  summarize(
-    mean = mean(Density)
-  )
+  pivot_longer(cols = starts_with("species"),
+               names_to = "species",
+               values_to = "density") |>
+  ggplot(aes(x = density)) +
+  geom_histogram(binwidth = 0.5, fill = "steelblue") +
+  facet_grid(species ~ .) +
+  theme_bw()
+```
 
+We do not differentiate between a variable following an interval or a ratio scale when visualizing a distribution, but it is something to take into account when interpreting the plots. For example, if a variable follows the interval scale, we could not state that "the values are split into two main groups, one twice the value of the other".
+
+Another way to visualize a continuous variable is by using a box(-and-whisker) plot, but this type of plot requires information about different measures of the variable, so we will return to this visualization later in this chapter.
+
+### Measures of center
+
+A simple way to summarize the position of a variable is a *measure of center*. As the name implies, it describes where on the unit scale the values are centered around, and gives an indication of the magnitude (level) of the values. 
+
+#### Mean
+
+The most common measure of center is the *mean*, which can be calculated on a continuous variable. The mean of a sample is calculated as
+$$
+\bar{x} = \frac{\sum_{i = 1}^n{x_i}}{n}
+$$ {#eq-mean}
+
+where $\bar{x}$ (pronounced "x-bar") is the statistic that aims to estimate the population mean $\mu$ (the Greek letter mu). 
+
+:::{.callout-warning}
+Even though it is mathematically possible to calculate a mean of a discrete variable, the resulting value would not be an actual value of the variable. For instance the mean number of siblings of a person might turn out to be 1.6, but no person will have $1$ full plus another $6/10$ sibling.
+:::
+
+To calculate the density of each of the different species in our dataset, all we need to do is use the `mean` function and follow the pattern we learned about at the end of @sec-tidy:
+
+```{r}
+pop |> 
+  pivot_longer(cols = starts_with("species"),
+               names_to = "species",
+               values_to = "density") |> 
+  group_by(species) |> 
+  summarize(mean = mean(density)) |>
+  ungroup()
 ```
 
 Each mean shows the position of the center for each variable (species) which can also be added to the visualization.
 
-```{r fig.width=4, fig.height=3}
+```{r}
 #| label: fig-dist-mean
-#| fig-cap: The density distribution of three different species with marked means in red.
-
-
-## Groups the values for simpler visualization
+#| fig-cap: The density distribution of three different species, with their means marked in red.
 pop |> 
-  pivot_longer(
-    -c(patch,time),
-    names_to = "Species",
-    values_to = "Density"
-  ) |> 
-  # Adds mean values to the data set prior to visualization
-  group_by(Species) |> 
-  mutate(
-    mean = mean(Density)
-  ) |> 
-  ## Begins visualization
-ggplot() + aes(x = Density) + 
-  geom_histogram(binwidth = 0.5) + 
-  theme_bw() + 
+  pivot_longer(cols = starts_with("species"),
+               names_to = "species",
+               values_to = "density") |> 
+  group_by(species) |> 
+  mutate(mean = mean(density)) |>
+  ungroup() |>
+  ggplot(aes(x = density)) + # Begin visualization
+  geom_histogram(binwidth = 0.5, fill = "steelblue") + 
   # Facets the histogram based on species
-  facet_grid(rows = vars(Species)) +
-  labs(x = "Population Density", y = "Count") +
+  facet_grid(species ~ .) +
+  labs(y = "count") +
   # Adds a custom segment to the visualization
   geom_segment(
-    aes(
-      # Defines the start and end values of the segment
-      x = mean, xend = mean, 
-      y = 0, yend = 50
-      ),
-    # Defines the width and color of the segment
-    linewidth = 1,
-    color = "red"
-  )
-
+    # Define start and end values of the segment:
+    aes(x = mean, xend = mean, y = 0, yend = 50),
+    # Define width and color of the segment:
+    linewidth = 1, color = "firebrick"
+  ) +
+  theme_bw()
 ```
 
-The mean gives us a measure of the center of the data, but as we can see in the visualizations sometimes the mean by itself misrepresents the data as a whole. For example the mean of `Species 2` is $`r mean(pop$species2) |> round(2)`$% but the values of the variable are grouped either lower or higher than this value. The mean itself isn't actually close to an observed value. Compare this to the mean of `Species 1` ($`r mean(pop$species1) |> round(2)`$%) which actually falls close to observed values. The mean is better at describing this variable than the previous.
+The mean gives us a measure of the center of the data---but as we can see in the visualizations, sometimes the mean by itself misrepresents the data as a whole. For example, the mean of `Species 2` is `r mean(pop$species2) |> round(2)`% but the values of the variable are grouped either lower or higher than this value. The mean itself isn't actually close to an observed value. Compare this to the mean of `Species 1` (`r mean(pop$species1) |> round(2)`%) which actually falls close to observed values. The mean is better at describing this variable than the previous.
 
 We would not have been able to draw these conclusions without visualizing the variable and this shows the importance of visualizations when describing data.
 
 #### Median
+
 Another instance when the mean misrepresents a variable's center is if there are *outliers* present in the data. An outlier is an observation that is located far away from the majority of the other observations. They affect the mean by moving the measure towards the direction of the outliers and thereby shifting the center away from the majority of the observations. This could be identified if we visualized the distribution alongside the mean but we can also use another measure of center as an alternative.
 
-The *median* is robust against outliers, it is not affected by them, and describes the middle observation if we were to order the values in increasing size. Any extreme small or large value would not affect position of the middle observation.
+The *median* is much more robust against outliers than the mean, in the sense that it is less affected by them. It describes the middle observation if we were to order the values in increasing size. Any single extremely small or large value would not affect position of the middle observation, as long as there are sufficiently many data points.
 
-We can calculate the position of the median by
-\begin{align*}
-  position = \frac{n + 1}{2}
-\end{align*}
+We can calculate the position of the median as (*n* + 1) / 2, where *n* is the number of data points. This results in either a whole number (if *n* is odd), in which case the value at that position is the median. Or it could result in a half number (if *n* is even), in which case the convention is to put the median halfway between the two positions obtained by rounding the position's number up and down, respectively.
 
-which would result in either a whole number (if $n$ is odd) or a half number (if $n$ is even). The median would be the value of or between the position(s) found. The process of calculating the median can be done step by step as follows:
+The process of calculating the median can be done step by step as follows:
 
 ```{r}
+# The number of observations is the number of rows in the data:
+n <- nrow(pop)
 
-# Order the densities from lowest to largest
-sort(pop$species1)
+# Find the position (index) of the median:
+position <- (n + 1) / 2 # The position is 50.5
 
-# Find the position of the median
-n <- length(pop$species1)
-
-position <- (n + 1)/2
-
-# The position is 50.5
-
-# Use vector indexing to find observation 50 and 51
-sort(pop$species1)[c(50, 51)]
-
-# The median is the mean of the two observations
-sort(pop$species1)[c(50, 51)] |> 
-  mean()
-
+pop |>
+  select(species1) |> # Keep only this one column
+  arrange(species1) |> # Order the densities from lowest to largest
+  slice(c(floor(position), ceiling(position))) |> # Get the middle two values
+  summarize(median = mean(species1)) # Obtain the median
 ```
 
 This becomes tedious to do multiple times but thankfully the function `median()` does everything all at once. Using the function the median value is also $`r median(pop$species1)`$.^[We would expect the same value as the function uses the same process as shown earlier.]
@@ -268,7 +252,7 @@ pop |>
     names_to = "Species",
     values_to = "Density"
   ) |> 
-  # Adds mean values to the data set prior to visualization
+  # Adds mean values to the dataset prior to visualization
   group_by(Species) |> 
   mutate(
     mean = mean(Density)
@@ -384,9 +368,9 @@ Species 2 does indeed have a higher standard deviation than both species 1 and 3
 Similar to the mean, the standard deviation will overestimate the spread of the variable if there are outliers present. As outliers are defined as observations far from the rest of the observations they will also be far from the mean, thereby increasing the average distance from the mean resulting in an overestimation. Instead we can use the difference between the first and third quartile as an indication of the spread of the variable. For instance the IQR for Species 1 is `r quartiles[3] - quartiles[1]` using the indexes `quartiles[3] - quartiles[1]` created earlier.
 
 ## Summary and exercises
-Visualizations and descriptive statistics are used to summarize variables in a data set. Different forms and measures are used depending on the variable type and the scale it follows in order to properly describe the variable. Visualizations are used to show the distribution or shape of the data. The measure of center shows the placement of a quantitative variable while measures of spread show the variation of the values around its center.
+Visualizations and descriptive statistics are used to summarize variables in a dataset. Different forms and measures are used depending on the variable type and the scale it follows in order to properly describe the variable. Visualizations are used to show the distribution or shape of the data. The measure of center shows the placement of a quantitative variable while measures of spread show the variation of the values around its center.
 
-For the exercises we will return to the `iris` data set seen in earlier chapters (ex. @sec-wrangling-exercises). Make sure to convert the data to a `tibble` and save it to an object before starting these exercises.
+For the exercises we will return to the `iris` dataset seen in earlier chapters (ex. @sec-wrangling-exercises). Make sure to convert the data to a `tibble` and save it to an object before starting these exercises.
 
 1. Visualize the variable `Species` with a suitable plot. How many of each species are present in the data?
 

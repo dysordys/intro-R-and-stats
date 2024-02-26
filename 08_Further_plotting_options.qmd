@@ -34,12 +34,12 @@ iris |>
   geom_smooth(method = lm, se = FALSE)
 ```
 
-What happens if we color the data points by species? Let us add `colour = Species` to the list of aesthetic mappings:
+What happens if we color the data points by species? Let us add `color = Species` to the list of aesthetic mappings:
 
 ```{r}
 #| message: false
 iris |>
-  ggplot(aes(x = Sepal.Length, y = Petal.Length, colour = Species)) +
+  ggplot(aes(x = Sepal.Length, y = Petal.Length, color = Species)) +
   geom_point() +
   geom_smooth(method = lm, se = FALSE)
 ```
@@ -51,7 +51,7 @@ Notice also that a color legend was automatically created and appended to the ri
 ```{r}
 #| message: false
 iris |>
-  ggplot(aes(x = Sepal.Length, y = Petal.Length, colour = Species)) +
+  ggplot(aes(x = Sepal.Length, y = Petal.Length, color = Species)) +
   geom_point() +
   geom_smooth(method = lm, se = FALSE) +
   theme(legend.position = "left") # Or: "top", "bottom", "right", "none"
@@ -64,7 +64,7 @@ A word of caution: in case the legend positioning is matched with a generic them
 ```{r}
 #| message: false
 iris |>
-  ggplot(aes(x = Sepal.Length, y = Petal.Length, colour = Species)) +
+  ggplot(aes(x = Sepal.Length, y = Petal.Length, color = Species)) +
   geom_point() +
   geom_smooth(method = lm, se = FALSE) +
   theme(legend.position = "left") + # Position legend at the left
@@ -76,7 +76,7 @@ But this one does:
 ```{r}
 #| message: false
 iris |>
-  ggplot(aes(x = Sepal.Length, y = Petal.Length, colour = Species)) +
+  ggplot(aes(x = Sepal.Length, y = Petal.Length, color = Species)) +
   geom_point() +
   geom_smooth(method = lm, se = FALSE) +
   theme_bw() + # This defines the general theme
@@ -94,7 +94,7 @@ iris |>
   geom_boxplot()
 ```
 
-We can now change, for example, how the y-axis is displayed. The component to be added to the plot is `scale_y_continuous()`. Here `scale` means we are going to change the scaling of some aesthetic mapping, `y` refers to the y-axis (as expected, it can be replaced with `x`, `colour`, `fill`, etc.), and `continuous` means that the scaling of the axis is not via discrete values (e.g., either 1 or 2 or 3 but nothing in between), but continuous (every real number is permissible along the y-axis). The plot component `scale_y_continuous()` takes several arguments; take a look at its help page to see all possible options. Here we mention a few of them. First, there is the `name` option, which is used to relabel the axis. The `limits` argument accepts a vector of two values, containing the lower and upper limits of the plot. If any of them is set to `NA`, the corresponding limit will be determined automatically. Next, the `breaks` argument controls where the tick marks along the axis go. It is given as a vector, with its entries corresponding to the y-coordinates of the tick marks. Finally, `labels` determines what actually gets written on the axis at the tick mark points---it is therefore also a vector, its length matching that of `breaks`.
+We can now change, for example, how the y-axis is displayed. The component to be added to the plot is `scale_y_continuous()`. Here `scale` means we are going to change the scaling of some aesthetic mapping, `y` refers to the y-axis (as expected, it can be replaced with `x`, `color`, `fill`, etc.), and `continuous` means that the scaling of the axis is not via discrete values (e.g., either 1 or 2 or 3 but nothing in between), but continuous (every real number is permissible along the y-axis). The plot component `scale_y_continuous()` takes several arguments; take a look at its help page to see all possible options. Here we mention a few of them. First, there is the `name` option, which is used to relabel the axis. The `limits` argument accepts a vector of two values, containing the lower and upper limits of the plot. If any of them is set to `NA`, the corresponding limit will be determined automatically. Next, the `breaks` argument controls where the tick marks along the axis go. It is given as a vector, with its entries corresponding to the y-coordinates of the tick marks. Finally, `labels` determines what actually gets written on the axis at the tick mark points---it is therefore also a vector, its length matching that of `breaks`.
 
 As an example, let us scale the y-axis of the previous graph in the following way. The axis label should read "Petal length [cm]", instead of the current "Petal.Length". It should go from 0 to 7, with a break at those two values and also halfway in between at 3.5. Here is how to do this:
 
@@ -152,12 +152,12 @@ In case you would like to display the species names in *italics*, as is standard
 :::
 
 
-Other aesthetic mappings can also be adjusted, such as `colour`, `fill`, `size`, or `alpha`. One useful way to do it is through `scale_colour_manual()`, `scale_fill_manual()`, and so on. These are like `scale_colour_discrete()`, `scale_fill_discrete()` etc., except that they allow one to specify a discrete set of values by hand. Let us do this for color and fill:
+Other aesthetic mappings can also be adjusted, such as `color`, `fill`, `size`, or `alpha`. One useful way to do it is through `scale_color_manual()`, `scale_fill_manual()`, and so on. These are like `scale_color_discrete()`, `scale_fill_discrete()` etc., except that they allow one to specify a discrete set of values by hand. Let us do this for color and fill:
 
 ```{r}
 iris |>
   ggplot(aes(x = Species, y = Petal.Length,
-             colour = Species, fill = Species)) +
+             color = Species, fill = Species)) +
   geom_boxplot(alpha = 0.2) +
   scale_y_continuous(name = "Petal length [cm]",
                      limits = c(0, 7),
@@ -165,7 +165,7 @@ iris |>
                      labels = c("0", "7/2", "7")) +
   scale_x_discrete(labels = c("Iris setosa", "Iris versicolor",
                               "Iris virginica")) +
-  scale_colour_manual(values = c("steelblue", "goldenrod", "forestgreen")) +
+  scale_color_manual(values = c("steelblue", "goldenrod", "forestgreen")) +
   scale_fill_manual(values = c("steelblue", "goldenrod", "forestgreen"))
 ```
 
@@ -187,7 +187,7 @@ The table has two columns: `month` and `temp_C`, giving the mean temperature in 
 #| message: false
 read_delim("temp-Lin.csv", delim = ",") |>
   ggplot(aes(x = month, y = temp_C)) +
-  geom_point(colour = "steelblue") +
+  geom_point(color = "steelblue") +
   scale_y_continuous(name = "average temperature (Celsius)") +
   theme_bw()
 ```
@@ -201,7 +201,7 @@ One very convenient way of assigning factor levels is through the `tidyverse` fu
 read_delim("temp-Lin.csv", delim = ",") |>
   mutate(month = as_factor(month)) |>
   ggplot(aes(x = month, y = temp_C)) +
-  geom_point(colour = "steelblue") +
+  geom_point(color = "steelblue") +
   scale_y_continuous(name = "average temperature (Celsius)") +
   theme_bw()
 ```
@@ -214,7 +214,7 @@ read_delim("temp-Lin.csv", delim = ",") |>
   mutate(month = fct_relevel(month, "Jan", "Feb", "Mar", "Apr", "May", "Jun",
                              "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")) |>
   ggplot(aes(x = month, y = temp_C)) +
-  geom_point(colour = "steelblue") +
+  geom_point(color = "steelblue") +
   scale_y_continuous(name = "average temperature (Celsius)") +
   theme_bw()
 ```

@@ -417,9 +417,9 @@ div.csl-indent {
 </div>
 <section id="creating-summary-data" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="creating-summary-data"><span class="header-section-number">6.1</span> Creating summary data</h2>
-<p>One can create summaries of data using the <code>summarise</code> function. This will simply apply some function to a column. For example, to calculate the average population density of species 1 in <code>pop</code>, across both time and patches, one can write</p>
+<p>One can create summaries of data using the <code>summarize</code> function. This will simply apply some function to a column. For example, to calculate the average population density of species 1 in <code>pop</code>, across both time and patches, one can write</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">mean_sp1 =</span> <span class="fu">mean</span>(species1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">mean_sp1 =</span> <span class="fu">mean</span>(species1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 1
   mean_sp1
@@ -428,7 +428,7 @@ div.csl-indent {
 </div>
 </div>
 <p>Here <code>mean_sp1</code> is the name of the new column to be created, and the <code>mean</code> function is our summary function, collapsing the data into a single number.</p>
-<p>So far, this is not particularly interesting; in fact, the exact same effect would have been achieved by typing the shorter <code>mean(pop$species1)</code> instead. The real power of <code>summarise</code> comes through when combined with <code>group_by</code>. This groups the data based on the given grouping variables. Let us see how this works in practice:</p>
+<p>So far, this is not particularly interesting; in fact, the exact same effect would have been achieved by typing the shorter <code>mean(pop$species1)</code> instead. The real power of <code>summarize</code> comes through when combined with <code>group_by</code>. This groups the data based on the given grouping variables. Let us see how this works in practice:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">|&gt;</span> <span class="fu">group_by</span>(patch)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -476,7 +476,7 @@ div.csl-indent {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">|&gt;</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(patch) <span class="sc">|&gt;</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_sp1 =</span> <span class="fu">mean</span>(species1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_sp1 =</span> <span class="fu">mean</span>(species1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 2
   patch mean_sp1
@@ -485,11 +485,11 @@ div.csl-indent {
 2 B         5.32</code></pre>
 </div>
 </div>
-<p>One may obtain multiple summary statistics within the same <code>summarise</code> function. Below we compute the mean, the minimum, and the maximum of the densities per patch:</p>
+<p>One may obtain multiple summary statistics within the same <code>summarize</code> function. Below we compute the mean, the minimum, and the maximum of the densities per patch:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">|&gt;</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(patch) <span class="sc">|&gt;</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_sp1 =</span> <span class="fu">mean</span>(species1),</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_sp1 =</span> <span class="fu">mean</span>(species1),</span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">min_sp1 =</span> <span class="fu">min</span>(species1),</span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">max_sp1 =</span> <span class="fu">max</span>(species1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -504,7 +504,7 @@ div.csl-indent {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">|&gt;</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(time) <span class="sc">|&gt;</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_sp1 =</span> <span class="fu">mean</span>(species1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_sp1 =</span> <span class="fu">mean</span>(species1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 50 × 2
     time mean_sp1
@@ -522,7 +522,7 @@ div.csl-indent {
 # ℹ 40 more rows</code></pre>
 </div>
 </div>
-<p>The resulting table has 50 rows—half the number of rows in the original data, but many more than the two rows we get after grouping by <code>patch</code>. The reason is that there are 50 unique time points, and so the average is now computed over those rows which share <code>time</code>. But there are only two rows per moment of time: the rows corresponding to patch A and patch B. When we call <code>summarise</code> after having grouped by <code>time</code>, the averages are computed over the densities in these two rows only, per group. That is why here we end up with a table which has a single row per point in time.</p>
+<p>The resulting table has 50 rows—half the number of rows in the original data, but many more than the two rows we get after grouping by <code>patch</code>. The reason is that there are 50 unique time points, and so the average is now computed over those rows which share <code>time</code>. But there are only two rows per moment of time: the rows corresponding to patch A and patch B. When we call <code>summarize</code> after having grouped by <code>time</code>, the averages are computed over the densities in these two rows only, per group. That is why here we end up with a table which has a single row per point in time.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -535,11 +535,11 @@ Warning
 <div class="callout-body-container callout-body">
 <p>One common mistake when first encountering grouping and summaries is to assume that if we call <code>group_by(patch)</code>, then the subsequent summaries will be taken over patches. <em>This is not the case</em>, and it is important to take a moment to understand why. When we apply <code>group_by(patch)</code>, we are telling R to treat different patch values as group indicators. Therefore, when creating a summary, only the patch identities are retained from the original data, to which the newly calculated summary statistics are added. This means that the subsequent summaries are taken over everything <em>except</em> the patches. This should be clear after comparing the outputs of</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">|&gt;</span> <span class="fu">group_by</span>(patch) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">mean_sp1 =</span> <span class="fu">mean</span>(species1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">|&gt;</span> <span class="fu">group_by</span>(patch) <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">mean_sp1 =</span> <span class="fu">mean</span>(species1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>and</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">|&gt;</span> <span class="fu">group_by</span>(time) <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">mean_sp1 =</span> <span class="fu">mean</span>(species1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">|&gt;</span> <span class="fu">group_by</span>(time) <span class="sc">|&gt;</span> <span class="fu">summarize</span>(<span class="at">mean_sp1 =</span> <span class="fu">mean</span>(species1))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The first distinguishes the rows of the data only by <code>patch</code>, and therefore the average is taken over time. The second distinguishes the rows by <code>time</code>, so the average is taken over the patches. Run the two expressions again to see the difference between them!</p>
 </div>
@@ -706,7 +706,7 @@ Warning
 <span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Group data by both species and patch:</span></span>
 <span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(patch, species) <span class="sc">|&gt;</span></span>
 <span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Obtain statistics:</span></span>
-<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mean_dens =</span> <span class="fu">mean</span>(density),</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_dens =</span> <span class="fu">mean</span>(density),</span>
 <span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">min_dens =</span> <span class="fu">min</span>(density),</span>
 <span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>            <span class="at">max_dens =</span> <span class="fu">max</span>(density)) <span class="sc">|&gt;</span></span>
 <span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Don't forget to ungroup the data at the end:</span></span>

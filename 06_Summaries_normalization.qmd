@@ -37,15 +37,15 @@ pop |> mutate(total = species1 + species2 + species3)
 
 ## Creating summary data
 
-One can create summaries of data using the `summarise` function. This will simply apply some function to a column. For example, to calculate the average population density of species 1 in `pop`, across both time and patches, one can write
+One can create summaries of data using the `summarize` function. This will simply apply some function to a column. For example, to calculate the average population density of species 1 in `pop`, across both time and patches, one can write
 
 ```{r}
-pop |> summarise(mean_sp1 = mean(species1))
+pop |> summarize(mean_sp1 = mean(species1))
 ```
 
 Here `mean_sp1` is the name of the new column to be created, and the `mean` function is our summary function, collapsing the data into a single number.
 
-So far, this is not particularly interesting; in fact, the exact same effect would have been achieved by typing the shorter `mean(pop$species1)` instead. The real power of `summarise` comes through when combined with `group_by`. This groups the data based on the given grouping variables. Let us see how this works in practice:
+So far, this is not particularly interesting; in fact, the exact same effect would have been achieved by typing the shorter `mean(pop$species1)` instead. The real power of `summarize` comes through when combined with `group_by`. This groups the data based on the given grouping variables. Let us see how this works in practice:
 
 ```{r}
 #| message: false
@@ -69,16 +69,16 @@ As mentioned, functions that are applied to grouped data will act on the groups 
 #| message: false
 pop |>
   group_by(patch) |>
-  summarise(mean_sp1 = mean(species1))
+  summarize(mean_sp1 = mean(species1))
 ```
 
-One may obtain multiple summary statistics within the same `summarise` function. Below we compute the mean, the minimum, and the maximum of the densities per patch:
+One may obtain multiple summary statistics within the same `summarize` function. Below we compute the mean, the minimum, and the maximum of the densities per patch:
 
 ```{r}
 #| message: false
 pop |>
   group_by(patch) |>
-  summarise(mean_sp1 = mean(species1),
+  summarize(mean_sp1 = mean(species1),
             min_sp1 = min(species1),
             max_sp1 = max(species1))
 ```
@@ -89,10 +89,10 @@ Let us see what happens if we calculate the mean density of species 1---but grou
 #| message: false
 pop |>
   group_by(time) |>
-  summarise(mean_sp1 = mean(species1))
+  summarize(mean_sp1 = mean(species1))
 ```
 
-The resulting table has 50 rows---half the number of rows in the original data, but many more than the two rows we get after grouping by `patch`. The reason is that there are 50 unique time points, and so the average is now computed over those rows which share `time`. But there are only two rows per moment of time: the rows corresponding to patch A and patch B. When we call `summarise` after having grouped by `time`, the averages are computed over the densities in these two rows only, per group. That is why here we end up with a table which has a single row per point in time.
+The resulting table has 50 rows---half the number of rows in the original data, but many more than the two rows we get after grouping by `patch`. The reason is that there are 50 unique time points, and so the average is now computed over those rows which share `time`. But there are only two rows per moment of time: the rows corresponding to patch A and patch B. When we call `summarize` after having grouped by `time`, the averages are computed over the densities in these two rows only, per group. That is why here we end up with a table which has a single row per point in time.
 
 
 :::{.callout-warning}
@@ -100,14 +100,14 @@ One common mistake when first encountering grouping and summaries is to assume t
 
 ```{r}
 #| eval: false
-pop |> group_by(patch) |> summarise(mean_sp1 = mean(species1))
+pop |> group_by(patch) |> summarize(mean_sp1 = mean(species1))
 ```
 
 and
 
 ```{r}
 #| eval: false
-pop |> group_by(time) |> summarise(mean_sp1 = mean(species1))
+pop |> group_by(time) |> summarize(mean_sp1 = mean(species1))
 ```
 
 The first distinguishes the rows of the data only by `patch`, and therefore the average is taken over time. The second distinguishes the rows by `time`, so the average is taken over the patches. Run the two expressions again to see the difference between them!
@@ -200,7 +200,7 @@ pop |>
   # Group data by both species and patch:
   group_by(patch, species) |>
   # Obtain statistics:
-  summarise(mean_dens = mean(density),
+  summarize(mean_dens = mean(density),
             min_dens = min(density),
             max_dens = max(density)) |>
   # Don't forget to ungroup the data at the end:
