@@ -7,8 +7,7 @@ We will start by reading the [`pop_data.csv`](https://raw.githubusercontent.com/
 #| message: false
 library(tidyverse)
 
-pop <- read_csv("pop_data.csv")
-
+pop <- read_delim("pop_data.csv", delim = ",")
 ```
 
 This dataset is a *sample* from a larger *population,*^["Population" in the statistical sense of the word is not to be confused with "population" from ecology. It simply means the complete set of all entities out there which we take our smaller sample from.] and while it is not clear how the *units* in the sample (the different time points) have been selected, we can assume that they have been randomly selected from the population of all possible units.
@@ -28,7 +27,7 @@ The `pop` dataset contains 5 variables of different types. A variable type is us
 
 *Qualitative* variables are those describing categories---for example nationalities, sex, blood type, etc. In our `pop` data the variable `patch` is qualitative, as it describes a label used for patches of land. If we would choose to label the two patches as 1 and 2, the variable itself would still be qualitative as the numbers do not have a numeric meaning.
 
-*Quantitative* variables are those describing real numbers, for example height, weight, or final times in a 100 m race. The numbers represent real numeric values instead of just labels. There are two sub-types of quantitative variables; discrete and continuous. A discrete variable may only take on integer (i.e., whole number) values, or a limited amount of decimals. The number of siblings would be a discrete variable, as one cannot have $2.32451$ siblings and cannot measure the value with an infinite amount of decimals. Continuous variables on the other hand can be measured with this amount of detail. An example would be a person's height.
+*Quantitative* variables are those describing real numbers, for example height, weight, or final times in a 100 m race. The numbers represent real numeric values instead of just labels. There are two sub-types of quantitative variables; discrete and continuous. A discrete variable may only take on integer (i.e., whole number) values, or a limited amount of decimals. The number of siblings would be a discrete variable, as one cannot have 2.32451 siblings and cannot measure the value with an infinite amount of decimals. Continuous variables on the other hand can be measured with this amount of detail. An example would be a person's height.
 
 In our dataset the three species' density variables (number of individuals per unit area) are considered continuous quantitative variables, as they represent a real numeric value that can be measured with infinite amount of decimals. Even though the loaded dataset contain values with only two decimals, this is only done for rounding purposes and does not prevent the variable itself to be measured with infinite amount of decimals.
 
@@ -135,15 +134,14 @@ A simple way to summarize the position of a variable is a *measure of center*. A
 
 #### Mean
 
-The most common measure of center is the *mean*, which can be calculated on a continuous variable. The mean of a sample is calculated as
+The most common measure of center is the *mean*, which can be calculated on a continuous variable. Assume that we have *n* samples from a population, and the measurement on the *i*th unit is denoted $x_i$. The mean of the sample is then calculated as
 $$
 \bar{x} = \frac{\sum_{i = 1}^n{x_i}}{n}
 $$ {#eq-mean}
-
 where $\bar{x}$ (pronounced "x-bar") is the statistic that aims to estimate the population mean $\mu$ (the Greek letter mu). 
 
 :::{.callout-warning}
-Even though it is mathematically possible to calculate a mean of a discrete variable, the resulting value would not be an actual value of the variable. For instance the mean number of siblings of a person might turn out to be 1.6, but no person will have $1$ full plus another $6/10$ sibling.
+Even though it is mathematically possible to calculate a mean of a discrete variable, the resulting value would not be an actual value of the variable. For instance the mean number of siblings of a person might turn out to be 1.6, but no person will have 1 full plus another 6/10 sibling.
 :::
 
 To calculate the density of each of the different species in our dataset, all we need to do is use the `mean` function and follow the pattern we learned about at the end of @sec-tidy:
@@ -195,7 +193,7 @@ Another instance when the mean misrepresents a variable's center is if there are
 
 The *median* is much more robust against outliers than the mean, in the sense that it is less affected by them. It describes the middle observation if we were to order the values in increasing size. Any single extremely small or large value would not affect position of the middle observation, as long as there are sufficiently many data points.
 
-We can calculate the position of the median as (*n* + 1) / 2, where *n* is the number of data points. This results in either a whole number (if *n* is odd), in which case the value at that position is the median. Or it could result in a half number (if *n* is even), in which case the convention is to put the median halfway between the two positions obtained by rounding the position's number up and down, respectively.
+We can calculate the position (i.e., the index of the value in a vector) of the median as (*n* + 1) / 2, where *n* is the number of data points. This results in either a whole number (if *n* is odd), in which case the value at that position is the median. Or it could result in a half number (if *n* is even), in which case the convention is to put the median halfway between the two positions obtained by rounding the position's number up and down, respectively.
 
 The process of calculating the median can be done step by step as follows:
 
@@ -206,19 +204,21 @@ n <- nrow(pop)
 # Find the position (index) of the median:
 position <- (n + 1) / 2 # The position is 50.5
 
+# Therefore we need to round down and up, to get the vector c(50, 51):
+positionVec <- c(floor(position), ceiling(position))
+
 pop |>
   select(species1) |> # Keep only this one column
   arrange(species1) |> # Order the densities from lowest to largest
-  slice(c(floor(position), ceiling(position))) |> # Get the middle two values
-  summarize(median = mean(species1)) # Obtain the median
+  slice(positionVec) |> # Get the middle two values (at rows 50 and 51)
+  summarize(median = mean(species1)) # Obtain their mean, which is the median
 ```
 
-This becomes tedious to do multiple times but thankfully the function `median()` does everything all at once. Using the function the median value is also $`r median(pop$species1)`$.^[We would expect the same value as the function uses the same process as shown earlier.]
+This becomes tedious to do multiple times, but thankfully the function `median` does all of this for us automatically. Using the function, the median value is also `r median(pop$species1)`.^[We would expect the same value as the function uses the same process as shown earlier.]
 
 #### Quantiles
-A generalization of the median is a *quantile* which aims to divide the ordered values into a specific number of parts. For example, we can consider the median a quantile where the data is split up into two equal sized parts. Other common quantiles are *quartiles* which divide the data into four (quarters) equal sized parts.
 
-The first (splits data into 25% | 75%) and third quartile (splits 75% | 25%) can be used as additional measures to gain information about different positions.
+A generalization of the median is a *quantile* which aims to divide the ordered values into a specific number of parts. For example, we can consider the median a quantile where the data are split up into two equally-sized parts. Other common quantiles are *quartiles* which divide the data into four equal quarters, each containing 25% of the data. The first quartile (which splits the data into 25% | 75%) and the third quartile (splits 75% | 25%) can be used as additional measures to gain information about different positions.
 
 :::{.callout-note}
 The second quartile is actually just the median as it splits the data into two equally sized parts, 50% | 50%, the same as we defined in the median.
@@ -227,208 +227,158 @@ The second quartile is actually just the median as it splits the data into two e
 The function `quantile()` is used to calculate specific quantiles of a variable via the argument `probs` that can be given one or more numeric values. If we want to calculate the three quartiles we would give the values `c(0.25, 0.50, 0.75)`.
 
 ```{r}
-
-quartiles <- 
-  quantile(
-    pop$species1,
-    probs = c(0.25, 0.50, 0.75)
-  )
+quartiles <- quantile(pop$species1, probs = c(0.25, 0.50, 0.75))
 
 quartiles
-
 ```
 
 We mentioned earlier that we can visualize a quantitative variable with another type of visualization than a histogram. A *box (and-whiskers)* plot uses the values of the minimum, maximum, and the three quartiles to show the distribution of a variable. The function in R for a box plot is `geom_boxplot()`.
 
 ```{r}
-#| fig-cap: Box plots of each species density.
-#| label: fig-box-species
-
-
-## Groups the values for simpler visualization
 pop |> 
-  pivot_longer(
-    -c(patch,time),
-    names_to = "Species",
-    values_to = "Density"
-  ) |> 
-  # Adds mean values to the dataset prior to visualization
-  group_by(Species) |> 
-  mutate(
-    mean = mean(Density)
-  ) |> 
-  ## Begins visualization
-ggplot() + aes(x = Density) + 
-  geom_boxplot() + 
-  theme_bw() + 
+  pivot_longer(cols = starts_with("species"),
+               names_to = "species",
+               values_to = "density") |> 
+  ggplot(aes(x = density)) + 
+  geom_boxplot(color = "steelblue", fill = "steelblue", alpha = 0.2) +
   # Facets the histogram based on species
-  facet_grid(rows = vars(Species)) +
+  facet_grid(species ~ .) +
   labs(x = "Population Density") + 
-  # The y-axis is not relevant in this type of visualization so it is removed by breaks = NULL
-  scale_y_continuous(breaks = NULL)
-  
-
+  # The y-axis is not relevant in this type of visualization,
+  # so it is removed by setting breaks = NULL:
+  scale_y_continuous(breaks = NULL) +
+  theme_bw()
 ```
 
-The line (or whiskers) mark the range of the first and last 25% of the data limited by the smallest and largest value. The box in the middle mark the range of the middle 50% of the data with the bold line inside the box showing the median. The function in R also does something that we might not have expected for Species 1. There are a number of points further away from the line that are not considered to be a part of the box plot data, they are instead considered outliers. R defines any value further than $1.5 \cdot$ *interquartile range* (see @sec-iqr) from either the first or third quartile as outliers.
+The line (whiskers) mark the range of the first and last 25% of the data limited by the smallest and largest value. The box in the middle mark the range of the middle 50% of the data with the bold line inside the box showing the median. The function in R also does something that we might not have expected for Species 1. There are a number of points further away from the line that are not considered to be a part of the box plot data, they are instead considered outliers. R defines any value further than 1.5 times the *interquartile range* (see @sec-iqr) from the edges of the box as outliers.
 
 
 ### Measures of spread or uncertainty
-As we saw in @fig-dist-mean, the measure of a center by itself does not provide the full picture of a variable. Species 1 and 2 had about the same mean value but the values of the observations are spread out very different. When summarizing a variable it is also important to describe the spread of the values, the amount of variation they have, as it gives a sense of how two variables with the same mean might differ.
+
+As we saw in @fig-dist-mean, the measure of a center by itself does not provide the full picture of a variable. Species 1 and 2 had about the same mean value but the values of the observations are spread out very differently. When summarizing a variable, it is also important to describe the spread of the values, the amount of variation they have. This gives a sense of how two variables with the same mean might differ.
 
 #### Standard deviation
-The *standard deviation* can be seen as the 'average distance from the mean', that is how far away from the mean do we expect a randomly selected value from the variable to be. The formula for the standard deviation is:
-\begin{align*}
-  s = \sqrt{\frac{\sum_{i = 1}^n{(x_i - \bar{x})^2}}{n - 1}}
-\end{align*}
 
-where $x_i$ is each observed value, $\bar{x}$ is the mean and $n$ is the number of observations.
+The *standard deviation* can be seen as the "average distance from the mean"---that is, how far away from the mean we expect a randomly selected value to be. The formula for the standard deviation is
+$$
+s = \sqrt{\frac{\sum_{i = 1}^n{(x_i - \bar{x})^2}}{n - 1}}
+$$ {#eq-sd}
+where $x_i$ is the *i*th observed value, $\bar{x}$ is their mean, and $n$ is the number of observations.
 
-We can get an understanding of why the standard deviation is seen as an average by going through each step of the calculation. First we calculate the difference between the observed value and the mean where values further from the mean result in a bigger difference (negative or positive). 
+We can get an understanding of why the standard deviation is seen as an average by going through each step of the calculation. First we calculate the difference between the observed value and the mean, where values further from the mean result in a bigger difference (negative or positive):
 
 ```{r}
-
 meanSpecies1 <- mean(pop$species1)
 
 pop$species1 - meanSpecies1
-
 ```
 
-When calculating the average distance we need all values to be positive (you cannot have a negative distance) so we square all the values, making them all positive.
+When calculating the average distance, we need all values to be positive (you cannot have a negative distance). So we square all the values, making them all positive:
 
 ```{r}
-
 (pop$species1 - meanSpecies1)^2
-
 ```
 
-Next we sum all the squared differences so we get a sense of the total (squared) distance from every observation to the mean.
+Next, we sum all the squared differences so we get a sense of the total (squared) distance from every observation to the mean:
 
 ```{r}
-
-(pop$species1 - meanSpecies1)^2 |> 
-  sum()
-
+sum((pop$species1 - meanSpecies1)^2)
 ```
 
 To get an average (squared) distance, we then divide by the number of observations or at least something that depends on the number of observations, $n - 1$.^[We will return to why we do not use $n$ directly in a later chapter.]
 
 ```{r}
-
 n <- length(pop$species1)
 
-(pop$species1 - meanSpecies1)^2 |> 
-  sum() / (n - 1)
-
+sum((pop$species1 - meanSpecies1)^2) / (n - 1)
 ```
 
-This value is still an average of the squared distances which is not simple to actually interpret^[The squared distance is actually a component in more advanced calculations and is called the *variance* of a variable.], so in order to make it interpretable we need to take the square root of the value.
+This value is still an average of the squared distances, which is not simple to actually interpret.^[The squared distance is actually a component in more advanced calculations, and is called the *variance* of a variable.] So in order to make it interpretable, we need to take the square root of the value:
 
 ```{r}
+squaredDistances <- sum((pop$species1 - meanSpecies1)^2) / (n - 1)
 
-squaredDistances <- 
-  (pop$species1 - meanSpecies1)^2 |> 
-  sum() / (n - 1)
-
-squaredDistances |> 
-  sqrt()
-
+sqrt(squaredDistances)
 ```
 
-Instead of squared distances we now have a representation of just the distances between each observation and its mean. Thankfully we do not need to go through all of these steps every time we want to calculate the standard deviation, we can just use the function `sd()`.
+Instead of squared distances, we now have a representation of just the distances between each observation and its mean. Thankfully, we do not need to go through all of these steps every time we want to calculate the standard deviation, because we can just use the built-in function `sd`:
 
 ```{r}
-
 sd(pop$species1)
-
 ```
 
-If we were to compared the standard deviation for the three species we can use the same type of grouped calculation we have done before.
+To compare the standard deviations of the three species in the `pop` dataset, we can use the same type of grouped calculation we have done before:
 
 ```{r}
-
 pop |> 
-  pivot_longer(
-    -c(patch,time),
-    # Gives proper names to the transformed variables
-    names_to = "Species",
-    values_to = "Density"
-  ) |> 
-  group_by(Species) |> 
-  summarize(
-    mean = mean(Density),
-    stdev = sd(Density)
-  )
-
+  pivot_longer(cols = starts_with("species"),
+               names_to = "species",
+               values_to = "density") |> 
+  group_by(species) |> 
+  summarize(mean = mean(density),
+            stdev = sd(density)) |>
+  ungroup()
 ```
 
-Species 2 does indeed have a higher standard deviation than both species 1 and 3 indicating that its observations are further away from the mean. 
+Species 2 does indeed have a higher standard deviation than both species 1 and 3, indicating that its observations are further away from the mean. 
 
 #### Interquartile range {#sec-iqr}
-Similar to the mean, the standard deviation will overestimate the spread of the variable if there are outliers present. As outliers are defined as observations far from the rest of the observations they will also be far from the mean, thereby increasing the average distance from the mean resulting in an overestimation. Instead we can use the difference between the first and third quartile as an indication of the spread of the variable. For instance the IQR for Species 1 is `r quartiles[3] - quartiles[1]` using the indexes `quartiles[3] - quartiles[1]` created earlier.
+
+Similarly to the mean, the standard deviation will overestimate the spread of the variable if there are outliers present. Since outliers are defined as observations far from the rest of the observations, they will also be far from the mean, thereby increasing the average distance from the mean and resulting in an overestimation. Instead, we can use the difference between the first and third quartile as an indication of the spread of the variable. This is called the *interquartile range* (IQR). For instance, the IQR for Species 1 is `r quartiles[3] - quartiles[1]`, using the indices `quartiles[3] - quartiles[1]` created earlier.
+
 
 ## Summary and exercises
+
 Visualizations and descriptive statistics are used to summarize variables in a dataset. Different forms and measures are used depending on the variable type and the scale it follows in order to properly describe the variable. Visualizations are used to show the distribution or shape of the data. The measure of center shows the placement of a quantitative variable while measures of spread show the variation of the values around its center.
 
 For the exercises we will return to the `iris` dataset seen in earlier chapters (ex. @sec-wrangling-exercises). Make sure to convert the data to a `tibble` and save it to an object before starting these exercises.
 
-1. Visualize the variable `Species` with a suitable plot. How many of each species are present in the data?
+1.  Visualize the variable `Species` with a suitable plot. How many of each species are present in the data?
 
-```{r include = FALSE}
-
-data(iris)
-
-iris <- as_tibble(iris)
-
-ggplot(iris) + aes(x = Species) + 
-  geom_bar() + theme_bw()
-
+```{r}
+#| include: false
+iris |>
+  ggplot(aes(x = Species)) + 
+  geom_bar() +
+  theme_bw()
 ```
 
-2. Visualize the variable `Petal.Width` with a suitable plot. What observations can be made from this plot?
+2.  Visualize the variable `Petal.Width` with a suitable plot. What observations can be made from this plot?
 
-```{r include = FALSE}
-
-ggplot(iris) + aes(x = Petal.Width) + 
-  geom_histogram(binwidth = 0.2) + theme_bw()
-
+```{r}
+#| include: false
+iris |>
+  ggplot(aes(x = Petal.Width)) + 
+  geom_histogram(binwidth = 0.2) +
+  theme_bw()
 ```
 
-3. Calculate the mean and standard deviation of both the `Petal` traits within each species. What can we learn about the different species from this summary?
+3.  Calculate the mean and standard deviation of both `Petal` traits (length and width) within each species. What can we learn about the different species from this summary?
 
-```{r include = FALSE}
-
+```{r}
+#| include: false
 iris |> 
-  pivot_longer(
-    cols = contains("Petal"),
-    names_to = "Trait",
-    values_to = "Value"
-  ) |> 
+  pivot_longer(cols = contains("Petal"),
+               names_to = "Trait",
+               values_to = "Value") |> 
   group_by(Species, Trait) |> 
-  summarize(
-    mean = mean(Value),
-    sd = sd(Value)
-  )
-
+  summarize(mean = mean(Value),
+            sd = sd(Value)) |>
+  ungroup()
 ```
 
-4. Calculate the median and interquartile range of both the `Petal` traits within each species. Keep the mean and standard deviation in the summary and compare the measures of center and the measures of spread with each other. Does the summary indicate that there might be outliers present in any species and trait combination?
+4.  Calculate the median and interquartile range of both the `Petal` traits within each species. Keep the mean and standard deviation in the summary and compare the measures of center and the measures of spread with each other. Does the summary indicate that there might be outliers present in any combination of species and trait?
 
-```{r include = FALSE}
-
+```{r}
+#| include: false
 iris |> 
-  pivot_longer(
-    cols = contains("Petal"),
-    names_to = "Trait",
-    values_to = "Value"
-  ) |> 
+  pivot_longer(cols = contains("Petal"),
+               names_to = "Trait",
+               values_to = "Value") |> 
   group_by(Species, Trait) |> 
-  summarize(
-    mean = mean(Value),
-    median = median(Value),
-    
-    sd = sd(Value),
-    IQR = IQR(Value)
-  )
-
+  summarize(mean = mean(Value),
+            median = median(Value),
+            sd = sd(Value),
+            IQR = IQR(Value)) |>
+  ungroup()
 ```

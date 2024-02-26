@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.3.433">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -340,7 +340,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"pop_data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>pop <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"pop_data.csv"</span>, <span class="at">delim =</span> <span class="st">","</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This dataset is a <em>sample</em> from a larger <em>population,</em><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> and while it is not clear how the <em>units</em> in the sample (the different time points) have been selected, we can assume that they have been randomly selected from the population of all possible units.</p>
 <p>It would be impossible, if not very expensive, to collect data from all units in a population. This means that in practice we work with samples of data. We are still interested in making conclusions about the population, but these will be made from a smaller set of units that we can actually collect data from. The information we collect will depend on the units selected for the sample, and any two samples will contain different units if the <em>sampling procedure</em> is done with any kind of <em>randomization</em>.</p>
@@ -351,7 +351,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="10.1" class="anchored" data-anchor-id="variable-types"><span class="header-section-number">10.1</span> Variable types</h2>
 <p>The <code>pop</code> dataset contains 5 variables of different types. A variable type is used to describe what type of information we can find within it and determines how we can further analyze the variable. We can separate variables into two main groups: <em>qualitative</em> and <em>quantitative</em> variables.</p>
 <p><em>Qualitative</em> variables are those describing categories—for example nationalities, sex, blood type, etc. In our <code>pop</code> data the variable <code>patch</code> is qualitative, as it describes a label used for patches of land. If we would choose to label the two patches as 1 and 2, the variable itself would still be qualitative as the numbers do not have a numeric meaning.</p>
-<p><em>Quantitative</em> variables are those describing real numbers, for example height, weight, or final times in a 100 m race. The numbers represent real numeric values instead of just labels. There are two sub-types of quantitative variables; discrete and continuous. A discrete variable may only take on integer (i.e., whole number) values, or a limited amount of decimals. The number of siblings would be a discrete variable, as one cannot have <span class="math inline">\(2.32451\)</span> siblings and cannot measure the value with an infinite amount of decimals. Continuous variables on the other hand can be measured with this amount of detail. An example would be a person’s height.</p>
+<p><em>Quantitative</em> variables are those describing real numbers, for example height, weight, or final times in a 100 m race. The numbers represent real numeric values instead of just labels. There are two sub-types of quantitative variables; discrete and continuous. A discrete variable may only take on integer (i.e., whole number) values, or a limited amount of decimals. The number of siblings would be a discrete variable, as one cannot have 2.32451 siblings and cannot measure the value with an infinite amount of decimals. Continuous variables on the other hand can be measured with this amount of detail. An example would be a person’s height.</p>
 <p>In our dataset the three species’ density variables (number of individuals per unit area) are considered continuous quantitative variables, as they represent a real numeric value that can be measured with infinite amount of decimals. Even though the loaded dataset contain values with only two decimals, this is only done for rounding purposes and does not prevent the variable itself to be measured with infinite amount of decimals.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -491,10 +491,9 @@ Important
 <p>A simple way to summarize the position of a variable is a <em>measure of center</em>. As the name implies, it describes where on the unit scale the values are centered around, and gives an indication of the magnitude (level) of the values.</p>
 <section id="mean" class="level4">
 <h4 class="anchored" data-anchor-id="mean">Mean</h4>
-<p>The most common measure of center is the <em>mean</em>, which can be calculated on a continuous variable. The mean of a sample is calculated as <span id="eq-mean"><span class="math display">\[
+<p>The most common measure of center is the <em>mean</em>, which can be calculated on a continuous variable. Assume that we have <em>n</em> samples from a population, and the measurement on the <em>i</em>th unit is denoted <span class="math inline">\(x_i\)</span>. The mean of the sample is then calculated as <span id="eq-mean"><span class="math display">\[
 \bar{x} = \frac{\sum_{i = 1}^n{x_i}}{n}
-\tag{10.1}\]</span></span></p>
-<p>where <span class="math inline">\(\bar{x}\)</span> (pronounced “x-bar”) is the statistic that aims to estimate the population mean <span class="math inline">\(\mu\)</span> (the Greek letter mu).</p>
+\tag{10.1}\]</span></span> where <span class="math inline">\(\bar{x}\)</span> (pronounced “x-bar”) is the statistic that aims to estimate the population mean <span class="math inline">\(\mu\)</span> (the Greek letter mu).</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -505,7 +504,7 @@ Warning
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Even though it is mathematically possible to calculate a mean of a discrete variable, the resulting value would not be an actual value of the variable. For instance the mean number of siblings of a person might turn out to be 1.6, but no person will have <span class="math inline">\(1\)</span> full plus another <span class="math inline">\(6/10\)</span> sibling.</p>
+<p>Even though it is mathematically possible to calculate a mean of a discrete variable, the resulting value would not be an actual value of the variable. For instance the mean number of siblings of a person might turn out to be 1.6, but no person will have 1 full plus another 6/10 sibling.</p>
 </div>
 </div>
 <p>To calculate the density of each of the different species in our dataset, all we need to do is use the <code>mean</code> function and follow the pattern we learned about at the end of <a href="06_Summaries_normalization.html#sec-tidy"><span>Section&nbsp;6.2</span></a>:</p>
@@ -564,7 +563,7 @@ Warning
 <h4 class="anchored" data-anchor-id="median">Median</h4>
 <p>Another instance when the mean misrepresents a variable’s center is if there are <em>outliers</em> present in the data. An outlier is an observation that is located far away from the majority of the other observations. They affect the mean by moving the measure towards the direction of the outliers and thereby shifting the center away from the majority of the observations. This could be identified if we visualized the distribution alongside the mean but we can also use another measure of center as an alternative.</p>
 <p>The <em>median</em> is much more robust against outliers than the mean, in the sense that it is less affected by them. It describes the middle observation if we were to order the values in increasing size. Any single extremely small or large value would not affect position of the middle observation, as long as there are sufficiently many data points.</p>
-<p>We can calculate the position of the median as (<em>n</em> + 1) / 2, where <em>n</em> is the number of data points. This results in either a whole number (if <em>n</em> is odd), in which case the value at that position is the median. Or it could result in a half number (if <em>n</em> is even), in which case the convention is to put the median halfway between the two positions obtained by rounding the position’s number up and down, respectively.</p>
+<p>We can calculate the position (i.e., the index of the value in a vector) of the median as (<em>n</em> + 1) / 2, where <em>n</em> is the number of data points. This results in either a whole number (if <em>n</em> is odd), in which case the value at that position is the median. Or it could result in a half number (if <em>n</em> is even), in which case the convention is to put the median halfway between the two positions obtained by rounding the position’s number up and down, respectively.</p>
 <p>The process of calculating the median can be done step by step as follows:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The number of observations is the number of rows in the data:</span></span>
@@ -573,11 +572,14 @@ Warning
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Find the position (index) of the median:</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>position <span class="ot">&lt;-</span> (n <span class="sc">+</span> <span class="dv">1</span>) <span class="sc">/</span> <span class="dv">2</span> <span class="co"># The position is 50.5</span></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">|&gt;</span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species1) <span class="sc">|&gt;</span> <span class="co"># Keep only this one column</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(species1) <span class="sc">|&gt;</span> <span class="co"># Order the densities from lowest to largest</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="fu">c</span>(<span class="fu">floor</span>(position), <span class="fu">ceiling</span>(position))) <span class="sc">|&gt;</span> <span class="co"># Get the middle two values</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">median =</span> <span class="fu">mean</span>(species1)) <span class="co"># Obtain the median</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Therefore we need to round down and up, to get the vector c(50, 51):</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>positionVec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">floor</span>(position), <span class="fu">ceiling</span>(position))</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">|&gt;</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species1) <span class="sc">|&gt;</span> <span class="co"># Keep only this one column</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(species1) <span class="sc">|&gt;</span> <span class="co"># Order the densities from lowest to largest</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(positionVec) <span class="sc">|&gt;</span> <span class="co"># Get the middle two values (at rows 50 and 51)</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">median =</span> <span class="fu">mean</span>(species1)) <span class="co"># Obtain their mean, which is the median</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 1
   median
@@ -585,12 +587,11 @@ Warning
 1   5.28</code></pre>
 </div>
 </div>
-<p>This becomes tedious to do multiple times but thankfully the function <code>median()</code> does everything all at once. Using the function the median value is also <span class="math inline">\(5.28\)</span>.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p>This becomes tedious to do multiple times, but thankfully the function <code>median</code> does all of this for us automatically. Using the function, the median value is also 5.28.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
 </section>
 <section id="quantiles" class="level4">
 <h4 class="anchored" data-anchor-id="quantiles">Quantiles</h4>
-<p>A generalization of the median is a <em>quantile</em> which aims to divide the ordered values into a specific number of parts. For example, we can consider the median a quantile where the data is split up into two equal sized parts. Other common quantiles are <em>quartiles</em> which divide the data into four (quarters) equal sized parts.</p>
-<p>The first (splits data into 25% | 75%) and third quartile (splits 75% | 25%) can be used as additional measures to gain information about different positions.</p>
+<p>A generalization of the median is a <em>quantile</em> which aims to divide the ordered values into a specific number of parts. For example, we can consider the median a quantile where the data are split up into two equally-sized parts. Other common quantiles are <em>quartiles</em> which divide the data into four equal quarters, each containing 25% of the data. The first quartile (which splits the data into 25% | 75%) and the third quartile (splits 75% | 25%) can be used as additional measures to gain information about different positions.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -606,13 +607,9 @@ Note
 </div>
 <p>The function <code>quantile()</code> is used to calculate specific quantiles of a variable via the argument <code>probs</code> that can be given one or more numeric values. If we want to calculate the three quartiles we would give the values <code>c(0.25, 0.50, 0.75)</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>quartiles <span class="ot">&lt;-</span> </span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">quantile</span>(</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    pop<span class="sc">$</span>species1,</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span>)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>quartiles</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>quartiles <span class="ot">&lt;-</span> <span class="fu">quantile</span>(pop<span class="sc">$</span>species1, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.25</span>, <span class="fl">0.50</span>, <span class="fl">0.75</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>quartiles</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   25%    50%    75% 
 3.7200 5.2800 6.0425 </code></pre>
@@ -620,49 +617,35 @@ Note
 </div>
 <p>We mentioned earlier that we can visualize a quantitative variable with another type of visualization than a histogram. A <em>box (and-whiskers)</em> plot uses the values of the minimum, maximum, and the three quartiles to show the distribution of a variable. The function in R for a box plot is <code>geom_boxplot()</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Groups the values for simpler visualization</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">|&gt;</span> </span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fu">c</span>(patch,time),</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Species"</span>,</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Density"</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Adds mean values to the dataset prior to visualization</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Species) <span class="sc">|&gt;</span> </span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(Density)</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Begins visualization</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span> <span class="fu">aes</span>(<span class="at">x =</span> Density) <span class="sc">+</span> </span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>() <span class="sc">+</span> </span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Facets the histogram based on species</span></span>
-<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">rows =</span> <span class="fu">vars</span>(Species)) <span class="sc">+</span></span>
-<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Population Density"</span>) <span class="sc">+</span> </span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The y-axis is not relevant in this type of visualization so it is removed by breaks = NULL</span></span>
-<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">"species"</span>),</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"species"</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"density"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> density)) <span class="sc">+</span> </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Facets the histogram based on species</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(species <span class="sc">~</span> .) <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Population Density"</span>) <span class="sc">+</span> </span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The y-axis is not relevant in this type of visualization,</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># so it is removed by setting breaks = NULL:</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="fig-box-species" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="20_Intro_statistics_files/figure-html/fig-box-species-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;10.2: Box plots of each species density.</figcaption>
-</figure>
+<p><img src="20_Intro_statistics_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-</div>
-<p>The line (or whiskers) mark the range of the first and last 25% of the data limited by the smallest and largest value. The box in the middle mark the range of the middle 50% of the data with the bold line inside the box showing the median. The function in R also does something that we might not have expected for Species 1. There are a number of points further away from the line that are not considered to be a part of the box plot data, they are instead considered outliers. R defines any value further than <span class="math inline">\(1.5 \cdot\)</span> <em>interquartile range</em> (see <a href="#sec-iqr"><span>Section&nbsp;10.3.3.2</span></a>) from either the first or third quartile as outliers.</p>
+<p>The line (whiskers) mark the range of the first and last 25% of the data limited by the smallest and largest value. The box in the middle mark the range of the middle 50% of the data with the bold line inside the box showing the median. The function in R also does something that we might not have expected for Species 1. There are a number of points further away from the line that are not considered to be a part of the box plot data, they are instead considered outliers. R defines any value further than 1.5 times the <em>interquartile range</em> (see <a href="#sec-iqr"><span>Section&nbsp;10.3.3.2</span></a>) from the edges of the box as outliers.</p>
 </section>
 </section>
 <section id="measures-of-spread-or-uncertainty" class="level3" data-number="10.3.3">
 <h3 data-number="10.3.3" class="anchored" data-anchor-id="measures-of-spread-or-uncertainty"><span class="header-section-number">10.3.3</span> Measures of spread or uncertainty</h3>
-<p>As we saw in <a href="#fig-dist-mean">Figure&nbsp;<span>10.1</span></a>, the measure of a center by itself does not provide the full picture of a variable. Species 1 and 2 had about the same mean value but the values of the observations are spread out very different. When summarizing a variable it is also important to describe the spread of the values, the amount of variation they have, as it gives a sense of how two variables with the same mean might differ.</p>
+<p>As we saw in <a href="#fig-dist-mean">Figure&nbsp;<span>10.1</span></a>, the measure of a center by itself does not provide the full picture of a variable. Species 1 and 2 had about the same mean value but the values of the observations are spread out very differently. When summarizing a variable, it is also important to describe the spread of the values, the amount of variation they have. This gives a sense of how two variables with the same mean might differ.</p>
 <section id="standard-deviation" class="level4">
 <h4 class="anchored" data-anchor-id="standard-deviation">Standard deviation</h4>
-<p>The <em>standard deviation</em> can be seen as the ‘average distance from the mean’, that is how far away from the mean do we expect a randomly selected value from the variable to be. The formula for the standard deviation is: <span class="math display">\[\begin{align*}
-  s = \sqrt{\frac{\sum_{i = 1}^n{(x_i - \bar{x})^2}}{n - 1}}
-\end{align*}\]</span></p>
-<p>where <span class="math inline">\(x_i\)</span> is each observed value, <span class="math inline">\(\bar{x}\)</span> is the mean and <span class="math inline">\(n\)</span> is the number of observations.</p>
-<p>We can get an understanding of why the standard deviation is seen as an average by going through each step of the calculation. First we calculate the difference between the observed value and the mean where values further from the mean result in a bigger difference (negative or positive).</p>
+<p>The <em>standard deviation</em> can be seen as the “average distance from the mean”—that is, how far away from the mean we expect a randomly selected value to be. The formula for the standard deviation is <span id="eq-sd"><span class="math display">\[
+s = \sqrt{\frac{\sum_{i = 1}^n{(x_i - \bar{x})^2}}{n - 1}}
+\tag{10.2}\]</span></span> where <span class="math inline">\(x_i\)</span> is the <em>i</em>th observed value, <span class="math inline">\(\bar{x}\)</span> is their mean, and <span class="math inline">\(n\)</span> is the number of observations.</p>
+<p>We can get an understanding of why the standard deviation is seen as an average by going through each step of the calculation. First we calculate the difference between the observed value and the mean, where values further from the mean result in a bigger difference (negative or positive):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>meanSpecies1 <span class="ot">&lt;-</span> <span class="fu">mean</span>(pop<span class="sc">$</span>species1)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -682,7 +665,7 @@ Note
 [100] -4.8346</code></pre>
 </div>
 </div>
-<p>When calculating the average distance we need all values to be positive (you cannot have a negative distance) so we square all the values, making them all positive.</p>
+<p>When calculating the average distance, we need all values to be positive (you cannot have a negative distance). So we square all the values, making them all positive:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>(pop<span class="sc">$</span>species1 <span class="sc">-</span> meanSpecies1)<span class="sc">^</span><span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -705,10 +688,9 @@ Note
  [97]  0.04218916 22.60622116  0.04218916 23.37335716</code></pre>
 </div>
 </div>
-<p>Next we sum all the squared differences so we get a sense of the total (squared) distance from every observation to the mean.</p>
+<p>Next, we sum all the squared differences so we get a sense of the total (squared) distance from every observation to the mean:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>(pop<span class="sc">$</span>species1 <span class="sc">-</span> meanSpecies1)<span class="sc">^</span><span class="dv">2</span> <span class="sc">|&gt;</span> </span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((pop<span class="sc">$</span>species1 <span class="sc">-</span> meanSpecies1)<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 746.0575</code></pre>
 </div>
@@ -717,59 +699,51 @@ Note
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(pop<span class="sc">$</span>species1)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>(pop<span class="sc">$</span>species1 <span class="sc">-</span> meanSpecies1)<span class="sc">^</span><span class="dv">2</span> <span class="sc">|&gt;</span> </span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>() <span class="sc">/</span> (n <span class="sc">-</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>((pop<span class="sc">$</span>species1 <span class="sc">-</span> meanSpecies1)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> (n <span class="sc">-</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 7.535934</code></pre>
 </div>
 </div>
-<p>This value is still an average of the squared distances which is not simple to actually interpret<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a>, so in order to make it interpretable we need to take the square root of the value.</p>
+<p>This value is still an average of the squared distances, which is not simple to actually interpret.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> So in order to make it interpretable, we need to take the square root of the value:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>squaredDistances <span class="ot">&lt;-</span> </span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  (pop<span class="sc">$</span>species1 <span class="sc">-</span> meanSpecies1)<span class="sc">^</span><span class="dv">2</span> <span class="sc">|&gt;</span> </span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sum</span>() <span class="sc">/</span> (n <span class="sc">-</span> <span class="dv">1</span>)</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>squaredDistances <span class="sc">|&gt;</span> </span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sqrt</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>squaredDistances <span class="ot">&lt;-</span> <span class="fu">sum</span>((pop<span class="sc">$</span>species1 <span class="sc">-</span> meanSpecies1)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> (n <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(squaredDistances)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.745166</code></pre>
 </div>
 </div>
-<p>Instead of squared distances we now have a representation of just the distances between each observation and its mean. Thankfully we do not need to go through all of these steps every time we want to calculate the standard deviation, we can just use the function <code>sd()</code>.</p>
+<p>Instead of squared distances, we now have a representation of just the distances between each observation and its mean. Thankfully, we do not need to go through all of these steps every time we want to calculate the standard deviation, because we can just use the built-in function <code>sd</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(pop<span class="sc">$</span>species1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.745166</code></pre>
 </div>
 </div>
-<p>If we were to compared the standard deviation for the three species we can use the same type of grouped calculation we have done before.</p>
+<p>To compare the standard deviations of the three species in the <code>pop</code> dataset, we can use the same type of grouped calculation we have done before:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>pop <span class="sc">|&gt;</span> </span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span><span class="fu">c</span>(patch,time),</span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Gives proper names to the transformed variables</span></span>
-<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"Species"</span>,</span>
-<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Density"</span></span>
-<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Species) <span class="sc">|&gt;</span> </span>
-<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(</span>
-<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(Density),</span>
-<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">stdev =</span> <span class="fu">sd</span>(Density)</span>
-<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">"species"</span>),</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"species"</span>,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">"density"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(species) <span class="sc">|&gt;</span> </span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(density),</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">stdev =</span> <span class="fu">sd</span>(density)) <span class="sc">|&gt;</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
-  Species   mean stdev
+  species   mean stdev
   &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;
 1 species1  5.30  2.75
 2 species2  4.56  3.57
 3 species3  7.04  2.11</code></pre>
 </div>
 </div>
-<p>Species 2 does indeed have a higher standard deviation than both species 1 and 3 indicating that its observations are further away from the mean.</p>
+<p>Species 2 does indeed have a higher standard deviation than both species 1 and 3, indicating that its observations are further away from the mean.</p>
 </section>
 <section id="sec-iqr" class="level4">
 <h4 class="anchored" data-anchor-id="sec-iqr">Interquartile range</h4>
-<p>Similar to the mean, the standard deviation will overestimate the spread of the variable if there are outliers present. As outliers are defined as observations far from the rest of the observations they will also be far from the mean, thereby increasing the average distance from the mean resulting in an overestimation. Instead we can use the difference between the first and third quartile as an indication of the spread of the variable. For instance the IQR for Species 1 is 2.3225 using the indexes <code>quartiles[3] - quartiles[1]</code> created earlier.</p>
+<p>Similarly to the mean, the standard deviation will overestimate the spread of the variable if there are outliers present. Since outliers are defined as observations far from the rest of the observations, they will also be far from the mean, thereby increasing the average distance from the mean and resulting in an overestimation. Instead, we can use the difference between the first and third quartile as an indication of the spread of the variable. This is called the <em>interquartile range</em> (IQR). For instance, the IQR for Species 1 is 2.3225, using the indices <code>quartiles[3] - quartiles[1]</code> created earlier.</p>
 </section>
 </section>
 </section>
@@ -780,8 +754,8 @@ Note
 <ol type="1">
 <li><p>Visualize the variable <code>Species</code> with a suitable plot. How many of each species are present in the data?</p></li>
 <li><p>Visualize the variable <code>Petal.Width</code> with a suitable plot. What observations can be made from this plot?</p></li>
-<li><p>Calculate the mean and standard deviation of both the <code>Petal</code> traits within each species. What can we learn about the different species from this summary?</p></li>
-<li><p>Calculate the median and interquartile range of both the <code>Petal</code> traits within each species. Keep the mean and standard deviation in the summary and compare the measures of center and the measures of spread with each other. Does the summary indicate that there might be outliers present in any species and trait combination?</p></li>
+<li><p>Calculate the mean and standard deviation of both <code>Petal</code> traits (length and width) within each species. What can we learn about the different species from this summary?</p></li>
+<li><p>Calculate the median and interquartile range of both the <code>Petal</code> traits within each species. Keep the mean and standard deviation in the summary and compare the measures of center and the measures of spread with each other. Does the summary indicate that there might be outliers present in any combination of species and trait?</p></li>
 </ol>
 
 
@@ -794,7 +768,7 @@ Note
 <li id="fn3"><p>A quantitative variable can be thought of as following an ordinal scale if the measurements are intervals—e.g., 0-4, 5-9, 10-19, etc.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>We would expect the same value as the function uses the same process as shown earlier.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>We will return to why we do not use <span class="math inline">\(n\)</span> directly in a later chapter.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn6"><p>The squared distance is actually a component in more advanced calculations and is called the <em>variance</em> of a variable.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>The squared distance is actually a component in more advanced calculations, and is called the <em>variance</em> of a variable.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
