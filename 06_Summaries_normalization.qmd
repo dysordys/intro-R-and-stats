@@ -2,7 +2,7 @@
 
 @sec-wrangling introduced the basics of manipulating data. Here we continue by learning how one can efficiently compute summary statistics over a dataset. Additionally, we will take a look at the concept of *tidy data*. The two are not independent: as we will see, tidy data admit to calculating summaries much more efficiently than non-tidy data.
 
-We will be relying on the file [`pop_data.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/pop_data.zip). Download the file and set your working directory to the folder where you saved it. This is a comma-separated file (CSV), so you can load it using `read_delim`, with the delimiter specified as the comma. As usual, we first load the `tidyverse` package:
+We will be relying on the file [`pop_data.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/pop_data.zip). Download the file and set your working directory to the folder where you saved it. This is a comma-separated file (CSV), so you can load it using `read_delim`, with the delimiter specified as the comma. As usual, we first load the `tidyverse` package:
 
 ```{r}
 #| message: false

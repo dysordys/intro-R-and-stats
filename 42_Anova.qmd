@@ -127,7 +127,7 @@ lm(weight ~ group, data = PlantGrowth) |> tukey.test()
 
 At first glance, it appears strange that the function performing an ANOVA is the same as the one doing linear regression, `lm`. Aren't the two methods very different from one another? After all, ANOVA compares data in different groups, whereas linear regression fits a line to a bunch of data points.
 
-As surprising as it may sound, the two are not different. There is a way of formulating an ANOVA which is exactly analogous to a linear model. To illustrate this idea, let us first consider a dataset with just two groups of data. The fictive bird data from @sec-wilcox ([`fictive_bird_example.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/fictive_bird_example.zip)) will work well:
+As surprising as it may sound, the two are not different. There is a way of formulating an ANOVA which is exactly analogous to a linear model. To illustrate this idea, let us first consider a dataset with just two groups of data. The fictive bird data from @sec-wilcox ([`fictive_bird_example.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/fictive_bird_example.zip)) will work well:
 
 ```{r}
 #| message: false
@@ -231,10 +231,10 @@ The only difference is that, since the data are arranged in groups, the fitted v
 
 ## Exercises
 
-1. The file [`daphnia_growth.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/daphnia_growth.zip) contains data on the growth rate of *Daphnia* populations that are infected with various parasites. There are four groups of observations: the control (no parasites), infection with *Metschnikowia bicuspidata*, infection with *Pansporella perplexa*, and finally, infection with *Pasteuria ramosa*. Each group has ten replicate observations. Are growth rates affected by parasite load?
+1. The file [`daphnia_growth.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/daphnia_growth.zip) contains data on the growth rate of *Daphnia* populations that are infected with various parasites. There are four groups of observations: the control (no parasites), infection with *Metschnikowia bicuspidata*, infection with *Pansporella perplexa*, and finally, infection with *Pasteuria ramosa*. Each group has ten replicate observations. Are growth rates affected by parasite load?
     * Before doing any tests, visualize and explore the data, and make sure you have a solid expectation for the results of any statistical analysis.
     * Answer the question whether growth rates affected by parasite load by first applying a non-parametric test (and a subsequent non-parametric post-hoc test if needed).
     * Next, apply a parametric test in the same way: by applying the test and running post-hoc tests if needed.
     * Do not forget to create diagnostic plots, to see if the assumptions behind the parametric test are satisfied to an acceptable degree. Is that the case? And do the results from the parametric and non-parametric tests agree with one another?
 
-2. In [`ponds.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/ponds.zip), measured acidity data (pH) is reported from four different ponds. Do the ponds differ in acidity, and if so, which ones from which others? Answer using both non-parametric and parametric tests, with appropriate post-hoc analyses. Check whether these different methods of analysis agree, and make sure that the assumptions behind the parametric test are satisfied using diagnostic plots. (Note: in this dataset, some values are missing.)
+2. In [`ponds.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/ponds.zip), measured acidity data (pH) is reported from four different ponds. Do the ponds differ in acidity, and if so, which ones from which others? Answer using both non-parametric and parametric tests, with appropriate post-hoc analyses. Check whether these different methods of analysis agree, and make sure that the assumptions behind the parametric test are satisfied using diagnostic plots. (Note: in this dataset, some values are missing.)

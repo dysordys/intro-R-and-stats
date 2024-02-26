@@ -184,7 +184,7 @@ bind_cols(studies, yearExam)
 
 ## Exercises
 
-We have used the data of @Fauchaldetal2017 before in other exercises, in @sec-ggplot-exercises and @sec-moreggplot-exercises. As a reminder, they tracked the population size of various herds of caribou in North America over time, and correlated population cycling with the amount of vegetation and sea-ice cover. Two files from their data are [`pop_size.tsv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/pop_size.zip) (herd population sizes) and [`sea_ice.tsv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/sea_ice.zip) (sea ice cover per year and month).
+We have used the data of @Fauchaldetal2017 before in other exercises, in @sec-ggplot-exercises and @sec-moreggplot-exercises. As a reminder, they tracked the population size of various herds of caribou in North America over time, and correlated population cycling with the amount of vegetation and sea-ice cover. Two files from their data are [`pop_size.tsv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/pop_size.zip) (herd population sizes) and [`sea_ice.tsv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/sea_ice.zip) (sea ice cover per year and month).
 
 1. Load these two datasets into two variables. They could be called `pop` and `ice`, for instance. Look at the data to familiarize yourself with them. How many rows and columns are in each?
 

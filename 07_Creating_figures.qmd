@@ -215,7 +215,7 @@ It is now obvious that the two observations are distinct. Due to this problem, m
 
 ## Exercises {#sec-ggplot-exercises}
 
-@Fauchaldetal2017 tracked the population size of various herds of caribou in North America over time, and correlated population cycling with the amount of vegetation and sea-ice cover. The part of their data that we will use consists of two files: [`pop_size.tsv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/pop_size.zip) (data on herd population sizes), and [`sea_ice.tsv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/sea_ice.zip) (on sea levels of sea ice cover per year and month).
+@Fauchaldetal2017 tracked the population size of various herds of caribou in North America over time, and correlated population cycling with the amount of vegetation and sea-ice cover. The part of their data that we will use consists of two files: [`pop_size.tsv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/pop_size.zip) (data on herd population sizes), and [`sea_ice.tsv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/sea_ice.zip) (on sea levels of sea ice cover per year and month).
 
 1.  The file `sea_ice.tsv` is in human-readable, wide format. Note however that the rule "each set of observations is stored in its own row" is violated. We would like to organize the data in a tidy tibble with four columns: `Herd`, `Year`, `Month`, and `Cover`. To this end, apply the function `pivot_longer` to columns 3-14 in the tibble, gathering the names of the months in the new column `Month` and the values in the new column `Cover`.
 

@@ -32,7 +32,7 @@ One of the packages loaded by default with the `tidyverse` is called `readr`. Th
 
 ### The CSV file format
 
-How can one store data in plain text files? There are various solutions, but the one we will be relying on is called a *delimited file*. These files contain information as in a spreadsheet, with contents from every row in a different line. The column entries are separated by some *delimiter*---a character that represents the end of the information in one column and the start of the next. As an example, let us consider some actual data on land snail species from the Galápagos Islands.^[The data have been adapted from @Barabasetal2022.] The data file is available by clicking on this link: [`islands-FL.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/island-FL-csv.zip).^[This and other data files used throughout the book will be accessible in a similar way. They are compressed in a zip file; extract them to obtain the data.] Set the working directory in RStudio to the folder where you have saved it. As a reminder, one can do this by executing `setwd("/path/to/files")`, where one should substitute in one's own path in place of `/path/to/files`. Then one can open `islands-FL.csv` in RStudio by clicking on it in the **Files** panel in the lower right part of the RStudio window, and then choosing the option "View file" (ignore the other option called "Import dataset..."). Having done this, a new tab opens in the editor panel (upper left region) where something like the following should appear:
+How can one store data in plain text files? There are various solutions, but the one we will be relying on is called a *delimited file*. These files contain information as in a spreadsheet, with contents from every row in a different line. The column entries are separated by some *delimiter*---a character that represents the end of the information in one column and the start of the next. As an example, let us consider some actual data on land snail species from the Galápagos Islands.^[The data have been adapted from @Barabasetal2022.] The data file is available by clicking on this link: [`islands-FL.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/island-FL-csv.zip).^[This and other data files used throughout the book will be accessible in a similar way. They are compressed in a zip file; extract them to obtain the data.] Set the working directory in RStudio to the folder where you have saved it. As a reminder, one can do this by executing `setwd("/path/to/files")`, where one should substitute in one's own path in place of `/path/to/files`. Then one can open `islands-FL.csv` in RStudio by clicking on it in the **Files** panel in the lower right part of the RStudio window, and then choosing the option "View file" (ignore the other option called "Import dataset..."). Having done this, a new tab opens in the editor panel (upper left region) where something like the following should appear:
 
 ```
 habitat,species,size,shape
@@ -52,7 +52,7 @@ And so on. Here the first row does not contain data, but instead contains the na
 
 ### The Galápagos land snail data {#sec-snail}
 
-It is worth explaining what the dataset in the file [`island-FL.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/island-FL-csv.zip) represents, as we will be using it repeatedly in subsequent examples. Each row contains information on one land snail individual sampled from the Galápagos Islands. To simplify the data, the individuals have been restricted to just those that are from Floreana Island in the Galápagos. The columns in the data are:
+It is worth explaining what the dataset in the file [`island-FL.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/island-FL-csv.zip) represents, as we will be using it repeatedly in subsequent examples. Each row contains information on one land snail individual sampled from the Galápagos Islands. To simplify the data, the individuals have been restricted to just those that are from Floreana Island in the Galápagos. The columns in the data are:
 
 -   `habitat`: This can be either "arid" or "humid".
 -   `species`: Which species the individual belongs to. The Genus is always *Naesiotus*, from the family Bulimulidae. The seven species in the data are *Naesiotus calvus*, *N. galapaganus*, *N. invalidus*, *N. nux*, *N. rugulosus*, *N. unifasciatus*, and *N. ustulatus*.
@@ -71,7 +71,7 @@ Shell morphology is an important indicator of microhabitat specialization in the
 
 ### Tabulator-separated and other delimited files
 
-Above we have discussed comma-separated files. Another type of file uses tabulators instead of commas as the column separator. These are called *tab-separated value* (TSV) files. Just like CSV files, TSV files are also very widely used. An example is provided by the file [`islands-FL.tsv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/island-FL-tsv.zip). The data in this file are exactly identical to the one in [`islands-FL.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/island-FL-csv.zip). The only difference is that the commas are replaced by tabulators. Opening the file in RStudio, the first few lines look like this:
+Above we have discussed comma-separated files. Another type of file uses tabulators instead of commas as the column separator. These are called *tab-separated value* (TSV) files. Just like CSV files, TSV files are also very widely used. An example is provided by the file [`islands-FL.tsv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/island-FL-tsv.zip). The data in this file are exactly identical to the one in [`islands-FL.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/island-FL-csv.zip). The only difference is that the commas are replaced by tabulators. Opening the file in RStudio, the first few lines look like this:
 
 ```
 habitat	species	size	shape
@@ -89,7 +89,7 @@ humid	nux	26.59	0
 
 Commas and tabulators are not the only possible delimiters however, and in principle any character could play that role. The only thing to be wary of is that choosing some "regular" character as the delimiter might create unintended side effects. For instance, if the character `4` is the delimiter, then a number such as `0.143` will no longer be interpreted as a single number, but as two numbers in separate columns (`0.1` and `3`, respectively). For this reason, only those characters should be used as delimiters which we can be certain will never be confused with the actual data.
 
-To give an example: it is perfectly possible and legal (even if not common) to use a "percent-separated value" representation where the symbol `%` is the delimiter. Here is what that would look like with the same land snail data (one can download it from [`islands-FL.psv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/island-FL-psv.zip)):
+To give an example: it is perfectly possible and legal (even if not common) to use a "percent-separated value" representation where the symbol `%` is the delimiter. Here is what that would look like with the same land snail data (one can download it from [`islands-FL.psv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/island-FL-psv.zip)):
 
 ```
 habitat%species%size%shape
@@ -162,7 +162,7 @@ We have seen that the function `read_delim` works by taking two inputs: the name
 read_delim("island-FL.csv", delim = ",")
 ```
 
-Similarly, in case we want to read a percent-separated file such as [`islands-FL.psv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/island-FL-psv.zip), all we need to do is change the delimiter:
+Similarly, in case we want to read a percent-separated file such as [`islands-FL.psv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/island-FL-psv.zip), all we need to do is change the delimiter:
 
 ```{r}
 #| message: false
@@ -204,7 +204,7 @@ read_tsv("island-FL.tsv")
 
 ## Naming (and renaming) columns {#sec-rename}
 
-All of the files we have looked at so far contained a *header* as their first row: instead of containing data, they contained the names of the data columns. Having such a header is good practice. Sometimes however, the header may be missing. For example, the file [`islands-FL-nohead.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/island-FL-nh.zip) contains the same land snail data as the other files above, but it lacks a header. The first few lines of the file look like this:
+All of the files we have looked at so far contained a *header* as their first row: instead of containing data, they contained the names of the data columns. Having such a header is good practice. Sometimes however, the header may be missing. For example, the file [`islands-FL-nohead.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/island-FL-nh.zip) contains the same land snail data as the other files above, but it lacks a header. The first few lines of the file look like this:
 
 ```
 humid,ustulatus,17.088,-0.029
@@ -252,7 +252,7 @@ Although their use is discouraged in science, one should know how to read data f
 library(readxl)
 ```
 
-We can now load Excel files with the function `read_excel()`. At the start, we downloaded an Excel version of the land snail data, called [`island-FL.xlsx`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/island-FL-xlsx.zip). It holds the exact same data as the original CSV file, just saved in Excel format for instructive purposes. Let us load this file:
+We can now load Excel files with the function `read_excel()`. At the start, we downloaded an Excel version of the land snail data, called [`island-FL.xlsx`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/island-FL-xlsx.zip). It holds the exact same data as the original CSV file, just saved in Excel format for instructive purposes. Let us load this file:
 
 ```{r}
 read_excel("island-FL.xlsx", sheet = 1)
@@ -282,17 +282,17 @@ where `/path/to/file.csv` should be replaced by the path and file name with whic
 
 ## Exercises {#sec-reading-exercises}
 
-1.  @Goldbergetal2010 collected data on self-incompatibility in the family Solanaceae (nightshades). It contains a list of 356 species, along with a column determining self-incompatibility status (0: self-incompatible; 1: self-compatible; 2-5: more complicated selfing scenarios). The data are in the file [`Goldberg2010_data.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/Goldberg2010_data-csv.zip). An equivalent version is available in [`Goldberg2010_data.xlsx`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/Goldberg2010_data-xlsx.zip), with the only difference that it is saved in Excel format.
+1.  @Goldbergetal2010 collected data on self-incompatibility in the family Solanaceae (nightshades). It contains a list of 356 species, along with a column determining self-incompatibility status (0: self-incompatible; 1: self-compatible; 2-5: more complicated selfing scenarios). The data are in the file [`Goldberg2010_data.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/Goldberg2010_data-csv.zip). An equivalent version is available in [`Goldberg2010_data.xlsx`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/Goldberg2010_data-xlsx.zip), with the only difference that it is saved in Excel format.
     -   Read the file `Goldberg2010_data.csv` using `read_delim`.
     -   Read the file `Goldberg2010_data.csv` using `read_csv`.
     -   Read the Excel file `Goldberg2010_data.xlsx` using `read_excel` from the `readxl` package.
     -   Read the file `Goldberg2010_data.csv` using `read_csv`, and assign it to a variable called `goldbergDat`.
     -   Extract the species names (first column, called `Species`) from `goldbergDat` as a vector of character strings, using the `$` notation. What are the 42nd and 137th entries of this vector?
 
-2.  The data file [`ladybugs.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/ladybugs.zip) contains information on whether ladybugs sampled from rural versus industrial areas tend to be red or black morphs. Black morphs are thought to be an adaptation to more polluted industrial environments where the dark coloration provides better camouflage. The file is comma-separated and lacks headers. The meanings of the columns are, in order: habitat type, site code where the sampling was done, morph color, and the number of individuals sampled.
+2.  The data file [`ladybugs.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/ladybugs.zip) contains information on whether ladybugs sampled from rural versus industrial areas tend to be red or black morphs. Black morphs are thought to be an adaptation to more polluted industrial environments where the dark coloration provides better camouflage. The file is comma-separated and lacks headers. The meanings of the columns are, in order: habitat type, site code where the sampling was done, morph color, and the number of individuals sampled.
     -   Load this file into a tibble in R, and give the following names to its columns: `habitat`, `site`, `morph`, and `number`.
     -   Extract the last column (`number`) as a vector and calculate its mean and variance.
 
-3.  @Smithetal2003 compiled a database of the body masses of mammals of the late Quaternary period. The data are in the file [`Smith2003_data.txt`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/Smith2003_data.zip). The column names are not specified in the file, but they are, in order: Continent (AF=Africa, etc.), Status (extinct, historical, introduction, or extant), Order, Family, Genus, Species, Base-10 Log Mass, Combined Mass (grams), and Reference (numbers, referring to a numerically ordered list of published works---no need to worry about the details).
+3.  @Smithetal2003 compiled a database of the body masses of mammals of the late Quaternary period. The data are in the file [`Smith2003_data.txt`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/Smith2003_data.zip). The column names are not specified in the file, but they are, in order: Continent (AF=Africa, etc.), Status (extinct, historical, introduction, or extant), Order, Family, Genus, Species, Base-10 Log Mass, Combined Mass (grams), and Reference (numbers, referring to a numerically ordered list of published works---no need to worry about the details).
     -   What is the delimiter in this data file?
     -   Load the data and give appropriate names to its columns, based on the information above.

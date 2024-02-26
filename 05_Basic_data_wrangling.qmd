@@ -14,7 +14,7 @@ As seen from the message output above, the `dplyr` package is part of the `tidyv
 -   Their other arguments are given in terms of the column names of the data;
 -   They return another tibble.
 
-We now explain each of these below. We will use the [`island-FL.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/island-FL-csv.zip) data file we worked with in @sec-reading:
+We now explain each of these below. We will use the [`island-FL.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/island-FL-csv.zip) data file we worked with in @sec-reading:
 
 ```{r}
 #| message: false
@@ -256,7 +256,7 @@ read_delim("island-FL.csv", delim = ",") |>
 
 ## Exercises {#sec-wrangling-exercises}
 
-1.  The [`Smith2003_data.txt`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/Smith2003_data.zip) dataset we worked with in @sec-reading-exercises occasionally has the entry `-999` in its last three columns. This stands for unavailable data. As discussed in @sec-pipes, in R there is a built-in way of referring to such information: by setting a variable to `NA`. Modify these columns using `mutate` so that the entries which are equal to `-999` are replaced with `NA`.
+1.  The [`Smith2003_data.txt`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/Smith2003_data.zip) dataset we worked with in @sec-reading-exercises occasionally has the entry `-999` in its last three columns. This stands for unavailable data. As discussed in @sec-pipes, in R there is a built-in way of referring to such information: by setting a variable to `NA`. Modify these columns using `mutate` so that the entries which are equal to `-999` are replaced with `NA`.
 
 2.  After replacing `-999` values with `NA`, remove all rows from the data which contain one or more `NA` values (hint: look up the function `drop_na`). How many rows are retained? And what was the original number of rows?
 

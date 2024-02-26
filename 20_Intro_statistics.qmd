@@ -2,7 +2,7 @@
 
 When given a dataset (such as the snail data in @sec-snail), it is difficult or even impossible to look at the entire set and understand the information therein. It is therefore important to be able to describe aspects of the data, such as the different variables and observations, through the use of statistical measurements. This has in part been covered in @sec-normalization, but we will now take a more statistical approach to summarizing and describing data.
 
-We will start by reading the [`pop_data.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/pop_data.zip) file again. The dataset contains population densities of three species at two spatial patches (A and B) at various points in time, ranging from 1 to 50 in steps of 1.
+We will start by reading the [`pop_data.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/pop_data.zip) file again. The dataset contains population densities of three species at two spatial patches (A and B) at various points in time, ranging from 1 to 50 in steps of 1. The file is comma-separated, therefore we can read it using the `read_delim` function with the delimiter set to be the comma:
 ```{r}
 #| message: false
 library(tidyverse)

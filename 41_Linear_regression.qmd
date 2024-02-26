@@ -369,7 +369,7 @@ predict(TheilSenFit)
 
 ## Exercises
 
-1. The file [`plant_growth_rate.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/plant_growth_rate.zip) contains individual plant growth data (mm/week), as a function of soil moisture content. Do plants grow better in more moist soils? Visualize the relationship, then perform and interpret a linear regression using the parametric (least squares) method. Use diagnostic plots to check whether the assumptions of the model are satisfied.
+1. The file [`plant_growth_rate.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/plant_growth_rate.zip) contains individual plant growth data (mm/week), as a function of soil moisture content. Do plants grow better in more moist soils? Visualize the relationship, then perform and interpret a linear regression using the parametric (least squares) method. Use diagnostic plots to check whether the assumptions of the model are satisfied.
 
 2. It is difficult to measure the height of a tree. By contrast, the diameter at breast height (DBH) is easy to measure. Can one infer the height of a tree by measuring its DBH? The built-in dataset `trees` contains DBH data (labeled `Girth`), as well as measured height and timber volume of 31 felled black cherry trees. You can ignore timber volume, and focus instead on how well DBH predicts tree height. Plot the relationship, perform least-squares linear regression, and create diagnostic plots. Interpret the results, and summarize how reliable it is to use DBH to infer tree height.
 

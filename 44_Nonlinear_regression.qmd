@@ -288,14 +288,14 @@ Let $N(t)$ be the population abundance of some organism at time $t$. An exponent
 $$ N(t) = N_0 \mathrm{e}^{rt} $$
 where $N_0$ is the initial population size at time $t=0$, and $r$ is the exponential rate of increase.
 
-1. Download the data file [`pop_growth_1.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/pop_growth_1.zip) and load it in R.
+1. Download the data file [`pop_growth_1.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/pop_growth_1.zip) and load it in R.
 2. Use `nls()` to fit the above exponential growth model to this dataset. Do not treat $N_0$ as a free parameter, but instead use the actual population size at time $t=0$. This leaves $r$ as the only parameter to be fitted. Do so, using an appropriate starting value.
 4. Assume that the data describes a population of water lilies, and that a single 'individual' weighs 1 gram. If the population would continue to grow unrestricted, what would be its biomass after nine months (about 280 days)? What object would have a comparable weight to this population, and what does that tell us about unrestricted population growth in general?
 
 
 #### Nitrogen uptake
 
-@CedergreenMadsen2002 reported data from an experiment on nitrogen uptake by the duckweed *Lemna minor*, where the predictor variable is the initial substrate concentration and the response variable is the uptake rate. In this type of experiment, it is anticipated that the uptake will increase as the concentration increases, approaching a horizontal asymptote. The data are available in [`uptake.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/uptake.zip).
+@CedergreenMadsen2002 reported data from an experiment on nitrogen uptake by the duckweed *Lemna minor*, where the predictor variable is the initial substrate concentration and the response variable is the uptake rate. In this type of experiment, it is anticipated that the uptake will increase as the concentration increases, approaching a horizontal asymptote. The data are available in [`uptake.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/uptake.zip).
 
 1. Create a plot of the data, with the nitrogen concentrations along the x-axis and the corresponding uptake rates along the y-axis.
 2. Fit a Michaelis-Menten model (describing saturating dynamics) to the data. This model is given by
@@ -314,6 +314,6 @@ The above differential equation is one of the few which can be solved explicitly
 $$ N(t) = N_0 \frac{\mathrm{e}^{rt}}{1-(1-\mathrm{e}^{rt})(N_0/K)} $$
 where $N_0$ is the initial population size at time $t=0$. Let us fit this model to some population growth data.
 
-1. Download the data file [`pop_growth_2.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/pop_growth_2.zip), load it in R, and plot the population abundances against time.
+1. Download the data file [`pop_growth_2.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/pop_growth_2.zip), load it in R, and plot the population abundances against time.
 2. Fit the above model to the data using the `nls()` function, with appropriate guesses for the starting values of $r$ and $K$.
 3. Plot the data and the model prediction together. What are the estimated values of $r$ and $K$?

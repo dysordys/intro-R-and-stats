@@ -2,7 +2,7 @@
 
 ## Motivating example
 
-This chapter is on performing statistical (or other) analyses *en masse*. To motivate the problem, let us start from a dataset, [`fruit_fly_wings.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/fruit_fly_wings.zip), that has been adapted from @Bolstadetal2015:
+This chapter is on performing statistical (or other) analyses *en masse*. To motivate the problem, let us start from a dataset, [`fruit_fly_wings.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/fruit_fly_wings.zip), that has been adapted from @Bolstadetal2015:
 
 ```{r}
 #| message: false
@@ -174,7 +174,7 @@ In summary, a very powerful way of analyzing data is to perform many analyses at
 
 ## Exercises
 
-1. Our analysis on the sex differences in the wing length of fruit flies ([`fruit_fly_wings.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/fruit_fly_wings.zip)) revealed whether there was a significant difference within each species. However, it did not say anything about which sex tends to have a longer wing. Perform this analysis here.
+1. Our analysis on the sex differences in the wing length of fruit flies ([`fruit_fly_wings.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/fruit_fly_wings.zip)) revealed whether there was a significant difference within each species. However, it did not say anything about which sex tends to have a longer wing. Perform this analysis here.
     * Create a graph with the difference between mean female and mean male wing lengths along the x-axis, and the species along the y-axis. You can represent the difference of means in each species by a point (`geom_point`).
     * How many species are there where females have longer wings on average? How many where males do?
     * Which species shows the largest degree of sexual dimorphism?

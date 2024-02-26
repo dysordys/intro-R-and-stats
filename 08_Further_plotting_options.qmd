@@ -174,7 +174,7 @@ We used the built-in color names `"steelblue"`, `"goldenrod"`, and `"forestgreen
 
 ## Reordering labels using factors {#sec-factors}
 
-In the previous examples, the order of text labels was always automatically determined. The basic rule in R is that the ordering follows the alphabet: the default is for `setosa` to precede `versicolor`, which will be followed by `virginica`. This default ordering can be inconvenient, however. Consider the data file [`temp-Lin.csv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/temp-Lin.zip) of average temperatures per month, measured in the town of Linköping, Sweden:
+In the previous examples, the order of text labels was always automatically determined. The basic rule in R is that the ordering follows the alphabet: the default is for `setosa` to precede `versicolor`, which will be followed by `virginica`. This default ordering can be inconvenient, however. Consider the data file [`temp-Lin.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/temp-Lin.zip) of average temperatures per month, measured in the town of Linköping, Sweden:
 
 ```{r}
 #| message: false
@@ -318,7 +318,7 @@ ggsave(filename = "graph.pdf", plot = p, width = 4, height = 3)
 
 ## Exercises {#sec-moreggplot-exercises}
 
-Let us revisit the data of @Fauchaldetal2017 which we used in @sec-ggplot-exercises, tracking the population size of various herds of caribou in North America over time and correlating population cycling with the amount of vegetation and sea-ice cover. Using the file [`sea_ice.tsv`](https://raw.githubusercontent.com/dysordys/data-with-R/main/data/sea_ice.zip) (sea ice cover per year and month for each caribou herd), do the following:
+Let us revisit the data of @Fauchaldetal2017 which we used in @sec-ggplot-exercises, tracking the population size of various herds of caribou in North America over time and correlating population cycling with the amount of vegetation and sea-ice cover. Using the file [`sea_ice.tsv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/sea_ice.zip) (sea ice cover per year and month for each caribou herd), do the following:
 
 1.  One exercise from @sec-ggplot-exercises was to plot `Year` along the x-axis and `Month` along the y-axis, with color tile shading indicating the level of ice cover for the herd labeled `WAH` in each month-year pair (using `geom_tile`). The resulting graph had an obvious weakness: the months along the y-axis were not in proper chronological order. Fix this problem by converting the `Month` column from character strings to factors whose levels go from January to December.
 
