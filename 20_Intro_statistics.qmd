@@ -254,8 +254,43 @@ quartiles
 
 ```
 
+We mentioned earlier that we can visualize a quantitative variable with another type of visualization than a histogram. A *box (and-whiskers)* plot uses the values of the minimum, maximum, and the three quartiles to show the distribution of a variable. The function in R for a box plot is `geom_boxplot()`.
+
+```{r}
+#| fig-cap: Box plots of each species density.
+#| label: fig-box-species
+
+
+## Groups the values for simpler visualization
+pop |> 
+  pivot_longer(
+    -c(patch,time),
+    names_to = "Species",
+    values_to = "Density"
+  ) |> 
+  # Adds mean values to the data set prior to visualization
+  group_by(Species) |> 
+  mutate(
+    mean = mean(Density)
+  ) |> 
+  ## Begins visualization
+ggplot() + aes(x = Density) + 
+  geom_boxplot() + 
+  theme_bw() + 
+  # Facets the histogram based on species
+  facet_grid(rows = vars(Species)) +
+  labs(x = "Population Density") + 
+  # The y-axis is not relevant in this type of visualization so it is removed by breaks = NULL
+  scale_y_continuous(breaks = NULL)
+  
+
+```
+
+The line (or whiskers) mark the range of the first and last 25% of the data limited by the smallest and largest value. The box in the middle mark the range of the middle 50% of the data with the bold line inside the box showing the median. The function in R also does something that we might not have expected for Species 1. There are a number of points further away from the line that are not considered to be a part of the box plot data, they are instead considered outliers. R defines any value further than $1.5 \cdot$ *interquartile range* (see @sec-iqr) from either the first or third quartile as outliers.
+
+
 ### Measures of spread or uncertainty
-As we saw in @fig-dist-mean, the measure of a center by itself does not provide the full picture of a variable. Species 1 and 2 had about the same mean value but the values of the observations are spread very different. When summarizing a variable it is also important to describe the spread of the values, the amount of variation they have, as it gives a sense of how two variables with the same mean might differ.
+As we saw in @fig-dist-mean, the measure of a center by itself does not provide the full picture of a variable. Species 1 and 2 had about the same mean value but the values of the observations are spread out very different. When summarizing a variable it is also important to describe the spread of the values, the amount of variation they have, as it gives a sense of how two variables with the same mean might differ.
 
 #### Standard deviation
 The *standard deviation* can be seen as the 'average distance from the mean', that is how far away from the mean do we expect a randomly selected value from the variable to be. The formula for the standard deviation is:
@@ -265,7 +300,7 @@ The *standard deviation* can be seen as the 'average distance from the mean', th
 
 where $x_i$ is each observed value, $\bar{x}$ is the mean and $n$ is the number of observations.
 
-We can understand why the standard deviation is seen as an average by going through each step of the calculation. First we calculate the difference between the observed value and the mean where values further from the mean result in a bigger difference (negative or positive). 
+We can get an understanding of why the standard deviation is seen as an average by going through each step of the calculation. First we calculate the difference between the observed value and the mean where values further from the mean result in a bigger difference (negative or positive). 
 
 ```{r}
 
@@ -292,7 +327,7 @@ Next we sum all the squared differences so we get a sense of the total (squared)
 
 ```
 
-To get an average (squared) distance, we then divide by the number of observations or at least something that depends on the number of observations.^[We will return to why we do not use $n$ directly in a later chapter.]
+To get an average (squared) distance, we then divide by the number of observations or at least something that depends on the number of observations, $n - 1$.^[We will return to why we do not use $n$ directly in a later chapter.]
 
 ```{r}
 
@@ -303,3 +338,113 @@ n <- length(pop$species1)
 
 ```
 
+This value is still an average of the squared distances which is not simple to actually interpret^[The squared distance is actually a component in more advanced calculations and is called the *variance* of a variable.], so in order to make it interpretable we need to take the square root of the value.
+
+```{r}
+
+squaredDistances <- 
+  (pop$species1 - meanSpecies1)^2 |> 
+  sum() / (n - 1)
+
+squaredDistances |> 
+  sqrt()
+
+```
+
+Instead of squared distances we now have a representation of just the distances between each observation and its mean. Thankfully we do not need to go through all of these steps every time we want to calculate the standard deviation, we can just use the function `sd()`.
+
+```{r}
+
+sd(pop$species1)
+
+```
+
+If we were to compared the standard deviation for the three species we can use the same type of grouped calculation we have done before.
+
+```{r}
+
+pop |> 
+  pivot_longer(
+    -c(patch,time),
+    # Gives proper names to the transformed variables
+    names_to = "Species",
+    values_to = "Density"
+  ) |> 
+  group_by(Species) |> 
+  summarize(
+    mean = mean(Density),
+    stdev = sd(Density)
+  )
+
+```
+
+Species 2 does indeed have a higher standard deviation than both species 1 and 3 indicating that its observations are further away from the mean. 
+
+#### Interquartile range {#sec-iqr}
+Similar to the mean, the standard deviation will overestimate the spread of the variable if there are outliers present. As outliers are defined as observations far from the rest of the observations they will also be far from the mean, thereby increasing the average distance from the mean resulting in an overestimation. Instead we can use the difference between the first and third quartile as an indication of the spread of the variable. For instance the IQR for Species 1 is `r quartiles[3] - quartiles[1]` using the indexes `quartiles[3] - quartiles[1]` created earlier.
+
+## Summary and exercises
+Visualizations and descriptive statistics are used to summarize variables in a data set. Different forms and measures are used depending on the variable type and the scale it follows in order to properly describe the variable. Visualizations are used to show the distribution or shape of the data. The measure of center shows the placement of a quantitative variable while measures of spread show the variation of the values around its center.
+
+For the exercises we will return to the `iris` data set seen in earlier chapters (ex. @sec-wrangling-exercises). Make sure to convert the data to a `tibble` and save it to an object before starting these exercises.
+
+1. Visualize the variable `Species` with a suitable plot. How many of each species are present in the data?
+
+```{r include = FALSE}
+
+data(iris)
+
+iris <- as_tibble(iris)
+
+ggplot(iris) + aes(x = Species) + 
+  geom_bar() + theme_bw()
+
+```
+
+2. Visualize the variable `Petal.Width` with a suitable plot. What observations can be made from this plot?
+
+```{r include = FALSE}
+
+ggplot(iris) + aes(x = Petal.Width) + 
+  geom_histogram(binwidth = 0.2) + theme_bw()
+
+```
+
+3. Calculate the mean and standard deviation of both the `Petal` traits within each species. What can we learn about the different species from this summary?
+
+```{r include = FALSE}
+
+iris |> 
+  pivot_longer(
+    cols = contains("Petal"),
+    names_to = "Trait",
+    values_to = "Value"
+  ) |> 
+  group_by(Species, Trait) |> 
+  summarize(
+    mean = mean(Value),
+    sd = sd(Value)
+  )
+
+```
+
+4. Calculate the median and interquartile range of both the `Petal` traits within each species. Keep the mean and standard deviation in the summary and compare the measures of center and the measures of spread with each other. Does the summary indicate that there might be outliers present in any species and trait combination?
+
+```{r include = FALSE}
+
+iris |> 
+  pivot_longer(
+    cols = contains("Petal"),
+    names_to = "Trait",
+    values_to = "Value"
+  ) |> 
+  group_by(Species, Trait) |> 
+  summarize(
+    mean = mean(Value),
+    median = median(Value),
+    
+    sd = sd(Value),
+    IQR = IQR(Value)
+  )
+
+```
