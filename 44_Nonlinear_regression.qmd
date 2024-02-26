@@ -17,9 +17,9 @@ We can plot the observed distributions of CO~2~ uptake rates for each type and t
 ```{r}
 as_tibble(CO2) |>
   ggplot(aes(x = 0, y = uptake)) +
-  geom_boxplot(colour = "steelblue", fill = "steelblue",
+  geom_boxplot(color = "steelblue", fill = "steelblue",
                alpha = 0.2, outlier.shape = NA) +
-  geom_jitter(colour = "steelblue", alpha = 0.5, width = 0.05) +
+  geom_jitter(color = "steelblue", alpha = 0.5, width = 0.05) +
   facet_grid(Type ~ Treatment) +
   ylab("uptake rate") +
   theme_bw() +
@@ -33,7 +33,7 @@ This, however, is only part of the story, as becomes obvious if we also plot the
 ```{r}
 as_tibble(CO2) |>
   ggplot(aes(x = conc, y = uptake)) +
-  geom_point(colour = "steelblue", alpha = 0.8) +
+  geom_point(color = "steelblue", alpha = 0.8) +
   facet_grid(Type ~ Treatment) +
   labs(x = "concentration", y = "uptake rate") +
   theme_bw()
@@ -119,7 +119,7 @@ The relationship between CO~2~ concentration and uptake rates are definitely not
 as_tibble(CO2) |>
   filter(Type == "Quebec", Treatment == "nonchilled") |>
   ggplot(aes(x = conc, y = uptake)) +
-  geom_point(colour = "steelblue", alpha = 0.8) +
+  geom_point(color = "steelblue", alpha = 0.8) +
   labs(x = "concentration", y = "uptake rate") +
   theme_bw()
 ```
@@ -137,7 +137,7 @@ expand_grid(V = c(10, 20, 30), # This function creates a tibble with all
   mutate(uptake = V * concentration / (K + concentration)) |>
   ungroup() |>
   ggplot(aes(x = concentration, y = uptake)) +
-  geom_line(colour = "steelblue") +
+  geom_line(color = "steelblue") +
   facet_grid(V ~ K, labeller = label_both) +
   theme_bw()
 ```
@@ -154,12 +154,12 @@ Looking at the data again, both these parameters can be roughly estimated:
 as_tibble(CO2) |>
   filter(Type == "Quebec", Treatment == "nonchilled") |>
   ggplot(aes(x = conc, y = uptake)) +
-  geom_point(colour = "steelblue", alpha = 0.8) +
-  geom_hline(yintercept = 43, linetype = "dashed", colour = "steelblue") +
+  geom_point(color = "steelblue", alpha = 0.8) +
+  geom_hline(yintercept = 43, linetype = "dashed", color = "steelblue") +
   annotate(geom = "segment", x = 0, y = 43/2, xend = 125, yend = 43/2,
-           linetype = "dashed", colour = "steelblue") +
+           linetype = "dashed", color = "steelblue") +
   annotate(geom = "segment", x = 125, y = 43/2, xend = 125, yend = 0,
-           linetype = "dashed", colour = "steelblue") +
+           linetype = "dashed", color = "steelblue") +
   scale_x_continuous(name = "concentration",
                      limits = c(0, NA), expand = c(0, 0)) +
   scale_y_continuous(name = "uptake rate",
@@ -253,7 +253,7 @@ as_tibble(CO2) |>
   filter(Type == "Quebec", Treatment == "nonchilled") |>
   mutate(pred = predict(nonlinearFit)) |>
   ggplot() +
-  geom_point(aes(x = conc, y = uptake), colour = "steelblue", alpha = 0.8) +
+  geom_point(aes(x = conc, y = uptake), color = "steelblue", alpha = 0.8) +
   geom_line(aes(x = conc, y = pred), linetype = "dashed", alpha = 0.5) +
   labs(x = "concentration", y = "uptake rate") +
   theme_bw()
@@ -270,7 +270,7 @@ K_fitted <- coef(nonlinearFit)["K"] # from the vector of coefficients
 as_tibble(CO2) |>
   filter(Type == "Quebec", Treatment == "nonchilled") |>
   ggplot() +
-  geom_point(aes(x = conc, y = uptake), colour = "steelblue", alpha = 0.8) +
+  geom_point(aes(x = conc, y = uptake), color = "steelblue", alpha = 0.8) +
   geom_function(fun = function(x) V_fitted * x / (K_fitted + x),
                 linetype = "dashed", alpha = 0.5) +
   labs(x = "concentration", y = "uptake rate") +

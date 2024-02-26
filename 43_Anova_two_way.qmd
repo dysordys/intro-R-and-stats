@@ -20,8 +20,8 @@ as_tibble(ToothGrowth) |>
   mutate(dose = as_factor(dose)) |>
   ggplot(aes(x = supp, y = len)) +
   geom_boxplot(alpha = 0.2, outlier.shape = NA,
-               colour = "steelblue", fill = "steelblue") +
-  geom_jitter(alpha = 0.4, width = 0.05, colour = "steelblue") +
+               color = "steelblue", fill = "steelblue") +
+  geom_jitter(alpha = 0.4, width = 0.05, color = "steelblue") +
   labs(x = "vitamin C dosage [mg/day]", y = "tooth length [mm]") +
   facet_grid(. ~ dose, labeller = label_both) +
   theme_bw()
@@ -117,8 +117,8 @@ as_tibble(ToothGrowth) |>
   mutate(dose = as_factor(dose)) |>
   ggplot(aes(x = dose, y = len)) +
   geom_boxplot(alpha = 0.2, outlier.shape = NA,
-               colour = "steelblue", fill = "steelblue") +
-  geom_jitter(alpha = 0.4, width = 0.05, colour = "steelblue") +
+               color = "steelblue", fill = "steelblue") +
+  geom_jitter(alpha = 0.4, width = 0.05, color = "steelblue") +
   labs(x = "vitamin C dosage [mg/day]", y = "tooth length [mm]") +
   theme_bw()
 ```
@@ -129,8 +129,8 @@ Similarly, the difference between the two supplement types appears to be real (t
 as_tibble(ToothGrowth) |>
   ggplot(aes(x = supp, y = len)) +
   geom_boxplot(alpha = 0.2, outlier.shape = NA,
-               colour = "steelblue", fill = "steelblue") +
-  geom_jitter(alpha = 0.4, width = 0.05, colour = "steelblue") +
+               color = "steelblue", fill = "steelblue") +
+  geom_jitter(alpha = 0.4, width = 0.05, color = "steelblue") +
   labs(x = "vitamin C dosage [mg/day]", y = "tooth length [mm]") +
   theme_bw()
 ```

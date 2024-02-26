@@ -29,7 +29,7 @@ Using this function, we can now simply write:
 lm(weight ~ group, data = PlantGrowth) |> tukeyTest()
 ```
 
-Another useful function we can write helps use statistical procedures within a pipeline. As we have seen, most statistical functions take a formula as their first argument and the data as their second (and then they may take further, method-specific arguments as well, like `conf.int` in the function `wilcox.test`). Since the pipe operator `|>` is often used in conjunction with functions like `select`, `mutate`, `pivot_longer`, `summarise`, etc. which all return a data frame, it would be convenient to reverse the order of arguments in all statistical functions, with the data coming first and the formula coming second. In fact, such a function is easy to write. We could call it `tidystat`:
+Another useful function we can write helps use statistical procedures within a pipeline. As we have seen, most statistical functions take a formula as their first argument and the data as their second (and then they may take further, method-specific arguments as well, like `conf.int` in the function `wilcox.test`). Since the pipe operator `|>` is often used in conjunction with functions like `select`, `mutate`, `pivot_longer`, `summarize`, etc. which all return a data frame, it would be convenient to reverse the order of arguments in all statistical functions, with the data coming first and the formula coming second. In fact, such a function is easy to write. We could call it `tidystat`:
 
 ```{r}
 tidystat <- function(data, formula, method) method(formula, data)

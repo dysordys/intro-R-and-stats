@@ -13,7 +13,7 @@ snails <- read_csv("island-FL.csv")
 snails |>
   filter(species == "nux") |>
   ggplot(aes(x = size, y = shape)) +
-  geom_point(colour = "steelblue") +
+  geom_point(color = "steelblue") +
   theme_bw()
 ```
 
@@ -24,8 +24,8 @@ The question we want to answer using this plot is whether larger shells (indicat
 snails |>
   filter(species == "nux") |>
   ggplot(aes(x = size, y = shape)) +
-  geom_point(colour = "steelblue") +
-  geom_smooth(method = lm, se = FALSE, colour = "goldenrod") +
+  geom_point(color = "steelblue") +
+  geom_smooth(method = lm, se = FALSE, color = "goldenrod") +
   theme_bw()
 ```
 
@@ -57,8 +57,8 @@ tibble(b0 = c(-0.126, 0.148), b1 = c(0.0038, -0.0051)) |>
   mutate(shapehat = b0 + b1 * size,
          res = shape - shapehat) |>
   ggplot() +
-  geom_point(aes(x = size, y = shape), colour = "steelblue") +
-  geom_line(aes(x = size, y = shapehat), colour = "goldenrod") +
+  geom_point(aes(x = size, y = shape), color = "steelblue") +
+  geom_line(aes(x = size, y = shapehat), color = "goldenrod") +
   geom_segment(aes(x = size, y = shapehat,
                    xend = size, yend = shapehat + res),
                alpha = 0.3) +
@@ -109,7 +109,7 @@ The second purpose is to be able to say whether there is any actual relationship
 snails |>
   filter(species == "nux") |>
   ggplot(aes(x = size, y = shape)) +
-  geom_point(colour = "steelblue") +
+  geom_point(color = "steelblue") +
   theme_bw()
 ```
 
@@ -193,7 +193,7 @@ snails |>
   theme_bw()
 ```
 
-Now that we have a cleaner plot, how do we interpret it. Let us proceed one by one. The top left plot is as good as it can get: there is a blurb of points scattered around zero, with no systematic increase or decrease. Similarly, the bottom left plot is excellent, revealing that the spread of the residuals does not depend on the fitted values. Finally, the top right quantile-quantile plot reveals that the residuals follow the theoretically expected normal distribution beautifully. In short, these diagnostics show that the assumptions behind the linear regression model are nicely fulfilled.
+(Small note: the color argument to `autoplot` must be spelled `colour`. We do not have the freedom to spell it either `color` or `colour`, like we do in ordinary ggplot functions.) Now that we have a cleaner plot, how do we interpret it. Let us proceed one by one. The top left plot is as good as it can get: there is a blurb of points scattered around zero, with no systematic increase or decrease. Similarly, the bottom left plot is excellent, revealing that the spread of the residuals does not depend on the fitted values. Finally, the top right quantile-quantile plot reveals that the residuals follow the theoretically expected normal distribution beautifully. In short, these diagnostics show that the assumptions behind the linear regression model are nicely fulfilled.
 
 To give an example of what not-so-good diagnostics might look like, let us repeat the procedure for a different species: *N. galapaganus* instead of *N. nux*. Here are the raw data together with the fitted line:
 
@@ -201,8 +201,8 @@ To give an example of what not-so-good diagnostics might look like, let us repea
 snails |>
   filter(species == "galapaganus") |> # Choose a different species
   ggplot(aes(x = size, y = shape)) +
-  geom_point(colour = "steelblue") +
-  geom_smooth(method = lm, se = FALSE, colour = "goldenrod") +
+  geom_point(color = "steelblue") +
+  geom_smooth(method = lm, se = FALSE, color = "goldenrod") +
   theme_bw()
 ```
 
@@ -243,7 +243,7 @@ We can now visualize each set, along with linear fits:
 ```{r}
 #| message: false
 ans_long |>
-  ggplot(aes(x = x, y = y, colour = set)) +
+  ggplot(aes(x = x, y = y, color = set)) +
   geom_point() +
   geom_smooth(method = lm, se = FALSE) +
   facet_wrap(~ set, nrow = 2, labeller = label_both) +
@@ -349,8 +349,8 @@ ans_long |>
   pivot_longer(cols = c("least squares", "Theil-Sen"),
                names_to = "type", values_to = "prediction") |>
   ggplot() +
-  geom_point(aes(x = x, y = y), colour = "steelblue") +
-  geom_line(aes(x = x, y = prediction), colour = "goldenrod") +
+  geom_point(aes(x = x, y = y), color = "steelblue") +
+  geom_line(aes(x = x, y = prediction), color = "goldenrod") +
   facet_grid(. ~ type) +
   theme_bw()
 ```

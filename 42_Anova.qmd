@@ -18,9 +18,9 @@ PlantGrowth |> as_tibble() |> print(n = Inf)
 ```{r}
 PlantGrowth |>
   ggplot(aes(x = group, y = weight)) +
-  geom_boxplot(colour = "steelblue", fill = "steelblue",
+  geom_boxplot(color = "steelblue", fill = "steelblue",
                alpha = 0.2, outlier.shape = NA) +
-  geom_jitter(alpha = 0.4, width = 0.05, colour = "steelblue") +
+  geom_jitter(alpha = 0.4, width = 0.05, color = "steelblue") +
   theme_bw()
 ```
 
@@ -53,7 +53,7 @@ as_tibble(PlantGrowth) |>
 
 As expected, the difference between the control and the two treatments is not particularly credible (especially in the case of treatment 1), but there is good indication that the difference between the two treatments is not just due to chance.
 
-While this method of using repeated Wilcoxon rank sum tests works fine in our example, there are some problems with this approach. One is that it can quickly get out of hand, because having $n$ groups means there will be $n (n - 1) / 2$ pairs to consider. For instance, if the number of groups is 12 (not a particularly large number), then there are 66 unique pairs already. It would not be pleasant to perform this many tests, even if any single test is quite simple to run.
+While the method of using repeated Wilcoxon rank sum tests works fine in our example, there are some problems with this approach. One is that it can quickly get out of hand, because having $n$ groups means there will be $n (n - 1) / 2$ pairs to consider. For instance, if the number of groups is 12 (not a particularly large number), then there are 66 unique pairs already. It would not be pleasant to perform this many tests, even if any single test is quite simple to run.
 
 The other problem has to do with *multiple testing* and its influence on the interpretation of p-values. Very simply put, the problem is that if sufficiently many groups are compared, then we might find at least one pair with a low p-value---not because the null hypothesis is false, but because across a large number of observations some p-values will turn out lower than others just by chance. The p-values measure, in effect, the probability that the observed differences are too stark to be due to simple coincidence. But if we create sufficiently many opportunities for such a coincidence to arise, then of course one eventually will. One of the best explanations of this point is in the following cartoon by [xkcd](https://xkcd.com/):
 
@@ -160,7 +160,7 @@ options(pillar.sigfig = 5)
 ```{r}
 bird |>
   group_by(island) |>
-  summarise(mean = mean(weight)) |>
+  summarize(mean = mean(weight)) |>
   ungroup()
 ```
 
@@ -198,7 +198,7 @@ Since `ctrl` comes earliest in the alphabet, it serves as the intercept. Its est
 ```{r}
 PlantGrowth |>
   group_by(group) |>
-  summarise(meanWeight = mean(weight)) |>
+  summarize(meanWeight = mean(weight)) |>
   ungroup()
 ```
 

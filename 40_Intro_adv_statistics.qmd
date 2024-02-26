@@ -18,9 +18,9 @@ A quick visualization below looks promising, with individuals on the smaller isl
 ```{r}
 bird |>
   ggplot(aes(x = island, y = weight)) +
-  geom_boxplot(colour = "steelblue", fill = "steelblue",
+  geom_boxplot(color = "steelblue", fill = "steelblue",
                alpha = 0.2, outlier.shape = NA) +
-  geom_jitter(alpha = 0.4, width = 0.05, colour = "steelblue") +
+  geom_jitter(alpha = 0.4, width = 0.05, color = "steelblue") +
   theme_bw()
 ```
 
@@ -33,7 +33,7 @@ Furthermore, the computed difference between the means and medians of the two sa
 ```{r}
 bird |>
   group_by(island) |>
-  summarise(mean = mean(weight), median = median(weight)) |>
+  summarize(mean = mean(weight), median = median(weight)) |>
   ungroup()
 ```
 
@@ -42,15 +42,15 @@ Can we conclude that the two samples are indeed different, and birds on the smal
 ```{r}
 bird |>
   group_by(island) |>
-  summarise(mean = mean(weight), # Means of the two groups
+  summarize(mean = mean(weight), # Means of the two groups
             sd = sd(weight), # Standard deviations
             N = n(), # Sample sizes
             SEM = sd / sqrt(N), # Standard errors of the means
             CI = qt(1 - 0.025, N - 1)) |> # Confidence intervals
   ungroup() |> # Ungroup the data (not necessary here, but a good habit)
   ggplot(aes(x = island, y = mean, ymin = mean - CI, ymax = mean + CI)) +
-  geom_point(colour = "steelblue") +
-  geom_errorbar(colour = "steelblue", width = 0.2) +
+  geom_point(color = "steelblue") +
+  geom_errorbar(color = "steelblue", width = 0.2) +
   ylab("mean and 95% confidence interval") +
   theme_bw()
 ```
@@ -126,7 +126,7 @@ example <- read_csv("t_wilcox_example.csv")
 example |>
   ggplot(aes(x = measurement)) +
   geom_histogram(bins = 25, alpha = 0.3,
-                 colour = "steelblue", fill = "steelblue") +
+                 color = "steelblue", fill = "steelblue") +
   facet_wrap(~ group, labeller = label_both) +
   theme_bw()
 ```
