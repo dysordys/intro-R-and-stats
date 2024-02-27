@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -385,7 +385,7 @@ trt2-ctrl  0.494 -0.1972161 1.1852161 0.1979960
 trt2-trt1  0.865  0.1737839 1.5562161 0.0120064</code></pre>
 </div>
 </div>
-<p>Another useful function we can write helps use statistical procedures within a pipeline. As we have seen, most statistical functions take a formula as their first argument and the data as their second (and then they may take further, method-specific arguments as well, like <code>conf.int</code> in the function <code>wilcox.test</code>). Since the pipe operator <code>|&gt;</code> is often used in conjunction with functions like <code>select</code>, <code>mutate</code>, <code>pivot_longer</code>, <code>summarise</code>, etc. which all return a data frame, it would be convenient to reverse the order of arguments in all statistical functions, with the data coming first and the formula coming second. In fact, such a function is easy to write. We could call it <code>tidystat</code>:</p>
+<p>Another useful function we can write helps use statistical procedures within a pipeline. As we have seen, most statistical functions take a formula as their first argument and the data as their second (and then they may take further, method-specific arguments as well, like <code>conf.int</code> in the function <code>wilcox.test</code>). Since the pipe operator <code>|&gt;</code> is often used in conjunction with functions like <code>select</code>, <code>mutate</code>, <code>pivot_longer</code>, <code>summarize</code>, etc. which all return a data frame, it would be convenient to reverse the order of arguments in all statistical functions, with the data coming first and the formula coming second. In fact, such a function is easy to write. We could call it <code>tidystat</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>tidystat <span class="ot">&lt;-</span> <span class="cf">function</span>(data, formula, method) <span class="fu">method</span>(formula, data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>

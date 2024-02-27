@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -650,7 +650,7 @@ F-statistic: 3.499 on 1 and 38 DF,  p-value: 0.06914</code></pre>
 </div>
 </div>
 <p>The rest of the regression table now reads exactly as it would in performing simple linear regression. For example, the p-values are the probability of getting coefficients at least as large as the inferred ones just by chance (assuming normal and independent residuals with equal variance across the groups).</p>
-<p>There is just one question left: why was the <code>"larger"</code> island automatically designated as the one corresponding to the intercept? The reason is that R proceeds in alphabetical order, and since <code>"larger"</code> comes before <code>"smaller"</code> alphabetically, it is automatically treated as the intercept (that is, the group corresponding to <span class="math inline">\(x_i = 0\)</span> instead of <span class="math inline">\(x_i = 1\)</span>). One can override this by using factors (<a href="08_Further_plotting_options.html#sec-factors"><span>Section&nbsp;8.3</span></a>), in which case the lowest factor level will correspond to the intercept.</p>
+<p>There is just one question left: why was the <code>"larger"</code> island automatically designated as the one corresponding to the intercept? The reason is that R proceeds in alphabetical order, and since <code>"larger"</code> comes before <code>"smaller"</code> alphabetically, it is automatically treated as the intercept (that is, the group corresponding to <span class="math inline">\(x_i = 0\)</span> instead of <span class="math inline">\(x_i = 1\)</span>). One can override this by using factors (<a href="08_Further_plotting_options.html#sec-factors"><span>Section&nbsp;8.5</span></a>), in which case the lowest factor level will correspond to the intercept.</p>
 <p>So now we have established an analogy between linear regression and ANOVA for the special case when there are only two groups to compare. The main idea was to introduce the indicator variable <span class="math inline">\(x_i\)</span> which is 1 if observation <span class="math inline">\(i\)</span> belongs in <code>larger</code> and 0 otherwise. We can rewrite <a href="#eq-aov1way-basic">Equation&nbsp;<span>13.1</span></a> with more expressive notation for <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span>, to make this idea more transparent:</p>
 <p><span id="eq-aov1way"><span class="math display">\[
 (\text{weight})_i

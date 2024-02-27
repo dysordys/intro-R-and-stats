@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -322,8 +322,15 @@ div.csl-indent {
   <ul>
   <li><a href="#general-philosophy" id="toc-general-philosophy" class="nav-link active" data-scroll-target="#general-philosophy"><span class="header-section-number">7.1</span> General philosophy</a></li>
   <li><a href="#basic-ggplot2-usage" id="toc-basic-ggplot2-usage" class="nav-link" data-scroll-target="#basic-ggplot2-usage"><span class="header-section-number">7.2</span> Basic <code>ggplot2</code> usage</a></li>
-  <li><a href="#sec-CI" id="toc-sec-CI" class="nav-link" data-scroll-target="#sec-CI"><span class="header-section-number">7.3</span> Summaries and confidence intervals</a></li>
-  <li><a href="#sec-ggplot-exercises" id="toc-sec-ggplot-exercises" class="nav-link" data-scroll-target="#sec-ggplot-exercises"><span class="header-section-number">7.4</span> Exercises</a></li>
+  <li><a href="#some-common-geometries" id="toc-some-common-geometries" class="nav-link" data-scroll-target="#some-common-geometries"><span class="header-section-number">7.3</span> Some common geometries</a>
+  <ul class="collapse">
+  <li><a href="#scatter-plots-with-geom_point" id="toc-scatter-plots-with-geom_point" class="nav-link" data-scroll-target="#scatter-plots-with-geom_point"><span class="header-section-number">7.3.1</span> Scatter plots with <code>geom_point</code></a></li>
+  <li><a href="#sec-geom-histogram" id="toc-sec-geom-histogram" class="nav-link" data-scroll-target="#sec-geom-histogram"><span class="header-section-number">7.3.2</span> Histograms with <code>geom_histogram</code></a></li>
+  <li><a href="#box-plots-with-geom_boxplot" id="toc-box-plots-with-geom_boxplot" class="nav-link" data-scroll-target="#box-plots-with-geom_boxplot"><span class="header-section-number">7.3.3</span> Box plots with <code>geom_boxplot</code></a></li>
+  <li><a href="#sec-smooth" id="toc-sec-smooth" class="nav-link" data-scroll-target="#sec-smooth"><span class="header-section-number">7.3.4</span> Smoothing lines with <code>geom_smooth</code></a></li>
+  </ul></li>
+  <li><a href="#saving-plots" id="toc-saving-plots" class="nav-link" data-scroll-target="#saving-plots"><span class="header-section-number">7.4</span> Saving plots</a></li>
+  <li><a href="#sec-ggplot-exercises" id="toc-sec-ggplot-exercises" class="nav-link" data-scroll-target="#sec-ggplot-exercises"><span class="header-section-number">7.5</span> Exercises</a></li>
   </ul>
 </nav>
     </div>
@@ -402,7 +409,6 @@ div.csl-indent {
 </div>
 </div>
 <p>This is the most common form we will write a function call to <code>ggplot</code>.</p>
-<p>The plot above immediately reveals some interesting facts about the data. For example, the largest shell sizes are found in the humid habitats, whereas snails with the largest shell shape parameters (indicating long and slender shells) are found only in the arid regions. These are exactly the kinds of information we are trying to glean out using plots, because they would have been difficult or even impossible to see just from the raw data in the table.</p>
 <p>Notice that the different “grammatical” components are <em>added</em> to the plot, using the <code>+</code> symbol for addition. A common source of error is to accidentally keep using the pipe operator <code>|&gt;</code> even within a plot. The rule of thumb is that after invoking <code>ggplot</code>, one must use <code>+</code> to compose the various graph elements, but outside of that, the usual <code>|&gt;</code> is used for function composition. If one uses <code>|&gt;</code> instead of <code>+</code> within a plot, R will give back an error message instead of graphics:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
@@ -415,6 +421,15 @@ div.csl-indent {
 </div>
 </div>
 <p>Just be sure to remember this so you can correct the mistake, should you accidentally run up against it.</p>
+</section>
+<section id="some-common-geometries" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="some-common-geometries"><span class="header-section-number">7.3</span> Some common geometries</h2>
+<section id="scatter-plots-with-geom_point" class="level3" data-number="7.3.1">
+<h3 data-number="7.3.1" class="anchored" data-anchor-id="scatter-plots-with-geom_point"><span class="header-section-number">7.3.1</span> Scatter plots with <code>geom_point</code></h3>
+<p>The plot above, created using <code>geom_point</code>, is called a <em>scatter plot</em>: each row in the data is represented by a point whose x- and y-coordinates come from different columns in the data (in this case, <code>size</code> and <code>shape</code>). It immediately reveals some interesting facts about the data. For example, the largest shell sizes are found in the humid habitats, whereas snails with the largest shell shape parameters (indicating long and slender shells) are found only in the arid regions. These are exactly the kinds of information we are trying to glean out using plots, because they would have been difficult or even impossible to see just from the raw data in the table.</p>
+</section>
+<section id="sec-geom-histogram" class="level3" data-number="7.3.2">
+<h3 data-number="7.3.2" class="anchored" data-anchor-id="sec-geom-histogram"><span class="header-section-number">7.3.2</span> Histograms with <code>geom_histogram</code></h3>
 <p>To look at a different kind of geometry, let us create a histogram of the shell shape measurements. This is done using <code>geom_histogram</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
@@ -489,7 +504,11 @@ div.csl-indent {
 </div>
 <p>The arguments <code>color</code>, <code>fill</code>, and <code>alpha</code> can also appear inside the aesthetic mappings. Why didn’t they here? Because, as stated, aesthetic mappings are those aspects of a plot that are governed by the data. But here, the color, fill, and transparency levels do not depend on the data: they have been chosen independently, to be constant values.</p>
 <p>Incidentally, there are many built-in color names in R. One can see the full list by invoking <code>colors()</code> in the R console - there are hundreds of them. To see what those colors actually look like, <a href="https://r-charts.com/colors">this website</a> has a good overview.</p>
-<p>There are plenty of other <code>geom_</code>s as well, such as <code>geom_boxplot</code>, <code>geom_violin</code>, etc. Let us try <code>geom_boxplot</code> for instance. Let us create one box plot of the distribution of shell shapes for each habitat (arid and humid). Putting habitat along the x-axis and shell shape along the y-axis:</p>
+</section>
+<section id="box-plots-with-geom_boxplot" class="level3" data-number="7.3.3">
+<h3 data-number="7.3.3" class="anchored" data-anchor-id="box-plots-with-geom_boxplot"><span class="header-section-number">7.3.3</span> Box plots with <code>geom_boxplot</code></h3>
+<p>A <em>box plot</em> (also known as a “box-and-whisker plot”) provides a quick overview of how data are distributed: a box contains the middle 50% of all the data, whiskers at the ends of the boxes show the top and bottom 25%, and a thick line going through the box separates the top half from the bottom half of the data (the <em>median</em>). Additionally, points classified as outliers are shown explicitly. More detailed information on box plots will come in <a href="20_Intro_statistics.html#sec-quantiles"><span>Section&nbsp;10.3.2.3</span></a>.</p>
+<p>One can create box plots with <code>geom_boxplot</code>. Let us create one box plot of the distribution of shell shapes for each habitat (arid and humid). Putting habitat along the x-axis and shell shape along the y-axis:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> habitat, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
@@ -498,118 +517,109 @@ div.csl-indent {
 <p><img src="07_Creating_figures_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Although this is sufficient, one should feel free to make the plots prettier. For instance, one could use colors and fills, like before. One can also use different themes. There are pre-defined themes such as <code>theme_classic()</code>, <code>theme_bw()</code>, and so on. For example, using <code>theme_bw()</code> gets rid of the default gray background and replaces it with a white one. The version of the graph below applies this theme, and also changes the color and fill to be based on habitat:</p>
+<p>As seen, the shell shape parameters in arid habitats tend to be larger than in humid ones.</p>
+<p>Although this is sufficient, one should feel free to make the plots prettier. For instance, one could use colors and fills, like before: <!-- One can also use different themes. There are pre-defined themes such as `theme_classic()`, `theme_bw()`, and so on. For example, using `theme_bw()` gets rid of the default gray background and replaces it with a white one. The version of the graph below applies this theme, and also changes the color and fill to be based on habitat: --></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> habitat, <span class="at">y =</span> shape, <span class="at">color =</span> habitat, <span class="at">fill =</span> habitat)) <span class="sc">+</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> habitat, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="07_Creating_figures_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
-<section id="sec-CI" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="sec-CI"><span class="header-section-number">7.3</span> Summaries and confidence intervals</h2>
-<p>Providing appropriate information on experimental errors is a hallmark of any credible scientific graph. Choose a type of error based on the conclusion that you want the reader to draw. For example, one can show the largest and smallest values in the dataset apart from the average.</p>
-<p>Here we will display the average petal length of each species together with the largest and smallest values. To do so, we first obtain the mean, maximum, and minimum of the petal lengths for each species. We then plot them. So we first <code>group_by</code> the species and <code>summarize</code> to obtain the required statistics (means and standard deviations), and hand these data over for plotting. One can include all these steps in a logical workflow:</p>
+<section id="sec-smooth" class="level3" data-number="7.3.4">
+<h3 data-number="7.3.4" class="anchored" data-anchor-id="sec-smooth"><span class="header-section-number">7.3.4</span> Smoothing lines with <code>geom_smooth</code></h3>
+<p>Let us look at the following program and its output:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">|&gt;</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Species) <span class="sc">|&gt;</span> <span class="co"># Perform summary calculations for each species</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mP =</span> <span class="fu">mean</span>(Petal.Length), <span class="co"># Mean petal length</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">minP =</span> <span class="fu">min</span>(Petal.Length), <span class="co"># Minimum petal length</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">maxP =</span> <span class="fu">max</span>(Petal.Length)) <span class="sc">|&gt;</span> <span class="co"># Maximum petal length</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> <span class="co"># Ungroup data</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Start plotting:</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Species, <span class="at">y =</span> mP, <span class="at">ymin =</span> minP, <span class="at">ymax =</span> maxP)) <span class="sc">+</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="co"># This takes the y aesthetic, for plotting the mean</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="at">width =</span> <span class="fl">0.2</span>) <span class="co"># Takes the ymin and ymax aesthetics</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="07_Creating_figures_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Note that the y-axis label is not very descriptive. This is because it inherited the name of the corresponding data column, <code>mP</code>. There are multiple ways to change it; the simplest is to add <code>labs(y = "Petal length")</code> to the plot. Another way of doing so is discussed in <a href="08_Further_plotting_options.html"><span>Chapter&nbsp;8</span></a>.</p>
-<p>Another way of characterizing uncertainty is to turn away from the spread of values in the actual raw data and instead focus on the uncertainty of an estimated quantity such as the mean. The rest of this subsection shows how to calculate confidence intervals for estimated means, and is intended for those who are already familiar with basic statistical concepts.</p>
-<p>In case we want to calculate the 95% confidence intervals of the mean values, we first obtain some necessary summary statistics: the number of observations (sample size) in each group; the standard error of the mean (standard deviation divided by the square root of the sample size); and finally, the confidence interval itself (read off from the <em>t</em>-distribution, with one fewer degrees of freedom than the sample size). We can then include these confidence intervals on top of the mean values:</p>
+<p>We see two new things here. First, there are two geometries instead of one: the first generates a scatter plot with <code>geom_point</code>, but there is an additional geometry as well. This is perfectly legal; one can add as many as one wants. The aesthetic mappings will then apply to every geometry. Second, there is a function called <code>geom_smooth</code>. This generates a wiggly blue line which attempts to estimate the general trend of how the data change. There is a grey shaded region surrounding the line, which estimates the level of uncertainty in the blue line’s position.</p>
+<p>Most often, we want a simple linear function to estimate the overall trend in the data. This can be achieved by adding <code>method = lm</code> as an argument to <code>geom_smooth</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">|&gt;</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Species) <span class="sc">|&gt;</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mP =</span> <span class="fu">mean</span>(Petal.Length), <span class="co"># Mean petal length per species</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sP =</span> <span class="fu">sd</span>(Petal.Length), <span class="co"># Standard deviation per species</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">N =</span> <span class="fu">n</span>(), <span class="co"># Sample size (number of observations) per species</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">SEM =</span> sP <span class="sc">/</span> <span class="fu">sqrt</span>(N), <span class="co"># Standard error of the mean</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">CI =</span> SEM <span class="sc">*</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fl">0.025</span>, N <span class="sc">-</span> <span class="dv">1</span>)) <span class="sc">|&gt;</span> <span class="co"># Confidence interval,</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>                 <span class="co"># read off at 1 - 0.025 because +/- 2.5% adds up to 5%</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Species, <span class="at">y =</span> mP, <span class="at">ymin =</span> mP <span class="sc">-</span> CI, <span class="at">ymax =</span> mP <span class="sc">+</span> CI)) <span class="sc">+</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="at">width =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Petal length"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="07_Creating_figures_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>In the literature, it is common to encounter bar-and-whisker plots to represent the same information as above. These replace the points showing the means with bars that start from zero. One should be aware of how to read and make such graphs. This is almost trivially simple: all one needs to do is replace <code>geom_point</code> with <code>geom_col</code>.</p>
+<p>(Here <code>lm</code> means “linear model”. It is a function in R which we will discuss in detail in <a href="41_Linear_regression.html"><span>Chapter&nbsp;12</span></a> and subsequent chapters.) The shaded region can also be turned off using the <code>se = FALSE</code> argument:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>iris <span class="sc">|&gt;</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Species) <span class="sc">|&gt;</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mP =</span> <span class="fu">mean</span>(Petal.Length),</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">sP =</span> <span class="fu">sd</span>(Petal.Length),</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">N =</span> <span class="fu">n</span>(),</span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">SEM =</span> sP <span class="sc">/</span> <span class="fu">sqrt</span>(N),</span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">CI =</span> SEM <span class="sc">*</span> <span class="fu">qt</span>(<span class="dv">1</span> <span class="sc">-</span> <span class="fl">0.025</span>, N <span class="sc">-</span> <span class="dv">1</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Species, <span class="at">y =</span> mP, <span class="at">ymin =</span> mP <span class="sc">-</span> CI, <span class="at">ymax =</span> mP <span class="sc">+</span> CI)) <span class="sc">+</span></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Below we change geom_point to geom_col (for "column"):</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Petal length"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="07_Creating_figures_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-Warning
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p>While means and their confidence intervals are often displayed with bar-and-whisker plots, there is an important reasons why this is not a good idea. By starting the bars from zero, the plot implies that zero is a natural point of comparison for all the data. Unfortunately, this can visually distort the information we wish to convey. Consider the following graph:</p>
+<p>As mentioned above, when having multiple geometries, the aesthetic mappings apply to all of them by default. This means that if, for example, we want to distinguish the habitat of the snails using colors (like we did before), then we automatically split the smoothing line into two colored lines as well:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">Species =</span> <span class="fu">c</span>(<span class="st">"species 1"</span>, <span class="st">"species 2"</span>),</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">Average =</span> <span class="fu">c</span>(<span class="dv">148</span>, <span class="dv">152</span>),</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">CI =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.9</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Species, <span class="at">y =</span> Average,</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">ymin =</span> Average <span class="sc">-</span> CI, <span class="at">ymax =</span> Average <span class="sc">+</span> CI)) <span class="sc">+</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Trait value"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape, <span class="at">color =</span> habitat)) <span class="sc">+</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="07_Creating_figures_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>It is impossible to see whether there are any relevant differences between the two species. The following is exactly the same, but with the mean values shown with points instead of bars:</p>
+<p>This is a very handy feature. Sometimes however, we want to color the points by habitat but still retain a single global smoothing line for all points taken together. How can one do that? It turns out that in addition to the global aesthetic mappings (that are inside the <code>ggplot</code> function), one can also define local ones inside any <code>geom_</code> function. So one solution could be to only define the color aesthetic inside <code>geom_point</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">Species =</span> <span class="fu">c</span>(<span class="st">"species 1"</span>, <span class="st">"species 2"</span>),</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">Average =</span> <span class="fu">c</span>(<span class="dv">148</span>, <span class="dv">152</span>),</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">CI =</span> <span class="fu">c</span>(<span class="fl">0.8</span>, <span class="fl">0.9</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Species, <span class="at">y =</span> Average,</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">ymin =</span> Average <span class="sc">-</span> CI, <span class="at">ymax =</span> Average <span class="sc">+</span> CI)) <span class="sc">+</span></span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="at">width =</span> <span class="fl">0.2</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">y =</span> <span class="st">"Trait value"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> habitat)) <span class="sc">+</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="07_Creating_figures_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>It is now obvious that the two observations are distinct. Due to this problem, my recommendation is to avoid bar-and-whisker plots and simply use point-and-whisker plots instead.</p>
+<p>One final comment: the default color for the smoothing line is blue, but this can be changed within <code>geom_smooth</code>. To set the color to black, for instance:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> habitat)) <span class="sc">+</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="07_Creating_figures_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
 </div>
+</div>
+<p>Since the black color is a constant property of the geometry, it was not defined as an aesthetic mapping.</p>
+</section>
+</section>
+<section id="saving-plots" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="saving-plots"><span class="header-section-number">7.4</span> Saving plots</h2>
+<p>To save the most recently created ggplot figure, simply type</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"graph.pdf"</span>, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here <code>filename</code> is the name (with path and extension) of the file you want to save the figure into. The extension is important: by having specified <code>.pdf</code>, the system automatically saves the figure in PDF format. To use, say, PNG instead:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"graph.png"</span>, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>PDF is a vectorized file format: the file contains the instructions for generating the plot elements instead of a pixel representation of the image. Consequently, PDF figures are arbitrarily scalable, and are therefore the preferred way of saving and handling scientific graphs.</p>
+<p>The <code>width</code> and <code>height</code> parameters specify, in inches, the dimensions of the saved plot. Note that this also scales some other plot elements, such as the size of the axis labels and plot legends. This means you can play with the <code>width</code> and <code>height</code> parameters to save the figure at a size where the labels are clearly visible without being too large.</p>
+<p>In case you would like to save a figure that is not the last one that was generated, you can specify the <code>plot</code> argument to <code>ggsave()</code>. to do so, first you should assign a plot to a variable. For example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> snails <span class="sc">|&gt;</span> <span class="co"># Assign the ggplot object to the variable p</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> habitat)) <span class="sc">+</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>and then</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"graph.pdf"</span>, <span class="at">plot =</span> p, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="sec-ggplot-exercises" class="level2" data-number="7.4">
-<h2 data-number="7.4" class="anchored" data-anchor-id="sec-ggplot-exercises"><span class="header-section-number">7.4</span> Exercises</h2>
+<section id="sec-ggplot-exercises" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="sec-ggplot-exercises"><span class="header-section-number">7.5</span> Exercises</h2>
 <p><span class="citation" data-cites="Fauchaldetal2017">Fauchald et al. (<a href="99_References.html#ref-Fauchaldetal2017" role="doc-biblioref">2017</a>)</span> tracked the population size of various herds of caribou in North America over time, and correlated population cycling with the amount of vegetation and sea-ice cover. The part of their data that we will use consists of two files: <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/pop_size.zip"><code>pop_size.tsv</code></a> (data on herd population sizes), and <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/sea_ice.zip"><code>sea_ice.tsv</code></a> (on sea levels of sea ice cover per year and month).</p>
 <ol type="1">
 <li><p>The file <code>sea_ice.tsv</code> is in human-readable, wide format. Note however that the rule “each set of observations is stored in its own row” is violated. We would like to organize the data in a tidy tibble with four columns: <code>Herd</code>, <code>Year</code>, <code>Month</code>, and <code>Cover</code>. To this end, apply the function <code>pivot_longer</code> to columns 3-14 in the tibble, gathering the names of the months in the new column <code>Month</code> and the values in the new column <code>Cover</code>.</p></li>

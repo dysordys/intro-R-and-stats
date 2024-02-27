@@ -47,8 +47,6 @@ snails |>
 
 This is the most common form we will write a function call to `ggplot`.
 
-The plot above immediately reveals some interesting facts about the data. For example, the largest shell sizes are found in the humid habitats, whereas snails with the largest shell shape parameters (indicating long and slender shells) are found only in the arid regions. These are exactly the kinds of information we are trying to glean out using plots, because they would have been difficult or even impossible to see just from the raw data in the table.
-
 Notice that the different "grammatical" components are *added* to the plot, using the `+` symbol for addition. A common source of error is to accidentally keep using the pipe operator `|>` even within a plot. The rule of thumb is that after invoking `ggplot`, one must use `+` to compose the various graph elements, but outside of that, the usual `|>` is used for function composition. If one uses `|>` instead of `+` within a plot, R will give back an error message instead of graphics:
 
 ```{r}
@@ -59,6 +57,15 @@ snails |>
 ```
 
 Just be sure to remember this so you can correct the mistake, should you accidentally run up against it.
+
+
+## Some common geometries
+
+### Scatter plots with `geom_point`
+
+The plot above, created using `geom_point`, is called a *scatter plot*: each row in the data is represented by a point whose x- and y-coordinates come from different columns in the data (in this case, `size` and `shape`). It immediately reveals some interesting facts about the data. For example, the largest shell sizes are found in the humid habitats, whereas snails with the largest shell shape parameters (indicating long and slender shells) are found only in the arid regions. These are exactly the kinds of information we are trying to glean out using plots, because they would have been difficult or even impossible to see just from the raw data in the table.
+
+### Histograms with `geom_histogram` {#sec-geom-histogram}
 
 To look at a different kind of geometry, let us create a histogram of the shell shape measurements. This is done using `geom_histogram`:
 
@@ -129,7 +136,11 @@ The arguments `color`, `fill`, and `alpha` can also appear inside the aesthetic 
 
 Incidentally, there are many built-in color names in R. One can see the full list by invoking `colors()` in the R console - there are hundreds of them. To see what those colors actually look like, [this website](https://r-charts.com/colors) has a good overview.
 
-There are plenty of other `geom_`s as well, such as `geom_boxplot`, `geom_violin`, etc. Let us try `geom_boxplot` for instance. Let us create one box plot of the distribution of shell shapes for each habitat (arid and humid). Putting habitat along the x-axis and shell shape along the y-axis:
+### Box plots with `geom_boxplot`
+
+A *box plot* (also known as a "box-and-whisker plot") provides a quick overview of how data are distributed: a box contains the middle 50% of all the data, whiskers at the ends of the boxes show the top and bottom 25%, and a thick line going through the box separates the top half from the bottom half of the data (the *median*). Additionally, points classified as outliers are shown explicitly. More detailed information on box plots will come in @sec-quantiles.
+
+One can create box plots with `geom_boxplot`. Let us create one box plot of the distribution of shell shapes for each habitat (arid and humid). Putting habitat along the x-axis and shell shape along the y-axis:
 
 ```{r}
 snails |>
@@ -137,105 +148,120 @@ snails |>
   geom_boxplot()
 ```
 
-Although this is sufficient, one should feel free to make the plots prettier. For instance, one could use colors and fills, like before. One can also use different themes. There are pre-defined themes such as `theme_classic()`, `theme_bw()`, and so on. For example, using `theme_bw()` gets rid of the default gray background and replaces it with a white one. The version of the graph below applies this theme, and also changes the color and fill to be based on habitat:
+As seen, the shell shape parameters in arid habitats tend to be larger than in humid ones.
+
+Although this is sufficient, one should feel free to make the plots prettier. For instance, one could use colors and fills, like before:
+<!-- One can also use different themes. There are pre-defined themes such as `theme_classic()`, `theme_bw()`, and so on. For example, using `theme_bw()` gets rid of the default gray background and replaces it with a white one. The version of the graph below applies this theme, and also changes the color and fill to be based on habitat: -->
 
 ```{r}
 snails |>
-  ggplot(aes(x = habitat, y = shape, color = habitat, fill = habitat)) +
-  geom_boxplot(alpha = 0.2) +
-  theme_bw()
+  ggplot(aes(x = habitat, y = shape)) +
+  geom_boxplot(color = "steelblue", fill = "steelblue", alpha = 0.2)
 ```
 
+### Smoothing lines with `geom_smooth` {#sec-smooth}
 
-## Summaries and confidence intervals {#sec-CI}
-
-Providing appropriate information on experimental errors is a hallmark of any credible scientific graph. Choose a type of error based on the conclusion that you want the reader to draw. For example, one can show the largest and smallest values in the dataset apart from the average.
-
-Here we will display the average petal length of each species together with the largest and smallest values. To do so, we first obtain the mean, maximum, and minimum of the petal lengths for each species. We then plot them. So we first `group_by` the species and `summarize` to obtain the required statistics (means and standard deviations), and hand these data over for plotting. One can include all these steps in a logical workflow:
+Let us look at the following program and its output:
 
 ```{r}
 #| message: false
-iris |>
-  group_by(Species) |> # Perform summary calculations for each species
-  summarize(mP = mean(Petal.Length), # Mean petal length
-            minP = min(Petal.Length), # Minimum petal length
-            maxP = max(Petal.Length)) |> # Maximum petal length
-  ungroup() |> # Ungroup data
-  # Start plotting:
-  ggplot(aes(x = Species, y = mP, ymin = minP, ymax = maxP)) +
-  geom_point() + # This takes the y aesthetic, for plotting the mean
-  geom_errorbar(width = 0.2) # Takes the ymin and ymax aesthetics
-```
-
-Note that the y-axis label is not very descriptive. This is because it inherited the name of the corresponding data column, `mP`. There are multiple ways to change it; the simplest is to add `labs(y = "Petal length")` to the plot. Another way of doing so is discussed in @sec-moreggplot.
-
-Another way of characterizing uncertainty is to turn away from the spread of values in the actual raw data and instead focus on the uncertainty of an estimated quantity such as the mean. The rest of this subsection shows how to calculate confidence intervals for estimated means, and is intended for those who are already familiar with basic statistical concepts.
-
-In case we want to calculate the 95% confidence intervals of the mean values, we first obtain some necessary summary statistics: the number of observations (sample size) in each group; the standard error of the mean (standard deviation divided by the square root of the sample size); and finally, the confidence interval itself (read off from the *t*-distribution, with one fewer degrees of freedom than the sample size). We can then include these confidence intervals on top of the mean values:
-
-```{r}
-#| message: false
-iris |>
-  group_by(Species) |>
-  summarize(mP = mean(Petal.Length), # Mean petal length per species
-            sP = sd(Petal.Length), # Standard deviation per species
-            N = n(), # Sample size (number of observations) per species
-            SEM = sP / sqrt(N), # Standard error of the mean
-            CI = SEM * qt(1 - 0.025, N - 1)) |> # Confidence interval,
-                 # read off at 1 - 0.025 because +/- 2.5% adds up to 5%
-  ggplot(aes(x = Species, y = mP, ymin = mP - CI, ymax = mP + CI)) +
+snails |>
+  ggplot(aes(x = size, y = shape)) +
   geom_point() +
-  geom_errorbar(width = 0.2) +
-  labs(y = "Petal length")
+  geom_smooth()
 ```
 
-In the literature, it is common to encounter bar-and-whisker plots to represent the same information as above. These replace the points showing the means with bars that start from zero. One should be aware of how to read and make such graphs. This is almost trivially simple: all one needs to do is replace `geom_point` with `geom_col`.
+We see two new things here. First, there are two geometries instead of one: the first generates a scatter plot with `geom_point`, but there is an additional geometry as well. This is perfectly legal; one can add as many as one wants. The aesthetic mappings will then apply to every geometry. Second, there is a function called `geom_smooth`. This generates a wiggly blue line which attempts to estimate the general trend of how the data change. There is a grey shaded region surrounding the line, which estimates the level of uncertainty in the blue line's position.
+
+Most often, we want a simple linear function to estimate the overall trend in the data. This can be achieved by adding `method = lm` as an argument to `geom_smooth`:
 
 ```{r}
 #| message: false
-iris |>
-  group_by(Species) |>
-  summarize(mP = mean(Petal.Length),
-            sP = sd(Petal.Length),
-            N = n(),
-            SEM = sP / sqrt(N),
-            CI = SEM * qt(1 - 0.025, N - 1)) |>
-  ggplot(aes(x = Species, y = mP, ymin = mP - CI, ymax = mP + CI)) +
-  # Below we change geom_point to geom_col (for "column"):
-  geom_col(alpha = 0.4, color = "steelblue", fill = "steelblue") +
-  geom_errorbar(width = 0.2, color = "steelblue") +
-  labs(y = "Petal length")
+snails |>
+  ggplot(aes(x = size, y = shape)) +
+  geom_point() +
+  geom_smooth(method = lm)
 ```
 
-:::{.callout-warning}
-While means and their confidence intervals are often displayed with bar-and-whisker plots, there is an important reasons why this is not a good idea. By starting the bars from zero, the plot implies that zero is a natural point of comparison for all the data. Unfortunately, this can visually distort the information we wish to convey. Consider the following graph:
+(Here `lm` means "linear model". It is a function in R which we will discuss in detail in @sec-linreg and subsequent chapters.) The shaded region can also be turned off using the `se = FALSE` argument:
 
 ```{r}
-tibble(Species = c("species 1", "species 2"),
-       Average = c(148, 152),
-       CI = c(0.8, 0.9)) |>
-  ggplot(aes(x = Species, y = Average,
-             ymin = Average - CI, ymax = Average + CI)) +
-  geom_col(alpha = 0.4, color = "steelblue", fill = "steelblue") +
-  geom_errorbar(width = 0.2, color = "steelblue") +
-  labs(y = "Trait value")
+#| message: false
+snails |>
+  ggplot(aes(x = size, y = shape)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE)
 ```
 
-It is impossible to see whether there are any relevant differences between the two species. The following is exactly the same, but with the mean values shown with points instead of bars:
+As mentioned above, when having multiple geometries, the aesthetic mappings apply to all of them by default. This means that if, for example, we want to distinguish the habitat of the snails using colors (like we did before), then we automatically split the smoothing line into two colored lines as well:
 
 ```{r}
-tibble(Species = c("species 1", "species 2"),
-       Average = c(148, 152),
-       CI = c(0.8, 0.9)) |>
-  ggplot(aes(x = Species, y = Average,
-             ymin = Average - CI, ymax = Average + CI)) +
-  geom_point(color = "steelblue") +
-  geom_errorbar(width = 0.2, color = "steelblue") +
-  labs(y = "Trait value")
+#| message: false
+snails |>
+  ggplot(aes(x = size, y = shape, color = habitat)) +
+  geom_point() +
+  geom_smooth(method = lm, se = FALSE)
 ```
 
-It is now obvious that the two observations are distinct. Due to this problem, my recommendation is to avoid bar-and-whisker plots and simply use point-and-whisker plots instead.
-:::
+This is a very handy feature. Sometimes however, we want to color the points by habitat but still retain a single global smoothing line for all points taken together. How can one do that? It turns out that in addition to the global aesthetic mappings (that are inside the `ggplot` function), one can also define local ones inside any `geom_` function. So one solution could be to only define the color aesthetic inside `geom_point`:
+
+```{r}
+#| message: false
+snails |>
+  ggplot(aes(x = size, y = shape)) +
+  geom_point(aes(color = habitat)) +
+  geom_smooth(method = lm, se = FALSE)
+```
+
+One final comment: the default color for the smoothing line is blue, but this can be changed within `geom_smooth`. To set the color to black, for instance:
+
+```{r}
+#| message: false
+snails |>
+  ggplot(aes(x = size, y = shape)) +
+  geom_point(aes(color = habitat)) +
+  geom_smooth(method = lm, se = FALSE, color = "black")
+```
+
+Since the black color is a constant property of the geometry, it was not defined as an aesthetic mapping.
+
+
+## Saving plots
+
+To save the most recently created ggplot figure, simply type
+
+```{r}
+#| eval: false
+ggsave(filename = "graph.pdf", width = 4, height = 3)
+```
+
+Here `filename` is the name (with path and extension) of the file you want to save the figure into. The extension is important: by having specified `.pdf`, the system automatically saves the figure in PDF format. To use, say, PNG instead:
+
+```{r}
+#| eval: false
+ggsave(filename = "graph.png", width = 4, height = 3)
+```
+
+PDF is a vectorized file format: the file contains the instructions for generating the plot elements instead of a pixel representation of the image. Consequently, PDF figures are arbitrarily scalable, and are therefore the preferred way of saving and handling scientific graphs.
+
+The `width` and `height` parameters specify, in inches, the dimensions of the saved plot. Note that this also scales some other plot elements, such as the size of the axis labels and plot legends. This means you can play with the `width` and `height` parameters to save the figure at a size where the labels are clearly visible without being too large.
+
+In case you would like to save a figure that is not the last one that was generated, you can specify the `plot` argument to `ggsave()`. to do so, first you should assign a plot to a variable. For example:
+
+```{r}
+#| eval: false
+p <- snails |> # Assign the ggplot object to the variable p
+  ggplot(aes(x = size, y = shape)) +
+  geom_point(aes(color = habitat)) +
+  geom_smooth(method = lm, se = FALSE, color = "black")
+```
+
+and then
+
+```{r}
+#| eval: false
+ggsave(filename = "graph.pdf", plot = p, width = 4, height = 3)
+```
 
 
 ## Exercises {#sec-ggplot-exercises}
