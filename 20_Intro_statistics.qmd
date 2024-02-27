@@ -63,7 +63,9 @@ Quantitative variables can also have one of two different scales: *interval* and
 - The ratio scale does have a defined zero point, which creates the possibility for calculating ratios between values. We can say that the density of one species (0.2) can be twice the size of the density of another (0.1) because the value of 0 actually means that there is no presence of the species at all.
 
 :::{.callout-important}
-There is only one instance where the scale of the variable is implemented in R; namely, when we create ordered factors following an ordinal scale (@sec-factors). Otherwise this information is not saved in an R object. This makes the knowledge of the scale, and what type of operations one can use with it, very important to know when programming. Ignoring this makes it very easy to end up in situations where we calculate inappropriate values.
+There is only one instance where the scale of the variable is implemented in R; namely, when we create ordered factors following an ordinal scale (@sec-factors). Otherwise this information is not saved in an R object. 
+
+What this means in practice is that it is very important to know which scale the variable follows when programming. Ignoring this makes it very easy to end up in situations where we calculate inappropriate values or use misleading visualizations.
 :::
 
 
@@ -75,7 +77,7 @@ There are two main ways to summarize a variable; either visualize its *distribut
 
 We have already looked at different ways to visualize a distribution of a variable in @sec-ggplot which we can summarize as follows.
 
-A qualitative variable can be visualized using a bar plot---or, if a bar plot is not appropriate (@sec-CI), then by using points. If the variable follows the ordinal scale, the categories on the x-axis should follow the same order. If the variable follows the nominal scale we do not have to follow any specific order of the categories, but it is usually nice to order them either alphabetically or in descending order based on the (relative) frequency of the category.
+The distribution of a qualitative variable should be visualized using a bar plot. If the variable follows the ordinal scale, the categories on the x-axis should follow the same order. If the variable follows the nominal scale we do not have to follow any specific order of the categories, but it is usually nice to order them either alphabetically or in descending order based on the (relative) frequency of the category.
 
 ```{r}
 pop |>
@@ -83,20 +85,6 @@ pop |>
   geom_bar(fill = "steelblue") +
   theme_bw()
 ```
-
-In this instance a bar plot was entirely appropriate, but here is the same figure using points instead:
-
-```{r}
-pop |>
-  group_by(patch) |>
-  summarize(count = n()) |>
-  ungroup() |>
-  ggplot(aes(x = patch, y = count)) +
-  geom_point(color = "steelblue") +
-  theme_bw()
-```
-
-The latter plot makes it absolutely clear that the number of units in each patch are equal. By contrast, it is not necessarily easy to tell from a bar plot whether there is a small difference between the heights of the bars.
 
 When visualizing the distribution, it is customary to use the relative frequency (%) of each category instead of their absolute frequency (count). This can be done directly in the `ggplot`-process without the need for additional data processing prior to the visualization. In this case, the default calculation done is `count`ing the number of occurrences of each category and the height (y) of the bars being defined by the count. The `after_stat()` function allows for calculations after the counting has been completed. for example, `count / sum(count)` would calculate the relative frequency of each category compared to the total number of observations. If we multiply this value by 100, we can show the percent of observations of each category.  
 
@@ -187,7 +175,7 @@ The mean gives us a measure of the center of the data---but as we can see in the
 
 We would not have been able to draw these conclusions without visualizing the variable and this shows the importance of visualizations when describing data.
 
-#### Median
+#### Median {#sec-median}
 
 Another instance when the mean misrepresents a variable's center is if there are *outliers* present in the data. An outlier is an observation that is located far away from the majority of the other observations. They affect the mean by moving the measure towards the direction of the outliers and thereby shifting the center away from the majority of the observations. This could be identified if we visualized the distribution alongside the mean but we can also use another measure of center as an alternative.
 
@@ -204,19 +192,31 @@ n <- nrow(pop)
 # Find the position (index) of the median:
 position <- (n + 1) / 2 # The position is 50.5
 
-# Therefore we need to round down and up, to get the vector c(50, 51):
+# Therefore we need to round down and up, to get the vector of positions c(50, 51):
 positionVec <- c(floor(position), ceiling(position))
 
+# First we order the variable
 pop |>
   select(species1) |> # Keep only this one column
-  arrange(species1) |> # Order the densities from lowest to largest
-  slice(positionVec) |> # Get the middle two values (at rows 50 and 51)
-  summarize(median = mean(species1)) # Obtain their mean, which is the median
+  arrange(species1) # Order the densities from lowest to largest
+
+# Next, we extract the observations located at the position vector
+pop |>
+  select(species1) |> 
+  arrange(species1) |> 
+  slice(positionVec) # Get the middle two values (at rows 50 and 51)
+
+# Finally we calculate the mean of the two observations
+pop |>
+  select(species1) |> 
+  arrange(species1) |> 
+  slice(positionVec) |> 
+  summarize(median = mean(species1)) # Obtain their mean, which is the median of the variable
 ```
 
 This becomes tedious to do multiple times, but thankfully the function `median` does all of this for us automatically. Using the function, the median value is also `r median(pop$species1)`.^[We would expect the same value as the function uses the same process as shown earlier.]
 
-#### Quantiles
+#### Quantiles {#sec-quantiles}
 
 A generalization of the median is a *quantile* which aims to divide the ordered values into a specific number of parts. For example, we can consider the median a quantile where the data are split up into two equally-sized parts. Other common quantiles are *quartiles* which divide the data into four equal quarters, each containing 25% of the data. The first quartile (which splits the data into 25% | 75%) and the third quartile (splits 75% | 25%) can be used as additional measures to gain information about different positions.
 
