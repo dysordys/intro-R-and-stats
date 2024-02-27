@@ -63,11 +63,11 @@ Just be sure to remember this so you can correct the mistake, should you acciden
 
 ### Scatter plots with `geom_point`
 
-The plot above, created using `geom_point`, is called a *scatter plot*: each row in the data is represented by a point whose x- and y-coordinates come from different columns in the data (in this case, `size` and `shape`). It immediately reveals some interesting facts about the data. For example, the largest shell sizes are found in the humid habitats, whereas snails with the largest shell shape parameters (indicating long and slender shells) are found only in the arid regions. These are exactly the kinds of information we are trying to glean out using plots, because they would have been difficult or even impossible to see just from the raw data in the table.
+The plot above, created using `geom_point`, is called a *scatter plot*: each row in the data is represented by a point whose x- and y-coordinates come from different columns in the data (in this case, `size` and `shape`). The scatter plot above immediately revealed some interesting facts about the data. For example, the largest shell sizes are found in the humid habitats, whereas snails with the largest shell shape parameters (indicating long and slender shells) are found only in the arid regions. This is exactly the kind of information that would have been difficult to get just from the raw data in its tabular form, but is immediately seen from an appropriate graph.
 
 ### Histograms with `geom_histogram` {#sec-geom-histogram}
 
-To look at a different kind of geometry, let us create a histogram of the shell shape measurements. This is done using `geom_histogram`:
+To look at a different kind of geometry, let us create a *histogram* of the shell shape measurements. This is done using `geom_histogram`:
 
 ```{r}
 #| message: false
@@ -76,7 +76,9 @@ snails |>
   geom_histogram()
 ```
 
-The default number of bins in a histogram is 30, but that might not always be the best choice. Here, for example, there are some erratic-looking jumps that have more to do with having too few observations per bin than with the actual data themselves. To change the number of bins, we have two options. We can use the `bins` argument to `geom_histogram` to explicitly specify how many bins we want in the plot:
+A histogram divides up the x-axis into equally-sized segments, called *bins*. We then count how many observations fall within the limits of each bin, and draw the bins as tall along the y-axis as that count. So bins with many data points are tall, and bins with only few observations are short.
+
+The default setting for `geom_histogram` is to classify the data into 30 equally-sized bins, but that might not always be the best choice. In the above histogram, for example, there are some erratic-looking jumps that have more to do with having too few observations per bin than with the actual data themselves. To change the number of bins, we have two options. We can use the `bins` argument to `geom_histogram` to explicitly specify how many bins we want in the plot:
 
 ```{r}
 snails |>
