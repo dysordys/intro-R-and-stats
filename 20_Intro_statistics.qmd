@@ -175,7 +175,7 @@ The mean gives us a measure of the center of the data---but as we can see in the
 
 We would not have been able to draw these conclusions without visualizing the variable and this shows the importance of visualizations when describing data.
 
-#### Median
+#### Median {#sec-median}
 
 Another instance when the mean misrepresents a variable's center is if there are *outliers* present in the data. An outlier is an observation that is located far away from the majority of the other observations. They affect the mean by moving the measure towards the direction of the outliers and thereby shifting the center away from the majority of the observations. This could be identified if we visualized the distribution alongside the mean but we can also use another measure of center as an alternative.
 
@@ -216,7 +216,7 @@ pop |>
 
 This becomes tedious to do multiple times, but thankfully the function `median` does all of this for us automatically. Using the function, the median value is also `r median(pop$species1)`.^[We would expect the same value as the function uses the same process as shown earlier.]
 
-#### Quantiles
+#### Quantiles {#sec-quantiles}
 
 A generalization of the median is a *quantile* which aims to divide the ordered values into a specific number of parts. For example, we can consider the median a quantile where the data are split up into two equally-sized parts. Other common quantiles are *quartiles* which divide the data into four equal quarters, each containing 25% of the data. The first quartile (which splits the data into 25% | 75%) and the third quartile (splits 75% | 25%) can be used as additional measures to gain information about different positions.
 
