@@ -73,7 +73,7 @@ What this means in practice is that it is very important to know which scale the
 
 There are two main ways to summarize a variable; either visualize its *distribution*, or present various descriptive statistics that provide information about the variable.
 
-### Distributions
+### Distributions {#sec-distributions}
 
 We have already looked at different ways to visualize a distribution of a variable in @sec-ggplot which we can summarize as follows.
 
@@ -116,7 +116,7 @@ We do not differentiate between a variable following an interval or a ratio scal
 
 Another way to visualize a continuous variable is by using a box(-and-whisker) plot, but this type of plot requires information about different measures of the variable, so we will return to this visualization later in this chapter.
 
-### Measures of center
+### Measures of center {#sec-measurecenter}
 
 A simple way to summarize the position of a variable is a *measure of center*. As the name implies, it describes where on the unit scale the values are centered around, and gives an indication of the magnitude (level) of the values. 
 
