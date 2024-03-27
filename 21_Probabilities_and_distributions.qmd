@@ -39,9 +39,9 @@ snailDat <- read_delim("island-FL.csv", delim = ",")
 
 :::{.callout-warning}
 
-The binomial distribution assumes that the trials are independent from one another in the sense that the probability of observing a snail of the specific species does not change regardless of the other trials. Whether or not we can assume independence is also partially connected to the way we conduct the study, or sample the snails in this case. If the sample is drawn only from one specific area of the island --- the small clearing outside the research station --- there might exist some condition that increases or decreases the prevalence of the species. 
+The binomial distribution assumes that the trials are independent from one another in the sense that the probability of observing a snail of the specific species does not change regardless of the other trials. Whether or not we can assume independence is also partially connected to the way we conduct the study, or sample the snails in this case.
 
-It can then be argued that the probability of a snail of the species change from the initial 23.5% to a higher or lower number depending on if the first snail observed is a *Naesiotus calvus*. SOMETHING MORE ABOUT THE IMPACT OR RELEVANCE OF THIS NOTE.
+If the sample is drawn only from one specific area of the island --- the small clearing outside the research station --- there might exist some condition that increases or decreases the prevalence of the species. It can then be argued that the probability of a snail of the species change from the initial 23.5% to a higher or lower number depending on if the first snail observed is a *Naesiotus calvus*.
 
 :::
 
