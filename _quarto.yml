@@ -21,6 +21,8 @@ book:
     - part: "Part II: Introductory statistics (UNDER CONSTRUCTION)"
       chapters:
       - 20_Intro_statistics.qmd
+      - 21_Probabilities_and_distributions.qmd
+      - 22_Sampling_distributions.qmd
     - part: "Part III: Advanced statistics"
       chapters:
       - 40_Intro_adv_statistics.qmd
@@ -39,5 +41,5 @@ bibliography: biblio.bib
 format:
   html:
     theme: cosmo
-    toc-depth: 3
-    number-depth: 3
+    toc-depth: 4
+    number-depth: 4
