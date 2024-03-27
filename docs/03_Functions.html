@@ -243,6 +243,12 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introducing statistics</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21_Probabilities_and_distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Probabilities and probability distributions</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -257,43 +263,43 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Introducing statistical inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Introducing statistical inference</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_Linear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./45_Intro_map.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./46_Multiple_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -310,7 +316,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./99_References.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">References</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
       </ul>
@@ -326,7 +332,7 @@ div.csl-indent {
    
   <ul>
   <li><a href="#user-defined-functions" id="toc-user-defined-functions" class="nav-link active" data-scroll-target="#user-defined-functions"><span class="header-section-number">3.1</span> User-defined functions</a>
-  <ul class="collapse">
+  <ul>
   <li><a href="#sec-f1arg" id="toc-sec-f1arg" class="nav-link" data-scroll-target="#sec-f1arg"><span class="header-section-number">3.1.1</span> How to define functions</a></li>
   <li><a href="#functions-with-more-than-one-argument" id="toc-functions-with-more-than-one-argument" class="nav-link" data-scroll-target="#functions-with-more-than-one-argument"><span class="header-section-number">3.1.2</span> Functions with more than one argument</a></li>
   </ul></li>
@@ -474,7 +480,7 @@ div.csl-indent {
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">mean</span>(<span class="fu">log</span>(<span class="fu">seq</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">11</span>, <span class="at">by =</span> <span class="dv">2</span>)), <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Part of the reason is the awkward backwards order of function applications which makes it hard to see which function the argument <code>na.rm = TRUE</code> belongs to. Fortunately, there is a simple operator in R called a <em>pipe</em> (written <code>|&gt;</code>), which allows one to write the same code in a more streamlined way. The pipe allows one to write function application in reverse order (first the argument and then the function), making the code more transparent. Formally, <code>x |&gt; f()</code> is equivalent to <code>f(x)</code> for any function <code>f</code>. For example, <code>sqrt(9)</code> can also be written <code>9 |&gt; sqrt()</code>. Thus, <code>sqrt(sin(cos(log(1))))</code> can be written as <code>1 |&gt; log() |&gt; cos() |&gt; sin() |&gt; sqrt()</code>, which reads straightforwardly as “start with the number 1; <em>then</em> take its log; <em>then</em> take the cosine of the result; <em>then</em> take the sine of that result; and <em>then</em>, finally, take the square root to obtain the final output”. In general, it helps to pronounce <code>|&gt;</code> as “then”.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
-<p>The pipe also works for functions with multiple arguments. In that case, <code>x |&gt; f(y, ...)</code> is equivalent to <code>f(x, y, ...)</code>. That is, the pipe refers to the function’s first argument (though, as we will see in <a href="40_Intro_adv_statistics.html#sec-dot"><span>Section&nbsp;11.4</span></a>, it is possible to override this). Instead of the awkward and hard-to-read <code>mean(log(seq(-3, 11, by = 2)), na.rm = TRUE)</code>, we can therefore write:</p>
+<p>The pipe also works for functions with multiple arguments. In that case, <code>x |&gt; f(y, ...)</code> is equivalent to <code>f(x, y, ...)</code>. That is, the pipe refers to the function’s first argument (though, as we will see in <a href="40_Intro_adv_statistics.html#sec-dot"><span>Section&nbsp;12.4</span></a>, it is possible to override this). Instead of the awkward and hard-to-read <code>mean(log(seq(-3, 11, by = 2)), na.rm = TRUE)</code>, we can therefore write:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">11</span>, <span class="at">by =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">log</span>() <span class="sc">|&gt;</span></span>
@@ -532,7 +538,7 @@ Gillespie, John H. 2004. <em>Population Genetics: A Concise Guide</em>. Baltimor
 <hr>
 <ol>
 <li id="fn1"><p>More precisely, it is not a real number. Just as with square roots, negative numbers have complex logarithms. In particular, <span class="math inline">\(\log(-1) = \log(\text{e}^{\text{i}\pi}) = \text{i}\pi\)</span> and <span class="math inline">\(\sqrt{-1} = \text{i}\)</span>. Both are rigorously provable propositions, and they have profound if strange-looking consequences. For instance, <span class="math inline">\(\log(-1)\)</span> divided by <span class="math inline">\(\sqrt{-1}\)</span> is exactly <span class="math inline">\(\pi\)</span>. This has prompted the 19th-century English mathematician <a href="https://en.wikipedia.org/wiki/Augustus_De_Morgan">Augustus De Morgan</a> (1806-1871) to exclaim: “Imagine a person with a gift of ridicule [who might say:] first that a negative quantity has no logarithm; secondly that a negative quantity has no square root; thirdly that the first non-existent is to the second as the circumference of a circle is to the diameter.” (Note: it is possible to compute with complex numbers in R. Try executing <code>log(-1 + 0i) / sqrt(-1 + 0i)</code> to verify De Morgan’s result.)<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>This built-in pipe <code>|&gt;</code> has only been available since R 4.1. Upgrade your R version if necessary. Alternatively, you can use another pipe operator that is provided by the <code>magrittr</code> package. It is written <code>%&gt;%</code> instead of <code>|&gt;</code>, but otherwise works identically (at least at this level; we will be mentioning some of the subtler differences in <a href="40_Intro_adv_statistics.html#sec-dot"><span>Section&nbsp;11.4</span></a>). To use the <code>magrittr</code> pipe, install the package first with <code>install.packages("magrittr")</code> and then load it with <code>library(magrittr)</code>. Now you can use <code>%&gt;%</code>. Incidentally, the package name <code>magrittr</code> is an allusion to Belgian surrealist artist René Magritte (1898-1967) because of his famous painting <a href="https://en.wikipedia.org/wiki/The_Treachery_of_Images">La trahison des images</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>This built-in pipe <code>|&gt;</code> has only been available since R 4.1. Upgrade your R version if necessary. Alternatively, you can use another pipe operator that is provided by the <code>magrittr</code> package. It is written <code>%&gt;%</code> instead of <code>|&gt;</code>, but otherwise works identically (at least at this level; we will be mentioning some of the subtler differences in <a href="40_Intro_adv_statistics.html#sec-dot"><span>Section&nbsp;12.4</span></a>). To use the <code>magrittr</code> pipe, install the package first with <code>install.packages("magrittr")</code> and then load it with <code>library(magrittr)</code>. Now you can use <code>%&gt;%</code>. Incidentally, the package name <code>magrittr</code> is an allusion to Belgian surrealist artist René Magritte (1898-1967) because of his famous painting <a href="https://en.wikipedia.org/wiki/The_Treachery_of_Images">La trahison des images</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

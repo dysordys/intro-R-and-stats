@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./40_Intro_adv_statistics.html" rel="next">
+<link href="./21_Probabilities_and_distributions.html" rel="next">
 <link href="./09_Joining_data.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -221,6 +221,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introducing statistics</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21_Probabilities_and_distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Probabilities and probability distributions</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -235,43 +241,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Introducing statistical inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Introducing statistical inference</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_Linear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./45_Intro_map.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./46_Multiple_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -288,7 +294,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./99_References.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">References</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
       </ul>
@@ -306,10 +312,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#variable-types" id="toc-variable-types" class="nav-link active" data-scroll-target="#variable-types"><span class="header-section-number">10.1</span> Variable types</a></li>
   <li><a href="#variable-scales" id="toc-variable-scales" class="nav-link" data-scroll-target="#variable-scales"><span class="header-section-number">10.2</span> Variable scales</a></li>
   <li><a href="#summarizing-a-variable" id="toc-summarizing-a-variable" class="nav-link" data-scroll-target="#summarizing-a-variable"><span class="header-section-number">10.3</span> Summarizing a variable</a>
+  <ul>
+  <li><a href="#sec-distributions" id="toc-sec-distributions" class="nav-link" data-scroll-target="#sec-distributions"><span class="header-section-number">10.3.1</span> Distributions</a></li>
+  <li><a href="#sec-measurecenter" id="toc-sec-measurecenter" class="nav-link" data-scroll-target="#sec-measurecenter"><span class="header-section-number">10.3.2</span> Measures of center</a>
   <ul class="collapse">
-  <li><a href="#distributions" id="toc-distributions" class="nav-link" data-scroll-target="#distributions"><span class="header-section-number">10.3.1</span> Distributions</a></li>
-  <li><a href="#measures-of-center" id="toc-measures-of-center" class="nav-link" data-scroll-target="#measures-of-center"><span class="header-section-number">10.3.2</span> Measures of center</a></li>
-  <li><a href="#measures-of-spread-or-uncertainty" id="toc-measures-of-spread-or-uncertainty" class="nav-link" data-scroll-target="#measures-of-spread-or-uncertainty"><span class="header-section-number">10.3.3</span> Measures of spread or uncertainty</a></li>
+  <li><a href="#mean" id="toc-mean" class="nav-link" data-scroll-target="#mean"><span class="header-section-number">10.3.2.1</span> Mean</a></li>
+  <li><a href="#sec-median" id="toc-sec-median" class="nav-link" data-scroll-target="#sec-median"><span class="header-section-number">10.3.2.2</span> Median</a></li>
+  <li><a href="#sec-quantiles" id="toc-sec-quantiles" class="nav-link" data-scroll-target="#sec-quantiles"><span class="header-section-number">10.3.2.3</span> Quantiles</a></li>
+  </ul></li>
+  <li><a href="#measures-of-spread-or-uncertainty" id="toc-measures-of-spread-or-uncertainty" class="nav-link" data-scroll-target="#measures-of-spread-or-uncertainty"><span class="header-section-number">10.3.3</span> Measures of spread or uncertainty</a>
+  <ul class="collapse">
+  <li><a href="#standard-deviation" id="toc-standard-deviation" class="nav-link" data-scroll-target="#standard-deviation"><span class="header-section-number">10.3.3.1</span> Standard deviation</a></li>
+  <li><a href="#sec-iqr" id="toc-sec-iqr" class="nav-link" data-scroll-target="#sec-iqr"><span class="header-section-number">10.3.3.2</span> Interquartile range</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#summary-and-exercises" id="toc-summary-and-exercises" class="nav-link" data-scroll-target="#summary-and-exercises"><span class="header-section-number">10.4</span> Summary and exercises</a></li>
   </ul>
@@ -429,8 +444,8 @@ Important
 <section id="summarizing-a-variable" class="level2" data-number="10.3">
 <h2 data-number="10.3" class="anchored" data-anchor-id="summarizing-a-variable"><span class="header-section-number">10.3</span> Summarizing a variable</h2>
 <p>There are two main ways to summarize a variable; either visualize its <em>distribution</em>, or present various descriptive statistics that provide information about the variable.</p>
-<section id="distributions" class="level3" data-number="10.3.1">
-<h3 data-number="10.3.1" class="anchored" data-anchor-id="distributions"><span class="header-section-number">10.3.1</span> Distributions</h3>
+<section id="sec-distributions" class="level3" data-number="10.3.1">
+<h3 data-number="10.3.1" class="anchored" data-anchor-id="sec-distributions"><span class="header-section-number">10.3.1</span> Distributions</h3>
 <p>We have already looked at different ways to visualize a distribution of a variable in <a href="07_Creating_figures.html"><span>Chapter&nbsp;7</span></a> which we can summarize as follows.</p>
 <p>The distribution of a qualitative variable should be visualized using a bar plot. If the variable follows the ordinal scale, the categories on the x-axis should follow the same order. If the variable follows the nominal scale we do not have to follow any specific order of the categories, but it is usually nice to order them either alphabetically or in descending order based on the (relative) frequency of the category.</p>
 <div class="cell">
@@ -473,11 +488,11 @@ Important
 <p>We do not differentiate between a variable following an interval or a ratio scale when visualizing a distribution, but it is something to take into account when interpreting the plots. For example, if a variable follows the interval scale, we could not state that “the values are split into two main groups, one twice the value of the other”.</p>
 <p>Another way to visualize a continuous variable is by using a box(-and-whisker) plot, but this type of plot requires information about different measures of the variable, so we will return to this visualization later in this chapter.</p>
 </section>
-<section id="measures-of-center" class="level3" data-number="10.3.2">
-<h3 data-number="10.3.2" class="anchored" data-anchor-id="measures-of-center"><span class="header-section-number">10.3.2</span> Measures of center</h3>
+<section id="sec-measurecenter" class="level3" data-number="10.3.2">
+<h3 data-number="10.3.2" class="anchored" data-anchor-id="sec-measurecenter"><span class="header-section-number">10.3.2</span> Measures of center</h3>
 <p>A simple way to summarize the position of a variable is a <em>measure of center</em>. As the name implies, it describes where on the unit scale the values are centered around, and gives an indication of the magnitude (level) of the values.</p>
-<section id="mean" class="level4">
-<h4 class="anchored" data-anchor-id="mean">Mean</h4>
+<section id="mean" class="level4" data-number="10.3.2.1">
+<h4 data-number="10.3.2.1" class="anchored" data-anchor-id="mean"><span class="header-section-number">10.3.2.1</span> Mean</h4>
 <p>The most common measure of center is the <em>mean</em>, which can be calculated on a continuous variable. Assume that we have <em>n</em> samples from a population, and the measurement on the <em>i</em>th unit is denoted <span class="math inline">\(x_i\)</span>. The mean of the sample is then calculated as <span id="eq-mean"><span class="math display">\[
 \bar{x} = \frac{\sum_{i = 1}^n{x_i}}{n}
 \tag{10.1}\]</span></span> where <span class="math inline">\(\bar{x}\)</span> (pronounced “x-bar”) is the statistic that aims to estimate the population mean <span class="math inline">\(\mu\)</span> (the Greek letter mu).</p>
@@ -546,8 +561,8 @@ Warning
 <p>The mean gives us a measure of the center of the data—but as we can see in the visualizations, sometimes the mean by itself misrepresents the data as a whole. For example, the mean of <code>Species 2</code> is 4.56% but the values of the variable are grouped either lower or higher than this value. The mean itself isn’t actually close to an observed value. Compare this to the mean of <code>Species 1</code> (5.3%) which actually falls close to observed values. The mean is better at describing this variable than the previous.</p>
 <p>We would not have been able to draw these conclusions without visualizing the variable and this shows the importance of visualizations when describing data.</p>
 </section>
-<section id="sec-median" class="level4">
-<h4 class="anchored" data-anchor-id="sec-median">Median</h4>
+<section id="sec-median" class="level4" data-number="10.3.2.2">
+<h4 data-number="10.3.2.2" class="anchored" data-anchor-id="sec-median"><span class="header-section-number">10.3.2.2</span> Median</h4>
 <p>Another instance when the mean misrepresents a variable’s center is if there are <em>outliers</em> present in the data. An outlier is an observation that is located far away from the majority of the other observations. They affect the mean by moving the measure towards the direction of the outliers and thereby shifting the center away from the majority of the observations. This could be identified if we visualized the distribution alongside the mean but we can also use another measure of center as an alternative.</p>
 <p>The <em>median</em> is much more robust against outliers than the mean, in the sense that it is less affected by them. It describes the middle observation if we were to order the values in increasing size. Any single extremely small or large value would not affect position of the middle observation, as long as there are sufficiently many data points.</p>
 <p>We can calculate the position (i.e., the index of the value in a vector) of the median as (<em>n</em> + 1) / 2, where <em>n</em> is the number of data points. This results in either a whole number (if <em>n</em> is odd), in which case the value at that position is the median. Or it could result in a half number (if <em>n</em> is even), in which case the convention is to put the median halfway between the two positions obtained by rounding the position’s number up and down, respectively.</p>
@@ -609,8 +624,8 @@ Warning
 </div>
 <p>This becomes tedious to do multiple times, but thankfully the function <code>median</code> does all of this for us automatically. Using the function, the median value is also 5.28.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
 </section>
-<section id="sec-quantiles" class="level4">
-<h4 class="anchored" data-anchor-id="sec-quantiles">Quantiles</h4>
+<section id="sec-quantiles" class="level4" data-number="10.3.2.3">
+<h4 data-number="10.3.2.3" class="anchored" data-anchor-id="sec-quantiles"><span class="header-section-number">10.3.2.3</span> Quantiles</h4>
 <p>A generalization of the median is a <em>quantile</em> which aims to divide the ordered values into a specific number of parts. For example, we can consider the median a quantile where the data are split up into two equally-sized parts. Other common quantiles are <em>quartiles</em> which divide the data into four equal quarters, each containing 25% of the data. The first quartile (which splits the data into 25% | 75%) and the third quartile (splits 75% | 25%) can be used as additional measures to gain information about different positions.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
@@ -660,8 +675,8 @@ Note
 <section id="measures-of-spread-or-uncertainty" class="level3" data-number="10.3.3">
 <h3 data-number="10.3.3" class="anchored" data-anchor-id="measures-of-spread-or-uncertainty"><span class="header-section-number">10.3.3</span> Measures of spread or uncertainty</h3>
 <p>As we saw in <a href="#fig-dist-mean">Figure&nbsp;<span>10.1</span></a>, the measure of a center by itself does not provide the full picture of a variable. Species 1 and 2 had about the same mean value but the values of the observations are spread out very differently. When summarizing a variable, it is also important to describe the spread of the values, the amount of variation they have. This gives a sense of how two variables with the same mean might differ.</p>
-<section id="standard-deviation" class="level4">
-<h4 class="anchored" data-anchor-id="standard-deviation">Standard deviation</h4>
+<section id="standard-deviation" class="level4" data-number="10.3.3.1">
+<h4 data-number="10.3.3.1" class="anchored" data-anchor-id="standard-deviation"><span class="header-section-number">10.3.3.1</span> Standard deviation</h4>
 <p>The <em>standard deviation</em> can be seen as the “average distance from the mean”—that is, how far away from the mean we expect a randomly selected value to be. The formula for the standard deviation is <span id="eq-sd"><span class="math display">\[
 s = \sqrt{\frac{\sum_{i = 1}^n{(x_i - \bar{x})^2}}{n - 1}}
 \tag{10.2}\]</span></span> where <span class="math inline">\(x_i\)</span> is the <em>i</em>th observed value, <span class="math inline">\(\bar{x}\)</span> is their mean, and <span class="math inline">\(n\)</span> is the number of observations.</p>
@@ -761,8 +776,8 @@ s = \sqrt{\frac{\sum_{i = 1}^n{(x_i - \bar{x})^2}}{n - 1}}
 </div>
 <p>Species 2 does indeed have a higher standard deviation than both species 1 and 3, indicating that its observations are further away from the mean.</p>
 </section>
-<section id="sec-iqr" class="level4">
-<h4 class="anchored" data-anchor-id="sec-iqr">Interquartile range</h4>
+<section id="sec-iqr" class="level4" data-number="10.3.3.2">
+<h4 data-number="10.3.3.2" class="anchored" data-anchor-id="sec-iqr"><span class="header-section-number">10.3.3.2</span> Interquartile range</h4>
 <p>Similarly to the mean, the standard deviation will overestimate the spread of the variable if there are outliers present. Since outliers are defined as observations far from the rest of the observations, they will also be far from the mean, thereby increasing the average distance from the mean and resulting in an overestimation. Instead, we can use the difference between the first and third quartile as an indication of the spread of the variable. This is called the <em>interquartile range</em> (IQR). For instance, the IQR for Species 1 is 2.3225, using the indices <code>quartiles[3] - quartiles[1]</code> created earlier.</p>
 </section>
 </section>
@@ -770,7 +785,7 @@ s = \sqrt{\frac{\sum_{i = 1}^n{(x_i - \bar{x})^2}}{n - 1}}
 <section id="summary-and-exercises" class="level2" data-number="10.4">
 <h2 data-number="10.4" class="anchored" data-anchor-id="summary-and-exercises"><span class="header-section-number">10.4</span> Summary and exercises</h2>
 <p>Visualizations and descriptive statistics are used to summarize variables in a dataset. Different forms and measures are used depending on the variable type and the scale it follows in order to properly describe the variable. Visualizations are used to show the distribution or shape of the data. The measure of center shows the placement of a quantitative variable while measures of spread show the variation of the values around its center.</p>
-<p>For the exercises we will return to the <code>iris</code> dataset seen in earlier chapters (ex. <a href="05_Basic_data_wrangling.html#sec-wrangling-exercises"><span>Section&nbsp;5.3</span></a>). Make sure to convert the data to a <code>tibble</code> and save it to an object before starting these exercises.</p>
+<p>For the exercises we will return to the <code>iris</code> dataset seen in earlier chapters (e.g. <a href="05_Basic_data_wrangling.html#sec-wrangling-exercises"><span>Section&nbsp;5.3</span></a>). Make sure to convert the data to a <code>tibble</code> and save it to an object before starting these exercises.</p>
 <ol type="1">
 <li><p>Visualize the variable <code>Species</code> with a suitable plot. How many of each species are present in the data?</p></li>
 <li><p>Visualize the variable <code>Petal.Width</code> with a suitable plot. What observations can be made from this plot?</p></li>
@@ -1033,8 +1048,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./40_Intro_adv_statistics.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Introducing statistical inference</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./21_Probabilities_and_distributions.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Probabilities and probability distributions</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
