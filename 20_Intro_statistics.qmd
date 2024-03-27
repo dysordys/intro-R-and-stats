@@ -331,7 +331,7 @@ Similarly to the mean, the standard deviation will overestimate the spread of th
 
 Visualizations and descriptive statistics are used to summarize variables in a dataset. Different forms and measures are used depending on the variable type and the scale it follows in order to properly describe the variable. Visualizations are used to show the distribution or shape of the data. The measure of center shows the placement of a quantitative variable while measures of spread show the variation of the values around its center.
 
-For the exercises we will return to the `iris` dataset seen in earlier chapters (ex. @sec-wrangling-exercises). Make sure to convert the data to a `tibble` and save it to an object before starting these exercises.
+For the exercises we will return to the `iris` dataset seen in earlier chapters (e.g. @sec-wrangling-exercises). Make sure to convert the data to a `tibble` and save it to an object before starting these exercises.
 
 1.  Visualize the variable `Species` with a suitable plot. How many of each species are present in the data?
 
