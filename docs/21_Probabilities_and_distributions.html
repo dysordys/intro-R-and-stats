@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,17 +96,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
 }</script>
-
 <script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+
 <link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -110,12 +145,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20_Intro_statistics.html">Part II: Introductory statistics (UNDER CONSTRUCTION)</a></li><li class="breadcrumb-item"><a href="./21_Probabilities_and_distributions.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Probabilities and probability distributions</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20_Intro_statistics.html">Part II: Introductory statistics (UNDER CONSTRUCTION)</a></li><li class="breadcrumb-item"><a href="./21_Probabilities_and_distributions.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Probabilities and probability distributions</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -125,7 +160,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to data analysis and visualization with R</a> 
@@ -236,6 +271,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Sampling distributions</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23_Statistical_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to statistical inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -250,43 +297,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introducing statistical inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_Linear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./45_Intro_map.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./46_Multiple_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -303,7 +350,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./99_References.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">References</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
       </ul>
@@ -311,7 +358,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -340,7 +387,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20_Intro_statistics.html">Part II: Introductory statistics (UNDER CONSTRUCTION)</a></li><li class="breadcrumb-item"><a href="./21_Probabilities_and_distributions.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Probabilities and probability distributions</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span id="sec-stats-probs" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Probabilities and probability distributions</span></span></h1>
 </div>
@@ -355,7 +402,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <p>Within statistics we want to make decisions that are influenced by uncertainty. For example how often do we expect to find a snail larger than the mean size? Depending on the snail we sample, we might find one larger than the mean or not. In order to understand this event we can use <em>probabilities</em> to inform us whether this event is something that occurs often or not. Probabilities are also useful in making decisions, for instance should I bring my umbrella with me when I leave in case it will rain? Probabilities are something us humans weigh and assess semi-consciously all the time when making decisions and statistics is just a formalization of these concepts with proper numbers.</p>
 <section id="what-is-a-probability" class="level2" data-number="11.1">
@@ -366,7 +415,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Using reasoning</li>
 <li>Using subjectivity</li>
 </ol>
-<p>In <a href="20_Intro_statistics.html#sec-distributions"><span>Section&nbsp;10.3.1</span></a> we presented a way to show which values and how often they appear within a variable. This corresponds to the relative frequency definition, we calculate how often an event has occurred — a specific value of the variable has been observed — out of the total number of samples observed. This way of defining a probability is an approximation as the samples observed might not represent the population from which they are drawn from, but the <em>law of large numbers</em> proves that if the sample is big enough the relative frequencies are close to the true probabilities.</p>
+<p>In <a href="20_Intro_statistics.html#sec-distributions" class="quarto-xref"><span>Section 10.3.1</span></a> we presented a way to show which values and how often they appear within a variable. This corresponds to the relative frequency definition, we calculate how often an event has occurred — a specific value of the variable has been observed — out of the total number of samples observed. This way of defining a probability is an approximation as the samples observed might not represent the population from which they are drawn from, but the <em>law of large numbers</em> proves that if the sample is big enough the relative frequencies are close to the true probabilities.</p>
 <p>These true probabilities are calculated using the second definition. There are times when reasoning or information about the population cannot be used hence the need for relative frequencies. Using reasoning we can define a probability as the ratio between “the number of outcomes that fulfill the desired event” and the “total number of outcomes that are possible to occur”.</p>
 <p>The third definition is not something that we commonly use for calculations, at least not in the areas of statistics covered by this text, but it is closely tied to the semi-conscious assessments we humans do on a regular basis. The probability of it raining and you deciding to take your umbrella with you is subjective in the sense that one person might look at the weather and think that the probability of rain is high whereas another person looking at the same weather might have other pieces of knowledge that makes them think the probability is low. This definition of probability is difficult to measure, so the remainder of this text will focus on the two earlier definitions.</p>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -385,11 +434,11 @@ Important
 </section>
 <section id="probability-distributions" class="level2" data-number="11.2">
 <h2 data-number="11.2" class="anchored" data-anchor-id="probability-distributions"><span class="header-section-number">11.2</span> Probability distributions</h2>
-<p>Similar to how we can show the distribution of an observed variable using relative frequencies (<a href="20_Intro_statistics.html#sec-distributions"><span>Section&nbsp;10.3.1</span></a>), we can use probabilities to show the probability distribution of a <em>random variable</em>. One important restriction of a probability distribution is that the events need to correspond to numerical values, e.g.&nbsp;the event needs to define the number of times a category occurs (discrete random variable) or a continuous random variable.</p>
+<p>Similar to how we can show the distribution of an observed variable using relative frequencies (<a href="20_Intro_statistics.html#sec-distributions" class="quarto-xref"><span>Section 10.3.1</span></a>), we can use probabilities to show the probability distribution of a <em>random variable</em>. One important restriction of a probability distribution is that the events need to correspond to numerical values, e.g.&nbsp;the event needs to define the number of times a category occurs (discrete random variable) or a continuous random variable.</p>
 <section id="discrete-distributions" class="level3" data-number="11.2.1">
 <h3 data-number="11.2.1" class="anchored" data-anchor-id="discrete-distributions"><span class="header-section-number">11.2.1</span> Discrete distributions</h3>
 <p>A common discrete probability distribution is the <em>binomial distribution</em> which counts “the number of successful trials from <em>n</em> independent trials with the same chance of success”.</p>
-<p>The population of snails on Floreana Island of the Galápago contain seven species (as described in <a href="04_Data_reading.html#sec-snail"><span>Section&nbsp;4.2.2</span></a>). We can define a successful trial as observing a snail of the <em>Naesiotus calvus</em> species and if we assume that the species is approximately 23.5% of the population, the random variable X counting the number of <em>N. calvus</em> snails observed in a sample of 10 snails is binomially distributed.</p>
+<p>The population of snails on Floreana Island of the Galápago contain seven species (as described in <a href="04_Data_reading.html#sec-snail" class="quarto-xref"><span>Section 4.2.2</span></a>). We can define a successful trial as observing a snail of the <em>Naesiotus calvus</em> species and if we assume that the species is approximately 23.5% of the population, the random variable X counting the number of <em>N. calvus</em> snails observed in a sample of 10 snails is binomially distributed.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -444,10 +493,14 @@ P(x) = \binom{n}{x} p^x (1-p)^{n-x}
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"x"</span>, <span class="at">y =</span> <span class="st">"P(x)"</span>) <span class="sc">+</span></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="fig-snail-binom" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="21_Probabilities_and_distributions_files/figure-html/fig-snail-binom-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;11.1: Probability distribution of the number of <em>N. calvus</em> snails</figcaption>
+<div id="fig-snail-binom" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-snail-binom-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="21_Probabilities_and_distributions_files/figure-html/fig-snail-binom-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-snail-binom-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.1: Probability distribution of the number of <em>N. calvus</em> snails
+</figcaption>
 </figure>
 </div>
 </div>
@@ -455,7 +508,11 @@ P(x) = \binom{n}{x} p^x (1-p)^{n-x}
 <p>The probability of observing three <em>N. calvus</em> snails in the sample is P(3) = <code>dbinom(x = 3, size = 10, p = 0.235)</code> = 0.2387893. The visualization below has highlighted this probability in red.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="21_Probabilities_and_distributions_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="21_Probabilities_and_distributions_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
@@ -467,10 +524,14 @@ P(X \ge 3) = P(3) + P(4) + P(5) + P(6) + P(7) + P(8) + P(9) + P(10)
 \]</span> We simply calculate the sum of the probabilities for the individual values that correspond to the inequality, highlighted by the bars in red below.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div id="fig-bin-ge" class="quarto-figure quarto-figure-center anchored">
-<figure class="figure">
-<p><img src="21_Probabilities_and_distributions_files/figure-html/fig-bin-ge-1.png" class="img-fluid figure-img" width="672"></p>
-<figcaption class="figure-caption">Figure&nbsp;11.2: Binomial distribution (Bin(n = 10, p = 0.235)) with P(X <span class="math inline">\(\ge\)</span> 3) highlighted.</figcaption>
+<div id="fig-bin-ge" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bin-ge-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="21_Probabilities_and_distributions_files/figure-html/fig-bin-ge-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bin-ge-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11.2: Binomial distribution (Bin(n = 10, p = 0.235)) with P(X <span class="math inline">\(\ge\)</span> 3) highlighted.
+</figcaption>
 </figure>
 </div>
 </div>
@@ -494,7 +555,7 @@ Important
 P(X \ge 3) = 1 - P(X &lt; 3) = 1 - [P(0) + P(1) + P(2)]
 \]</span> Now with the help of R, we do not necessarily have to use this type of technique to simplify the calculations — most modern computers can calculate relatively large probability calculations quickly — but it is always useful to know how to structure your calculations in case you run into issues. The total area of the red bars can be calculated either using the sum of individual <code>dbinom</code> function calls or simply by the function <code>pbinom</code>.</p>
 <p>Instead of an argument <code>x</code> that defines the value for which to calculate a density (as we saw in <code>dbinom</code>), we now make use of the <code>q</code> argument, specifying which quantile of the distribution we want to calculate from. However <code>qbinom</code> expresses its probability calculation as P(X <span class="math inline">\(\le\)</span> x) using the argument <code>lower.tail = TRUE</code> or P(X &gt; x) using <code>lower.tail = FALSE</code>.</p>
-<p>Since our inequality is “greater than or equal to 3” we need to adjust the value to conform to <code>dbinom</code>’s “greater than x”. In <a href="#fig-bin-ge">Figure&nbsp;<span>11.2</span></a> we can see another way to highlight the same red bars, namely P(X &gt; 2).</p>
+<p>Since our inequality is “greater than or equal to 3” we need to adjust the value to conform to <code>dbinom</code>’s “greater than x”. In <a href="#fig-bin-ge" class="quarto-xref">Figure&nbsp;<span>11.2</span></a> we can see another way to highlight the same red bars, namely P(X &gt; 2).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A vector of values as x provides the probabilities for each value</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">dbinom</span>(<span class="at">x =</span> <span class="dv">3</span><span class="sc">:</span><span class="dv">10</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">prob =</span> <span class="fl">0.235</span>) <span class="sc">|&gt;</span> </span>
@@ -571,7 +632,11 @@ f(x) = \frac{1}{\sigma \sqrt{2\pi}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\rig
 <span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="dv">2</span></span>
 <span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="21_Probabilities_and_distributions_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="21_Probabilities_and_distributions_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>One of the main properties of the normal distribution is its symmetry around the mean (striped blue line). If we move a specific number of <em>x</em>-steps to the right, the value of f(x) would be the same if we move the same number of <em>x</em>-steps to the left. Note that just because the plot is limited from 5 to 35 on the x-axis the distribution continues outside of the view window, just with very small densities.</p>
@@ -581,7 +646,11 @@ f(x) = \frac{1}{\sigma \sqrt{2\pi}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\rig
 <p>We can use <code>pnorm</code> to simplify calculations that involve integration of areas under the curve. For instance, what is the probability of a randomly selected snail to have a shell size less than 17? Because we now have a continuous distribution there is no difference between P(Y &lt; 17) or P(Y <span class="math inline">\(\le\)</span> 17), it is only the direction of the inequality that is important. In the plot below, the red area highlights the probability we want to calculate.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="21_Probabilities_and_distributions_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="21_Probabilities_and_distributions_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>In order to find this probability we need to define the quantile of the inequality as well as the mean and the standard deviation of the distribution. If we were to calculate this “by hand” without the use of R or another computer program, we would instead standardize the value and look for the probability in a table of the <em>standardized normal distribution</em>. We could also do this in R by standardizing the quantile using <span class="math inline">\(z = \frac{y - \mu_Y}{\sigma_Y}\)</span>.</p>
@@ -606,16 +675,20 @@ f(x) = \frac{1}{\sigma \sqrt{2\pi}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\rig
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="21_Probabilities_and_distributions_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="21_Probabilities_and_distributions_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 </section>
 </section>
 <section id="finding-quantiles" class="level3" data-number="11.2.3">
 <h3 data-number="11.2.3" class="anchored" data-anchor-id="finding-quantiles"><span class="header-section-number">11.2.3</span> Finding quantiles</h3>
-<p>For both of these distributions there might come a time where we need to calculate a quantile (value) from a given probability. In <a href="20_Intro_statistics.html#sec-quantiles"><span>Section&nbsp;10.3.2.3</span></a> we defined a quantile as a value of the variable that splits the data into a specific proportion, e.g.&nbsp;the 25th percentile splits the data where 25 percent of the data is lower and 75 percent of the data is higher than the value. When we now talk about quantiles, the value defines the split where a certain percentage of the distribution is lower or higher than the value.</p>
+<p>For both of these distributions there might come a time where we need to calculate a quantile (value) from a given probability. In <a href="20_Intro_statistics.html#sec-quantiles" class="quarto-xref"><span>Section 10.3.2.3</span></a> we defined a quantile as a value of the variable that splits the data into a specific proportion, e.g.&nbsp;the 25th percentile splits the data where 25 percent of the data is lower and 75 percent of the data is higher than the value. When we now talk about quantiles, the value defines the split where a certain percentage of the distribution is lower or higher than the value.</p>
 <p>In the discrete case, we might encounter some issues when finding specific quantiles as the discrete outcomes tend to contain a big part of the probability distribution. The solution is to find the smallest value of <em>x</em> fulfills the inequality with at least the given probability. We can phrase a question such as: At most how many <em>N. calvus</em> snails do we find in 25 percent of the experiments? This question can be written mathematically as P(X <span class="math inline">\(\le\)</span> x) = 0.25.</p>
-<p>From <a href="#fig-snail-binom">Figure&nbsp;<span>11.1</span></a> we see that P(0) only sums up to around 0.07 which is less than the probability we are looking for. Adding P(1) to the sum results in the cumulative probability being around 0.28 which is larger than the sought probability. Therefore the value of x = 1 is the smallest value of x that is at least the probability we are looking for.</p>
+<p>From <a href="#fig-snail-binom" class="quarto-xref">Figure&nbsp;<span>11.1</span></a> we see that P(0) only sums up to around 0.07 which is less than the probability we are looking for. Adding P(1) to the sum results in the cumulative probability being around 0.28 which is larger than the sought probability. Therefore the value of x = 1 is the smallest value of x that is at least the probability we are looking for.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The function asks for p, a probability, and returns a quantile</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">qbinom</span>(<span class="at">p =</span> <span class="fl">0.25</span>, <span class="at">size =</span> <span class="dv">10</span>, <span class="at">prob =</span> <span class="fl">0.235</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -632,7 +705,11 @@ f(x) = \frac{1}{\sigma \sqrt{2\pi}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\rig
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="21_Probabilities_and_distributions_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="21_Probabilities_and_distributions_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>This is conceptually similar to finding critical values that we will return to when introducing statistical inference.</p>
@@ -646,10 +723,9 @@ f(x) = \frac{1}{\sigma \sqrt{2\pi}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\rig
 <section id="summary-and-exercises" class="level2" data-number="11.3">
 <h2 data-number="11.3" class="anchored" data-anchor-id="summary-and-exercises"><span class="header-section-number">11.3</span> Summary and exercises</h2>
 <p>We can measure uncertainty with the help of probabilities and probability distributions allow us to asses how likely an event is to occur. In discrete distributions there is a distinct difference between inequalities using &lt; and <span class="math inline">\(\le\)</span>, while in the continuous case the probability of a specific outcome is essentially 0 that there is no practical difference. We can use functions in R to both calculate probabilities of a specific outcome (e.g.&nbsp;<code>dbinom</code>), probabilities of inequalities (e.g.&nbsp;<code>pbinom</code>), or quantiles from a given probability (e.g.&nbsp;<code>qbinom</code>).</p>
-<p>For the exercises we will return to the <code>iris</code> dataset seen in earlier chapters (e.g. <a href="05_Basic_data_wrangling.html#sec-wrangling-exercises"><span>Section&nbsp;5.3</span></a>). For these questions we assume that the prevalence of the <code>species</code> in a specific area are:</p>
+<p>For the exercises we will return to the <code>iris</code> dataset seen in earlier chapters (e.g. <a href="05_Basic_data_wrangling.html#sec-wrangling-exercises" class="quarto-xref"><span>Section 5.3</span></a>). For these questions we assume that the prevalence of the <code>species</code> in a specific area are:</p>
 <div class="cell">
 <div class="cell-output-display">
-
 <table quarto-disable-processing="true" class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
  <thead>
   <tr>
@@ -776,10 +852,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -789,8 +882,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -802,7 +904,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -846,6 +1071,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -871,6 +1097,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -932,17 +1184,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./20_Intro_statistics.html" class="pagination-link">
+      <a href="./20_Intro_statistics.html" class="pagination-link" aria-label="Introducing statistics">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introducing statistics</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./22_Sampling_distributions.html" class="pagination-link">
+      <a href="./22_Sampling_distributions.html" class="pagination-link" aria-label="Sampling distributions">
         <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Sampling distributions</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

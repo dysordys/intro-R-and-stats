@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -58,6 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -100,7 +101,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -109,6 +116,7 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -124,12 +132,12 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_Intro_R_RStudio.html">Part I: Processing and visualizing data with R</a></li><li class="breadcrumb-item"><a href="./06_Summaries_normalization.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Summary statistics and tidy data</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_Intro_R_RStudio.html">Part I: Processing and visualizing data with R</a></li><li class="breadcrumb-item"><a href="./06_Summaries_normalization.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Summary statistics and tidy data</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -139,7 +147,7 @@ div.csl-indent {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to data analysis and visualization with R</a> 
@@ -250,6 +258,18 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Sampling distributions</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23_Statistical_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to statistical inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -264,43 +284,43 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introducing statistical inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_Linear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./45_Intro_map.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./46_Multiple_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -317,7 +337,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./99_References.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">References</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
       </ul>
@@ -325,7 +345,7 @@ div.csl-indent {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -341,7 +361,7 @@ div.csl-indent {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_Intro_R_RStudio.html">Part I: Processing and visualizing data with R</a></li><li class="breadcrumb-item"><a href="./06_Summaries_normalization.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Summary statistics and tidy data</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span id="sec-normalization" class="quarto-section-identifier"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Summary statistics and tidy data</span></span></h1>
 </div>
@@ -356,9 +376,11 @@ div.csl-indent {
   </div>
   
 
+
 </header>
 
-<p><a href="05_Basic_data_wrangling.html"><span>Chapter&nbsp;5</span></a> introduced the basics of manipulating data. Here we continue by learning how one can efficiently compute summary statistics over a dataset. Additionally, we will take a look at the concept of <em>tidy data</em>. The two are not independent: as we will see, tidy data admit to calculating summaries much more efficiently than non-tidy data.</p>
+
+<p><a href="05_Basic_data_wrangling.html" class="quarto-xref"><span>Chapter 5</span></a> introduced the basics of manipulating data. Here we continue by learning how one can efficiently compute summary statistics over a dataset. Additionally, we will take a look at the concept of <em>tidy data</em>. The two are not independent: as we will see, tidy data admit to calculating summaries much more efficiently than non-tidy data.</p>
 <p>We will be relying on the file <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/pop_data.zip"><code>pop_data.csv</code></a>. Download the file and set your working directory to the folder where you saved it. This is a comma-separated file (CSV), so you can load it using <code>read_delim</code>, with the delimiter specified as the comma. As usual, we first load the <code>tidyverse</code> package:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -387,7 +409,7 @@ div.csl-indent {
 # ℹ 90 more rows</code></pre>
 </div>
 </div>
-<p>One can now perform various manipulations on these data, by using the functions we have learned about in <a href="05_Basic_data_wrangling.html"><span>Chapter&nbsp;5</span></a>. For instance, we could create a new column called <code>total</code> which contains the total community density (sum of the three species’ population densities) at each point in time and each location:</p>
+<p>One can now perform various manipulations on these data, by using the functions we have learned about in <a href="05_Basic_data_wrangling.html" class="quarto-xref"><span>Chapter 5</span></a>. For instance, we could create a new column called <code>total</code> which contains the total community density (sum of the three species’ population densities) at each point in time and each location:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mutate</span>(pop, <span class="at">total =</span> species1 <span class="sc">+</span> species2 <span class="sc">+</span> species3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -657,7 +679,7 @@ Warning
 # ℹ 290 more rows</code></pre>
 </div>
 </div>
-<p>The function <code>pivot_longer</code> takes three arguments in addition to the first (data) argument that we may pipe in, like above. First, <code>cols</code> is the set of columns to be converted into key-value pairs. It uses the same tidy selection mechanisms as the function <code>select</code>; see <a href="05_Basic_data_wrangling.html#sec-select"><span>Section&nbsp;5.1.1</span></a>. (This means that <code>cols = starts_with("species")</code> could also have been used.) Second, the argument <code>names_to</code> is the name of the new key column, specified as a character string. And third, <code>values_to</code> is the name of the new value column, also as a character string.</p>
+<p>The function <code>pivot_longer</code> takes three arguments in addition to the first (data) argument that we may pipe in, like above. First, <code>cols</code> is the set of columns to be converted into key-value pairs. It uses the same tidy selection mechanisms as the function <code>select</code>; see <a href="05_Basic_data_wrangling.html#sec-select" class="quarto-xref"><span>Section 5.1.1</span></a>. (This means that <code>cols = starts_with("species")</code> could also have been used.) Second, the argument <code>names_to</code> is the name of the new key column, specified as a character string. And third, <code>values_to</code> is the name of the new value column, also as a character string.</p>
 <p>The above table is now in tidy format: each column records a single variable, and each row contains a single observation. Notice that, unlike the original <code>pop</code> which had 100 rows and 5 columns, the tidy version has 300 rows and 4 columns. This is natural: since the number of columns was reduced, there must be some extra rows to prevent the loss of information. And one should notice another benefit to casting the data in tidy format: it forces one to explicitly specify what was measured. By having named the value column <code>density</code>, we now know that the numbers 8.43, 6.62, etc. are density measurements. By contrast, it is not immediately obvious what these same numbers mean under the columns <code>species1</code>, <code>species2</code>, … in the original data.</p>
 <p>It is possible to undo the effect <code>pivot_longer</code>. To do so, use <code>pivot_wider</code>:</p>
 <div class="cell">
@@ -738,7 +760,7 @@ Warning
 </section>
 <section id="exercises" class="level2" data-number="6.3">
 <h2 data-number="6.3" class="anchored" data-anchor-id="exercises"><span class="header-section-number">6.3</span> Exercises</h2>
-<p>The first set of problems relies on the <code>iris</code> dataset—the same that we used in the previous chapter’s exercises (<a href="05_Basic_data_wrangling.html#sec-wrangling-exercises"><span>Section&nbsp;5.3</span></a>). Convert the <code>iris</code> data to a tibble with the <code>as_tibble</code> function, and assign it to a variable.</p>
+<p>The first set of problems relies on the <code>iris</code> dataset—the same that we used in the previous chapter’s exercises (<a href="05_Basic_data_wrangling.html#sec-wrangling-exercises" class="quarto-xref"><span>Section 5.3</span></a>). Convert the <code>iris</code> data to a tibble with the <code>as_tibble</code> function, and assign it to a variable.</p>
 <ol type="1">
 <li><p>Create a new column in the <code>iris</code> dataset which contains the difference of petal lengths from the average petal length of all flowers in the entire dataset.</p></li>
 <li><p>Create a new column in the <code>iris</code> dataset which contains the difference of petal lengths from the average petal length <em>of each species</em>. (Hint: <code>group_by</code> the species and then <code>mutate</code>!)</p></li>
@@ -747,7 +769,7 @@ Warning
 <li><p>Repeat the same exercise, but now for sepal traits.</p></li>
 <li><p>Finally, do it for both petal and sepal traits simultaneously, to obtain a fully tidy form of the <code>iris</code> data. That is, the key column (call it <code>Flower.Trait</code>) will have the values <code>Petal.Length</code>, <code>Petal.Width</code>, <code>Sepal.Length</code>, and <code>Sepal.Width</code>. And the value column (which you can call <code>Trait.Value</code>) will have the corresponding measurements.</p></li>
 </ol>
-<p>The subsequent exercises use the Galápagos land snail data from the previous two chapters (see <a href="04_Data_reading.html#sec-snail"><span>Section&nbsp;4.2.2</span></a> to review the description of the data).</p>
+<p>The subsequent exercises use the Galápagos land snail data from the previous two chapters (see <a href="04_Data_reading.html#sec-snail" class="quarto-xref"><span>Section 4.2.2</span></a> to review the description of the data).</p>
 <ol start="7" type="1">
 <li><p>What is the average shell size of the whole community? What is its total range (the difference between the largest and smallest values)? How about the average and total range of shell shape?</p></li>
 <li><p>What is the average shell size and the average shell shape of the community in each habitat type (humid/arid)?</p></li>
@@ -757,7 +779,7 @@ Warning
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
 <div id="ref-Wickham2014" class="csl-entry" role="listitem">
 Wickham, Hadley. 2014. <span>“<span>Tidy Data</span>.”</span> <em>Journal of Statistical Software</em> 59 (September): 1–23. <a href="https://doi.org/10.18637/jss.v059.i10">https://doi.org/10.18637/jss.v059.i10</a>.
 </div>
@@ -766,7 +788,7 @@ Wickham, Hadley. 2014. <span>“<span>Tidy Data</span>.”</span> <em>Journal of
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>The requirement that every cell should contain a single value might sound unnecessary to spell out. Are the entries of cells not single values by definition? As it happens, later on we will see examples of tables whose cells contain more complex information than single values. For example, tables might contain cells whose entries are themselves tables. While such <em>nested tables</em> are not in tidy format, they are a very powerful idea, and we will learn to harness their benefits in <a href="46_Multiple_analysis.html"><span>Chapter&nbsp;19</span></a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>The requirement that every cell should contain a single value might sound unnecessary to spell out. Are the entries of cells not single values by definition? As it happens, later on we will see examples of tables whose cells contain more complex information than single values. For example, tables might contain cells whose entries are themselves tables. While such <em>nested tables</em> are not in tidy format, they are a very powerful idea, and we will learn to harness their benefits in <a href="46_Multiple_analysis.html" class="quarto-xref"><span>Chapter 21</span></a>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -850,10 +872,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -863,8 +902,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -876,7 +924,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -920,6 +1091,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -945,6 +1117,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1006,17 +1204,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./05_Basic_data_wrangling.html" class="pagination-link">
+      <a href="./05_Basic_data_wrangling.html" class="pagination-link" aria-label="Basic data manipulation">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Basic data manipulation</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./07_Creating_figures.html" class="pagination-link">
+      <a href="./07_Creating_figures.html" class="pagination-link" aria-label="Creating publication-grade figures">
         <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Creating publication-grade figures</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

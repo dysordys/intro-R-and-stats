@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,6 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -105,12 +112,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_Intro_R_RStudio.html">Part I: Processing and visualizing data with R</a></li><li class="breadcrumb-item"><a href="./05_Basic_data_wrangling.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Basic data manipulation</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_Intro_R_RStudio.html">Part I: Processing and visualizing data with R</a></li><li class="breadcrumb-item"><a href="./05_Basic_data_wrangling.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Basic data manipulation</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -120,7 +127,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to data analysis and visualization with R</a> 
@@ -231,6 +238,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Sampling distributions</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23_Statistical_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to statistical inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -245,43 +264,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introducing statistical inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_Linear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./45_Intro_map.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./46_Multiple_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -298,7 +317,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./99_References.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">References</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
       </ul>
@@ -306,7 +325,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -331,7 +350,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_Intro_R_RStudio.html">Part I: Processing and visualizing data with R</a></li><li class="breadcrumb-item"><a href="./05_Basic_data_wrangling.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Basic data manipulation</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span id="sec-wrangling" class="quarto-section-identifier"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Basic data manipulation</span></span></h1>
 </div>
@@ -346,7 +365,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
+
 
 <section id="important-functions-for-transforming-data" class="level2" data-number="5.1">
 <h2 data-number="5.1" class="anchored" data-anchor-id="important-functions-for-transforming-data"><span class="header-section-number">5.1</span> Important functions for transforming data</h2>
@@ -372,7 +393,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Their other arguments are given in terms of the column names of the data;</li>
 <li>They return another tibble.</li>
 </ul>
-<p>We now explain each of these below. We will use the <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/island-FL-csv.zip"><code>island-FL.csv</code></a> data file we worked with in <a href="04_Data_reading.html"><span>Chapter&nbsp;4</span></a>:</p>
+<p>We now explain each of these below. We will use the <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/island-FL-csv.zip"><code>island-FL.csv</code></a> data file we worked with in <a href="04_Data_reading.html" class="quarto-xref"><span>Chapter 4</span></a>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>snails <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"island-FL.csv"</span>, <span class="at">delim =</span> <span class="st">","</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(snails)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -907,7 +928,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li>Choose the <code>species</code> column from the data and discard all the others. This can be done using <code>select</code>.</li>
 <li>Remove duplicate rows with <code>distinct</code>, so that each species appears only once.</li>
-<li>Add <code>"Naesiotus"</code> to the name of each species, e.g., using the <code>paste</code> function (<a href="02_R_programming_basics.html#sec-strings"><span>Section&nbsp;2.2.2</span></a>) within <code>mutate</code>.</li>
+<li>Add <code>"Naesiotus"</code> to the name of each species, e.g., using the <code>paste</code> function (<a href="02_R_programming_basics.html#sec-strings" class="quarto-xref"><span>Section 2.2.2</span></a>) within <code>mutate</code>.</li>
 <li>Finally, sort the names in alphabetical order with <code>arrange</code>.</li>
 </ul>
 <p>Since <code>select</code>, <code>mutate</code>, <code>arrange</code>, etc. are just ordinary functions, they do not “modify” data. They merely take a tibble as input (plus other arguments) and return another tibble. They do not do anything to the original input data. In order for R not to forget their result immediately after they are computed, they have to be stored in variables. So one way of implementing the solution might rely on repeated assignments, as below:</p>
@@ -932,7 +953,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>As seen, this solution works. However, it requires inventing arbitrary variable names at every step. For such a short example, this is not problematic, but doing the same for a long pipeline of dozens of steps could get confusing. One solution to this problem could be to not use different names, but instead keep overwriting <code>snails</code> at every step. But this can lead to other problems arising from the fact that the value of <code>snails</code> might not be what we expect at any given time. While the solution with repeated assignments is viable, there ought to be better options out there.</p>
-<p>Another possible solution is to rely on function composition (<a href="03_Functions.html#sec-funccomp"><span>Section&nbsp;3.2</span></a>). Applying repeated composition is straightforward—in principle. In practice, when composing many functions together, things can get unwieldy quite quickly. Let us see what such a solution looks like:</p>
+<p>Another possible solution is to rely on function composition (<a href="03_Functions.html#sec-funccomp" class="quarto-xref"><span>Section 3.2</span></a>). Applying repeated composition is straightforward—in principle. In practice, when composing many functions together, things can get unwieldy quite quickly. Let us see what such a solution looks like:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="fu">arrange</span>(</span>
 <span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
@@ -957,7 +978,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The expression is highly unpleasant: to a human reader, it is not at all obvious what is happening above. It would be nice to clarify this workflow if possible.</p>
-<p>It turns out that one can do this by making use of the pipe operator <code>|&gt;</code> from <a href="03_Functions.html#sec-pipes"><span>Section&nbsp;3.3</span></a>. As a reminder: for any function <code>f</code> and function argument <code>x</code>, <code>f(x, y, ...)</code> is the same as <code>x |&gt; f(y, ...)</code>, where the <code>...</code> denote potential further arguments to <code>f</code>. That is, the first argument of the function can be moved from the argument list to in front of the function, before the pipe symbol. The <code>tidyverse</code> functions take a tibble as their first argument and always return another tibble. This means that the use of pipes allow us to very conveniently chain together multiple steps of data analysis. In our case, we can rewrite the above (quite confusing) code block in a much more transparent way:</p>
+<p>It turns out that one can do this by making use of the pipe operator <code>|&gt;</code> from <a href="03_Functions.html#sec-pipes" class="quarto-xref"><span>Section 3.3</span></a>. As a reminder: for any function <code>f</code> and function argument <code>x</code>, <code>f(x, y, ...)</code> is the same as <code>x |&gt; f(y, ...)</code>, where the <code>...</code> denote potential further arguments to <code>f</code>. That is, the first argument of the function can be moved from the argument list to in front of the function, before the pipe symbol. The <code>tidyverse</code> functions take a tibble as their first argument and always return another tibble. This means that the use of pipes allow us to very conveniently chain together multiple steps of data analysis. In our case, we can rewrite the above (quite confusing) code block in a much more transparent way:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(species) <span class="sc">|&gt;</span></span>
@@ -990,12 +1011,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="sec-wrangling-exercises" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="sec-wrangling-exercises"><span class="header-section-number">5.3</span> Exercises</h2>
 <ol type="1">
-<li><p>The <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/Smith2003_data.zip"><code>Smith2003_data.txt</code></a> dataset we worked with in <a href="04_Data_reading.html#sec-reading-exercises"><span>Section&nbsp;4.8</span></a> occasionally has the entry <code>-999</code> in its last three columns. This stands for unavailable data. As discussed in <a href="03_Functions.html#sec-pipes"><span>Section&nbsp;3.3</span></a>, in R there is a built-in way of referring to such information: by setting a variable to <code>NA</code>. Modify these columns using <code>mutate</code> so that the entries which are equal to <code>-999</code> are replaced with <code>NA</code>.</p></li>
+<li><p>The <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/Smith2003_data.zip"><code>Smith2003_data.txt</code></a> dataset we worked with in <a href="04_Data_reading.html#sec-reading-exercises" class="quarto-xref"><span>Section 4.8</span></a> occasionally has the entry <code>-999</code> in its last three columns. This stands for unavailable data. As discussed in <a href="03_Functions.html#sec-pipes" class="quarto-xref"><span>Section 3.3</span></a>, in R there is a built-in way of referring to such information: by setting a variable to <code>NA</code>. Modify these columns using <code>mutate</code> so that the entries which are equal to <code>-999</code> are replaced with <code>NA</code>.</p></li>
 <li><p>After replacing <code>-999</code> values with <code>NA</code>, remove all rows from the data which contain one or more <code>NA</code> values (hint: look up the function <code>drop_na</code>). How many rows are retained? And what was the original number of rows?</p></li>
 </ol>
 <p>The <code>iris</code> dataset is a built-in table in R. It contains measurements of petal and sepal characteristics from three flower species belonging to the genus <em>Iris</em> (<a href="https://en.wikipedia.org/wiki/Iris_setosa"><em>I. setosa</em></a>, <a href="https://en.wikipedia.org/wiki/Iris_versicolor"><em>I. versicolor</em></a>, and <a href="https://en.wikipedia.org/wiki/Iris_virginica"><em>I. virginica</em></a>). If you type <code>iris</code> in the console, you will see the dataset displayed. In solving the problems below, feel free to use the all-important <a href="https://nyu-cdsc.github.io/learningr/assets/data-transformation.pdf"><code>dplyr</code> cheat sheet</a>.</p>
 <ol start="3" type="1">
-<li><p>The format of the data is not a <code>tibble</code>, but a <code>data.frame</code>. As mentioned in <a href="04_Data_reading.html"><span>Chapter&nbsp;4</span></a>, the two are basically the same for practical purposes, though internally <code>tibble</code>s do offer some advantages. Convert the <code>iris</code> data frame into a tibble. (Hint: look up the <code>as_tibble</code> function.)</p></li>
+<li><p>The format of the data is not a <code>tibble</code>, but a <code>data.frame</code>. As mentioned in <a href="04_Data_reading.html" class="quarto-xref"><span>Chapter 4</span></a>, the two are basically the same for practical purposes, though internally <code>tibble</code>s do offer some advantages. Convert the <code>iris</code> data frame into a tibble. (Hint: look up the <code>as_tibble</code> function.)</p></li>
 <li><p>Verify that there are indeed three distinct species in the data (hint: combine <code>select</code> and <code>distinct</code> in an appropriate way).</p></li>
 <li><p>Select the columns containing petal and sepal length, and species identity.</p></li>
 <li><p>Get those rows of the data with petal length less than 4 cm, but sepal length greater than 4 cm.</p></li>
@@ -1174,10 +1195,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1187,8 +1225,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1200,7 +1247,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1244,6 +1414,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1269,6 +1440,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1330,17 +1527,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./04_Data_reading.html" class="pagination-link">
+      <a href="./04_Data_reading.html" class="pagination-link" aria-label="Reading tabular data from disk">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reading tabular data from disk</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./06_Summaries_normalization.html" class="pagination-link">
+      <a href="./06_Summaries_normalization.html" class="pagination-link" aria-label="Summary statistics and tidy data">
         <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Summary statistics and tidy data</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

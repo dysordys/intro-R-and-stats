@@ -1,0 +1,91 @@
+# Introduction to statistical inference {#sec-stat-inf-intro}
+
+```{r}
+#| include: false
+
+require(tidyverse)
+
+snailDat <- read_delim("island-FL.csv", delim = ",")
+
+```
+
+*Statistical inference* are methods that we can use to infer something about the population based on a smaller sample. These methods take into account the inherent uncertainty within a sample to either provide a hopefully informative interval of values where we expect a parameter to be within or a conclusion about specific values of a parameter. We will in this chapter focus on investigating one population (or group).
+
+We will cover two types of inference methods, *parametric* and *non-parametric* methods. The main difference between the two is whether or not we assume that the sample statistic has a distribution. Non-parametric tests are also called *distribution free* tests to actually describe that difference.
+
+## Parametric methods
+When describing a property of a population, we would like to make inference of the proportion ($p$) or the mean ($\mu$). Whether we want to calculate an interval or test hypotheses, the methods described needs to fulfill some criteria. 
+
+For inference about proportions, the following requirements must be met:
+
+- independence in the sample,
+    - can be fulfilled by using conducting a Simple Random Sample (SRS).
+- the variable must be binomial distributed,
+    - the variable must calculate the number of successes from n independent trials.
+- the sample proportion, $\hat{p}$, must be considered normally distributed,
+    - specifically $n\cdot p > 5$ and $n\cdot q > 5$ where p is the probability of a success and q is 1 - p.
+
+For inference about means, the following requirements must be met:
+
+- independence in the sample,
+    - can be fulfilled by using conducting a Simple Random Sample (SRS).
+- the sample mean, $\bar{X}$, must be considered normally distributed,
+    - can be achieved using the Central Limit Theorem (CLT) if the sample is sufficiently large, where the rule of thumb is $n > 30$. CLT states that a mean (or sum) of identically distributed variables will be approximately normally distributed in this case.
+    - if the sample is small, then the variable of interest, $X$, must be considered normally distributed. This means that the transformation applied to the mean will also be normally distributed.
+    
+### Hypothesis testing
+In hypothesis testing of a mean, we can follow a five-step process. 
+
+1. Check the requirements
+2. Formulate hypotheses and the significance level
+3. Calculate the test statistic
+4. Calculate the critical or p-value 
+5. Draw conclusions
+
+During step 4 and 5 we will make use of R to help us, but the other steps are still important to determine what we are trying to accomplish with the test.
+
+When formulating our hypotheses, we need to transform what we want to investigate into mathematical expressions. We also need to ensure that we use the correct mathematical symbol in the alternative hypothesis for the test to be conducted correctly. 
+
+We use the function `t.test()` which has the following arguments of interest:
+
+`x` - specifies the variable we want to investigate,
+`alternative` - specifies the type of alternative hypothesis to be tested, with values "two.sided", "less", or "greater",
+`mu` - specifies the value we want to test,
+`conf.level` - specifies the confidence level for the test, given in decimal form.
+
+For example, if we were interested in investigating whether the mean size of snails is larger than 19, we would set up hypotheses as follows:
+
+\begin{align*}
+  H_0&: \mu \le 19 \\
+H_1&: \mu > 19
+\end{align*}
+
+With a significance level of 5 percent, the function we write in R would be as follows:
+
+```{r}
+t.test(x = snailDat$size, 
+       alternative = "greater",
+       mu = 19,
+       conf.level = 0.95)
+```
+
+In the output, we see a lot of information, and here we see a disadvantage of R, that the outputs are not clearly structured like in other software.
+
+The following information can be gleaned from the different lines:
+
+- The first line provides information about which variable the test is performed on.
+- The second line provides information from the test where t is the computed test statistic, df is the degrees of freedom in the t-distribution, and p-value is the p-value of the test.
+- The third line provides information about the type of alternative hypothesis that has been tested.
+- The fourth and fifth lines provide a calculated confidence interval which could be used to answer the alternative hypothesis. In this case, since we have an alternative hypothesis specified as >, a one-sided lower confidence interval is calculated.
+- The last lines in the output provide descriptive statistics from the sample.
+- To make a decision from this test, we can directly compare the calculated p-value from the output with the specified significance level. If the p-value is lower, we can reject $H_0$, otherwise, we cannot reject it.
+
+### Confidence Intervals
+For interval estimation of a mean, the same function as for hypothesis testing, `t.test()`, can be used where the alternative argument specifies the type of interval being calculated. Note that for one-sided intervals, we must specify the alternative hypothesis that matches the restriction.
+
+A tip for assessing this is to look at the phrasing used in $H_1$ and replace the tested value with the limit we calculate. For example, the alternative hypothesis, "more than 19" $H_1: \mu > 19$, would result in a one-sided lower confidence interval as follows:
+$$ 
+  \mu > \bar{x} - t_{\alpha(1); n-1} \cdot \frac{s}{\sqrt{n}}
+$$
+which we saw in the earlier output. In the output, we are only interested in the calculated confidence interval, which means we do not need to specify any value for `mu` since it only affects the calculation of the t-test.
+

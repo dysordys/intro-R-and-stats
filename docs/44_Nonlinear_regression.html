@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction to data analysis and visualization with R - 17&nbsp; More general linear models; nonlinear regression</title>
+<title>Introduction to data analysis and visualization with R - 19&nbsp; More general linear models; nonlinear regression</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -58,6 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -100,7 +101,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -109,6 +116,7 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -118,6 +126,33 @@ div.csl-indent {
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar floating">
@@ -126,12 +161,12 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_Intro_adv_statistics.html">Part III: Advanced statistics</a></li><li class="breadcrumb-item"><a href="./44_Nonlinear_regression.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_Intro_adv_statistics.html">Part III: Advanced statistics</a></li><li class="breadcrumb-item"><a href="./44_Nonlinear_regression.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -141,7 +176,7 @@ div.csl-indent {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to data analysis and visualization with R</a> 
@@ -252,6 +287,18 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Sampling distributions</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23_Statistical_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to statistical inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -266,43 +313,43 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introducing statistical inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_Linear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./45_Intro_map.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./46_Multiple_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -319,7 +366,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./99_References.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">References</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
       </ul>
@@ -327,24 +374,24 @@ div.csl-indent {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-ancova" id="toc-sec-ancova" class="nav-link active" data-scroll-target="#sec-ancova"><span class="header-section-number">17.1</span> Combining categorical and continuous variables in linear models</a></li>
-  <li><a href="#sec-nonlin-regression" id="toc-sec-nonlin-regression" class="nav-link" data-scroll-target="#sec-nonlin-regression"><span class="header-section-number">17.2</span> Nonlinear regression</a>
+  <li><a href="#sec-ancova" id="toc-sec-ancova" class="nav-link active" data-scroll-target="#sec-ancova"><span class="header-section-number">19.1</span> Combining categorical and continuous variables in linear models</a></li>
+  <li><a href="#sec-nonlin-regression" id="toc-sec-nonlin-regression" class="nav-link" data-scroll-target="#sec-nonlin-regression"><span class="header-section-number">19.2</span> Nonlinear regression</a>
   <ul>
-  <li><a href="#sec-lists" id="toc-sec-lists" class="nav-link" data-scroll-target="#sec-lists"><span class="header-section-number">17.2.1</span> Interlude: lists</a></li>
-  <li><a href="#back-to-nonlinear-regression" id="toc-back-to-nonlinear-regression" class="nav-link" data-scroll-target="#back-to-nonlinear-regression"><span class="header-section-number">17.2.2</span> Back to nonlinear regression</a></li>
+  <li><a href="#sec-lists" id="toc-sec-lists" class="nav-link" data-scroll-target="#sec-lists"><span class="header-section-number">19.2.1</span> Interlude: lists</a></li>
+  <li><a href="#back-to-nonlinear-regression" id="toc-back-to-nonlinear-regression" class="nav-link" data-scroll-target="#back-to-nonlinear-regression"><span class="header-section-number">19.2.2</span> Back to nonlinear regression</a></li>
   </ul></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">17.3</span> Exercises</a>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">19.3</span> Exercises</a>
   <ul>
-  <li><a href="#exponential-growth" id="toc-exponential-growth" class="nav-link" data-scroll-target="#exponential-growth"><span class="header-section-number">17.3.0.1</span> Exponential growth</a></li>
-  <li><a href="#nitrogen-uptake" id="toc-nitrogen-uptake" class="nav-link" data-scroll-target="#nitrogen-uptake"><span class="header-section-number">17.3.0.2</span> Nitrogen uptake</a></li>
-  <li><a href="#logistic-growth" id="toc-logistic-growth" class="nav-link" data-scroll-target="#logistic-growth"><span class="header-section-number">17.3.0.3</span> Logistic growth</a></li>
+  <li><a href="#exponential-growth" id="toc-exponential-growth" class="nav-link" data-scroll-target="#exponential-growth"><span class="header-section-number">19.3.0.1</span> Exponential growth</a></li>
+  <li><a href="#nitrogen-uptake" id="toc-nitrogen-uptake" class="nav-link" data-scroll-target="#nitrogen-uptake"><span class="header-section-number">19.3.0.2</span> Nitrogen uptake</a></li>
+  <li><a href="#logistic-growth" id="toc-logistic-growth" class="nav-link" data-scroll-target="#logistic-growth"><span class="header-section-number">19.3.0.3</span> Logistic growth</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -352,9 +399,9 @@ div.csl-indent {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_Intro_adv_statistics.html">Part III: Advanced statistics</a></li><li class="breadcrumb-item"><a href="./44_Nonlinear_regression.html"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-nls" class="quarto-section-identifier"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></h1>
+<h1 class="title"><span id="sec-nls" class="quarto-section-identifier"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></h1>
 </div>
 
 
@@ -367,12 +414,14 @@ div.csl-indent {
   </div>
   
 
+
 </header>
 
-<section id="sec-ancova" class="level2" data-number="17.1">
-<h2 data-number="17.1" class="anchored" data-anchor-id="sec-ancova"><span class="header-section-number">17.1</span> Combining categorical and continuous variables in linear models</h2>
-<p>So far we have used at most two predictors when dealing with linear models (<code>lm</code>). This was in <a href="43_Anova_two_way.html"><span>Chapter&nbsp;16</span></a>, where we looked the effects of two categorical variables, as well as their interaction. <a href="41_Linear_regression.html"><span>Chapter&nbsp;14</span></a> introduced the idea of using a continuous, instead of a categorical, predictor. But we have not been combining these.</p>
-<p>In fact, one can build arbitrarily complicated linear models from an arbitrary combination of continuous and categorical variables, and their interactions. Let us consider the built-in <code>CO2</code> dataset as an example, which was already used before in an exercise (<a href="43_Anova_two_way.html#sec-exercises-anova-two-way"><span>Section&nbsp;16.3</span></a>). Briefly, the data contain measurements from an experiment on the cold tolerance of the grass species <a href="https://en.wikipedia.org/wiki/Echinochloa_crus-galli"><em>Echinochloa crus-galli</em></a>. The dataset has five columns: <code>Plant</code> (a unique identifier for each plant individual), <code>Type</code> (either <code>Quebec</code> or <code>Mississippi</code> depending on the origin of the plant), <code>Treatment</code> (whether the plant individual was <code>chilled</code> or <code>nonchilled</code> for the experiment), <code>conc</code> (ambient carbon dioxide concentration), and <code>uptake</code> (carbon dioxide uptake rate by the plant).</p>
+
+<section id="sec-ancova" class="level2" data-number="19.1">
+<h2 data-number="19.1" class="anchored" data-anchor-id="sec-ancova"><span class="header-section-number">19.1</span> Combining categorical and continuous variables in linear models</h2>
+<p>So far we have used at most two predictors when dealing with linear models (<code>lm</code>). This was in <a href="43_Anova_two_way.html" class="quarto-xref"><span>Chapter 18</span></a>, where we looked the effects of two categorical variables, as well as their interaction. <a href="41_Linear_regression.html" class="quarto-xref"><span>Chapter 16</span></a> introduced the idea of using a continuous, instead of a categorical, predictor. But we have not been combining these.</p>
+<p>In fact, one can build arbitrarily complicated linear models from an arbitrary combination of continuous and categorical variables, and their interactions. Let us consider the built-in <code>CO2</code> dataset as an example, which was already used before in an exercise (<a href="43_Anova_two_way.html#sec-exercises-anova-two-way" class="quarto-xref"><span>Section 18.3</span></a>). Briefly, the data contain measurements from an experiment on the cold tolerance of the grass species <a href="https://en.wikipedia.org/wiki/Echinochloa_crus-galli"><em>Echinochloa crus-galli</em></a>. The dataset has five columns: <code>Plant</code> (a unique identifier for each plant individual), <code>Type</code> (either <code>Quebec</code> or <code>Mississippi</code> depending on the origin of the plant), <code>Treatment</code> (whether the plant individual was <code>chilled</code> or <code>nonchilled</code> for the experiment), <code>conc</code> (ambient carbon dioxide concentration), and <code>uptake</code> (carbon dioxide uptake rate by the plant).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(CO2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -407,7 +456,11 @@ div.csl-indent {
 <span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(), <span class="co"># so remove title, tick marks,</span></span>
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.x =</span> <span class="fu">element_blank</span>())  <span class="co"># and labels from it</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="44_Nonlinear_regression_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="44_Nonlinear_regression_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>This, however, is only part of the story, as becomes obvious if we also plot the ambient CO<sub>2</sub> concentrations (<code>conc</code>) along the x-axis:</p>
@@ -419,7 +472,11 @@ div.csl-indent {
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"concentration"</span>, <span class="at">y =</span> <span class="st">"uptake rate"</span>) <span class="sc">+</span></span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="44_Nonlinear_regression_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="44_Nonlinear_regression_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>We see that there is also a clear, saturating relationship between CO<sub>2</sub> concentration and uptake rates that is definitely not linear. This does not mean that a linear model is useless for analyzing these data: the trend of whether the data increase or decrease can still be captured (although it is not recommended to use the model for numerical prediction purposes). One model that may come to mind is as follows:</p>
@@ -449,7 +506,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 + \beta_4 \cdot (\text{Type is Mississippi})_i \cdot(\text{Treatment is chilled})_i
 + \epsilon_i
 \end{split}
-\tag{17.1}\]</span></span> where <span class="math inline">\((\text{conc})_i\)</span> is a continuous predictor and not an indicator variable—that is, it takes on the actual value of the CO<sub>2</sub> concentration in observation <span class="math inline">\(i\)</span>. By contrast, <span class="math inline">\((\text{Type is Mississippi})_i\)</span> and <span class="math inline">\((\text{Treatment is chilled})_i\)</span> are indicator variables that take on the value 1 if data point <span class="math inline">\(i\)</span> belongs in their category and 0 otherwise.</p>
+\tag{19.1}\]</span></span> where <span class="math inline">\((\text{conc})_i\)</span> is a continuous predictor and not an indicator variable—that is, it takes on the actual value of the CO<sub>2</sub> concentration in observation <span class="math inline">\(i\)</span>. By contrast, <span class="math inline">\((\text{Type is Mississippi})_i\)</span> and <span class="math inline">\((\text{Treatment is chilled})_i\)</span> are indicator variables that take on the value 1 if data point <span class="math inline">\(i\)</span> belongs in their category and 0 otherwise.</p>
 <p>The rationale for having chosen the model <code>uptake ~ conc + Type * Treatment</code> is that the box plots above reveal a potential interaction between the two factors <code>Type</code> and <code>Treatment</code> (the effect of changing <code>Treatment</code> from chilled to nonchilled depends on whether the <code>Type</code> was Quebec or Mississippi), and on top of this, we also want to capture the positive dependence on CO<sub>2</sub> concentration. The ANOVA table above concurs: each of these categories come out with low p-values, indicating that what we see is unlikely to be due to just chance. To make sure that the assumptions on which this interpretation rests are held, we look at the diagnostic plots:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggfortify)</span>
@@ -458,11 +515,15 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">smooth.colour =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="44_Nonlinear_regression_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="44_Nonlinear_regression_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
 </div>
 </div>
-<p>The Q-Q plot is not good: in the lower quantiles, the realized residuals are consistently larger in magnitude than the theoretical expectation based on the assumption of normality. This, of course, is a consequence of the data depending on concentrations in a manifestly nonlinear way. Apart from the Q-Q plot however, the diagnostics look surprisingly good. We will come back to the point about nonlinearity in <a href="#sec-nonlin-regression"><span>Section&nbsp;17.2</span></a>.</p>
-<p>It is also informative to apply the function <code>summary</code> on the model fit in addition to <code>anova</code>, to obtain the regression slopes and intercept (the <span class="math inline">\(\beta\)</span> parameters of <a href="#eq-linreg-multiway">Equation&nbsp;<span>17.1</span></a>):</p>
+</div>
+<p>The Q-Q plot is not good: in the lower quantiles, the realized residuals are consistently larger in magnitude than the theoretical expectation based on the assumption of normality. This, of course, is a consequence of the data depending on concentrations in a manifestly nonlinear way. Apart from the Q-Q plot however, the diagnostics look surprisingly good. We will come back to the point about nonlinearity in <a href="#sec-nonlin-regression" class="quarto-xref"><span>Section 19.2</span></a>.</p>
+<p>It is also informative to apply the function <code>summary</code> on the model fit in addition to <code>anova</code>, to obtain the regression slopes and intercept (the <span class="math inline">\(\beta\)</span> parameters of <a href="#eq-linreg-multiway" class="quarto-xref">Equation&nbsp;<span>19.1</span></a>):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(uptake <span class="sc">~</span> conc <span class="sc">+</span> Type <span class="sc">*</span> Treatment, <span class="at">data =</span> CO2) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -503,7 +564,7 @@ F-statistic: 47.69 on 4 and 79 DF,  p-value: &lt; 2.2e-16</code></pre>
 \cdot (\text{Treatment is chilled})_i
 + \epsilon_i
 \end{split}
-\tag{17.2}\]</span></span></p>
+\tag{19.2}\]</span></span></p>
 <p>(The <span class="math inline">\(\beta_7\)</span> term is multiplied by a three-way interaction of concentration, type, and treatment.) Fitting the model and creating diagnostic plots:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(uptake <span class="sc">~</span> conc <span class="sc">*</span> Type <span class="sc">*</span> Treatment, <span class="at">data =</span> CO2) <span class="sc">|&gt;</span> <span class="fu">anova</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -554,13 +615,17 @@ F-statistic: 30.52 on 7 and 76 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">smooth.colour =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="44_Nonlinear_regression_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="44_Nonlinear_regression_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>This confirms what we saw on the plot of the data: that the basic shape of the relationship between concentration and uptake is unaffected by either <code>Type</code> or <code>Treatment</code> (i.e., the term <code>conc:Type:Treatment</code> in the ANOVA table has a high associated p-value). It also illustrates the general point that there are very often multiple candidate models, and choosing between them is a question of judgment, trial-and-error, and successively improving the model structure based on results from earlier modeling attempts.</p>
 </section>
-<section id="sec-nonlin-regression" class="level2" data-number="17.2">
-<h2 data-number="17.2" class="anchored" data-anchor-id="sec-nonlin-regression"><span class="header-section-number">17.2</span> Nonlinear regression</h2>
+<section id="sec-nonlin-regression" class="level2" data-number="19.2">
+<h2 data-number="19.2" class="anchored" data-anchor-id="sec-nonlin-regression"><span class="header-section-number">19.2</span> Nonlinear regression</h2>
 <p>The relationship between CO<sub>2</sub> concentration and uptake rates are definitely not linear, regardless of treatment or type. So the question arises: can one fit a <em>nonlinear</em> function to these data? As an example, let us focus on just Quebec and the nonchilled treatment, to better illustrate the ideas behind nonlinear regression. Here are the data:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(CO2) <span class="sc">|&gt;</span></span>
@@ -570,7 +635,11 @@ F-statistic: 30.52 on 7 and 76 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"concentration"</span>, <span class="at">y =</span> <span class="st">"uptake rate"</span>) <span class="sc">+</span></span>
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="44_Nonlinear_regression_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="44_Nonlinear_regression_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>If the function we wish to fit is not linear, we have to specify its shape. One commonly used shape for describing the above saturating pattern is the <em>Michaelis–Menten curve</em>. This is given by the following equation: <span class="math display">\[ \rho = \frac{V c}{K + c} \]</span> Here <span class="math inline">\(\rho\)</span> is the uptake rate, <span class="math inline">\(c\)</span> is the concentration, and <span class="math inline">\(V\)</span> and <span class="math inline">\(K\)</span> are two parameters which can modify the shape of the function. The figure below illustrates what curves one can get by varying these parameters:</p>
@@ -586,7 +655,11 @@ F-statistic: 30.52 on 7 and 76 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(V <span class="sc">~</span> K, <span class="at">labeller =</span> label_both) <span class="sc">+</span></span>
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="44_Nonlinear_regression_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="44_Nonlinear_regression_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The task is to find the values of <span class="math inline">\(V\)</span> and <span class="math inline">\(K\)</span> that provide the best fit to the data. Like in the case of linear regression, this can be done via the least-squares criterion: the best fit is provided by the curve which minimizes the sum of the squared deviations of the observed points from it. Unlike with linear regression however, this curve can be very difficult to find. In fact, there is no known general procedure that would be able to minimize the sum of squares under all circumstances. What algorithms <em>can</em> do is to find the best fit, given some initial guesses for the parameters that are at least not violently off of the true values. Just how close the guess needs to be is context-dependent, and highlights an important problem: nonlinear regression can be as much an art as it is a science. For the types of curves we will be fitting though, the more subtle problems will never come up, and a “good enough” initial guess can vary within a relatively wide range.</p>
@@ -609,13 +682,17 @@ F-statistic: 30.52 on 7 and 76 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>                     <span class="at">limits =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="cn">NA</span>), <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span></span>
 <span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="44_Nonlinear_regression_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="44_Nonlinear_regression_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>So guessing that <span class="math inline">\(V\)</span> is about 43 and <span class="math inline">\(K\)</span> is about 125 seems to be close to the mark.</p>
 <p>To actually perform the nonlinear regression, one can use the <code>nls</code> function (“Nonlinear Least Squares”). It begins much like <code>lm</code>, taking a formula and a data frame. However, the formula is no longer a shorthand notation for a linear model, and therefore has to be entered literally. Additionally, there is another argument to <code>nls</code> called <code>start</code>; this is where the starting values have to be specified. The <code>start</code> argument has to be in the form of a <em>list</em>. Lists are an important data structure, worth a little interlude to explain how they work.</p>
-<section id="sec-lists" class="level3" data-number="17.2.1">
-<h3 data-number="17.2.1" class="anchored" data-anchor-id="sec-lists"><span class="header-section-number">17.2.1</span> Interlude: lists</h3>
+<section id="sec-lists" class="level3" data-number="19.2.1">
+<h3 data-number="19.2.1" class="anchored" data-anchor-id="sec-lists"><span class="header-section-number">19.2.1</span> Interlude: lists</h3>
 <p>Lists are like vectors except they can hold arbitrary data in their entries. So unlike vectors which are composed of either all numbers or all character strings or all logical values, lists may have a combination of these. Furthermore, list entries are not restricted to elementary types: vectors, or even data frames may also be list entries. To define a list, all one needs to do is type <code>list</code>, and then give a sequence of named entries. For example, the following creates a list with three entries: <code>a</code> will be equal to 3, <code>b</code> to the string <code>"Hello!"</code>, and <code>myTable</code> to a small tibble.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">list</span>(<span class="at">a =</span> <span class="dv">3</span>, <span class="at">b =</span> <span class="st">"Hello!"</span>, <span class="at">myTable =</span> <span class="fu">tibble</span>(<span class="at">x =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">y =</span> <span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">4</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -680,8 +757,8 @@ $myTable
 </div>
 </div>
 </section>
-<section id="back-to-nonlinear-regression" class="level3" data-number="17.2.2">
-<h3 data-number="17.2.2" class="anchored" data-anchor-id="back-to-nonlinear-regression"><span class="header-section-number">17.2.2</span> Back to nonlinear regression</h3>
+<section id="back-to-nonlinear-regression" class="level3" data-number="19.2.2">
+<h3 data-number="19.2.2" class="anchored" data-anchor-id="back-to-nonlinear-regression"><span class="header-section-number">19.2.2</span> Back to nonlinear regression</h3>
 <p>With this brief introduction to lists, we now understand what it means that the <code>start</code> argument to <code>nls</code> must be a list, with the entries named after the parameters to be fitted. Using the previously-guessed values of <span class="math inline">\(V\)</span> and <span class="math inline">\(K\)</span> being around 43 and 125, respectively, means we can use <code>start = list(V = 43, K = 125)</code>. We can now look at the <code>nls</code> function and use it to produce a fit of the Michaelis–Menten curve to our data:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>nonlinearFit <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(CO2) <span class="sc">|&gt;</span></span>
@@ -723,7 +800,7 @@ Achieved convergence tolerance: 9.722e-06</code></pre>
 </div>
 </div>
 <p>As in the case of linear regression, the statistical analysis will only be reliable if the assumptions of the independence, normality, and homoscedasticity of the residuals are maintained.</p>
-<p>To conclude this section, it can be useful to plot the data together with the fitted nonlinear curve, to make sure visually that the fit is reasonable. There are several possible ways of doing this; here we discuss two of them. First, one can rely on the <code>predict</code> function (<a href="41_Linear_regression.html#sec-theilsen"><span>Section&nbsp;14.5</span></a>) that will tell us, for each value of the predictor, what the model-predicted values are. In the same way as for models generated by <code>lm</code> or <code>mblm</code>,</p>
+<p>To conclude this section, it can be useful to plot the data together with the fitted nonlinear curve, to make sure visually that the fit is reasonable. There are several possible ways of doing this; here we discuss two of them. First, one can rely on the <code>predict</code> function (<a href="41_Linear_regression.html#sec-theilsen" class="quarto-xref"><span>Section 16.5</span></a>) that will tell us, for each value of the predictor, what the model-predicted values are. In the same way as for models generated by <code>lm</code> or <code>mblm</code>,</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(nonlinearFit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -743,7 +820,11 @@ Achieved convergence tolerance: 9.722e-06</code></pre>
 <span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"concentration"</span>, <span class="at">y =</span> <span class="st">"uptake rate"</span>) <span class="sc">+</span></span>
 <span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="44_Nonlinear_regression_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="44_Nonlinear_regression_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>In the above plot, the data points and the predictions each had their own set of aeshetics. For this reason, the aesthetic mappings were not defined separately, but locally inside each <code>geom_</code>. This is perfectly legal, and can help whenever different geometries take different aesthetics from the data. Second, notice that the prediction was drawn with a dashed, semi-transparent line. This is intentional, to make it distinct from data. It signals that the curve does not correspond to data we are plotting, but to a model’s predictions.</p>
@@ -761,16 +842,20 @@ Achieved convergence tolerance: 9.722e-06</code></pre>
 <span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"concentration"</span>, <span class="at">y =</span> <span class="st">"uptake rate"</span>) <span class="sc">+</span></span>
 <span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="44_Nonlinear_regression_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="44_Nonlinear_regression_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The result is much the same as before, although carefully looking at the dashed line shows that the second curve is smoother than the first. In this case, this does not matter much, but it could be aesthetically more relevant in others.</p>
 </section>
 </section>
-<section id="exercises" class="level2" data-number="17.3">
-<h2 data-number="17.3" class="anchored" data-anchor-id="exercises"><span class="header-section-number">17.3</span> Exercises</h2>
-<section id="exponential-growth" class="level4" data-number="17.3.0.1">
-<h4 data-number="17.3.0.1" class="anchored" data-anchor-id="exponential-growth"><span class="header-section-number">17.3.0.1</span> Exponential growth</h4>
+<section id="exercises" class="level2" data-number="19.3">
+<h2 data-number="19.3" class="anchored" data-anchor-id="exercises"><span class="header-section-number">19.3</span> Exercises</h2>
+<section id="exponential-growth" class="level4" data-number="19.3.0.1">
+<h4 data-number="19.3.0.1" class="anchored" data-anchor-id="exponential-growth"><span class="header-section-number">19.3.0.1</span> Exponential growth</h4>
 <p>Let <span class="math inline">\(N(t)\)</span> be the population abundance of some organism at time <span class="math inline">\(t\)</span>. An exponentially growing population increases according to <span class="math display">\[ N(t) = N_0 \mathrm{e}^{rt} \]</span> where <span class="math inline">\(N_0\)</span> is the initial population size at time <span class="math inline">\(t=0\)</span>, and <span class="math inline">\(r\)</span> is the exponential rate of increase.</p>
 <ol type="1">
 <li>Download the data file <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/pop_growth_1.zip"><code>pop_growth_1.csv</code></a> and load it in R.</li>
@@ -778,8 +863,8 @@ Achieved convergence tolerance: 9.722e-06</code></pre>
 <li>Assume that the data describes a population of water lilies, and that a single ‘individual’ weighs 1 gram. If the population would continue to grow unrestricted, what would be its biomass after nine months (about 280 days)? What object would have a comparable weight to this population, and what does that tell us about unrestricted population growth in general?</li>
 </ol>
 </section>
-<section id="nitrogen-uptake" class="level4" data-number="17.3.0.2">
-<h4 data-number="17.3.0.2" class="anchored" data-anchor-id="nitrogen-uptake"><span class="header-section-number">17.3.0.2</span> Nitrogen uptake</h4>
+<section id="nitrogen-uptake" class="level4" data-number="19.3.0.2">
+<h4 data-number="19.3.0.2" class="anchored" data-anchor-id="nitrogen-uptake"><span class="header-section-number">19.3.0.2</span> Nitrogen uptake</h4>
 <p><span class="citation" data-cites="CedergreenMadsen2002">Cedergreen and Madsen (<a href="99_References.html#ref-CedergreenMadsen2002" role="doc-biblioref">2002</a>)</span> reported data from an experiment on nitrogen uptake by the duckweed <em>Lemna minor</em>, where the predictor variable is the initial substrate concentration and the response variable is the uptake rate. In this type of experiment, it is anticipated that the uptake will increase as the concentration increases, approaching a horizontal asymptote. The data are available in <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/uptake.zip"><code>uptake.csv</code></a>.</p>
 <ol type="1">
 <li>Create a plot of the data, with the nitrogen concentrations along the x-axis and the corresponding uptake rates along the y-axis.</li>
@@ -787,8 +872,8 @@ Achieved convergence tolerance: 9.722e-06</code></pre>
 <li>Given your nonlinear regression results, what is the maximum possible nitrogen uptake rate of <em>L. minor</em>?</li>
 </ol>
 </section>
-<section id="logistic-growth" class="level4" data-number="17.3.0.3">
-<h4 data-number="17.3.0.3" class="anchored" data-anchor-id="logistic-growth"><span class="header-section-number">17.3.0.3</span> Logistic growth</h4>
+<section id="logistic-growth" class="level4" data-number="19.3.0.3">
+<h4 data-number="19.3.0.3" class="anchored" data-anchor-id="logistic-growth"><span class="header-section-number">19.3.0.3</span> Logistic growth</h4>
 <p>The simplest model illustrating population regulation and regulated growth is the <em>logistic model</em>, defined by the differential equation <span class="math display">\[ \frac{\mathrm{d} N(t)}{\mathrm{d} t} = rN(t) \left( 1 - \frac{N(t)}{K} \right) \]</span> Here <span class="math inline">\(N(t)\)</span> is the population abundance at time <span class="math inline">\(t\)</span>, <span class="math inline">\(r\)</span> is the exponential growth rate of the population when rare, and <span class="math inline">\(K\)</span> is the maximum abundance it can sustainably achieve (the “carrying capacity”). It should be obvious that when <span class="math inline">\(N(t) = K\)</span>, the derivative vanishes, signalling that the population size no longer changes.</p>
 <p>The above differential equation is one of the few which can be solved explicitly. Its solution reads <span class="math display">\[ N(t) = N_0 \frac{\mathrm{e}^{rt}}{1-(1-\mathrm{e}^{rt})(N_0/K)} \]</span> where <span class="math inline">\(N_0\)</span> is the initial population size at time <span class="math inline">\(t=0\)</span>. Let us fit this model to some population growth data.</p>
 <ol type="1">
@@ -798,7 +883,7 @@ Achieved convergence tolerance: 9.722e-06</code></pre>
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
 <div id="ref-CedergreenMadsen2002" class="csl-entry" role="listitem">
 Cedergreen, Nina, and Tom Vindbæk Madsen. 2002. <span>“<span class="nocase">Nitrogen uptake by the floating macrophyte Lemna minor</span>.”</span> <em>New Phytologist</em> 155 (2): 285–92. <a href="https://doi.org/10.1046/j.1469-8137.2002.00463.x">https://doi.org/10.1046/j.1469-8137.2002.00463.x</a>.
 </div>
@@ -886,10 +971,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -899,8 +1001,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -912,7 +1023,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -956,6 +1190,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -981,6 +1216,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1042,17 +1303,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./43_Anova_two_way.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span>
+      <a href="./43_Anova_two_way.html" class="pagination-link" aria-label="Two-way ANOVA and the Scheirer--Ray--Hare test">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./45_Intro_map.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./45_Intro_map.html" class="pagination-link" aria-label="Higher-order functions and mapping">
+        <span class="nav-page-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

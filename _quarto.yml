@@ -23,6 +23,8 @@ book:
       - 20_Intro_statistics.qmd
       - 21_Probabilities_and_distributions.qmd
       - 22_Sampling_distributions.qmd
+      - 23_Statistical_inference.qmd
+      - 24_Statistical_inference_two.qmd
     - part: "Part III: Advanced statistics"
       chapters:
       - 40_Intro_adv_statistics.qmd

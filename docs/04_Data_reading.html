@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -58,6 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -100,7 +101,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -109,6 +116,7 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -124,12 +132,12 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_Intro_R_RStudio.html">Part I: Processing and visualizing data with R</a></li><li class="breadcrumb-item"><a href="./04_Data_reading.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reading tabular data from disk</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_Intro_R_RStudio.html">Part I: Processing and visualizing data with R</a></li><li class="breadcrumb-item"><a href="./04_Data_reading.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reading tabular data from disk</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -139,7 +147,7 @@ div.csl-indent {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to data analysis and visualization with R</a> 
@@ -250,6 +258,18 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Sampling distributions</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23_Statistical_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to statistical inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -264,43 +284,43 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introducing statistical inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_Linear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./45_Intro_map.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./46_Multiple_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -317,7 +337,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./99_References.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">References</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
       </ul>
@@ -325,7 +345,7 @@ div.csl-indent {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -351,7 +371,7 @@ div.csl-indent {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_Intro_R_RStudio.html">Part I: Processing and visualizing data with R</a></li><li class="breadcrumb-item"><a href="./04_Data_reading.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reading tabular data from disk</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span id="sec-reading" class="quarto-section-identifier"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reading tabular data from disk</span></span></h1>
 </div>
@@ -366,7 +386,9 @@ div.csl-indent {
   </div>
   
 
+
 </header>
+
 
 <section id="the-tidyverse-package-suite" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="the-tidyverse-package-suite"><span class="header-section-number">4.1</span> The <code>tidyverse</code> package suite</h2>
@@ -409,7 +431,7 @@ Tip
 <section id="data-file-formats" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="data-file-formats"><span class="header-section-number">4.2</span> Data file formats</h2>
 <p>One of the packages loaded by default with the <code>tidyverse</code> is called <code>readr</code>. This package contains tools for loading data files and writing them to disk. We will explore how it works using an example dataset. Before turning to the data however, it is worth mentioning a few things about data file formats.</p>
-<p><em>Tabular data</em> (i.e., data which can be organized into a table with rows and named columns) may be stored in many different forms. By far the most popular choice is to use Excel spreadsheets. While these may have many good properties, they are decidedly not recommended for scientific use. Instead, in science we strive to rely on <em>plain text files</em> to store our data. Plain text files have several advantages. First, they can be read by any machine without the need for special or proprietary software (such as Excel). Second, they will never go obsolete: one will always be able to open plain text files on any machine. By contrast, there is no guarantee that an Excel file saved today will still open ten years from now in future versions of Excel. And third, file formats such as Excel’s <code>.xls</code> and <code>.xlsx</code> contain a lot of metadata about formatting, font types, locale, etc. that are obscured from the user, but which have the potential to be in the way when performing scientific analyses. By contrast, plain text files have nothing up their sleeve: what you see they contain is exactly what you get; no more, no less. For these reasons, this book will emphasize workflows that rely on data stored in plain text files. However, due to the popularity of Excel, we will also learn how to read data from Excel files into R (<a href="#sec-excel"><span>Section&nbsp;4.6</span></a>), even though their use is otherwise not recommended.</p>
+<p><em>Tabular data</em> (i.e., data which can be organized into a table with rows and named columns) may be stored in many different forms. By far the most popular choice is to use Excel spreadsheets. While these may have many good properties, they are decidedly not recommended for scientific use. Instead, in science we strive to rely on <em>plain text files</em> to store our data. Plain text files have several advantages. First, they can be read by any machine without the need for special or proprietary software (such as Excel). Second, they will never go obsolete: one will always be able to open plain text files on any machine. By contrast, there is no guarantee that an Excel file saved today will still open ten years from now in future versions of Excel. And third, file formats such as Excel’s <code>.xls</code> and <code>.xlsx</code> contain a lot of metadata about formatting, font types, locale, etc. that are obscured from the user, but which have the potential to be in the way when performing scientific analyses. By contrast, plain text files have nothing up their sleeve: what you see they contain is exactly what you get; no more, no less. For these reasons, this book will emphasize workflows that rely on data stored in plain text files. However, due to the popularity of Excel, we will also learn how to read data from Excel files into R (<a href="#sec-excel" class="quarto-xref"><span>Section 4.6</span></a>), even though their use is otherwise not recommended.</p>
 <section id="the-csv-file-format" class="level3" data-number="4.2.1">
 <h3 data-number="4.2.1" class="anchored" data-anchor-id="the-csv-file-format"><span class="header-section-number">4.2.1</span> The CSV file format</h3>
 <p>How can one store data in plain text files? There are various solutions, but the one we will be relying on is called a <em>delimited file</em>. These files contain information as in a spreadsheet, with contents from every row in a different line. The column entries are separated by some <em>delimiter</em>—a character that represents the end of the information in one column and the start of the next. As an example, let us consider some actual data on land snail species from the Galápagos Islands.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> The data file is available by clicking on this link: <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/island-FL-csv.zip"><code>islands-FL.csv</code></a>.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Set the working directory in RStudio to the folder where you have saved it. As a reminder, one can do this by executing <code>setwd("/path/to/files")</code>, where one should substitute in one’s own path in place of <code>/path/to/files</code>. Then one can open <code>islands-FL.csv</code> in RStudio by clicking on it in the <strong>Files</strong> panel in the lower right part of the RStudio window, and then choosing the option “View file” (ignore the other option called “Import dataset…”). Having done this, a new tab opens in the editor panel (upper left region) where something like the following should appear:</p>
@@ -439,19 +461,19 @@ humid,nux,26.59,0</code></pre>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="N-ustulatus.jpg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption"><em>Naesiotus ustulatus</em> – a land snail from Floreana Island, Galápagos. Photo credits: Dr.&nbsp;Christine E. Parent.</figcaption>
+<figcaption><em>Naesiotus ustulatus</em> – a land snail from Floreana Island, Galápagos. Photo credits: Dr.&nbsp;Christine E. Parent.</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="N-ochsneri.jpg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption"><em>N. ochsneri</em> – a land snail from Santa Cruz Island, Galápagos. Photo credits: Dr.&nbsp;Christine E. Parent.</figcaption>
+<figcaption><em>N. ochsneri</em> – a land snail from Santa Cruz Island, Galápagos. Photo credits: Dr.&nbsp;Christine E. Parent.</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="N-chemnitzioides.jpg" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption"><em>N. chemnitzioides</em> – a land snail from San Cristóbal Island, Galápagos. Photo credits: Dr.&nbsp;Christine E. Parent.</figcaption>
+<figcaption><em>N. chemnitzioides</em> – a land snail from San Cristóbal Island, Galápagos. Photo credits: Dr.&nbsp;Christine E. Parent.</figcaption>
 </figure>
 </div>
 <p>Shell morphology is an important indicator of microhabitat specialization in these snails: species with long slender shells are adaptations to arid environments due to their better surface-to-volume ratios (see the picture of <em>N. chemnitzioides</em> above for an example), whereas species with round and bulky shells are better adapted to humid environments.</p>
@@ -520,7 +542,7 @@ Warning
 # ℹ 213 more rows</code></pre>
 </div>
 </div>
-<p>The function <code>read_delim</code> takes two inputs: the name of the file (with a path if needed), and <code>delim</code>, which is the delimiter used to separate the columns in the file. We will discuss how it works in greater detail in <a href="#sec-delim"><span>Section&nbsp;4.4</span></a>.</p>
+<p>The function <code>read_delim</code> takes two inputs: the name of the file (with a path if needed), and <code>delim</code>, which is the delimiter used to separate the columns in the file. We will discuss how it works in greater detail in <a href="#sec-delim" class="quarto-xref"><span>Section 4.4</span></a>.</p>
 <p>Look at the output that was produced by <code>read_delim("island-FL.csv", delim = ",")</code> above, starting with <code># A tibble: 223 x 4</code>. A <em>tibble</em> (or <em>data frame</em><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>) is the R-equivalent of an Excel-style spreadsheet. In this case, it has 223 rows and 4 columns (hence the <code>223 x 4</code>). The way to conceive of a tibble is as a collection of vectors, each arranged in a column, glued together side-by-side to form a table of data. Importantly, although each vector must consist of entries of the same type as usual (e.g., they can be vectors of numbers, vectors of strings, or vectors of logical values), the different columns need not share types. For example, in the above table, the first and second columns consist of character strings but the third and fourth ones consist of numerical values. This can be seen right below the header information. Below <code>habitat</code> and <code>species</code> you can see <code>&lt;chr&gt;</code>, which stands for “character string”. Below <code>size</code> and <code>shape</code> we have <code>&lt;dbl&gt;</code> which, confusing as it may look at first, refers simply to ordinary numbers.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a> In turn, columns comprising of logical values would have the tag <code>&lt;lgl&gt;</code> underneath them (in this case though, we don’t have such a column). The point is that by looking at the type information below the header, you can see how R has interpreted each of the columns at a glance.</p>
 <p>The fact that the individual columns are simply vectors can be made explicit, by relying on the <code>$</code>-notation. To access a given column of the table as a vector, we write the name of the table, followed by the <code>$</code> symbol, followed by the name of the column in question. To make the illustration easier, let us first assign the tibble to a variable called <code>snailDat</code>:</p>
 <div class="cell">
@@ -850,7 +872,7 @@ humid,nux,26.59,0</code></pre>
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
 <div id="ref-Barabasetal2022" class="csl-entry" role="listitem">
 Barabás, György, Christine Parent, Andrew Kraemer, Frederik Van de Perre, and Frederik De Laender. 2022. <span>“<span class="nocase">The evolution of trait variance creates a tension between species diversity and functional diversity</span>.”</span> <em>Nature Communications</em> 13 (2521): 1–10. <a href="https://doi.org/10.1038/s41467-022-30090-4">https://doi.org/10.1038/s41467-022-30090-4</a>.
 </div>
@@ -963,10 +985,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -976,8 +1015,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -989,7 +1037,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1033,6 +1204,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1058,6 +1230,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1119,17 +1317,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./03_Functions.html" class="pagination-link">
+      <a href="./03_Functions.html" class="pagination-link" aria-label="Functions">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Functions</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./05_Basic_data_wrangling.html" class="pagination-link">
+      <a href="./05_Basic_data_wrangling.html" class="pagination-link" aria-label="Basic data manipulation">
         <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Basic data manipulation</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

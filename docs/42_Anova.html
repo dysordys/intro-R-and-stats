@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction to data analysis and visualization with R - 15&nbsp; The Kruskal–Wallis test and one-way ANOVA</title>
+<title>Introduction to data analysis and visualization with R - 17&nbsp; The Kruskal–Wallis test and one-way ANOVA</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,6 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -99,6 +106,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar floating">
@@ -107,12 +141,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_Intro_adv_statistics.html">Part III: Advanced statistics</a></li><li class="breadcrumb-item"><a href="./42_Anova.html"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">The Kruskal--Wallis test and one-way ANOVA</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_Intro_adv_statistics.html">Part III: Advanced statistics</a></li><li class="breadcrumb-item"><a href="./42_Anova.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -122,7 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to data analysis and visualization with R</a> 
@@ -233,6 +267,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Sampling distributions</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23_Statistical_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to statistical inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -247,43 +293,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introducing statistical inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_Linear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42_Anova.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./45_Intro_map.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./46_Multiple_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -300,7 +346,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./99_References.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">References</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
       </ul>
@@ -308,27 +354,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#the-kruskalwallis-and-dunn-tests" id="toc-the-kruskalwallis-and-dunn-tests" class="nav-link active" data-scroll-target="#the-kruskalwallis-and-dunn-tests"><span class="header-section-number">15.1</span> The Kruskal–Wallis and Dunn tests</a></li>
-  <li><a href="#sec-onewayanova" id="toc-sec-onewayanova" class="nav-link" data-scroll-target="#sec-onewayanova"><span class="header-section-number">15.2</span> One-way ANOVA and Tukey’s test</a></li>
-  <li><a href="#sec-lmaov" id="toc-sec-lmaov" class="nav-link" data-scroll-target="#sec-lmaov"><span class="header-section-number">15.3</span> ANOVA and linear regression</a></li>
-  <li><a href="#sec-diagnostic-anova" id="toc-sec-diagnostic-anova" class="nav-link" data-scroll-target="#sec-diagnostic-anova"><span class="header-section-number">15.4</span> Using diagnostic plots on an ANOVA</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">15.5</span> Exercises</a></li>
+  <li><a href="#the-kruskalwallis-and-dunn-tests" id="toc-the-kruskalwallis-and-dunn-tests" class="nav-link active" data-scroll-target="#the-kruskalwallis-and-dunn-tests"><span class="header-section-number">17.1</span> The Kruskal–Wallis and Dunn tests</a></li>
+  <li><a href="#sec-onewayanova" id="toc-sec-onewayanova" class="nav-link" data-scroll-target="#sec-onewayanova"><span class="header-section-number">17.2</span> One-way ANOVA and Tukey’s test</a></li>
+  <li><a href="#sec-lmaov" id="toc-sec-lmaov" class="nav-link" data-scroll-target="#sec-lmaov"><span class="header-section-number">17.3</span> ANOVA and linear regression</a></li>
+  <li><a href="#sec-diagnostic-anova" id="toc-sec-diagnostic-anova" class="nav-link" data-scroll-target="#sec-diagnostic-anova"><span class="header-section-number">17.4</span> Using diagnostic plots on an ANOVA</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">17.5</span> Exercises</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_Intro_adv_statistics.html">Part III: Advanced statistics</a></li><li class="breadcrumb-item"><a href="./42_Anova.html"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-ANOVA" class="quarto-section-identifier"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></h1>
+<h1 class="title"><span id="sec-ANOVA" class="quarto-section-identifier"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></h1>
 </div>
 
 
@@ -341,11 +387,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
 
-<section id="the-kruskalwallis-and-dunn-tests" class="level2" data-number="15.1">
-<h2 data-number="15.1" class="anchored" data-anchor-id="the-kruskalwallis-and-dunn-tests"><span class="header-section-number">15.1</span> The Kruskal–Wallis and Dunn tests</h2>
-<p>The tools of <a href="40_Intro_adv_statistics.html"><span>Chapter&nbsp;13</span></a> allow us to compare two groups of data. But what do we do when we have more than two groups? For example, we might wish to know how different treatments influence plant growth, as measured by dry weight. If there are two treatments, then there will be three (instead of two) groups, because the treatments will be compared with a control group which does not receive treatment.</p>
+
+<section id="the-kruskalwallis-and-dunn-tests" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="the-kruskalwallis-and-dunn-tests"><span class="header-section-number">17.1</span> The Kruskal–Wallis and Dunn tests</h2>
+<p>The tools of <a href="24_Statistical_inference_two.html" class="quarto-xref"><span>Chapter 14</span></a> allow us to compare two groups of data. But what do we do when we have more than two groups? For example, we might wish to know how different treatments influence plant growth, as measured by dry weight. If there are two treatments, then there will be three (instead of two) groups, because the treatments will be compared with a control group which does not receive treatment.</p>
 <p>Such a dataset is in fact built into R, and is called <code>PlantGrowth</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -396,7 +444,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="at">width =</span> <span class="fl">0.05</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="42_Anova_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="42_Anova_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>There are two questions one can ask, and they naturally build on each other. First, we might wonder if the observed differences between the distribution of the data in the different groups is meaningful. Could it be that all data points are actually drawn from the same underlying distribution, and the observed differences are simply due to chance? If so, what is the likelihood of that situation? And second, provided we can reject the idea that the data in the different groups are identically distributed, which groups are the ones that differ from one another? For example, based on the figure above, it appears reasonable to expect a real difference between treatment 1 and treatment 2, but it is unclear whether the control truly differs from any of the treatments.</p>
@@ -494,9 +546,9 @@ difference in location
 <p>The table above is the output of the test, and has four columns. The first column shows which two groups are being compared. The next column, called <code>Z</code>, is the value of the test statistic, which we need not concern ourselves with here. Next, we have the unadjusted p-values; and finally, the adjusted p-values (<code>P.adj</code>), which have been corrected to account for the multiple testing problem mentioned above. Therefore, the adjusted p-values will always be as large or larger than the unadjusted ones.</p>
 <p>What has the post hoc Dunn test revealed? Precisely what we have been suspecting: that the only difference worth noting is the one between the two treatments (last row of the table, where the adjusted p-value is sufficiently small to have a chance of pointing at a real difference).</p>
 </section>
-<section id="sec-onewayanova" class="level2" data-number="15.2">
-<h2 data-number="15.2" class="anchored" data-anchor-id="sec-onewayanova"><span class="header-section-number">15.2</span> One-way ANOVA and Tukey’s test</h2>
-<p>The Kruskal–Wallis test is the non-parametric analogue of <em>one-way ANOVA</em> (ANalysis Of VAriance). The “one-way” in the name refers to the property that there is a single factor indexing the groups, as discussed earlier. ANOVA relies on assumptions such as normality of the residuals and having the same number of observations in each group (balanced design). Otherwise, it is much like the Kruskal–Wallis test.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Perhaps surprisingly, the function in R that performs an ANOVA is the same <code>lm</code> that we have used in <a href="41_Linear_regression.html"><span>Chapter&nbsp;14</span></a> for performing linear regression:</p>
+<section id="sec-onewayanova" class="level2" data-number="17.2">
+<h2 data-number="17.2" class="anchored" data-anchor-id="sec-onewayanova"><span class="header-section-number">17.2</span> One-way ANOVA and Tukey’s test</h2>
+<p>The Kruskal–Wallis test is the non-parametric analogue of <em>one-way ANOVA</em> (ANalysis Of VAriance). The “one-way” in the name refers to the property that there is a single factor indexing the groups, as discussed earlier. ANOVA relies on assumptions such as normality of the residuals and having the same number of observations in each group (balanced design). Otherwise, it is much like the Kruskal–Wallis test.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Perhaps surprisingly, the function in R that performs an ANOVA is the same <code>lm</code> that we have used in <a href="41_Linear_regression.html" class="quarto-xref"><span>Chapter 16</span></a> for performing linear regression:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -509,7 +561,7 @@ Coefficients:
       5.032       -0.371        0.494  </code></pre>
 </div>
 </div>
-<p>The output takes some care to interpret correctly: out of the three coefficients listed, <code>(Intercept)</code> is the mean weight in the control group; <code>grouptrt1</code> is the <em>difference</em> of the mean weight in treatment 1 from the control; and <code>grouptrt2</code> is the difference of the mean weight in treatment 2 from the control. (We will come back to this, as well as why the <code>lm</code> function was used, in <a href="#sec-lmaov"><span>Section&nbsp;15.3</span></a>.) To get more information, one can pass the result of <code>lm</code> to a function called <code>anova</code>. Despite its name, the role of this function is not to actually perform the ANOVA (that was done by <code>lm</code>), but to display its results using the sum-of-squares table, which is also known as the ANOVA table. In this table, each factor indexing the groups, as well as their interactions (if present), get one row:</p>
+<p>The output takes some care to interpret correctly: out of the three coefficients listed, <code>(Intercept)</code> is the mean weight in the control group; <code>grouptrt1</code> is the <em>difference</em> of the mean weight in treatment 1 from the control; and <code>grouptrt2</code> is the difference of the mean weight in treatment 2 from the control. (We will come back to this, as well as why the <code>lm</code> function was used, in <a href="#sec-lmaov" class="quarto-xref"><span>Section 17.3</span></a>.) To get more information, one can pass the result of <code>lm</code> to a function called <code>anova</code>. Despite its name, the role of this function is not to actually perform the ANOVA (that was done by <code>lm</code>), but to display its results using the sum-of-squares table, which is also known as the ANOVA table. In this table, each factor indexing the groups, as well as their interactions (if present), get one row:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth) <span class="sc">|&gt;</span> <span class="fu">anova</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -547,7 +599,7 @@ trt2-trt1  0.865  0.1737839 1.5562161 0.0120064</code></pre>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  lmFit <span class="sc">|&gt;</span> <span class="fu">aov</span>() <span class="sc">|&gt;</span> <span class="fu">TukeyHSD</span>()</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>(See <a href="03_Functions.html"><span>Chapter&nbsp;3</span></a> to review how functions are written.) Here <code>lmFit</code> is a model fit object returned by the <code>lm</code> function. Using this, we can rewrite the above more simply:</p>
+<p>(See <a href="03_Functions.html" class="quarto-xref"><span>Chapter 3</span></a> to review how functions are written.) Here <code>lmFit</code> is a model fit object returned by the <code>lm</code> function. Using this, we can rewrite the above more simply:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth) <span class="sc">|&gt;</span> <span class="fu">tukey.test</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -564,10 +616,10 @@ trt2-trt1  0.865  0.1737839 1.5562161 0.0120064</code></pre>
 </div>
 </div>
 </section>
-<section id="sec-lmaov" class="level2" data-number="15.3">
-<h2 data-number="15.3" class="anchored" data-anchor-id="sec-lmaov"><span class="header-section-number">15.3</span> ANOVA and linear regression</h2>
+<section id="sec-lmaov" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="sec-lmaov"><span class="header-section-number">17.3</span> ANOVA and linear regression</h2>
 <p>At first glance, it appears strange that the function performing an ANOVA is the same as the one doing linear regression, <code>lm</code>. Aren’t the two methods very different from one another? After all, ANOVA compares data in different groups, whereas linear regression fits a line to a bunch of data points.</p>
-<p>As surprising as it may sound, the two are not different. There is a way of formulating an ANOVA which is exactly analogous to a linear model. To illustrate this idea, let us first consider a dataset with just two groups of data. The fictive bird data from <a href="40_Intro_adv_statistics.html"><span>Chapter&nbsp;13</span></a> (<a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/fictive_bird_example.zip"><code>fictive_bird_example.csv</code></a>) will work well:</p>
+<p>As surprising as it may sound, the two are not different. There is a way of formulating an ANOVA which is exactly analogous to a linear model. To illustrate this idea, let us first consider a dataset with just two groups of data. The fictive bird data from <a href="24_Statistical_inference_two.html" class="quarto-xref"><span>Chapter 14</span></a> (<a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/fictive_bird_example.zip"><code>fictive_bird_example.csv</code></a>) will work well:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>bird <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"fictive_bird_example.csv"</span>)</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(bird, <span class="at">n =</span> <span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -617,12 +669,12 @@ trt2-trt1  0.865  0.1737839 1.5562161 0.0120064</code></pre>
 40 larger   24.7 </code></pre>
 </div>
 </div>
-<p>Let us denote the <code>weight</code> of individual <span class="math inline">\(i\)</span> by <span class="math inline">\(y_i\)</span>. We wish to predict this based on whether the island is large or small, using a linear model. This can be done in full analogy with <a href="41_Linear_regression.html#eq-linreg">Equation&nbsp;<span>14.1</span></a>, using the following equation:</p>
+<p>Let us denote the <code>weight</code> of individual <span class="math inline">\(i\)</span> by <span class="math inline">\(y_i\)</span>. We wish to predict this based on whether the island is large or small, using a linear model. This can be done in full analogy with <a href="41_Linear_regression.html#eq-linreg" class="quarto-xref">Equation&nbsp;<span>16.1</span></a>, using the following equation:</p>
 <p><span id="eq-aov1way-basic"><span class="math display">\[
 y_i
 = \beta_0 + \beta_1 \cdot x_i + \epsilon_i
-\tag{15.1}\]</span></span></p>
-<p>On the surface, this is exactly the same equation as <a href="41_Linear_regression.html#eq-linreg">Equation&nbsp;<span>14.1</span></a>. But there is one important difference: in an ANOVA, we give a different meaning to the <span class="math inline">\(x_i\)</span>. <strong>This variable should take on the value 1 if individual <em>i</em> is from the smaller island and the value 0 if it is from the larger island.</strong> (It could also be the other way round; it does not matter as long as we choose one convention and stay consistent.) The <span class="math inline">\(\epsilon_i\)</span> are still the residuals, measuring the deviation of the points from the ideal prediction. What is the “ideal” prediction here? Well, without the <span class="math inline">\(\epsilon_i\)</span> term, <a href="#eq-aov1way-basic">Equation&nbsp;<span>15.1</span></a> reads <span class="math inline">\(y_i = \beta_0 + \beta_1 x_i\)</span>. If individual <span class="math inline">\(i\)</span> is from the larger island, <span class="math inline">\(x_i = 0\)</span>, and we have <span class="math inline">\(y_i = \beta_0\)</span>. So the intercept <span class="math inline">\(\beta_0\)</span> corresponds to the mean prediction for the weight of the birds in the larger island. Conversely, if individual <span class="math inline">\(i\)</span> is from the smaller island, then <span class="math inline">\(x_i = 1\)</span>, and so <span class="math inline">\(y_i = \beta_0 + \beta_1 \cdot 1 = \beta_0 + \beta_1\)</span>. In other words, <span class="math inline">\(\beta_1\)</span> is the <em>difference</em> in mean weight between the smaller and the larger island.</p>
+\tag{17.1}\]</span></span></p>
+<p>On the surface, this is exactly the same equation as <a href="41_Linear_regression.html#eq-linreg" class="quarto-xref">Equation&nbsp;<span>16.1</span></a>. But there is one important difference: in an ANOVA, we give a different meaning to the <span class="math inline">\(x_i\)</span>. <strong>This variable should take on the value 1 if individual <em>i</em> is from the smaller island and the value 0 if it is from the larger island.</strong> (It could also be the other way round; it does not matter as long as we choose one convention and stay consistent.) The <span class="math inline">\(\epsilon_i\)</span> are still the residuals, measuring the deviation of the points from the ideal prediction. What is the “ideal” prediction here? Well, without the <span class="math inline">\(\epsilon_i\)</span> term, <a href="#eq-aov1way-basic" class="quarto-xref">Equation&nbsp;<span>17.1</span></a> reads <span class="math inline">\(y_i = \beta_0 + \beta_1 x_i\)</span>. If individual <span class="math inline">\(i\)</span> is from the larger island, <span class="math inline">\(x_i = 0\)</span>, and we have <span class="math inline">\(y_i = \beta_0\)</span>. So the intercept <span class="math inline">\(\beta_0\)</span> corresponds to the mean prediction for the weight of the birds in the larger island. Conversely, if individual <span class="math inline">\(i\)</span> is from the smaller island, then <span class="math inline">\(x_i = 1\)</span>, and so <span class="math inline">\(y_i = \beta_0 + \beta_1 \cdot 1 = \beta_0 + \beta_1\)</span>. In other words, <span class="math inline">\(\beta_1\)</span> is the <em>difference</em> in mean weight between the smaller and the larger island.</p>
 <p>We can see this in action by running <code>lm</code> and then <code>summary</code> on these data:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> island, <span class="at">data =</span> bird) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -662,14 +714,14 @@ F-statistic: 3.499 on 1 and 38 DF,  p-value: 0.06914</code></pre>
 </div>
 </div>
 <p>The rest of the regression table now reads exactly as it would in performing simple linear regression. For example, the p-values are the probability of getting coefficients at least as large as the inferred ones just by chance (assuming normal and independent residuals with equal variance across the groups).</p>
-<p>There is just one question left: why was the <code>"larger"</code> island automatically designated as the one corresponding to the intercept? The reason is that R proceeds in alphabetical order, and since <code>"larger"</code> comes before <code>"smaller"</code> alphabetically, it is automatically treated as the intercept (that is, the group corresponding to <span class="math inline">\(x_i = 0\)</span> instead of <span class="math inline">\(x_i = 1\)</span>). One can override this by using factors (<a href="08_Further_plotting_options.html#sec-factors"><span>Section&nbsp;8.5</span></a>), in which case the lowest factor level will correspond to the intercept.</p>
-<p>So now we have established an analogy between linear regression and ANOVA for the special case when there are only two groups to compare. The main idea was to introduce the indicator variable <span class="math inline">\(x_i\)</span> which is 1 if observation <span class="math inline">\(i\)</span> belongs in <code>larger</code> and 0 otherwise. We can rewrite <a href="#eq-aov1way-basic">Equation&nbsp;<span>15.1</span></a> with more expressive notation for <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span>, to make this idea more transparent:</p>
+<p>There is just one question left: why was the <code>"larger"</code> island automatically designated as the one corresponding to the intercept? The reason is that R proceeds in alphabetical order, and since <code>"larger"</code> comes before <code>"smaller"</code> alphabetically, it is automatically treated as the intercept (that is, the group corresponding to <span class="math inline">\(x_i = 0\)</span> instead of <span class="math inline">\(x_i = 1\)</span>). One can override this by using factors (<a href="08_Further_plotting_options.html#sec-factors" class="quarto-xref"><span>Section 8.5</span></a>), in which case the lowest factor level will correspond to the intercept.</p>
+<p>So now we have established an analogy between linear regression and ANOVA for the special case when there are only two groups to compare. The main idea was to introduce the indicator variable <span class="math inline">\(x_i\)</span> which is 1 if observation <span class="math inline">\(i\)</span> belongs in <code>larger</code> and 0 otherwise. We can rewrite <a href="#eq-aov1way-basic" class="quarto-xref">Equation&nbsp;<span>17.1</span></a> with more expressive notation for <span class="math inline">\(x_i\)</span> and <span class="math inline">\(y_i\)</span>, to make this idea more transparent:</p>
 <p><span id="eq-aov1way"><span class="math display">\[
 (\text{weight})_i
 = \beta_0
 + \beta_1 \cdot (\text{bird is from larger island})_i
 + \epsilon_i
-\tag{15.2}\]</span></span></p>
+\tag{17.2}\]</span></span></p>
 <p>What to do when there are more than two groups—say, in the <code>PlantGrowth</code> data where we have three? In that case, we have to introduce one more indicator variable. Say, we could have <span class="math inline">\((\text{group is trt1})_i\)</span> and <span class="math inline">\((\text{group is trt2})_i\)</span>; the first is 1 if the observation is from treatment 1 (and 0 otherwise), and the second is 1 only if the observation is from treatment 2. If the observation is in the control, then both indicator variables are zero. We can thus write the following equation:</p>
 <p><span id="eq-aov1way3group"><span class="math display">\[
 (\text{weight})_i
@@ -677,7 +729,7 @@ F-statistic: 3.499 on 1 and 38 DF,  p-value: 0.06914</code></pre>
 + \beta_1 \cdot (\text{group is trt1})_i
 + \beta_2 \cdot (\text{group is trt2})_i
 + \epsilon_i
-\tag{15.3}\]</span></span></p>
+\tag{17.3}\]</span></span></p>
 <p>We can get the usual statistics on them by using <code>summary</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -703,7 +755,7 @@ Multiple R-squared:  0.2641,    Adjusted R-squared:  0.2096
 F-statistic: 4.846 on 2 and 27 DF,  p-value: 0.01591</code></pre>
 </div>
 </div>
-<p>Since <code>ctrl</code> comes earliest in the alphabet, it serves as the intercept. Its estimated value, 5.032, is the mean plant weight in the control group. The estimates in the rows <code>grouptrt1</code> and <code>grouptrt2</code> (these names were created by mushing together the name of the column in which the factor is found with the factors’ names themselves) are the <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> coefficients of <a href="#eq-aov1way3group">Equation&nbsp;<span>15.3</span></a>, respectively. That is, they are the deviations from the baseline provided by <code>(Intercept)</code>. So we can surmise that the estimated mean of <code>trt1</code> is 5.032 - 0.371 = 4.661, and that of <code>trt2</code> is 5.032 + 0.494 = 5.526. Indeed, this is what we find relying on simple summaries computing the means in each group:</p>
+<p>Since <code>ctrl</code> comes earliest in the alphabet, it serves as the intercept. Its estimated value, 5.032, is the mean plant weight in the control group. The estimates in the rows <code>grouptrt1</code> and <code>grouptrt2</code> (these names were created by mushing together the name of the column in which the factor is found with the factors’ names themselves) are the <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> coefficients of <a href="#eq-aov1way3group" class="quarto-xref">Equation&nbsp;<span>17.3</span></a>, respectively. That is, they are the deviations from the baseline provided by <code>(Intercept)</code>. So we can surmise that the estimated mean of <code>trt1</code> is 5.032 - 0.371 = 4.661, and that of <code>trt2</code> is 5.032 + 0.494 = 5.526. Indeed, this is what we find relying on simple summaries computing the means in each group:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>PlantGrowth <span class="sc">|&gt;</span></span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">|&gt;</span></span>
@@ -721,9 +773,9 @@ F-statistic: 4.846 on 2 and 27 DF,  p-value: 0.01591</code></pre>
 <p>It may be clear from the above, but it is good to point out nevertheless, that one does not need to specify the individual indicator variables <span class="math inline">\((\text{group is trt1})_i\)</span> and <span class="math inline">\((\text{group is trt2})_i\)</span> and so on by hand. Instead, when defining the model formula as <code>weight ~ group</code>, R automatically assigns them based on the entries of <code>group</code>. It will also automatically name the corresponding coefficients: <span class="math inline">\(\beta_1\)</span> will instead be <code>grouptrt1</code> and <span class="math inline">\(\beta_2\)</span> <code>grouptrt2</code>, in this example. This is very convenient, but it is important to be aware that this substitution is what really goes on under the hood when performing an ANOVA.</p>
 <p>More generally, the same procedure can be followed for any number of groups the predictor may come from. For <span class="math inline">\(n\)</span> groups of data, we introduce <span class="math inline">\(n-1\)</span> indicator variables which take the value 1 if a data point belongs in the corresponding group, and the value 0 otherwise. Again, R will create these variables automatically, so we do not need to worry about them when defining a linear model.</p>
 </section>
-<section id="sec-diagnostic-anova" class="level2" data-number="15.4">
-<h2 data-number="15.4" class="anchored" data-anchor-id="sec-diagnostic-anova"><span class="header-section-number">15.4</span> Using diagnostic plots on an ANOVA</h2>
-<p>Since ANOVA is just linear regression in disguise, the same assumptions must be fulfilled about the residuals: their variance should not depend on the group, they should be independent, and they should be normally distributed. We can use the same diagnostic plots as we did in <a href="41_Linear_regression.html#sec-diagnostics"><span>Section&nbsp;14.3</span></a>:</p>
+<section id="sec-diagnostic-anova" class="level2" data-number="17.4">
+<h2 data-number="17.4" class="anchored" data-anchor-id="sec-diagnostic-anova"><span class="header-section-number">17.4</span> Using diagnostic plots on an ANOVA</h2>
+<p>Since ANOVA is just linear regression in disguise, the same assumptions must be fulfilled about the residuals: their variance should not depend on the group, they should be independent, and they should be normally distributed. We can use the same diagnostic plots as we did in <a href="41_Linear_regression.html#sec-diagnostics" class="quarto-xref"><span>Section 16.3</span></a>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggfortify)</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -731,13 +783,17 @@ F-statistic: 4.846 on 2 and 27 DF,  p-value: 0.01591</code></pre>
 <span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">smooth.colour =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
 <span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="42_Anova_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="42_Anova_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>The only difference is that, since the data are arranged in groups, the fitted values can only take on well-defined discrete values—the inferred means in each. Otherwise, the plots are read and evaluated just as before. In this case, we can see that the assumptions are fulfilled beautifully: the residuals have equal variance in the groups, there is no trend in them, and the quantile-quantile plot shows that they are normally distributed.</p>
 </section>
-<section id="exercises" class="level2" data-number="15.5">
-<h2 data-number="15.5" class="anchored" data-anchor-id="exercises"><span class="header-section-number">15.5</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="17.5">
+<h2 data-number="17.5" class="anchored" data-anchor-id="exercises"><span class="header-section-number">17.5</span> Exercises</h2>
 <ol type="1">
 <li>The file <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/daphnia_growth.zip"><code>daphnia_growth.csv</code></a> contains data on the growth rate of <em>Daphnia</em> populations that are infected with various parasites. There are four groups of observations: the control (no parasites), infection with <em>Metschnikowia bicuspidata</em>, infection with <em>Pansporella perplexa</em>, and finally, infection with <em>Pasteuria ramosa</em>. Each group has ten replicate observations. Are growth rates affected by parasite load?
 <ul>
@@ -754,7 +810,7 @@ F-statistic: 4.846 on 2 and 27 DF,  p-value: 0.01591</code></pre>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>In <a href="43_Anova_two_way.html"><span>Chapter&nbsp;16</span></a> we will see examples where multiple independent factors are varied, and each possible combination results in a separate group. For example, if the effects of three different dosages of vitamin C are examined on the tooth growth of Guinea pigs, and the vitamin is also supplied in two distinct forms of either orange juice or raw ascorbic acid, then there will be <span class="math inline">\(3 \cdot 2 = 6\)</span> groups, defined by the two factors of dosage and form of supplement.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>In <a href="43_Anova_two_way.html" class="quarto-xref"><span>Chapter 18</span></a> we will see examples where multiple independent factors are varied, and each possible combination results in a separate group. For example, if the effects of three different dosages of vitamin C are examined on the tooth growth of Guinea pigs, and the vitamin is also supplied in two distinct forms of either orange juice or raw ascorbic acid, then there will be <span class="math inline">\(3 \cdot 2 = 6\)</span> groups, defined by the two factors of dosage and form of supplement.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>The Kruskal–Wallis test is sometimes referred to as “non-parametric ANOVA”. While this is perfectly fine as a label, one should be aware that it is, strictly speaking, a misnomer: the Kruskal–Wallis test does not rely on computing variances at all.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
@@ -839,10 +895,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -852,8 +925,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -865,7 +947,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -909,6 +1114,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -934,6 +1140,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -995,17 +1227,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./41_Linear_regression.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span>
+      <a href="./41_Linear_regression.html" class="pagination-link" aria-label="Simple linear regression">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./43_Anova_two_way.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./43_Anova_two_way.html" class="pagination-link" aria-label="Two-way ANOVA and the Scheirer--Ray--Hare test">
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

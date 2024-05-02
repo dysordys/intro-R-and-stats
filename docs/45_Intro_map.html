@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction to data analysis and visualization with R - 18&nbsp; Higher-order functions and mapping</title>
+<title>Introduction to data analysis and visualization with R - 20&nbsp; Higher-order functions and mapping</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -81,7 +81,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -90,6 +96,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -99,6 +106,33 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar floating">
@@ -107,12 +141,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_Intro_adv_statistics.html">Part III: Advanced statistics</a></li><li class="breadcrumb-item"><a href="./45_Intro_map.html"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_Intro_adv_statistics.html">Part III: Advanced statistics</a></li><li class="breadcrumb-item"><a href="./45_Intro_map.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -122,7 +156,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to data analysis and visualization with R</a> 
@@ -233,6 +267,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Sampling distributions</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23_Statistical_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to statistical inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -247,43 +293,43 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introducing statistical inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_Linear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./45_Intro_map.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./46_Multiple_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -300,7 +346,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./99_References.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">References</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
       </ul>
@@ -308,27 +354,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">18.1</span> Introduction</a></li>
-  <li><a href="#higher-order-functions" id="toc-higher-order-functions" class="nav-link" data-scroll-target="#higher-order-functions"><span class="header-section-number">18.2</span> Higher-order functions</a></li>
-  <li><a href="#sec-mapfamily" id="toc-sec-mapfamily" class="nav-link" data-scroll-target="#sec-mapfamily"><span class="header-section-number">18.3</span> The <code>map</code> family of functions</a></li>
-  <li><a href="#making-use-of-map-when-vectorization-fails" id="toc-making-use-of-map-when-vectorization-fails" class="nav-link" data-scroll-target="#making-use-of-map-when-vectorization-fails"><span class="header-section-number">18.4</span> Making use of <code>map</code> when vectorization fails</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">18.5</span> Exercises</a></li>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction"><span class="header-section-number">20.1</span> Introduction</a></li>
+  <li><a href="#higher-order-functions" id="toc-higher-order-functions" class="nav-link" data-scroll-target="#higher-order-functions"><span class="header-section-number">20.2</span> Higher-order functions</a></li>
+  <li><a href="#sec-mapfamily" id="toc-sec-mapfamily" class="nav-link" data-scroll-target="#sec-mapfamily"><span class="header-section-number">20.3</span> The <code>map</code> family of functions</a></li>
+  <li><a href="#making-use-of-map-when-vectorization-fails" id="toc-making-use-of-map-when-vectorization-fails" class="nav-link" data-scroll-target="#making-use-of-map-when-vectorization-fails"><span class="header-section-number">20.4</span> Making use of <code>map</code> when vectorization fails</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">20.5</span> Exercises</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_Intro_adv_statistics.html">Part III: Advanced statistics</a></li><li class="breadcrumb-item"><a href="./45_Intro_map.html"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-map" class="quarto-section-identifier"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></h1>
+<h1 class="title"><span id="sec-map" class="quarto-section-identifier"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></h1>
 </div>
 
 
@@ -341,14 +387,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
   
 
+
 </header>
 
-<section id="introduction" class="level2" data-number="18.1">
-<h2 data-number="18.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">18.1</span> Introduction</h2>
+
+<section id="introduction" class="level2" data-number="20.1">
+<h2 data-number="20.1" class="anchored" data-anchor-id="introduction"><span class="header-section-number">20.1</span> Introduction</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># Loading the tidyverse, before doing anything else</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>In <a href="03_Functions.html"><span>Chapter&nbsp;3</span></a> we learned how to create user-defined functions. An example was provided in <a href="42_Anova.html#sec-onewayanova"><span>Section&nbsp;15.2</span></a>, where we made our life easier by eliminating the need to always call <code>aov</code> before performing a Tukey test with <code>TukeyHSD</code>. Without the function, we must write:</p>
+<p>In <a href="03_Functions.html" class="quarto-xref"><span>Chapter 3</span></a> we learned how to create user-defined functions. An example was provided in <a href="42_Anova.html#sec-onewayanova" class="quarto-xref"><span>Section 17.2</span></a>, where we made our life easier by eliminating the need to always call <code>aov</code> before performing a Tukey test with <code>TukeyHSD</code>. Without the function, we must write:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth) <span class="sc">|&gt;</span> <span class="fu">aov</span>() <span class="sc">|&gt;</span> <span class="fu">TukeyHSD</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -378,7 +426,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Make sure to review <a href="03_Functions.html"><span>Chapter&nbsp;3</span></a>, especially <a href="03_Functions.html#sec-f1arg"><span>Section&nbsp;3.1.1</span></a>, if you need a refresher on how to define functions in R.</p>
+<p>Make sure to review <a href="03_Functions.html" class="quarto-xref"><span>Chapter 3</span></a>, especially <a href="03_Functions.html#sec-f1arg" class="quarto-xref"><span>Section 3.1.1</span></a>, if you need a refresher on how to define functions in R.</p>
 </div>
 </div>
 <p>Using this function, we can now simply write:</p>
@@ -498,8 +546,8 @@ Kruskal-Wallis chi-squared = 7.9882, df = 2, p-value = 0.01842</code></pre>
 </div>
 </div>
 </section>
-<section id="higher-order-functions" class="level2" data-number="18.2">
-<h2 data-number="18.2" class="anchored" data-anchor-id="higher-order-functions"><span class="header-section-number">18.2</span> Higher-order functions</h2>
+<section id="higher-order-functions" class="level2" data-number="20.2">
+<h2 data-number="20.2" class="anchored" data-anchor-id="higher-order-functions"><span class="header-section-number">20.2</span> Higher-order functions</h2>
 <p>If we think about the <code>tidystat</code> function above, something strange has happened. We are used to the idea of functions taking numbers, character strings, logical values, or even data frames as their arguments. What we have not paid much attention to before is what happens if the input to a function is itself another function. Yet this is precisely what <code>tidystat</code> does: its <code>method</code> argument is a function object.</p>
 <p>In R, this is perfectly legal, and its use and interpretation is every bit as natural as it was in <code>tidystat</code>. Functions which take other functions as arguments are often called <em>higher-order functions</em>.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> To emphasize again: there really is nothing special about such functions, and they can be used in much the same way as “ordinary” functions.</p>
 <p>One very natural example for a higher-order function is integration. An integral (at least in simple cases) takes three inputs: a function to integrate, a lower limit of integration, and an upper limit of integration. The output is the (sign-weighted) area under the function’s curve, evaluated between the lower and upper limits. This is stressed even in the usual mathematical notation for integrals: when we write <span class="math display">\[ \int_0^1 x^2 \,\text{d} x = \frac{1}{3}\]</span> (a true statement), we show the lower and upper limits of 0 and 1 at the bottom and top of the integral sign, and the function to be integrated (in this case, <span class="math inline">\(f(x) = x^2\)</span>) in between the integral sign and <span class="math inline">\(\text{d} x\)</span>.</p>
@@ -530,8 +578,8 @@ Kruskal-Wallis chi-squared = 7.9882, df = 2, p-value = 0.01842</code></pre>
 </div>
 <p>Functions without names are often called <em>anonymous</em> functions. They are commonly used within other, higher-order functions. Their use is not mandatory: it is always possible to first define the function with a name, and then use that name instead (e.g., using <code>sqr</code> instead of <code>function(x) x^2</code>, after defining <code>sqr &lt;- function(x) x^2</code>). However, they can be convenient, and it is also important to recognize them in R code written by others.</p>
 </section>
-<section id="sec-mapfamily" class="level2" data-number="18.3">
-<h2 data-number="18.3" class="anchored" data-anchor-id="sec-mapfamily"><span class="header-section-number">18.3</span> The <code>map</code> family of functions</h2>
+<section id="sec-mapfamily" class="level2" data-number="20.3">
+<h2 data-number="20.3" class="anchored" data-anchor-id="sec-mapfamily"><span class="header-section-number">20.3</span> The <code>map</code> family of functions</h2>
 <p>The <code>purrr</code> package is a standard, automatically-loaded part of the <code>tidyverse</code>. It contains a large family of <em>mapping functions</em>. These allow one to perform repetitive tasks by applying the same function to all elements of a vector, list, or column in a data frame.</p>
 <p>To illustrate their use, how would we obtain the squares of all integers from 1 to 10? Using our earlier <code>sqr</code> function, we could painstakingly type out <code>sqr(1)</code>, then <code>sqr(2)</code>, and so on, up until <code>sqr(10)</code> (we ought to be grateful that the task was to obtain the squares of the first ten integers, instead of the first ten thousand). But there is no need to do this, as this is exactly what <code>map</code> can do. <code>map</code> takes two arguments: some data (e.g., a vector of values), and a function. It then applies that function to all data entries. So a much quicker way of obtaining the squares of all integers from 1 to 10 is this:</p>
 <div class="cell">
@@ -603,7 +651,7 @@ Kruskal-Wallis chi-squared = 7.9882, df = 2, p-value = 0.01842</code></pre>
 [1] 100</code></pre>
 </div>
 </div>
-<p>The results are all there, although they are prefaced by double-bracketed indices <code>[[1]]</code>, <code>[[2]]</code>, and so on. You may recall from <a href="44_Nonlinear_regression.html#sec-lists"><span>Section&nbsp;17.2.1</span></a> that this is the notation used to reference the entries of lists. That is correct: <code>map</code> returns a list of values, not a vector. We will see momentarily that this can be very useful behavior, but here it can feel overkill. Fortunately, it is easy to get back a vector instead of a list. Since the entries of vectors must have a well-defined, uniform type (numeric, character string, logical, etc.), we have to tell R what kind of result we want. In our case, we want numeric results. The function to do this is called <code>map_dbl</code> (“map into double-precision numerical values”). It can be used just like <code>map</code>; the only difference between the two is that the output type changes from list to numeric vector:</p>
+<p>The results are all there, although they are prefaced by double-bracketed indices <code>[[1]]</code>, <code>[[2]]</code>, and so on. You may recall from <a href="44_Nonlinear_regression.html#sec-lists" class="quarto-xref"><span>Section 19.2.1</span></a> that this is the notation used to reference the entries of lists. That is correct: <code>map</code> returns a list of values, not a vector. We will see momentarily that this can be very useful behavior, but here it can feel overkill. Fortunately, it is easy to get back a vector instead of a list. Since the entries of vectors must have a well-defined, uniform type (numeric, character string, logical, etc.), we have to tell R what kind of result we want. In our case, we want numeric results. The function to do this is called <code>map_dbl</code> (“map into double-precision numerical values”). It can be used just like <code>map</code>; the only difference between the two is that the output type changes from list to numeric vector:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dbl</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, <span class="cf">function</span>(x) x<span class="sc">^</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -632,8 +680,8 @@ Kruskal-Wallis chi-squared = 7.9882, df = 2, p-value = 0.01842</code></pre>
 </div>
 <p>and see that, although the computations were performed correctly, the output was converted from numbers to character strings encoding those numbers.</p>
 </section>
-<section id="making-use-of-map-when-vectorization-fails" class="level2" data-number="18.4">
-<h2 data-number="18.4" class="anchored" data-anchor-id="making-use-of-map-when-vectorization-fails"><span class="header-section-number">18.4</span> Making use of <code>map</code> when vectorization fails</h2>
+<section id="making-use-of-map-when-vectorization-fails" class="level2" data-number="20.4">
+<h2 data-number="20.4" class="anchored" data-anchor-id="making-use-of-map-when-vectorization-fails"><span class="header-section-number">20.4</span> Making use of <code>map</code> when vectorization fails</h2>
 <p>One perhaps obvious criticism of <code>map</code> as we have used it is that its use was not really needed. Early on, we learned that when simple functions are applied to a vector of values, they get applied element-wise. This is called <em>vectorization</em>, and it is a very useful property of R. So <code>(1:10)^2</code>, in our case, achieves the same thing as <code>map_dbl(1:10, function(x) x^2)</code>. Similarly, if we simply write <code>cos(1:100)</code>, we get the cosine of all integers between 1 and 100 without having to type out <code>map_dbl(1:100, cos)</code>. So why bother with <code>map</code> then?</p>
 <p>The answer is that <code>map</code> can handle cases where vectorization is not available. Most <em>simple</em> functions in R are vectorized, but there are plenty of non-vectorizable operations. To give an example, let us start from a simple dataset: the <code>PlantGrowth</code> table we looked at before, but without the control <code>ctrl</code> group. This leaves just the two treatment groups <code>trt1</code> and <code>trt2</code>:</p>
 <div class="cell">
@@ -799,8 +847,8 @@ difference in location
 </div>
 </div>
 </section>
-<section id="exercises" class="level2" data-number="18.5">
-<h2 data-number="18.5" class="anchored" data-anchor-id="exercises"><span class="header-section-number">18.5</span> Exercises</h2>
+<section id="exercises" class="level2" data-number="20.5">
+<h2 data-number="20.5" class="anchored" data-anchor-id="exercises"><span class="header-section-number">20.5</span> Exercises</h2>
 <ol type="1">
 <li>Start from the following sequence of values: <code>values &lt;- seq(-5*pi, 5*pi, by = 0.01)</code> (a vector with values going from <span class="math inline">\(-5\pi\)</span> to <span class="math inline">\(5\pi\)</span>, in steps of 0.01). Now do the following:
 <ul>
@@ -901,10 +949,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -914,8 +979,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -927,7 +1001,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -971,6 +1168,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -996,6 +1194,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1057,17 +1281,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./44_Nonlinear_regression.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span>
+      <a href="./44_Nonlinear_regression.html" class="pagination-link" aria-label="More general linear models; nonlinear regression">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./46_Multiple_analysis.html" class="pagination-link">
-        <span class="nav-page-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./46_Multiple_analysis.html" class="pagination-link" aria-label="Nested data and multiple analysis">
+        <span class="nav-page-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 

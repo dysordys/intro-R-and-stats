@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="György Barabás &amp; Isak Hietala">
 
-<title>Introduction to data analysis and visualization with R</title>
+<title>Introduction to data analysis and visualization with R - 13&nbsp; Introduction to statistical inference</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -21,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -31,7 +64,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./01_Intro_R_RStudio.html" rel="next">
+<link href="./24_Statistical_inference_two.html" rel="next">
+<link href="./22_Sampling_distributions.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -69,6 +103,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -81,7 +144,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Welcome</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20_Intro_statistics.html">Part II: Introductory statistics (UNDER CONSTRUCTION)</a></li><li class="breadcrumb-item"><a href="./23_Statistical_inference.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to statistical inference</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -108,7 +171,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Welcome</span></a>
   </div>
 </li>
@@ -206,7 +269,7 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./23_Statistical_inference.html" class="sidebar-item-text sidebar-link">
+  <a href="./23_Statistical_inference.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to statistical inference</span></span></a>
   </div>
 </li>
@@ -298,28 +361,26 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#welcome" id="toc-welcome" class="nav-link active" data-scroll-target="#welcome">Welcome</a></li>
+  <li><a href="#parametric-methods" id="toc-parametric-methods" class="nav-link active" data-scroll-target="#parametric-methods"><span class="header-section-number">13.1</span> Parametric methods</a>
+  <ul>
+  <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing"><span class="header-section-number">13.1.1</span> Hypothesis testing</a></li>
+  <li><a href="#confidence-intervals" id="toc-confidence-intervals" class="nav-link" data-scroll-target="#confidence-intervals"><span class="header-section-number">13.1.2</span> Confidence Intervals</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./20_Intro_statistics.html">Part II: Introductory statistics (UNDER CONSTRUCTION)</a></li><li class="breadcrumb-item"><a href="./23_Statistical_inference.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to statistical inference</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Introduction to data analysis and visualization with R</h1>
+<h1 class="title"><span id="sec-stat-inf-intro" class="quarto-section-identifier"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to statistical inference</span></span></h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>György Barabás &amp; Isak Hietala </p>
-          </div>
-  </div>
     
   
     
@@ -330,11 +391,97 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<section id="welcome" class="level1 unnumbered">
-<h1 class="unnumbered">Welcome</h1>
-<p>Do you have any comments, suggestions for improvement, or errata? Feel free to send them to me at <code>dysordys@protonmail.com</code>.</p>
+<p><em>Statistical inference</em> are methods that we can use to infer something about the population based on a smaller sample. These methods take into account the inherent uncertainty within a sample to either provide a hopefully informative interval of values where we expect a parameter to be within or a conclusion about specific values of a parameter. We will in this chapter focus on investigating one population (or group).</p>
+<p>We will cover two types of inference methods, <em>parametric</em> and <em>non-parametric</em> methods. The main difference between the two is whether or not we assume that the sample statistic has a distribution. Non-parametric tests are also called <em>distribution free</em> tests to actually describe that difference.</p>
+<section id="parametric-methods" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="parametric-methods"><span class="header-section-number">13.1</span> Parametric methods</h2>
+<p>When describing a property of a population, we would like to make inference of the proportion (<span class="math inline">\(p\)</span>) or the mean (<span class="math inline">\(\mu\)</span>). Whether we want to calculate an interval or test hypotheses, the methods described needs to fulfill some criteria.</p>
+<p>For inference about proportions, the following requirements must be met:</p>
+<ul>
+<li>independence in the sample,
+<ul>
+<li>can be fulfilled by using conducting a Simple Random Sample (SRS).</li>
+</ul></li>
+<li>the variable must be binomial distributed,
+<ul>
+<li>the variable must calculate the number of successes from n independent trials.</li>
+</ul></li>
+<li>the sample proportion, <span class="math inline">\(\hat{p}\)</span>, must be considered normally distributed,
+<ul>
+<li>specifically <span class="math inline">\(n\cdot p &gt; 5\)</span> and <span class="math inline">\(n\cdot q &gt; 5\)</span> where p is the probability of a success and q is 1 - p.</li>
+</ul></li>
+</ul>
+<p>For inference about means, the following requirements must be met:</p>
+<ul>
+<li>independence in the sample,
+<ul>
+<li>can be fulfilled by using conducting a Simple Random Sample (SRS).</li>
+</ul></li>
+<li>the sample mean, <span class="math inline">\(\bar{X}\)</span>, must be considered normally distributed,
+<ul>
+<li>can be achieved using the Central Limit Theorem (CLT) if the sample is sufficiently large, where the rule of thumb is <span class="math inline">\(n &gt; 30\)</span>. CLT states that a mean (or sum) of identically distributed variables will be approximately normally distributed in this case.</li>
+<li>if the sample is small, then the variable of interest, <span class="math inline">\(X\)</span>, must be considered normally distributed. This means that the transformation applied to the mean will also be normally distributed.</li>
+</ul></li>
+</ul>
+<section id="hypothesis-testing" class="level3" data-number="13.1.1">
+<h3 data-number="13.1.1" class="anchored" data-anchor-id="hypothesis-testing"><span class="header-section-number">13.1.1</span> Hypothesis testing</h3>
+<p>In hypothesis testing of a mean, we can follow a five-step process.</p>
+<ol type="1">
+<li>Check the requirements</li>
+<li>Formulate hypotheses and the significance level</li>
+<li>Calculate the test statistic</li>
+<li>Calculate the critical or p-value</li>
+<li>Draw conclusions</li>
+</ol>
+<p>During step 4 and 5 we will make use of R to help us, but the other steps are still important to determine what we are trying to accomplish with the test.</p>
+<p>When formulating our hypotheses, we need to transform what we want to investigate into mathematical expressions. We also need to ensure that we use the correct mathematical symbol in the alternative hypothesis for the test to be conducted correctly.</p>
+<p>We use the function <code>t.test()</code> which has the following arguments of interest:</p>
+<p><code>x</code> - specifies the variable we want to investigate, <code>alternative</code> - specifies the type of alternative hypothesis to be tested, with values “two.sided”, “less”, or “greater”, <code>mu</code> - specifies the value we want to test, <code>conf.level</code> - specifies the confidence level for the test, given in decimal form.</p>
+<p>For example, if we were interested in investigating whether the mean size of snails is larger than 19, we would set up hypotheses as follows:</p>
+<p><span class="math display">\[\begin{align*}
+  H_0&amp;: \mu \le 19 \\
+H_1&amp;: \mu &gt; 19
+\end{align*}\]</span></p>
+<p>With a significance level of 5 percent, the function we write in R would be as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(<span class="at">x =</span> snailDat<span class="sc">$</span>size, </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">alternative =</span> <span class="st">"greater"</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">mu =</span> <span class="dv">19</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">conf.level =</span> <span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  snailDat$size
+t = 2.3217, df = 222, p-value = 0.01058
+alternative hypothesis: true mean is greater than 19
+95 percent confidence interval:
+ 19.16999      Inf
+sample estimates:
+mean of x 
+ 19.58909 </code></pre>
+</div>
+</div>
+<p>In the output, we see a lot of information, and here we see a disadvantage of R, that the outputs are not clearly structured like in other software.</p>
+<p>The following information can be gleaned from the different lines:</p>
+<ul>
+<li>The first line provides information about which variable the test is performed on.</li>
+<li>The second line provides information from the test where t is the computed test statistic, df is the degrees of freedom in the t-distribution, and p-value is the p-value of the test.</li>
+<li>The third line provides information about the type of alternative hypothesis that has been tested.</li>
+<li>The fourth and fifth lines provide a calculated confidence interval which could be used to answer the alternative hypothesis. In this case, since we have an alternative hypothesis specified as &gt;, a one-sided lower confidence interval is calculated.</li>
+<li>The last lines in the output provide descriptive statistics from the sample.</li>
+<li>To make a decision from this test, we can directly compare the calculated p-value from the output with the specified significance level. If the p-value is lower, we can reject <span class="math inline">\(H_0\)</span>, otherwise, we cannot reject it.</li>
+</ul>
+</section>
+<section id="confidence-intervals" class="level3" data-number="13.1.2">
+<h3 data-number="13.1.2" class="anchored" data-anchor-id="confidence-intervals"><span class="header-section-number">13.1.2</span> Confidence Intervals</h3>
+<p>For interval estimation of a mean, the same function as for hypothesis testing, <code>t.test()</code>, can be used where the alternative argument specifies the type of interval being calculated. Note that for one-sided intervals, we must specify the alternative hypothesis that matches the restriction.</p>
+<p>A tip for assessing this is to look at the phrasing used in <span class="math inline">\(H_1\)</span> and replace the tested value with the limit we calculate. For example, the alternative hypothesis, “more than 19” <span class="math inline">\(H_1: \mu &gt; 19\)</span>, would result in a one-sided lower confidence interval as follows: <span class="math display">\[
+  \mu &gt; \bar{x} - t_{\alpha(1); n-1} \cdot \frac{s}{\sqrt{n}}
+\]</span> which we saw in the earlier output. In the output, we are only interested in the calculated confidence interval, which means we do not need to specify any value for <code>mu</code> since it only affects the calculation of the t-test.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -749,10 +896,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./22_Sampling_distributions.html" class="pagination-link" aria-label="Sampling distributions">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Sampling distributions</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./01_Intro_R_RStudio.html" class="pagination-link" aria-label="Introduction to R and RStudio">
-        <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to R and RStudio</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./24_Statistical_inference_two.html" class="pagination-link" aria-label="Comparing two groups">
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

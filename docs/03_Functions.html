@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -58,6 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -100,7 +101,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -109,6 +116,7 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -121,6 +129,33 @@ div.csl-indent {
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
 </head>
 
 <body class="nav-sidebar floating">
@@ -129,12 +164,12 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_Intro_R_RStudio.html">Part I: Processing and visualizing data with R</a></li><li class="breadcrumb-item"><a href="./03_Functions.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Functions</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_Intro_R_RStudio.html">Part I: Processing and visualizing data with R</a></li><li class="breadcrumb-item"><a href="./03_Functions.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Functions</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -144,7 +179,7 @@ div.csl-indent {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header">
     <div class="sidebar-title mb-0 py-0">
       <a href="./">Introduction to data analysis and visualization with R</a> 
@@ -255,6 +290,18 @@ div.csl-indent {
  <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Sampling distributions</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23_Statistical_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to statistical inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -269,43 +316,43 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introducing statistical inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_Linear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./45_Intro_map.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./46_Multiple_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -322,7 +369,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./99_References.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">References</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
       </ul>
@@ -330,7 +377,7 @@ div.csl-indent {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -351,7 +398,7 @@ div.csl-indent {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_Intro_R_RStudio.html">Part I: Processing and visualizing data with R</a></li><li class="breadcrumb-item"><a href="./03_Functions.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Functions</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span id="sec-functions" class="quarto-section-identifier"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Functions</span></span></h1>
 </div>
@@ -366,12 +413,15 @@ div.csl-indent {
   </div>
   
 
+
 </header>
 
+
 <p>A <em>function</em> in R can be thought of as a black box which receives <em>inputs</em> and, depending on those inputs, produces some <em>output</em>. Vending machines provide a good working model of what a “function” is in computer science: depending on the inputs they receive (in the form of coins of various denomination, plus the buttons you press for a particular item) they give you some output (Mars bars, Coke, and the like). It’s just that computer scientists like to refer to the inputs as “function arguments” or simply “arguments” instead of coins, and to the output as the “return value”. Arguments are also often referred to as “parameters” to the function. The general workings of a function are illustrated below:</p>
-<div class="cell">
+<div class="cell" data-layout-align="default">
 <div class="cell-output-display">
 <div>
+<p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart LR
   A([argument 1]) --&gt; F{FUNCTION}
@@ -382,10 +432,11 @@ div.csl-indent {
   F --&gt; G([return value])
 </pre>
 </div>
+<p></p></figure><p></p>
 </div>
 </div>
 </div>
-<p>We have already seen some functions at work in R: for example, <code>sqrt</code>, <code>log</code>, and <code>exp</code> are all functions that take numbers and return some other number. In turn, the <code>paste</code> function (<a href="02_R_programming_basics.html#sec-strings"><span>Section&nbsp;2.2.2</span></a>) takes one or more character strings and returns a single character string.</p>
+<p>We have already seen some functions at work in R: for example, <code>sqrt</code>, <code>log</code>, and <code>exp</code> are all functions that take numbers and return some other number. In turn, the <code>paste</code> function (<a href="02_R_programming_basics.html#sec-strings" class="quarto-xref"><span>Section 2.2.2</span></a>) takes one or more character strings and returns a single character string.</p>
 <p>When we ask a function to do something, we are <em>calling</em> the function. The arguments of functions are always enclosed in parentheses. For example, executing <code>sqrt(9)</code>, calls the built-in square root function. Its argument (or input, or parameter) is 9, and its return value is the square root of 9, which is 3.</p>
 <p>Just like vending machines, functions may not be as straightforward as described above, but could do other things than simply return a value. Vending machines happen to impose a decrease in the amount of available money in your pocket after they are used. This is a very real effect with implications for our future possibilities in the real world, but has nothing to do with the pressing of buttons and the items delivered by the machine. Similarly, functions in R may do other things than simply return a value: they may print messages on the screen, change the working directory, or load packages. We have already seen examples of functions having these side effects: <code>print</code> will display the value of a variable on screen, <code>setwd</code> sets your working directory and is not used for the value it returns, and <code>library</code> is used for its effect of loading R packages.</p>
 <p>While such effects are important to keep in mind (and can be useful), below we will focus on functions which simply receive an input and produce an output based on those inputs, without any other effects.</p>
@@ -393,7 +444,7 @@ div.csl-indent {
 <h2 data-number="3.1" class="anchored" data-anchor-id="user-defined-functions"><span class="header-section-number">3.1</span> User-defined functions</h2>
 <section id="sec-f1arg" class="level3" data-number="3.1.1">
 <h3 data-number="3.1.1" class="anchored" data-anchor-id="sec-f1arg"><span class="header-section-number">3.1.1</span> How to define functions</h3>
-<p>Thus far, we have been using many built-in functions in R, such as <code>exp</code>, <code>log</code>, <code>sqrt</code>, <code>seq</code>, <code>paste</code>, and others. However, it is also possible to define our own functions, which can then be used just like any built-in function. The way to do this is to first give a name to the function. The naming rules for functions are exactly the same as the naming rules for variables (<a href="02_R_programming_basics.html#sec-assignment"><span>Section&nbsp;2.2.1</span></a>). Then we assign to this name the <code>function</code> keyword, followed by the function’s arguments in parentheses, and then the R code comprising the function’s body enclosed in curly braces <code>{}</code>. For example, here is a function which calculates the area of a circle with given radius:</p>
+<p>Thus far, we have been using many built-in functions in R, such as <code>exp</code>, <code>log</code>, <code>sqrt</code>, <code>seq</code>, <code>paste</code>, and others. However, it is also possible to define our own functions, which can then be used just like any built-in function. The way to do this is to first give a name to the function. The naming rules for functions are exactly the same as the naming rules for variables (<a href="02_R_programming_basics.html#sec-assignment" class="quarto-xref"><span>Section 2.2.1</span></a>). Then we assign to this name the <code>function</code> keyword, followed by the function’s arguments in parentheses, and then the R code comprising the function’s body enclosed in curly braces <code>{}</code>. For example, here is a function which calculates the area of a circle with given radius:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>circleArea <span class="ot">&lt;-</span> <span class="cf">function</span>(radius) {</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  area <span class="ot">&lt;-</span> radius<span class="sc">^</span><span class="dv">2</span> <span class="sc">*</span> pi</span>
@@ -432,7 +483,7 @@ div.csl-indent {
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(volume)</span>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Here we used the fact that the volume of a cylinder is the area of its base circle, times its height. Notice also that we made use of our earlier <code>circleArea</code> function within the body of <code>cylinderVol</code>. While this was not a necessity and we could have simply written <code>volume &lt;- radius^2 * pi * height</code> above, this is generally speaking good practice: by constructing functions to solve smaller problems, one can write slightly more complicated functions which make use of those simpler ones. Then, one will be able to write even more complex functions using the slightly more complex ones in turn—and so on. We will discuss this principle in more detail below, in <a href="#sec-funccomp"><span>Section&nbsp;3.2</span></a>.</p>
+<p>Here we used the fact that the volume of a cylinder is the area of its base circle, times its height. Notice also that we made use of our earlier <code>circleArea</code> function within the body of <code>cylinderVol</code>. While this was not a necessity and we could have simply written <code>volume &lt;- radius^2 * pi * height</code> above, this is generally speaking good practice: by constructing functions to solve smaller problems, one can write slightly more complicated functions which make use of those simpler ones. Then, one will be able to write even more complex functions using the slightly more complex ones in turn—and so on. We will discuss this principle in more detail below, in <a href="#sec-funccomp" class="quarto-xref"><span>Section 3.2</span></a>.</p>
 <p>When calling a function with multiple arguments, the default convention is that their order should follow the same pattern as in the function’s definition. The function call <code>cylinderVol(2, 3)</code> means that <code>radius</code> will be set to 2 and <code>height</code> to 3, because that is the order in which the arguments were defined in <code>function(radius, height)</code>. But one can override this default ordering by explicitly naming arguments, as explained below.</p>
 <p>It is optional but possible to name the arguments explicitly. This means that calling <code>circleArea(3)</code> is the same as calling <code>circleArea(radius = 3)</code>, and calling <code>cylinderVol(2, 3)</code> is the same as calling <code>cylinderVol(radius = 2, height = 3)</code>. Even more is true: since naming the arguments removes any ambiguity about which argument is which, one may even call <code>cylinderVol(height = 3, radius = 2)</code>, with the arguments in reverse order, and this will still be equivalent to <code>cylinderVol(2, 3)</code>.</p>
 <p>While naming arguments this way is optional, doing so can increase the clarity of our programs. To give an example from a built-in function in R, take <code>log(5, 3)</code>. Does this function compute the base-5 logarithm of 3, or the base-3 logarithm of 5? While reading the documentation reveals that it is the latter, one can clarify this easily, because the second argument of <code>log</code> is called <code>base</code>, as seen from reading the help after typing <code>?log</code>. We can then write <code>log(5, base = 3)</code>, which is now easy to interpret: it is the base-3 logarithm of 5.</p>
@@ -486,7 +537,7 @@ div.csl-indent {
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">mean</span>(<span class="fu">log</span>(<span class="fu">seq</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">11</span>, <span class="at">by =</span> <span class="dv">2</span>)), <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Part of the reason is the awkward backwards order of function applications which makes it hard to see which function the argument <code>na.rm = TRUE</code> belongs to. Fortunately, there is a simple operator in R called a <em>pipe</em> (written <code>|&gt;</code>), which allows one to write the same code in a more streamlined way. The pipe allows one to write function application in reverse order (first the argument and then the function), making the code more transparent. Formally, <code>x |&gt; f()</code> is equivalent to <code>f(x)</code> for any function <code>f</code>. For example, <code>sqrt(9)</code> can also be written <code>9 |&gt; sqrt()</code>. Thus, <code>sqrt(sin(cos(log(1))))</code> can be written as <code>1 |&gt; log() |&gt; cos() |&gt; sin() |&gt; sqrt()</code>, which reads straightforwardly as “start with the number 1; <em>then</em> take its log; <em>then</em> take the cosine of the result; <em>then</em> take the sine of that result; and <em>then</em>, finally, take the square root to obtain the final output”. In general, it helps to pronounce <code>|&gt;</code> as “then”.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
-<p>The pipe also works for functions with multiple arguments. In that case, <code>x |&gt; f(y, ...)</code> is equivalent to <code>f(x, y, ...)</code>. That is, the pipe refers to the function’s first argument (though, as we will see in <a href="40_Intro_adv_statistics.html#sec-dot"><span>Section&nbsp;13.4</span></a>, it is possible to override this). Instead of the awkward and hard-to-read <code>mean(log(seq(-3, 11, by = 2)), na.rm = TRUE)</code>, we can therefore write:</p>
+<p>The pipe also works for functions with multiple arguments. In that case, <code>x |&gt; f(y, ...)</code> is equivalent to <code>f(x, y, ...)</code>. That is, the pipe refers to the function’s first argument (though, as we will see in <a href="24_Statistical_inference_two.html#sec-dot" class="quarto-xref"><span>Section 14.4</span></a>, it is possible to override this). Instead of the awkward and hard-to-read <code>mean(log(seq(-3, 11, by = 2)), na.rm = TRUE)</code>, we can therefore write:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">11</span>, <span class="at">by =</span> <span class="dv">2</span>) <span class="sc">|&gt;</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">log</span>() <span class="sc">|&gt;</span></span>
@@ -534,7 +585,7 @@ Tip
 </ol>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
 <div id="ref-Gillespie2004" class="csl-entry" role="listitem">
 Gillespie, John H. 2004. <em>Population Genetics: A Concise Guide</em>. Baltimore, MD, USA: Johns Hopkins University Press.
 </div>
@@ -544,7 +595,7 @@ Gillespie, John H. 2004. <em>Population Genetics: A Concise Guide</em>. Baltimor
 <hr>
 <ol>
 <li id="fn1"><p>More precisely, it is not a real number. Just as with square roots, negative numbers have complex logarithms. In particular, <span class="math inline">\(\log(-1) = \log(\text{e}^{\text{i}\pi}) = \text{i}\pi\)</span> and <span class="math inline">\(\sqrt{-1} = \text{i}\)</span>. Both are rigorously provable propositions, and they have profound if strange-looking consequences. For instance, <span class="math inline">\(\log(-1)\)</span> divided by <span class="math inline">\(\sqrt{-1}\)</span> is exactly <span class="math inline">\(\pi\)</span>. This has prompted the 19th-century English mathematician <a href="https://en.wikipedia.org/wiki/Augustus_De_Morgan">Augustus De Morgan</a> (1806-1871) to exclaim: “Imagine a person with a gift of ridicule [who might say:] first that a negative quantity has no logarithm; secondly that a negative quantity has no square root; thirdly that the first non-existent is to the second as the circumference of a circle is to the diameter.” (Note: it is possible to compute with complex numbers in R. Try executing <code>log(-1 + 0i) / sqrt(-1 + 0i)</code> to verify De Morgan’s result.)<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>This built-in pipe <code>|&gt;</code> has only been available since R 4.1. Upgrade your R version if necessary. Alternatively, you can use another pipe operator that is provided by the <code>magrittr</code> package. It is written <code>%&gt;%</code> instead of <code>|&gt;</code>, but otherwise works identically (at least at this level; we will be mentioning some of the subtler differences in <a href="40_Intro_adv_statistics.html#sec-dot"><span>Section&nbsp;13.4</span></a>). To use the <code>magrittr</code> pipe, install the package first with <code>install.packages("magrittr")</code> and then load it with <code>library(magrittr)</code>. Now you can use <code>%&gt;%</code>. Incidentally, the package name <code>magrittr</code> is an allusion to Belgian surrealist artist René Magritte (1898-1967) because of his famous painting <a href="https://en.wikipedia.org/wiki/The_Treachery_of_Images">La trahison des images</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>This built-in pipe <code>|&gt;</code> has only been available since R 4.1. Upgrade your R version if necessary. Alternatively, you can use another pipe operator that is provided by the <code>magrittr</code> package. It is written <code>%&gt;%</code> instead of <code>|&gt;</code>, but otherwise works identically (at least at this level; we will be mentioning some of the subtler differences in <a href="24_Statistical_inference_two.html#sec-dot" class="quarto-xref"><span>Section 14.4</span></a>). To use the <code>magrittr</code> pipe, install the package first with <code>install.packages("magrittr")</code> and then load it with <code>library(magrittr)</code>. Now you can use <code>%&gt;%</code>. Incidentally, the package name <code>magrittr</code> is an allusion to Belgian surrealist artist René Magritte (1898-1967) because of his famous painting <a href="https://en.wikipedia.org/wiki/The_Treachery_of_Images">La trahison des images</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -628,10 +679,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -641,8 +709,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -654,7 +731,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -698,6 +898,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -723,6 +924,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -784,17 +1011,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./02_R_programming_basics.html" class="pagination-link">
+      <a href="./02_R_programming_basics.html" class="pagination-link" aria-label="R programming basics">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R programming basics</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./04_Data_reading.html" class="pagination-link">
+      <a href="./04_Data_reading.html" class="pagination-link" aria-label="Reading tabular data from disk">
         <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reading tabular data from disk</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 
