@@ -11,6 +11,14 @@ print(snails)
 ```
 
 
+```{r}
+#| include: false
+
+pop <- read_delim("pop_data.csv", delim = ",")
+
+```
+
+
 ## Themes {#sec-themes}
 
 The default appearance of a plot created with `ggplot` is with a gray background and white panel grids going through it to aid locating coordinates. Here is the plot we ended @sec-ggplot with, where these features are clearly visible:
@@ -250,6 +258,62 @@ snails |>
 ```
 
 In a similar manner, `scales = "free_y"` is also a valid option (making the y-axes across facet rows vary individually), as is `scales = "free"` (both x- and y-axes vary across facet columns and rows). The default setting, which uses the same axes for all facet rows and columns, is `scales = "fixed"`.
+
+### Grouped histograms
+Refer back to the population density data analyzed in @sec-normalization. When we summarized the mean and standard deviation of the density of each species we concluded that there are some similarities and some differences between the three groups. The distribution of each species can also help in understanding our data, especially if we also add some summary statistics into the figure.
+
+```{r}
+#| label: fig-dist-mean
+#| fig-cap: The density distribution of three different species, with their means marked in red.
+pop |> 
+  pivot_longer(cols = starts_with("species"),
+               names_to = "species",
+               values_to = "density") |> 
+  group_by(species) |> 
+  mutate(mean = mean(density)) |>
+  ungroup() |>
+  # Begin visualization
+  ggplot(aes(x = density)) + 
+  geom_histogram(binwidth = 0.5, fill = "steelblue") + 
+  # Facets the histogram based on species
+  facet_grid(species ~ .) +
+  labs(y = "count") +
+  # Adds a custom segment to the visualization depicting the mean
+  geom_segment(
+    # Define start and end values of the segment:
+    aes(x = mean, xend = mean, y = 0, yend = 50),
+    # Define width and color of the segment:
+    linewidth = 1, color = "firebrick"
+  ) +
+  theme_bw()
+```
+
+The mean gives us a measure of the center of the data---but as we can see in the visualizations, sometimes the mean by itself misrepresents the data as a whole. For example, the mean of Species 2 is `r mean(pop$species2) |> round(2)`% but the values of the variable are grouped either lower or higher than this value. The mean itself isn't actually close to an observed value. Compare this to the mean of `Species 1` (`r mean(pop$species1) |> round(2)`%) which actually falls close to observed values. The mean is better at describing this variable than the previous.
+
+This also shows why the groups have different standard deviations, as the observations of Species 2 are on average further away from its mean than the observations of Species 1. We would not have been able to draw these conclusions without visualizing the variable and this shows the importance of visualizations when describing data.
+
+### Grouped boxplots
+If we want to compare the distribution of multiple groups we can also use `facet_grid()`.
+
+```{r}
+pop |> 
+  pivot_longer(cols = starts_with("species"),
+               names_to = "species",
+               values_to = "density") |> 
+  ggplot(aes(x = density)) + 
+  geom_boxplot(color = "steelblue", fill = "steelblue", alpha = 0.2) +
+  # Facets the histogram based on species
+  facet_grid(species ~ .) +
+  labs(x = "Population Density") + 
+  # The y-axis is not relevant in this type of visualization,
+  # so it is removed by setting breaks = NULL:
+  scale_y_continuous(breaks = NULL) +
+  theme_bw()
+```
+
+The line (whiskers) mark the range of the first and last 25% of the data limited by the smallest and largest value. The box in the middle mark the range of the middle 50% of the data with the bold line inside the box showing the median. 
+
+The function in R also does something that we might not have expected for Species 1. There are a number of points further away from the line that are not considered to be a part of the box plot data, they are instead considered outliers. R defines any value further than 1.5 times the *interquartile range* (see @sec-iqr) from the edges of the box as outliers.
 
 
 ## Summaries and confidence intervals {#sec-CI}
