@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.553">
+<meta name="generator" content="quarto-1.5.57">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introduction to data analysis and visualization with R - 7&nbsp; Creating publication-grade figures</title>
+<title>7&nbsp; Creating publication-grade figures – Introduction to data analysis and visualization with R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -132,13 +132,13 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01_Intro_R_RStudio.html">Part I: Processing and visualizing data with R</a></li><li class="breadcrumb-item"><a href="./07_Creating_figures.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Creating publication-grade figures</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -168,9 +168,9 @@ div.csl-indent {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Part I: Processing and visualizing data with R</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -233,50 +233,44 @@ div.csl-indent {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
- <span class="menu-text">Part II: Introductory statistics (UNDER CONSTRUCTION)</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II: Introductory statistics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./20_Intro_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Introducing statistics</span></span></a>
-  </div>
-</li>
-          <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
   <a href="./21_Probabilities_and_distributions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Probabilities and probability distributions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Probabilities and probability distributions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./22_Sampling_distributions.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Sampling distributions</span></span></a>
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Sampling distributions</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./23_Statistical_inference.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Introduction to statistical inference</span></span></a>
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Introduction to statistical inference</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./24_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
  <span class="menu-text">Part III: Advanced statistics</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -284,52 +278,52 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_Linear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./45_Intro_map.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./46_Multiple_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
   </div>
 </li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
  <span class="menu-text">References</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -337,7 +331,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./99_References.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">References</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
       </ul>
@@ -357,9 +351,12 @@ div.csl-indent {
   <li><a href="#some-common-geometries" id="toc-some-common-geometries" class="nav-link" data-scroll-target="#some-common-geometries"><span class="header-section-number">7.3</span> Some common geometries</a>
   <ul>
   <li><a href="#scatter-plots-with-geom_point" id="toc-scatter-plots-with-geom_point" class="nav-link" data-scroll-target="#scatter-plots-with-geom_point"><span class="header-section-number">7.3.1</span> Scatter plots with <code>geom_point</code></a></li>
-  <li><a href="#sec-geom-histogram" id="toc-sec-geom-histogram" class="nav-link" data-scroll-target="#sec-geom-histogram"><span class="header-section-number">7.3.2</span> Histograms with <code>geom_histogram</code></a></li>
-  <li><a href="#box-plots-with-geom_boxplot" id="toc-box-plots-with-geom_boxplot" class="nav-link" data-scroll-target="#box-plots-with-geom_boxplot"><span class="header-section-number">7.3.3</span> Box plots with <code>geom_boxplot</code></a></li>
-  <li><a href="#sec-smooth" id="toc-sec-smooth" class="nav-link" data-scroll-target="#sec-smooth"><span class="header-section-number">7.3.4</span> Smoothing lines with <code>geom_smooth</code></a></li>
+  <li><a href="#sec-distributions" id="toc-sec-distributions" class="nav-link" data-scroll-target="#sec-distributions"><span class="header-section-number">7.3.2</span> Distribution of a variable</a>
+  <ul class="collapse">
+  <li><a href="#sec-geom-histogram" id="toc-sec-geom-histogram" class="nav-link" data-scroll-target="#sec-geom-histogram"><span class="header-section-number">7.3.2.1</span> Histograms with <code>geom_histogram</code></a></li>
+  <li><a href="#box-plots-with-geom_boxplot" id="toc-box-plots-with-geom_boxplot" class="nav-link" data-scroll-target="#box-plots-with-geom_boxplot"><span class="header-section-number">7.3.2.2</span> Box plots with <code>geom_boxplot</code></a></li>
+  </ul></li>
+  <li><a href="#sec-smooth" id="toc-sec-smooth" class="nav-link" data-scroll-target="#sec-smooth"><span class="header-section-number">7.3.3</span> Smoothing lines with <code>geom_smooth</code></a></li>
   </ul></li>
   <li><a href="#saving-plots" id="toc-saving-plots" class="nav-link" data-scroll-target="#saving-plots"><span class="header-section-number">7.4</span> Saving plots</a></li>
   <li><a href="#sec-ggplot-exercises" id="toc-sec-ggplot-exercises" class="nav-link" data-scroll-target="#sec-ggplot-exercises"><span class="header-section-number">7.5</span> Exercises</a></li>
@@ -392,7 +389,7 @@ div.csl-indent {
 <h2 data-number="7.1" class="anchored" data-anchor-id="general-philosophy"><span class="header-section-number">7.1</span> General philosophy</h2>
 <p>In science, we want clear and informative plots. Each figure should make it obvious what data you are plotting, what the axes, colors, shapes, and size differences represent, and the overall message the figure is conveying. When writing a scientific paper or report, remember that your future readers are busy people. They often do not have the time to delve into the subtleties of overly refined verbal arguments. Instead, they will most often look for the figures to learn what your work is about. You will want to create figures which makes this possible for them to do.</p>
 <p>Here we will learn how to create accessible, publication-quality scientific graphs in a simple way. We do this using the R package <code>ggplot2</code> which is a standard part of the <code>tidyverse</code>. The <code>ggplot2</code> package follows a very special philosophy for creating figures that was originally proposed by Leland <span class="citation" data-cites="Wilkinson2006">Wilkinson (<a href="99_References.html#ref-Wilkinson2006" role="doc-biblioref">2006</a>)</span>. The essence of this view is that, just like the grammar of sentences, graphs have fixed “grammatical” components whose specification defines the plot. The grand idea is that the data ought not be changed in order to display it in different formats. For instance, the same data should be possible to represent either as a box plot, or as a histogram, without changing their format.</p>
-<p>This last claim needs to be qualified somewhat. It is more accurate to say that one should not need to change the data <em>as long as they are in tidy format</em>. As a reminder, “tidy data” means that every variable is in its own column, and every observation is in its own row (<a href="06_Summaries_normalization.html#sec-tidy" class="quarto-xref"><span>Section 6.2</span></a>). In case the data are not tidy, one should first wrangle them into such form, for example by using <code>pivot_longer</code>. While this step is not always required (especially for simpler graphs), it can be very useful to tidy the data before analyzing and plotting them when working with larger, more complex datasets.</p>
+<p>This last claim needs to be qualified somewhat. It is more accurate to say that one should not need to change the data <em>as long as they are in tidy format</em>. As a reminder, “tidy data” means that every variable is in its own column, and every observation is in its own row (<a href="06_Summaries_normalization.html#sec-tidy" class="quarto-xref"><span>Section 6.4</span></a>). In case the data are not tidy, one should first wrangle them into such form, for example by using <code>pivot_longer</code>. While this step is not always required (especially for simpler graphs), it can be very useful to tidy the data before analyzing and plotting them when working with larger, more complex datasets.</p>
 </section>
 <section id="basic-ggplot2-usage" class="level2" data-number="7.2">
 <h2 data-number="7.2" class="anchored" data-anchor-id="basic-ggplot2-usage"><span class="header-section-number">7.2</span> Basic <code>ggplot2</code> usage</h2>
@@ -458,7 +455,7 @@ div.csl-indent {
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in `geom_point()`:
-! `mapping` must be created by `aes()`
+! `mapping` must be created by `aes()`.
 ℹ Did you use `%&gt;%` or `|&gt;` instead of `+`?</code></pre>
 </div>
 </div>
@@ -470,13 +467,13 @@ div.csl-indent {
 <h3 data-number="7.3.1" class="anchored" data-anchor-id="scatter-plots-with-geom_point"><span class="header-section-number">7.3.1</span> Scatter plots with <code>geom_point</code></h3>
 <p>The plot above, created using <code>geom_point</code>, is called a <em>scatter plot</em>: each row in the data is represented by a point whose x- and y-coordinates come from different columns in the data (in this case, <code>size</code> and <code>shape</code>). The scatter plot above immediately revealed some interesting facts about the data. For example, the largest shell sizes are found in the humid habitats, whereas snails with the largest shell shape parameters (indicating long and slender shells) are found only in the arid regions. This is exactly the kind of information that would have been difficult to get just from the raw data in its tabular form, but is immediately seen from an appropriate graph.</p>
 </section>
-<section id="sec-geom-histogram" class="level3" data-number="7.3.2">
-<h3 data-number="7.3.2" class="anchored" data-anchor-id="sec-geom-histogram"><span class="header-section-number">7.3.2</span> Histograms with <code>geom_histogram</code></h3>
-<p>To look at a different kind of geometry, let us create a <em>histogram</em> of the shell shape measurements. This is done using <code>geom_histogram</code>:</p>
+<section id="sec-distributions" class="level3" data-number="7.3.2">
+<h3 data-number="7.3.2" class="anchored" data-anchor-id="sec-distributions"><span class="header-section-number">7.3.2</span> Distribution of a variable</h3>
+<p>The distribution of a qualitative variable should be visualized using a <em>bar plot</em>. If the variable follows the ordinal scale, the categories on the x-axis should follow the same order. If the variable follows the nominal scale we do not have to follow any specific order of the categories, but it is usually nice to order them either alphabetically or in descending order based on the (relative) frequency of the category.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> shape)) <span class="sc">+</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> species)) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -485,12 +482,15 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>A histogram divides up the x-axis into equally-sized segments, called <em>bins</em>. We then count how many observations fall within the limits of each bin, and draw the bins as tall along the y-axis as that count. So bins with many data points are tall, and bins with only few observations are short.</p>
-<p>The default setting for <code>geom_histogram</code> is to classify the data into 30 equally-sized bins, but that might not always be the best choice. In the above histogram, for example, there are some erratic-looking jumps that have more to do with having too few observations per bin than with the actual data themselves. To change the number of bins, we have two options. We can use the <code>bins</code> argument to <code>geom_histogram</code> to explicitly specify how many bins we want in the plot:</p>
+<p>When visualizing the distribution, it is customary to use the relative frequency (%) of each category instead of their absolute frequency (count). This can be done directly in the <code>ggplot</code>-process without the need for additional data processing prior to the visualization. In this case, the default calculation done is <code>count</code>ing the number of occurrences of each category and the height (y) of the bars being defined by the count. The <code>after_stat()</code> function allows for calculations after the counting has been completed. for example, <code>count / sum(count)</code> would calculate the relative frequency of each category compared to the total number of observations. If we multiply this value by 100, we can show the percent of observations of each category.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> shape)) <span class="sc">+</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># The after_stat below changes the calculation of the y-axis to</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># (count / sum(count)) * 100, instead of the default, which is count</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> species, <span class="at">y =</span> <span class="fu">after_stat</span>(count <span class="sc">/</span> <span class="fu">sum</span>(count)) <span class="sc">*</span> <span class="dv">100</span>)) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Fix the y-axis to display percentages:</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">name =</span> <span class="st">"percent"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -499,11 +499,16 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>And the histogram now looks much more well-behaved. The other option is to specify the width of each individual bin, using the <code>binwidth</code> argument:</p>
+<p>A quantitative variable can be visualized in two different ways depending on the variable type. A discrete variable, which per definition only can assume whole (or a set number of decimals) numbers, can be visualized using a <em>bar plot</em> because it usually contains a finite number of unique values and at the same time cannot have values in between.</p>
+<p>A continuous variable can be measured with infinite amount of decimal places which means that there exist an infinite amount of unique values. Instead of having an infinite number of bars in a bar plot, we group adjacent values together into intervals and create a <em>histogram</em>. Another way to visualize a continuous variable is by using a <em>box(-and-whisker)</em> plot.</p>
+<p>We do not differentiate between a variable following an interval or a ratio scale when visualizing a distribution, but it is something to take into account when interpreting the plots. For example, if a variable follows the interval scale, we could not state that values in one area of the figure are “twice as large” as values in another area.</p>
+<section id="sec-geom-histogram" class="level4" data-number="7.3.2.1">
+<h4 data-number="7.3.2.1" class="anchored" data-anchor-id="sec-geom-histogram"><span class="header-section-number">7.3.2.1</span> Histograms with <code>geom_histogram</code></h4>
+<p>To look at a different kind of geometry, let us create a <em>histogram</em> of the shell shape measurements. This is done using <code>geom_histogram</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> shape)) <span class="sc">+</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.02</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -512,11 +517,12 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>What do we do to make the plot prettier—e.g., to change the color of the bins to something else? One can give the <code>color</code> argument to <code>geom_histogram</code>:</p>
+<p>A histogram divides up the x-axis into equally-sized segments, called <em>bins</em>. We then count how many observations fall within the limits of each bin, and draw the bins as tall along the y-axis as that count. So bins with many data points are tall, and bins with only few observations are short.</p>
+<p>The default setting for <code>geom_histogram</code> is to classify the data into 30 equally-sized bins, but that might not always be the best choice. In the above histogram, for example, there are some erratic-looking jumps that have more to do with having too few observations per bin than with the actual data themselves. To change the number of bins, we have two options. We can use the <code>bins</code> argument to <code>geom_histogram</code> to explicitly specify how many bins we want in the plot:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> shape)) <span class="sc">+</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">color =</span> <span class="st">"navy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -525,11 +531,11 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>And now the plot is navy blue - at least in outline. To change the color of the fill, one must also change the <code>fill</code> argument:</p>
+<p>And the histogram now looks much more well-behaved. The other option is to specify the width of each individual bin, using the <code>binwidth</code> argument:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> shape)) <span class="sc">+</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">color =</span> <span class="st">"navy"</span>, <span class="at">fill =</span> <span class="st">"navy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.02</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -538,11 +544,11 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>One can make the fill color partially or completely transparent, too. The level of transparency is controlled by the <code>alpha</code> argument. It is 0 for fully transparent fills and 1 for fully opaque ones. The default value is 1, but one can reduce this for more transparency:</p>
+<p>What do we do to make the plot prettier—e.g., to change the color of the bins to something else? One can give the <code>color</code> argument to <code>geom_histogram</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> shape)) <span class="sc">+</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">color =</span> <span class="st">"navy"</span>, <span class="at">fill =</span> <span class="st">"navy"</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">color =</span> <span class="st">"navy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -551,11 +557,11 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>Reducing transparency further, we get:</p>
+<p>And now the plot is navy blue - at least in outline. To change the color of the fill, one must also change the <code>fill</code> argument:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> shape)) <span class="sc">+</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">color =</span> <span class="st">"navy"</span>, <span class="at">fill =</span> <span class="st">"navy"</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">color =</span> <span class="st">"navy"</span>, <span class="at">fill =</span> <span class="st">"navy"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -564,11 +570,11 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>And, for full transparency:</p>
+<p>One can make the fill color partially or completely transparent, too. The level of transparency is controlled by the <code>alpha</code> argument. It is 0 for fully transparent fills and 1 for fully opaque ones. The default value is 1, but one can reduce this for more transparency:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> shape)) <span class="sc">+</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">color =</span> <span class="st">"navy"</span>, <span class="at">fill =</span> <span class="st">"navy"</span>, <span class="at">alpha =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">color =</span> <span class="st">"navy"</span>, <span class="at">fill =</span> <span class="st">"navy"</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -577,17 +583,11 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>The arguments <code>color</code>, <code>fill</code>, and <code>alpha</code> can also appear inside the aesthetic mappings. Why didn’t they here? Because, as stated, aesthetic mappings are those aspects of a plot that are governed by the data. But here, the color, fill, and transparency levels do not depend on the data: they have been chosen independently, to be constant values.</p>
-<p>Incidentally, there are many built-in color names in R. One can see the full list by invoking <code>colors()</code> in the R console - there are hundreds of them. To see what those colors actually look like, <a href="https://r-charts.com/colors">this website</a> has a good overview.</p>
-</section>
-<section id="box-plots-with-geom_boxplot" class="level3" data-number="7.3.3">
-<h3 data-number="7.3.3" class="anchored" data-anchor-id="box-plots-with-geom_boxplot"><span class="header-section-number">7.3.3</span> Box plots with <code>geom_boxplot</code></h3>
-<p>A <em>box plot</em> (also known as a “box-and-whisker plot”) provides a quick overview of how data are distributed: a box contains the middle 50% of all the data, whiskers at the ends of the boxes show the top and bottom 25%, and a thick line going through the box separates the top half from the bottom half of the data (the <em>median</em>). Additionally, points classified as outliers are shown explicitly. More detailed information on box plots will come in <a href="20_Intro_statistics.html#sec-quantiles" class="quarto-xref"><span>Section 10.3.2.3</span></a>.</p>
-<p>One can create box plots with <code>geom_boxplot</code>. Let us create one box plot of the distribution of shell shapes for each habitat (arid and humid). Putting habitat along the x-axis and shell shape along the y-axis:</p>
+<p>Reducing transparency further, we get:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> habitat, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> shape)) <span class="sc">+</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">color =</span> <span class="st">"navy"</span>, <span class="at">fill =</span> <span class="st">"navy"</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -596,12 +596,11 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>As seen, the shell shape parameters in arid habitats tend to be larger than in humid ones.</p>
-<p>Although this is sufficient, one should feel free to make the plots prettier. For instance, one could use colors and fills, like before: <!-- One can also use different themes. There are pre-defined themes such as `theme_classic()`, `theme_bw()`, and so on. For example, using `theme_bw()` gets rid of the default gray background and replaces it with a white one. The version of the graph below applies this theme, and also changes the color and fill to be based on habitat: --></p>
+<p>And, for full transparency:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> habitat, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> shape)) <span class="sc">+</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">15</span>, <span class="at">color =</span> <span class="st">"navy"</span>, <span class="at">fill =</span> <span class="st">"navy"</span>, <span class="at">alpha =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -610,15 +609,17 @@ div.csl-indent {
 </div>
 </div>
 </div>
+<p>The arguments <code>color</code>, <code>fill</code>, and <code>alpha</code> can also appear inside the aesthetic mappings. Why didn’t they here? Because, as stated, aesthetic mappings are those aspects of a plot that are governed by the data. But here, the color, fill, and transparency levels do not depend on the data: they have been chosen independently, to be constant values.</p>
+<p>Incidentally, there are many built-in color names in R. One can see the full list by invoking <code>colors()</code> in the R console - there are hundreds of them. To see what those colors actually look like, <a href="https://r-charts.com/colors">this website</a> has a good overview.</p>
 </section>
-<section id="sec-smooth" class="level3" data-number="7.3.4">
-<h3 data-number="7.3.4" class="anchored" data-anchor-id="sec-smooth"><span class="header-section-number">7.3.4</span> Smoothing lines with <code>geom_smooth</code></h3>
-<p>Let us look at the following program and its output:</p>
+<section id="box-plots-with-geom_boxplot" class="level4" data-number="7.3.2.2">
+<h4 data-number="7.3.2.2" class="anchored" data-anchor-id="box-plots-with-geom_boxplot"><span class="header-section-number">7.3.2.2</span> Box plots with <code>geom_boxplot</code></h4>
+<p>A <em>box plot</em> (also known as a “box-and-whisker plot”) provides a quick overview of how data are distributed: a box contains the middle 50% of all the data, whiskers at the ends of the boxes show the top and bottom 25%, and a thick line going through the box separates the top half from the bottom half of the data (the <em>median</em>). Additionally, points classified as outliers are shown explicitly. More detailed information on box plots will come in <a href="06_Summaries_normalization.html#sec-quantiles" class="quarto-xref"><span>Section 6.3.1.3</span></a>.</p>
+<p>One can create box plots with <code>geom_boxplot</code>. Let us create one box plot of the distribution of shell shapes for each habitat (arid and humid). Putting habitat along the x-axis and shell shape along the y-axis:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> habitat, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -627,13 +628,12 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>We see two new things here. First, there are two geometries instead of one: the first generates a scatter plot with <code>geom_point</code>, but there is an additional geometry as well. This is perfectly legal; one can add as many as one wants. The aesthetic mappings will then apply to every geometry. Second, there is a function called <code>geom_smooth</code>. This generates a wiggly blue line which attempts to estimate the general trend of how the data change. There is a grey shaded region surrounding the line, which estimates the level of uncertainty in the blue line’s position.</p>
-<p>Most often, we want a simple linear function to estimate the overall trend in the data. This can be achieved by adding <code>method = lm</code> as an argument to <code>geom_smooth</code>:</p>
+<p>As seen, the shell shape parameters in arid habitats tend to be larger than in humid ones.</p>
+<p>Although this is sufficient, one should feel free to make the plots prettier. For instance, one could use colors and fills, like before: <!-- One can also use different themes. There are pre-defined themes such as `theme_classic()`, `theme_bw()`, and so on. For example, using `theme_bw()` gets rid of the default gray background and replaces it with a white one. The version of the graph below applies this theme, and also changes the color and fill to be based on habitat: --></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> habitat, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -642,12 +642,16 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>(Here <code>lm</code> means “linear model”. It is a function in R which we will discuss in detail in <a href="41_Linear_regression.html" class="quarto-xref"><span>Chapter 16</span></a> and subsequent chapters.) The shaded region can also be turned off using the <code>se = FALSE</code> argument:</p>
+</section>
+</section>
+<section id="sec-smooth" class="level3" data-number="7.3.3">
+<h3 data-number="7.3.3" class="anchored" data-anchor-id="sec-smooth"><span class="header-section-number">7.3.3</span> Smoothing lines with <code>geom_smooth</code></h3>
+<p>Let us look at the following program and its output:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -656,12 +660,13 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>As mentioned above, when having multiple geometries, the aesthetic mappings apply to all of them by default. This means that if, for example, we want to distinguish the habitat of the snails using colors (like we did before), then we automatically split the smoothing line into two colored lines as well:</p>
+<p>We see two new things here. First, there are two geometries instead of one: the first generates a scatter plot with <code>geom_point</code>, but there is an additional geometry as well. This is perfectly legal; one can add as many as one wants. The aesthetic mappings will then apply to every geometry. Second, there is a function called <code>geom_smooth</code>. This generates a wiggly blue line which attempts to estimate the general trend of how the data change. There is a grey shaded region surrounding the line, which estimates the level of uncertainty in the blue line’s position.</p>
+<p>Most often, we want a simple linear function to estimate the overall trend in the data. This can be achieved by adding <code>method = lm</code> as an argument to <code>geom_smooth</code>:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape, <span class="at">color =</span> habitat)) <span class="sc">+</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -670,11 +675,11 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>This is a very handy feature. Sometimes however, we want to color the points by habitat but still retain a single global smoothing line for all points taken together. How can one do that? It turns out that in addition to the global aesthetic mappings (that are inside the <code>ggplot</code> function), one can also define local ones inside any <code>geom_</code> function. So one solution could be to only define the color aesthetic inside <code>geom_point</code>:</p>
+<p>(Here <code>lm</code> means “linear model”. It is a function in R which we will discuss in detail in <a href="41_Linear_regression.html" class="quarto-xref"><span>Chapter 15</span></a> and subsequent chapters.) The shaded region can also be turned off using the <code>se = FALSE</code> argument:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> habitat)) <span class="sc">+</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
@@ -684,16 +689,44 @@ div.csl-indent {
 </div>
 </div>
 </div>
-<p>One final comment: the default color for the smoothing line is blue, but this can be changed within <code>geom_smooth</code>. To set the color to black, for instance:</p>
+<p>As mentioned above, when having multiple geometries, the aesthetic mappings apply to all of them by default. This means that if, for example, we want to distinguish the habitat of the snails using colors (like we did before), then we automatically split the smoothing line into two colored lines as well:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> habitat)) <span class="sc">+</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape, <span class="at">color =</span> habitat)) <span class="sc">+</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
 <p><img src="07_Creating_figures_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This is a very handy feature. Sometimes however, we want to color the points by habitat but still retain a single global smoothing line for all points taken together. How can one do that? It turns out that in addition to the global aesthetic mappings (that are inside the <code>ggplot</code> function), one can also define local ones inside any <code>geom_</code> function. So one solution could be to only define the color aesthetic inside <code>geom_point</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> habitat)) <span class="sc">+</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_Creating_figures_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>One final comment: the default color for the smoothing line is blue, but this can be changed within <code>geom_smooth</code>. To set the color to black, for instance:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> habitat)) <span class="sc">+</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="07_Creating_figures_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -705,24 +738,24 @@ div.csl-indent {
 <h2 data-number="7.4" class="anchored" data-anchor-id="saving-plots"><span class="header-section-number">7.4</span> Saving plots</h2>
 <p>To save the most recently created ggplot figure, simply type</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"graph.pdf"</span>, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"graph.pdf"</span>, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Here <code>filename</code> is the name (with path and extension) of the file you want to save the figure into. The extension is important: by having specified <code>.pdf</code>, the system automatically saves the figure in PDF format. To use, say, PNG instead:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"graph.png"</span>, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"graph.png"</span>, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>PDF is a vectorized file format: the file contains the instructions for generating the plot elements instead of a pixel representation of the image. Consequently, PDF figures are arbitrarily scalable, and are therefore the preferred way of saving and handling scientific graphs.</p>
 <p>The <code>width</code> and <code>height</code> parameters specify, in inches, the dimensions of the saved plot. Note that this also scales some other plot elements, such as the size of the axis labels and plot legends. This means you can play with the <code>width</code> and <code>height</code> parameters to save the figure at a size where the labels are clearly visible without being too large.</p>
 <p>In case you would like to save a figure that is not the last one that was generated, you can specify the <code>plot</code> argument to <code>ggsave()</code>. to do so, first you should assign a plot to a variable. For example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> snails <span class="sc">|&gt;</span> <span class="co"># Assign the ggplot object to the variable p</span></span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> habitat)) <span class="sc">+</span></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> snails <span class="sc">|&gt;</span> <span class="co"># Assign the ggplot object to the variable p</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> habitat)) <span class="sc">+</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"black"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>and then</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"graph.pdf"</span>, <span class="at">plot =</span> p, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="at">filename =</span> <span class="st">"graph.pdf"</span>, <span class="at">plot =</span> p, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="sec-ggplot-exercises" class="level2" data-number="7.5">
@@ -796,18 +829,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -839,7 +861,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp('/' + window.location.host + '/');
@@ -847,7 +891,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {
