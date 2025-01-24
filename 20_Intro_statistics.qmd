@@ -73,48 +73,7 @@ What this means in practice is that it is very important to know which scale the
 
 There are two main ways to summarize a variable; either visualize its *distribution*, or present various descriptive statistics that provide information about the variable.
 
-### Distributions {#sec-distributions}
 
-We have already looked at different ways to visualize a distribution of a variable in @sec-ggplot which we can summarize as follows.
-
-The distribution of a qualitative variable should be visualized using a bar plot. If the variable follows the ordinal scale, the categories on the x-axis should follow the same order. If the variable follows the nominal scale we do not have to follow any specific order of the categories, but it is usually nice to order them either alphabetically or in descending order based on the (relative) frequency of the category.
-
-```{r}
-pop |>
-  ggplot(aes(x = patch)) +
-  geom_bar(fill = "steelblue") +
-  theme_bw()
-```
-
-When visualizing the distribution, it is customary to use the relative frequency (%) of each category instead of their absolute frequency (count). This can be done directly in the `ggplot`-process without the need for additional data processing prior to the visualization. In this case, the default calculation done is `count`ing the number of occurrences of each category and the height (y) of the bars being defined by the count. The `after_stat()` function allows for calculations after the counting has been completed. for example, `count / sum(count)` would calculate the relative frequency of each category compared to the total number of observations. If we multiply this value by 100, we can show the percent of observations of each category.  
-
-```{r}
-pop |>
-  # The after_stat below changes the calculation of the y-axis to
-  # (count / sum(count)) * 100, instead of the default, which is count
-  ggplot(aes(x = patch, y = after_stat(count / sum(count)) * 100)) +
-  geom_bar(fill = "steelblue") +
-  # Fix the y-axis marks to display percentages:
-  scale_y_continuous(name = "percent", labels = paste0(0:5 * 10, "%")) +
-  theme_bw()
-```
-
-A quantitative variable can be visualized in two different ways depending on the variable type. A discrete variable, which per definition only can assume whole (or a set number of decimals) numbers, can be visualized using a bar plot because it usually contains a finite number of unique values and at the same time cannot have values in between. A continuous variable can be measured with infinite amount of decimal places which means that there exist an infinite amount of unique values. Instead of having an infinite number of bars in a bar plot, we group adjacent values together into intervals and create a histogram.
-
-```{r}
-pop |> 
-  pivot_longer(cols = starts_with("species"),
-               names_to = "species",
-               values_to = "density") |>
-  ggplot(aes(x = density)) +
-  geom_histogram(binwidth = 0.5, fill = "steelblue") +
-  facet_grid(species ~ .) +
-  theme_bw()
-```
-
-We do not differentiate between a variable following an interval or a ratio scale when visualizing a distribution, but it is something to take into account when interpreting the plots. For example, if a variable follows the interval scale, we could not state that "the values are split into two main groups, one twice the value of the other".
-
-Another way to visualize a continuous variable is by using a box(-and-whisker) plot, but this type of plot requires information about different measures of the variable, so we will return to this visualization later in this chapter.
 
 ### Measures of center {#sec-measurecenter}
 

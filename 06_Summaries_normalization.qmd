@@ -2,7 +2,11 @@
 
 @sec-wrangling introduced the basics of manipulating data. Here we continue by learning how one can efficiently compute summary statistics over a dataset. Additionally, we will take a look at the concept of *tidy data*. The two are not independent: as we will see, tidy data admit to calculating summaries much more efficiently than non-tidy data.
 
+When given a dataset -- such as the snail data in @sec-snail -- it is difficult or even impossible to look at the entire set and understand the information it provides. It is therefore important to be able to describe aspects of the data, such as the different variables and observations, through the use of statistical measurements.
+
 We will be relying on the file [`pop_data.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/pop_data.zip). Download the file and set your working directory to the folder where you saved it. This is a comma-separated file (CSV), so you can load it using `read_delim`, with the delimiter specified as the comma. As usual, we first load the `tidyverse` package:
+
+<!-- TODO We noted in NBIC66 that read_delim does not allow for custom decimal separators meaning that not all csv files can be correctly read by that function, case of ; column separator and , as decimal. I would recommend focusing on read_csv and read_csv2, although they do not allow for changing the symbols, they account for the two different variants of csv files. -->
 
 ```{r}
 #| message: false
@@ -22,7 +26,60 @@ The data we just loaded contain population densities of three species at two spa
 pop
 ```
 
-One can now perform various manipulations on these data, by using the functions we have learned about in @sec-wrangling. For instance, we could create a new column called `total` which contains the total community density (sum of the three species' population densities) at each point in time and each location:
+## Statistical concepts and terminology
+This dataset is a *sample* from a larger *population,*^["Population" in the statistical sense of the word is not to be confused with "population" from ecology. It simply means the complete set of all entities out there from which we take our smaller sample.] and while it is not clear how the *units* in the sample (the different time points) have been selected, we can assume that they have been randomly selected from the population of all possible time points.
+
+It would be impossible, if not very expensive, to collect data from all units in a population. This means that in practice we work with samples of data. We are still interested in making conclusions about the population, but these will be made from a smaller set of units that we can actually collect data from. The information we collect will depend on the units selected for the sample, and any two samples will contain different units if the *sampling procedure* is done with any kind of *randomization*. 
+
+Properties or descriptive statistics calculated on the population are called *parameters* (*parameter* in singular), and these will have the same value because the population contains all units we are interested in. In the sample we instead calculate *statistics* (*statistic* in singular) which is an *estimate* of the population parameter. The value of a statistic will also be different depending on the sample drawn and this inherent randomness is a vital aspect of *statistical inference* which will be covered in a later chapter.
+
+### Variable types
+The `pop` dataset contains 5 variables of different types. A variable type is used to describe what type of information we can find within it and determines how we can further analyze the variable. We can separate variables into two main groups: *qualitative* and *quantitative* variables. 
+
+*Qualitative* variables are those describing categories---for example nationalities, sex, blood type, etc. In our `pop` data the variable `patch` is qualitative, as it describes a label used for patches of land. If we would choose to label the two patches as 1 and 2, the variable itself would still be qualitative as the numbers do not have a numeric meaning.
+
+*Quantitative* variables are those describing real numbers, for example height, weight, or final times in a 100 m race. The numbers represent real numeric values instead of just labels. There are two sub-types of quantitative variables; discrete and continuous. A discrete variable may only take on integer (i.e., whole number) values, or a limited amount of decimals. The number of siblings would be a discrete variable, as one cannot have 2.32451 siblings and cannot measure the value with an infinite amount of decimals. Continuous variables on the other hand can be measured with this amount of detail. An example would be a person's height.
+
+In our dataset the three species' density variables (number of individuals per unit area) are considered continuous quantitative variables, as they represent a real numeric value that can be measured with infinite amount of decimals. Even though the loaded dataset contain values with only two decimals, this is only done for rounding purposes and does not prevent the variable itself to be measured with infinite amount of decimals.
+
+:::{.callout-note}
+Note that we differentiate from the variable types used within programming in earlier chapters and types used to describe variables within statistics. Some terminology is similar but the biggest difference is that within programming we differentiate between various types of quantitative (numeric) variables based on the amount of information they store on the disk.
+
+A quick conversion between the two terminologies would be:
+
+Type in R    Type in statistics
+------------ ----------------------------
+`character`  qualitative
+`factor`     qualitative
+`logical`    qualitative
+`numeric`    quantitative (discrete or continuous)
+`integer`    discrete quantitative
+:::
+
+
+### Variable scales
+In addition to describing what values we can expect in a variable, we can also use a variable *scale* to get information how the values relate to one another. Both the type and scale of a variable are important aspects to define or learn before analyzing the variable to know which methods are suitable.
+
+Qualitative variables can have one of two different scales: *nominal* and *ordinal*. 
+
+-   The nominal scale is defined by categories that **cannot** be ordered in any logical way. For instance it cannot be said that one patch comes "before" the other, or that it is "better" in any way.^[Note that there might exist other information, such as the size of the patches, that can be used to order the categories, but then we are ordering based on another variable and not the categories themselves.]
+
+-   The ordinal scale is defined by categories that **can** be ordered. Sizes of clothes are a good example of categories that can be ordered in such a way that the size continually increases  (S < M < L). However, we cannot define how much the difference actually is, or if the difference is the same between any two adjacent categories.^[A quantitative variable can be thought of as following an ordinal scale if the measurements are intervals---e.g., 0-4, 5-9, 10-19, etc.]
+
+Quantitative variables can also have one of two different scales: *interval* and *ratio*.
+
+- The interval scale is an upgrade to the ordinal scale, where values are still ordered but additionally the *difference* between any two distinct values is also meaningful. An example would be temperature measured in Celsius degrees: the difference between any two temperature values is itself always meaningful. Note however that the *actual* values, by themselves, need not mean anything. For example, a temperature of 0&deg;C does not mean that the temperature measured does not exist. In fact, one might as well define the zero point to be anywhere else, and it is purely by convention that it is set to the freezing point of water under normal atmospheric pressure.
+
+- The ratio scale does have a defined zero point, which creates the possibility for calculating ratios between values. We can say that the density of one species (0.2) can be twice the size of the density of another (0.1) because the value of 0 actually means that there is no presence of the species at all.
+
+:::{.callout-important}
+There is only one instance where the scale of the variable is implemented in R; namely, when we create ordered factors following an ordinal scale (@sec-factors). Otherwise this information is not saved in an R object. 
+
+What this means in practice is that it is very important to know which scale the variable follows when programming. Ignoring this makes it very easy to end up in situations where we calculate inappropriate values or use misleading visualizations.
+:::
+
+## Processing the data
+One can now perform various manipulations on these data, by using the functions we have learned about in @sec-wrangling. For instance, because the three densities in the data are quantitative continuous variables following the ratio scale, we could create a new column called `total` which contains the total community density (sum of the three species' population densities) at each point in time and each location:
 
 ```{r}
 mutate(pop, total = species1 + species2 + species3)
@@ -34,22 +91,42 @@ As a reminder, this can be written equivalently using pipes as
 pop |> mutate(total = species1 + species2 + species3)
 ```
 
-
 ## Creating summary data
 
-One can create summaries of data using the `summarize` function. This will simply apply some function to a column. For example, to calculate the average population density of species 1 in `pop`, across both time and patches, one can write
+There are two main ways to summarize a variable; either visualize its *distribution* (as we will see in @sec-ggplot and @sec-distributions), or present various descriptive statistics that provide information about the variable. 
+
+### Measures of center {#sec-measurecenter}
+
+A simple way to summarize the position of a variable is a *measure of center*. As the name implies, it describes where on the unit scale the values are centered around, and gives an indication of the magnitude, or level, of the values. 
+
+#### Mean
+
+The most common measure of center is the *mean*, which can be calculated on a continuous variable. Assume that we have *n* samples from a population, and the measurement on the i:th unit is denoted $x_i$. The mean of the sample is then calculated as
+$$
+\bar{x} = \frac{\sum_{i = 1}^n{x_i}}{n}
+$$ {#eq-mean}
+where $\bar{x}$ (pronounced "x-bar") is the statistic that aims to estimate the population mean $\mu$ (the Greek letter mu). 
+
+:::{.callout-warning}
+Even though it is mathematically possible to calculate a mean of a discrete variable, the resulting value would not be an actual value of the variable. For instance the mean number of siblings of a person might turn out to be 1.6, but no person will have 1 full plus another 6/10 sibling.
+:::
+
+To calculate the density of each of the different species in our dataset, all we need to do is use the `mean` function within a `summarize` function:
 
 ```{r}
-pop |> summarize(mean_sp1 = mean(species1))
+pop |> 
+  summarize(mean_sp1 = mean(species1))
 ```
 
 Here `mean_sp1` is the name of the new column to be created, and the `mean` function is our summary function, collapsing the data into a single number.
 
+##### Grouping
 So far, this is not particularly interesting; in fact, the exact same effect would have been achieved by typing the shorter `mean(pop$species1)` instead. The real power of `summarize` comes through when combined with `group_by`. This groups the data based on the given grouping variables. Let us see how this works in practice:
 
 ```{r}
 #| message: false
-pop |> group_by(patch)
+pop |> 
+  group_by(patch)
 ```
 
 Seemingly nothing has happened; the only difference is the extra line of comment above, before the printed table, saying `Groups: patch [2]`. What this means is that the rows of the data were internally split into two groups. The first have `"A"` as their patch, and the second have `"B"`. Whenever one groups data using `group_by`, rows which share the same unique combination of the grouping variables now belong together, and *subsequent* operations will act separately on each group instead of acting on the table as a whole (which is what we have been doing so far). That is, `group_by` does not actually alter the data; it only alters the behavior of the functions applied to the grouped data.
@@ -58,7 +135,8 @@ If we group not just by `patch` but also by `time`, the comment above the table 
 
 ```{r}
 #| message: false
-pop |> group_by(patch, time)
+pop |> 
+  group_by(patch, time)
 ```
 
 This is because there are 100 unique combinations of patch and time: two different `patch` values (`"A"` and `"B"`), and fifty points in time (1, 2, ..., 50). So we have "patch A, time 1" as group 1, "patch B, time 1" as group 2, "patch A, time 2" as group 3, and so on until "patch B, time 50" as our group 100.
@@ -100,19 +178,22 @@ One common mistake when first encountering grouping and summaries is to assume t
 
 ```{r}
 #| eval: false
-pop |> group_by(patch) |> summarize(mean_sp1 = mean(species1))
+pop |> 
+  group_by(patch) |> 
+  summarize(mean_sp1 = mean(species1))
 ```
 
 and
 
 ```{r}
 #| eval: false
-pop |> group_by(time) |> summarize(mean_sp1 = mean(species1))
+pop |> 
+  group_by(time) |> 
+  summarize(mean_sp1 = mean(species1))
 ```
 
 The first distinguishes the rows of the data only by `patch`, and therefore the average is taken over time. The second distinguishes the rows by `time`, so the average is taken over the patches. Run the two expressions again to see the difference between them!
 :::
-
 
 We can use functions such as `mutate` or `filter` on grouped data. For example, we might want to know the difference of species 1's density from its average *in each patch*. Doing the following does not quite do what we want:
 
@@ -142,6 +223,137 @@ pop |>
 
 It is good practice to always `ungroup` the data after we have calculated what we wanted using the group structure. Otherwise, subsequent calculations could be influenced by the grouping in unexpected ways.
 
+#### Median {#sec-median}
+
+One instance when the mean misrepresents a variable's center is if there are *outliers* present in the data. An outlier is an observation that is located far away from the majority of the other observations. These observations affect the mean by moving the measure towards the direction of the outliers and thereby shifting the center away from the majority of the observations. This can be identified if we visualize the distribution alongside the mean but we can also use another measure of center as an alternative.
+
+The *median* is much more robust against outliers than the mean, in the sense that it is less affected by them. It describes the middle observation if we were to order the values in increasing size. Any single extremely small or large value would not affect position of the middle observation, as long as there are sufficiently many data points.
+
+We can calculate the position --- i.e., the index of the value in a vector or the row in a dataset --- of the median as (*n* + 1) / 2, where *n* is the number of data points. This results in either a whole number (if *n* is odd), in which case the value at that position is the median. Or it could result in a half number (if *n* is even), in which case the convention is to put the median halfway between the two positions obtained by rounding the position's number up and down, respectively.
+
+The process of calculating the median can be done step by step as follows:
+
+```{r}
+# The number of observations is the number of rows in the data:
+n <- nrow(pop)
+
+# Find the position (index) of the median:
+position <- (n + 1) / 2 # The position is 50.5
+
+# Therefore we need to round down and up, to get the vector of positions c(50, 51):
+positionVec <- c(floor(position), ceiling(position))
+
+# First we order the variable
+pop |>
+  select(species1) |> # Keep only this one column
+  arrange(species1) # Order the densities from lowest to largest
+
+# Next, we extract the observations located at the position vector
+pop |>
+  select(species1) |> 
+  arrange(species1) |> 
+  slice(positionVec) # Get the middle two values (at rows 50 and 51)
+
+# Finally we calculate the mean of the two observations
+pop |>
+  select(species1) |> 
+  arrange(species1) |> 
+  slice(positionVec) |> 
+  summarize(median = mean(species1)) # Obtain their mean, which is the median of the variable
+```
+
+This becomes tedious to do multiple times, but thankfully the function `median` does all of this for us all in one go. 
+
+```{r}
+
+pop |> 
+  summarize(median = median(species1))
+
+```
+
+Using the function, the median is also `r median(pop$species1)`.^[We would expect the same value as the function uses the same process as shown earlier.]
+
+#### Quantiles {#sec-quantiles}
+
+A generalization of the median is a *quantile* which aims to divide the ordered values into a specific number of parts. For example, we can consider the median a quantile where the data are split up into two equally-sized parts. Other common quantiles are *quartiles* which divide the data into four equal quarters, each containing 25% of the data. The first quartile (which splits the data into 25% | 75%) and the third quartile (splits 75% | 25%) can be used as additional measures to gain information about different positions.
+
+:::{.callout-note}
+The second quartile is actually just the median as it splits the data into two equally sized parts, 50% | 50%, the same as we defined in the median.
+:::
+
+The function `quantile()` is used to calculate specific quantiles of a variable via the argument `probs` that can be given one or more numeric values. If we want to calculate the three quartiles we would give the values `c(0.25, 0.50, 0.75)`.
+
+```{r}
+
+pop |> 
+  summarize(quartile = quantile(species1, probs = c(0.25, 0.50, 0.75)) |> t())
+```
+
+The function `t()` is used to rotate the vector of quantiles from `quantile()` to one row instead of a column. With this the names of the columns in the result show the value of the first (25%), second (50%) and third (75%) quartile.
+
+### Measures of spread or uncertainty
+
+The measure of a center by itself does not provide the full picture of a variable. There is a joke saying that "if a statistician has one hand in a freezer and the other on a hot plate, they are on average comfortable". When summarizing a variable, it is also important to describe the spread of the values, the amount of variation they have. This can give a sense of how two variables with the same mean might differ.
+
+#### Standard deviation
+
+The *standard deviation* can be seen as the "average distance from the mean"---that is, how far away from the mean we expect a randomly selected value to be. The formula for the standard deviation is
+$$
+s = \sqrt{\frac{\sum_{i = 1}^n{(x_i - \bar{x})^2}}{n - 1}}
+$$ {#eq-sd}
+where $x_i$ is the i:th observed value, $\bar{x}$ is the mean, and $n$ is the number of observations.
+
+We can get an understanding of why the standard deviation is seen as an average by going through each step of the formula using algebraic rules. First we calculate the part inside the parenthesis, the difference between the observed value and the mean, where values further from the mean result in a bigger difference (negative or positive):
+
+```{r}
+
+pop |> 
+  mutate(diff = species1 - mean(species1))
+```
+
+When calculating the "average **distance**", we need all values to be positive (as you cannot have a negative distance). So we square all the values, making them all positive:
+
+```{r}
+pop |> 
+  mutate(diff = (species1 - mean(species1))^2)
+```
+
+Next, we sum all the squared differences so we get a sense of the total (squared) distance from every observation to the mean:
+
+```{r}
+pop |> 
+  summarize(diff = (species1 - mean(species1))^2 |> 
+              sum())
+```
+
+To get an average (squared) distance, we then divide by the number of observations or at least something that depends on the number of observations, $n - 1$.^[We will return to why we do not use $n$ directly in a later chapter.]
+
+```{r}
+pop |> 
+  summarize(diff = (species1 - mean(species1))^2 |> 
+              sum() / (length(species1) - 1))
+
+```
+
+This value can be read as an average of the **squared** distances, which is not simple to actually interpret.^[The squared distance is actually a component in more advanced calculations, and is called the *variance* of a variable.] In order to make it interpretable, we need to take the square root of the value:
+
+```{r}
+pop |> 
+  summarize(sd = ((species1 - mean(species1))^2 |> 
+              sum() / (length(species1) - 1)) |> 
+              sqrt())
+```
+
+Instead of squared distances, we now have a representation of the "normal" distances between each observation and its mean. Thankfully, we do not need to go through all of these steps every time we want to calculate the standard deviation, because we can just use the built-in function `sd`:
+
+```{r}
+pop |> 
+  summarize(sd = sd(species1))
+```
+
+#### Interquartile range {#sec-iqr}
+
+Similarly to the mean, the standard deviation will overestimate the spread of the variable if there are outliers present. Since outliers are defined as observations far from the rest of the observations, they will also be far from the mean, thereby increasing the average distance from the mean and resulting in an overestimation. Instead, we can use the difference between the first and third quartile as an indication of the spread of the variable. This is called the *interquartile range* (IQR). For instance, the IQR for Species 1 is `r quantile(pop$species1, probs = c(0.25, 0.75))[2] - quantile(pop$species1, probs = c(0.25, 0.75))[1]` using the values found in @sec-quantiles.
 
 ## Tidy data {#sec-tidy}
 
@@ -207,6 +419,35 @@ pop |>
   ungroup()
 ```
 
+### Grouped summary statistics on tidy data
+With the help of tidy data we can now summarize each of the three species with just a small addition to the code. `group_by()` and `summarize()` applied to the pivoted data allows us to calculate the same statistic over many different variables from the original data.
+
+```{r}
+pop |> 
+  pivot_longer(cols = starts_with("species"),
+               names_to = "species",
+               values_to = "density") |> 
+  group_by(species) |> 
+  summarize(mean = mean(density)) |>
+  ungroup()
+```
+
+Each mean now shows the position of the center for each variable (species), with Species 1 and 2 having closer measures of center than Species 3.
+
+To compare the standard deviations of the three species in the `pop` dataset, we can use the same type of grouped calculation we have done before, but adding on additional summary statistics within `summarize()`:
+
+```{r}
+pop |> 
+  pivot_longer(cols = starts_with("species"),
+               names_to = "species",
+               values_to = "density") |> 
+  group_by(species) |> 
+  summarize(mean = mean(density),
+            stdev = sd(density)) |>
+  ungroup()
+```
+
+Species 2 does indeed have a higher standard deviation than both species 1 and 3, indicating that its observations are further away from the mean. 
 
 ## Exercises
 
