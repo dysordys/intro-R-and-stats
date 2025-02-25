@@ -4,88 +4,153 @@
 #| include: false
 
 require(tidyverse)
+require(ggplot2)
 
 snailDat <- read_delim("island-FL.csv", delim = ",")
 
 ```
 
-*Statistical inference* are methods that we can use to infer something about the population based on a smaller sample. These methods take into account the inherent uncertainty within a sample to either provide a hopefully informative interval of values where we expect a parameter to be within or a conclusion about specific values of a parameter. We will in this chapter focus on investigating one population (or group).
+In the previous chapters we have extensively covered methods that describe a data set in one way or another, either by summarizing a data using its measures of center and spread or visualizing its distribution using an appropriate figure. All of these methods focus only on describing the data set collected which might not always what we want to use as the basis for making decisions. It is commonplace to use a random sample as a representation of the underlying population, but describing the sample does not account for the uncertainty that the random sampling creates. 
 
-We will cover two types of inference methods, *parametric* and *non-parametric* methods. The main difference between the two is whether or not we assume that the sample statistic has a distribution. Non-parametric tests are also called *distribution free* tests to actually describe that difference.
+*Statistical inference* are methods that we can use to infer something about the population based on a smaller sample. These methods take into account the inherent uncertainty within a sample to either provide a --- hopefully informative --- interval of values where we expect a parameter to be within or a conclusion about specific values of a parameter. We will in this chapter focus on investigating one population or group with the help of two types of inference, *parametric* and *non-parametric* methods. The main difference between the two is whether or not we assume that the sample statistic has a known distribution or not. Non-parametric methods are also sometimes called *distribution free* methods to specifically describe that difference.
 
-## Parametric methods
-When describing a property of a population, we would like to make inference of the proportion ($p$) or the mean ($\mu$). Whether we want to calculate an interval or test hypotheses, the methods described needs to fulfill some criteria. 
+Within statistical inference we can focus on methods relating to the measure of center, such as the mean ($\mu$) or median, for a quantitative variable or methods relating to a proportion ($p$) for a qualitative variable. Whether we want to calculate an interval or test hypotheses, using a parametric method needs to fulfill some criteria in order for the results to be a trustworthy.
 
-For inference about proportions, the following requirements must be met:
+The goal is to ascertain more information about the unknown parameter either by using a *confidence interval* or *hypothesis test* using the information from the sample. Confidence intervals produces a range of values which we assume with a degree of *confidence* covers the parameter value while hypothesis tests can either falsify or not falsify a hypothesis we consider being true about the parameter.
 
-- independence in the sample,
-    - can be fulfilled by using conducting a Simple Random Sample (SRS).
-- the variable must be binomial distributed,
-    - the variable must calculate the number of successes from n independent trials.
-- the sample proportion, $\hat{p}$, must be considered normally distributed,
-    - specifically $n\cdot p > 5$ and $n\cdot q > 5$ where p is the probability of a success and q is 1 - p.
+## Confidence intervals {#sec-confidence-interval}
+<!-- TODO INTRODUCE THIS -->
 
-For inference about means, the following requirements must be met:
+In @sec-sampling-distributions we saw how the values of a statistic were impacted by the sample they were calculated from, producing a distribution of all the statistics that is centered on the population parameter. In practice we only draw one sample but we can make use of the shape of the sampling distribution to account for the uncertainty. 
 
-- independence in the sample,
-    - can be fulfilled by using conducting a Simple Random Sample (SRS).
-- the sample mean, $\bar{X}$, must be considered normally distributed,
-    - can be achieved using the Central Limit Theorem (CLT) if the sample is sufficiently large, where the rule of thumb is $n > 30$. CLT states that a mean (or sum) of identically distributed variables will be approximately normally distributed in this case.
-    - if the sample is small, then the variable of interest, $X$, must be considered normally distributed. This means that the transformation applied to the mean will also be normally distributed.
-    
-### Hypothesis testing
-In hypothesis testing of a mean, we can follow a five-step process. 
+There exist many different confidence intervals for many different parameters but the main structure is always the same. The center point of the interval is the *point estimate* from the sample while the width of the interval is calculated using the *margin of error*.
 
-1. Check the requirements
-2. Formulate hypotheses and the significance level
-3. Calculate the test statistic
-4. Calculate the critical or p-value 
-5. Draw conclusions
-
-During step 4 and 5 we will make use of R to help us, but the other steps are still important to determine what we are trying to accomplish with the test.
-
-When formulating our hypotheses, we need to transform what we want to investigate into mathematical expressions. We also need to ensure that we use the correct mathematical symbol in the alternative hypothesis for the test to be conducted correctly. 
-
-We use the function `t.test()` which has the following arguments of interest:
-
-`x` - specifies the variable we want to investigate,
-`alternative` - specifies the type of alternative hypothesis to be tested, with values "two.sided", "less", or "greater",
-`mu` - specifies the value we want to test,
-`conf.level` - specifies the confidence level for the test, given in decimal form.
-
-For example, if we were interested in investigating whether the mean size of snails is larger than 19, we would set up hypotheses as follows:
-
-\begin{align*}
-  H_0&: \mu \le 19 \\
-H_1&: \mu > 19
-\end{align*}
-
-With a significance level of 5 percent, the function we write in R would be as follows:
-
-```{r}
-t.test(x = snailDat$size, 
-       alternative = "greater",
-       mu = 19,
-       conf.level = 0.95)
-```
-
-In the output, we see a lot of information, and here we see a disadvantage of R, that the outputs are not clearly structured like in other software.
-
-The following information can be gleaned from the different lines:
-
-- The first line provides information about which variable the test is performed on.
-- The second line provides information from the test where t is the computed test statistic, df is the degrees of freedom in the t-distribution, and p-value is the p-value of the test.
-- The third line provides information about the type of alternative hypothesis that has been tested.
-- The fourth and fifth lines provide a calculated confidence interval which could be used to answer the alternative hypothesis. In this case, since we have an alternative hypothesis specified as >, a one-sided lower confidence interval is calculated.
-- The last lines in the output provide descriptive statistics from the sample.
-- To make a decision from this test, we can directly compare the calculated p-value from the output with the specified significance level. If the p-value is lower, we can reject $H_0$, otherwise, we cannot reject it.
-
-### Confidence Intervals
-For interval estimation of a mean, the same function as for hypothesis testing, `t.test()`, can be used where the alternative argument specifies the type of interval being calculated. Note that for one-sided intervals, we must specify the alternative hypothesis that matches the restriction.
-
-A tip for assessing this is to look at the phrasing used in $H_1$ and replace the tested value with the limit we calculate. For example, the alternative hypothesis, "more than 19" $H_1: \mu > 19$, would result in a one-sided lower confidence interval as follows:
-$$ 
-  \mu > \bar{x} - t_{\alpha(1); n-1} \cdot \frac{s}{\sqrt{n}}
 $$
-which we saw in the earlier output. In the output, we are only interested in the calculated confidence interval, which means we do not need to specify any value for `mu` since it only affects the calculation of the t-test.
+\begin{aligned}
+\text{Point Estimate } \pm \text{ Margin of Error}
+\end{aligned}
+$$ {#eq-conf-interval}
+The margin of error takes two things into account; first the uncertainty of the sampling distribution, and second the level of confidence of the interval. The confidence level is a proportion that determines how confident we are that the true parameter is covered by the interval and if we were to draw all the possible samples from the population, the level describes the proportion of intervals that actually covers the true parameter.^[You can look through this [interactive visualization](https://rpsychologist.com/d3/ci/){target="_blank"} of confidence intervals that continuously draws samples and calculates intervals from the same population where we know the true mean.] 
 
+While the confidence level tries to explain a concept of convergence, in practice we usually only draw one sample which creates some difficulty in interpreting a confidence interval. We can say that an interval can either cover or not cover the true parameter but that's not informative so we instead phrase our interpretation as **"the interval covers the true parameter with the given confidence level"**. If we want to be absolute certain that the interval covers the true parameter the level of confidence would be 100%, which results in an interval that also covers the entirety of the sample space, $-\infty \le \text{parameter} \le \infty$. This does not give us any information at all about the parameter so we tend to use confidence levels of 90%, 95% or 99%.
+
+## Hypothesis testing {#sec-hypothesis-testing}
+Statistical hypothesis testing takes its inspiration from philosophy, namely the *hypothetico-deductive model*. The method describes a structure of creating hypotheses with connected evidence that would follow if the hypothesis is true and evidence that would follow if the hypothesis is false. Given this premise we can then use observations to conclude whether or not the hypothesis is falsified or not. 
+
+The process of testing statistical hypotheses uses this theory to shape different steps we can use for any and all types of hypothesis testing. If we know which parameter or type of conclusion we want to make, we can decide to use a specific hypothesis test and follow the following steps:
+
+1. Check if the test's assumptions are fulfilled
+2. Formulate a *null* ($H_0$) and *alternative* ($H_1$) hypothesis 
+3. Define the acceptable risk of making a wrong decision.
+4. Observe evidence in collected data
+5. Determine if the evidence falsifies the null hypothesis or not
+6. Draw conclusions and interpret the results
+
+:::{.callout-note}
+These steps assume that data concerning the problem has been collected but in some studies we might actually start with formulating hypotheses in order to guide us to what type of data we need to collect. 
+:::
+
+Most of these steps are more philosophical than mathematical in nature, in fact it is only within step 4 and 5 we actually make use of mathematical formulas. This means that we will be limited in the use of tools --- such as a calculator, R or any other computer software --- for only these specific steps and we need to make sure that we are using correct data and the correct formulas for the given problem as well as interpret them in the correct manner.
+
+### Step by step process
+This sub-chapter will describe each of the steps in the procedure a bit more in detail while still focusing on the general way of thinking. Explicit descriptions of the procedure in relation to specific parameters will be given later in this chapter.
+
+#### Checking assumptions
+For every method of inference there are usually some assumptions that must be fulfilled in order for the method to actually produce reliable results. These assumptions can be anything from the variable type or scale to specific distributions the statistic must follow. It is not only important to state a given method's assumption but actually check that they are fulfilled so the results are presented in its proper context and gives some weight that they are reliable to make decisions from.
+
+#### The hypotheses
+The null hypothesis is the currently considered truth --- or status quo --- which we want to falsify while the alternative hypothesis is, as the name implies, the alternative to it describing something else. One thing to keep in mind when formulating these hypotheses is that the null hypothesis can never be proven directly, it can only be falsified or not. "Not falsifying" a null hypothesis is philosophically not the same as "proving" it, even though looking at the language of the two words one can assume they are equivalent. 
+
+In contrast to the philosophical theory, statistical hypotheses require a quite strict formulation, most often directly related to specific mathematical values. We also restrict the two hypotheses to cover all possible outcomes, which means we cannot use one set of hypotheses to test multiple different alternatives. 
+
+#### The risk of making a wrong decision
+Similar to the confidence level from @sec-confidence-interval, we will never be able to conclude the correct hypothesis with absolute certainty so we need to take into account some risk. 
+
+The *significance level* ($\alpha$) --- calculated as 1 - confidence level --- describes the risk of rejecting a true null hypothesis. It is commonly set to 0.01, 0.05 or 0.10, which means we are willing to accept a 1%, 5% or 10% risk of rejecting the null hypothesis when it is actually true.
+
+This is only one of the types of errors we can make, called the *Type I error*, the other being the failure to reject a null hypothesis that is in fact false, the *Type II error*. We can visualize the four possible scenarios in a table:
+
+| Decision \ Truth  | $H_0$ True | $H_0$ False |
+|-------------------|--------------|---------------|
+| Reject $H_0$    | Type I error | Correct       |
+| Fail to Reject $H_0$ | Correct       | Type II error  |
+
+There exists a trade-off between the two types of errors, when the risk for Type I error is small the risk for Type II error is large and vice-versa. When we decide the significance level for a test we need to decide which of these risks are more important to minimize, using $\alpha = 0.01$ results in a higher risk of Type II error, while using $\alpha = 0.10$ results in a comparatively lower risk of Type II error. In many fields the use of $\alpha = 0.05$ gives an overall minimal risk for both errors. 
+
+#### The collected evidence
+The data we collect should be viewed as objective as possible. Within statistics this step includes a measurement of how far away from the null hypothesis the data is located, with larger values indicating we have observed evidence that falsifies that hypothesis.
+
+#### The decision boundary {#sec-p-value}
+Using the significance level we can determine a boundary for which we conclude that the collected data is far enough away to determine we have strong evidence to falsify the null hypothesis. We can do this in two ways; through a quantile value from the same scale as the measurement of the data's distance from the null hypothesis, or a probability of collecting a sample with data even further away --- more extreme --- from the null hypothesis.
+
+The second alternative is more commonly known as *p-values* which we compare directly to the significance level. If the probability of collecting a sample that is more extreme is lower than the risk of Type I error, we conclude that the null hypothesis has been falsified. If the probability of collecting a sample that is more extreme is higher than the risk of Type I error, we conclude that we do not have strong enough evidence to falsify the null hypothesis.
+
+#### Conclusions and interpretations
+If we falsify the null hypothesis we have found evidence for the alternative, while if we do not falsify the null hypothesis it **does not** mean we have found evidence for the null. This distinction is very important and must be used when interpreting the results. 
+
+In order to "prove" a null hypothesis we would need to conduct multiple hypothesis tests --- each with a new random sample --- that all fail to reject the same null hypothesis, thereby giving corroborating evidence for the same hypothesis.
+
+:::{.callout-tip title="Example of hypothesis testing"}
+
+<!-- TODO -->
+
+Assume we are Aristotle in Ancient Greece and want to disprove the current thinking that the Earth is flat. This could be one way to set up a hypothesis test to investigate that statement.
+
+1. Assumptions
+
+This specific hypothesis test does not have any clear assumptions but we could argue that a simple assumption is unbiased data collection.
+
+
+2. Formulate a null and alternative hypothesis:
+
+Null Hypothesis ($H_0$): The Earth is flat.\
+Alternative Hypothesis ($H_1$): The Earth is not flat.
+
+To each of these hypotheses there are experiments that can be set up which has expected evidence to support them. For example we could hold a strong light 10 meters over sea level on a big field and measure at which height above sea level we locate the light in our binoculars at different distances from the light source. 
+    
+If the earth was flat we would expect the light to be seen at the same height regardless of the distance from the source, while if the earth was not, we would expect it to be visible only at different heights when the distance changes.
+
+3. Define the acceptable risk of making a wrong decision:
+
+For this experiment we can define some form of height margin that we assume comes from measurement errors leading to us not being able to falsify the null hypothesis.
+
+4. Observe evidence in collected data:
+
+Set up the experiment with the light source and measure the height above sea level where we locate the source in our binoculars at different distances.
+
+5. Determine if the evidence falsifies the null hypothesis or not:
+
+Using the margin described in step 3, we can calculate the actual height differences that we require to be observed for us to determine if we have falsified the null hypothesis or not.
+
+6. Draw conclusions and interpret the results:
+
+If the evidence strongly supports the alternative hypothesis and the null hypothesis is rejected, we conclude that the Earth is not flat.
+
+If the evidence does not strongly support the alternative hypothesis, we fail to reject the null hypothesis, meaning we do not have enough evidence to conclude that the Earth is not flat.
+
+:::
+
+## Exercises
+
+Assume a small population where the true parameter value is 25. We measure all four (4) possible samples of a set size from this population and measure the following confidence intervals:
+
+$$
+\begin{aligned}
+5 \le \text{parameter} \le 20\\
+5 \le \text{parameter} \le 65\\
+5 \le \text{parameter} \le 65\\
+10 \le \text{parameter} \le 65
+\end{aligned}
+$$
+
+1. What is the confidence level of the interval?
+
+2. What is the level of type 1 error of the interval and how is it shown in practice?
+
+Assume some new information has come to light, for example time has passed or other external forces has caused a shift in the population, that casts doubt on the value of the true parameter. Let us take a sample from this new population and do some investigating.
+
+3. Formulate with words a null and alternative hypothesis that can be used to investigate the value of the parameter.
+
+4. What evidence would we expect to see if the null and alternative hypothesis respectively would be true?
+
+5. Explain what the type I and type II errors would mean in practice, given the hypotheses formulated in 3.
