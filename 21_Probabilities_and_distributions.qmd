@@ -3,20 +3,21 @@
 Within statistics we want to make decisions that are influenced by uncertainty. For example how often do we expect to find a snail larger than the mean size? Depending on the snail we sample, we might find one larger than the mean or not. In order to understand this event we can use *probabilities* to inform us whether this event is something that occurs often or not. Probabilities are also useful in making decisions, for instance should I bring my umbrella with me when I leave in case it will rain? Probabilities are something us humans weigh and assess semi-consciously all the time when making decisions and statistics is just a formalization of these concepts with proper numbers.
 
 ## What is a probability?
-A probability describes the chance (or risk) of an *event* --- a snail is larger than the mean size --- occurring. There are three common definitions of a probability:
+A probability is a representation (or model) of the chance that an *event* --- for example "a snail is larger than the mean size of all snails" --- occurs. It it our way of modelling a natural phenomenon that is impacted by randomness. 
+
+There are three common ways of measuring a probability:
 
 1. Using relative frequencies
 2. Using reasoning
 3. Using subjectivity
 
-In @sec-distributions we presented a way to show which values and how often they appear within a variable. This corresponds to the relative frequency definition, we calculate how often an event has occurred --- a specific value of the variable has been observed --- out of the total number of samples observed. This way of defining a probability is an approximation as the samples observed might not represent the population from which they are drawn from, but the *law of large numbers* proves that if the sample is big enough the relative frequencies are close to the true probabilities.
+In @sec-distributions we presented a way to show which values and how often they appear within a variable. This corresponds to the relative frequency definition, we calculate how often an event has occurred --- a specific value of the variable has been observed --- out of the total number of samples observed. This way of defining a probability is an approximation as the samples observed might not represent the population from which they are drawn from, but the *law of large numbers* proves that if the sample is big enough the relative frequencies are close to the theoretical probabilities.
 
-These true probabilities are calculated using the second definition. There are times when reasoning or information about the population cannot be used hence the need for relative frequencies. Using reasoning we can define a probability as the ratio between "the number of outcomes that fulfill the desired event" and the "total number of outcomes that are possible to occur". 
+These theoretical probabilities are calculated using the second definition. Using reasoning we can define a probability as the ratio between "the number of outcomes that fulfill the desired event" and the "total number of outcomes that are possible to occur". 
 
-The third definition is not something that we commonly use for calculations, at least not in the areas of statistics covered by this text, but it is closely tied to the semi-conscious assessments we humans do on a regular basis. The probability of it raining and you deciding to take your umbrella with you is subjective in the sense that one person might look at the weather and think that the probability of rain is high whereas another person looking at the same weather might have other pieces of knowledge that makes them think the probability is low. This definition of probability is difficult to measure, so the remainder of this text will focus on the two earlier definitions.
+The third definition is not something that we commonly use for calculations, at least not in the areas of statistics covered by this book, but it is closely tied to the semi-conscious assessments we humans do on a regular basis. The probability of it raining and you deciding to take your umbrella with you is subjective in the sense that one person might look at the weather and think that the probability of rain is high whereas another person looking at the same weather might have other pieces of knowledge that makes them think the probability is low. This definition of probability is difficult to measure, so the remainder of this text will focus on the two earlier definitions.
 
 :::{.callout-important}
-
 A probability must take a value in the range of 0 - 1. If calculations on probabilities result in a value outside this range, something has gone horribly wrong.
 :::
 
@@ -348,7 +349,7 @@ In the following application (in Swedish), you can try to visualize different di
 knitr::include_url("https://canadice.shinyapps.io/book-shiny-support-functions/#distributions")
 ```
 
-## Summary and exercises
+## Summary and exercises {#sec-probabilities-exercises}
 We can measure uncertainty with the help of probabilities and probability distributions allow us to asses how likely an event is to occur. In discrete distributions there is a distinct difference between inequalities using < and $\le$, while in the continuous case the probability of a specific outcome is essentially 0 that there is no practical difference. We can use functions in R to both calculate probabilities of a specific outcome (e.g. `dbinom`), probabilities of inequalities (e.g. `pbinom`), or quantiles from a given probability (e.g. `qbinom`).
 
 For the exercises we will return to the `iris` dataset seen in earlier chapters (e.g. @sec-wrangling-exercises). For these questions we assume that the prevalence of the `species` in a specific area are:
