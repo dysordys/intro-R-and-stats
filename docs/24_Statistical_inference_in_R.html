@@ -1,0 +1,1263 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>13&nbsp; Statistical inference in R – Introduction to data analysis and visualization with R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./25_Statistical_inference_two.html" rel="next">
+<link href="./23_Statistical_inference.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21_Probabilities_and_distributions.html">Part II: Introductory statistics</a></li><li class="breadcrumb-item"><a href="./24_Statistical_inference_in_R.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Statistical inference in R</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Introduction to data analysis and visualization with R</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part I: Processing and visualizing data with R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_Intro_R_RStudio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction to R and RStudio</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_R_programming_basics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">R programming basics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Functions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_Data_reading.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Reading tabular data from disk</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./05_Basic_data_wrangling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Basic data manipulation</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./06_Summaries_normalization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Summary statistics and tidy data</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./07_Creating_figures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Creating publication-grade figures</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./08_Further_plotting_options.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Some further plotting options; introducing factors</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./09_Joining_data.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Joining data</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part II: Introductory statistics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./21_Probabilities_and_distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Probabilities and probability distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./22_Sampling_distributions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Sampling distributions</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./23_Statistical_inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Introduction to statistical inference</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./24_Statistical_inference_in_R.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Statistical inference in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./25_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Part III: Advanced statistics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./41_Linear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./45_Intro_map.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./46_Multiple_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">References</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./99_References.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">References</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#inference-of-a-mean" id="toc-inference-of-a-mean" class="nav-link active" data-scroll-target="#inference-of-a-mean"><span class="header-section-number">13.1</span> Inference of a mean</a>
+  <ul>
+  <li><a href="#confidence-interval-of-a-mean" id="toc-confidence-interval-of-a-mean" class="nav-link" data-scroll-target="#confidence-interval-of-a-mean"><span class="header-section-number">13.1.1</span> Confidence interval of a mean</a></li>
+  <li><a href="#hypothesis-testing-of-a-mean" id="toc-hypothesis-testing-of-a-mean" class="nav-link" data-scroll-target="#hypothesis-testing-of-a-mean"><span class="header-section-number">13.1.2</span> Hypothesis testing of a mean</a></li>
+  <li><a href="#visualizing-the-hypothesis-testing" id="toc-visualizing-the-hypothesis-testing" class="nav-link" data-scroll-target="#visualizing-the-hypothesis-testing"><span class="header-section-number">13.1.3</span> Visualizing the hypothesis testing</a></li>
+  </ul></li>
+  <li><a href="#inference-of-a-proportion" id="toc-inference-of-a-proportion" class="nav-link" data-scroll-target="#inference-of-a-proportion"><span class="header-section-number">13.2</span> Inference of a proportion</a>
+  <ul>
+  <li><a href="#confidence-interval-of-a-proportion" id="toc-confidence-interval-of-a-proportion" class="nav-link" data-scroll-target="#confidence-interval-of-a-proportion"><span class="header-section-number">13.2.1</span> Confidence interval of a proportion</a>
+  <ul class="collapse">
+  <li><a href="#using-the-binomial-distribution" id="toc-using-the-binomial-distribution" class="nav-link" data-scroll-target="#using-the-binomial-distribution"><span class="header-section-number">13.2.1.1</span> Using the binomial distribution</a></li>
+  </ul></li>
+  <li><a href="#hypothesis-test-of-a-proportion" id="toc-hypothesis-test-of-a-proportion" class="nav-link" data-scroll-target="#hypothesis-test-of-a-proportion"><span class="header-section-number">13.2.2</span> Hypothesis test of a proportion</a></li>
+  </ul></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">13.3</span> Exercises</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21_Probabilities_and_distributions.html">Part II: Introductory statistics</a></li><li class="breadcrumb-item"><a href="./24_Statistical_inference_in_R.html"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Statistical inference in R</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="inference-in-R" class="quarto-section-identifier"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Statistical inference in R</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Taking the theoretical framework defined in <a href="23_Statistical_inference.html" class="quarto-xref"><span>Chapter 12</span></a> we will in this chapter look at how we apply it in practice. Beginning with the parametric methods we are usually interested in making inference about the measure of center, either the mean of a continuous variable or a proportion of a categorical variable.</p>
+<section id="inference-of-a-mean" class="level2" data-number="13.1">
+<h2 data-number="13.1" class="anchored" data-anchor-id="inference-of-a-mean"><span class="header-section-number">13.1</span> Inference of a mean</h2>
+<p>For inference about a mean, the following assumptions must be met:</p>
+<ol type="1">
+<li>independence in the sample,
+<ul>
+<li>can be fulfilled by using conducting a Simple Random Sample (SRS).</li>
+</ul></li>
+<li>the sample mean, <span class="math inline">\(\bar{X}\)</span>, must be considered normally distributed,
+<ul>
+<li>can be fulfilled using the Central Limit Theorem (CLT) if the sample is sufficiently large, where the rule of thumb is <span class="math inline">\(n &gt; 30\)</span>. CLT states that a mean (or sum) of identically distributed variables will be approximately normally distributed in this case.</li>
+<li>if the sample is small, then the variable of interest, <span class="math inline">\(X\)</span>, must be considered normally distributed. This means that the transformation applied to the mean will also be normally distributed.</li>
+</ul></li>
+</ol>
+<section id="confidence-interval-of-a-mean" class="level3" data-number="13.1.1">
+<h3 data-number="13.1.1" class="anchored" data-anchor-id="confidence-interval-of-a-mean"><span class="header-section-number">13.1.1</span> Confidence interval of a mean</h3>
+<p>Using the sample distribution of the mean from <a href="22_Sampling_distributions.html#sec-sampling-distribution-mean" class="quarto-xref"><span>Section 11.2</span></a> and the structure from <a href="23_Statistical_inference.html#eq-conf-interval" class="quarto-xref">Equation&nbsp;<span>12.1</span></a>, the confidence interval of a mean is calculated as:</p>
+<p><span class="math display">\[
+\begin{aligned}
+  \bar{x} \pm t_{\alpha/2; n-1} \cdot \frac{s}{\sqrt{n}}
+\end{aligned}
+\]</span> where <span class="math inline">\(\frac{s}{\sqrt{n}}\)</span> is the standard error of the mean — the uncertainty of the sampling distribution — and <span class="math inline">\(t_{\alpha/2; n - 1}\)</span> is a quantile from the <em>t-distribution</em> which corresponds to the level of confidence (<span class="math inline">\(1 - \alpha\)</span>). <span class="math inline">\(\alpha / 2\)</span> indicates that we want a two-sided interval where the significance is split equally in both ends of the distribution. Together the two parts form the margin of error.</p>
+<p>For one-sided intervals we denote <span class="math inline">\(\alpha\)</span> or <span class="math inline">\(1 - \alpha\)</span> for lower limit and upper limit intervals respectively to either give a negative or positive quantile.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The t-distribution is used to solve similar problems to the normal distribution when the <strong>sample size is small</strong> and the <strong>population standard deviation is unknown</strong>.</p>
+<p>In these cases we need to estimate both the mean <strong>and</strong> standard deviation to make inference about the mean, resulting in an estimate being used within another estimate. This added uncertainty is handled by a property within the t-distribution called the <em>degrees of freedom</em>.</p>
+<p>The degrees of freedom describes the number of independent bits of information — in this case is n - 1 — which simplified can be described as the number of observations (n) subtracted by the number of additional estimates (1, the standard deviation) needed for the method.</p>
+<p>One of the main properties of the t-distribution is that it converges to the normal distribution with large enough degrees of freedom.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="24_Statistical_inference_in_R_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="576"></p>
+<figcaption>The t-distribution with different degrees of freedom</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Within R we can calculate the interval of a mean using the function <code>t.test()</code>. This function does much more than only the interval which we will return to in the next section. From the resulting object we can extract the confidence interval using <code>$conf.int</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>object <span class="ot">&lt;-</span> <span class="fu">t.test</span>(snailDat<span class="sc">$</span>size)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>object<span class="sc">$</span>conf.int</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 19.08906 20.08912
+attr(,"conf.level")
+[1] 0.95</code></pre>
+</div>
+</div>
+<p>We would interpret this result as; the interval 19.09 to 20.09 covers the true mean size of the shell sizes for all snails with 95 percent confidence.</p>
+<p>If we want to calculate a confidence interval with a different confidence level than the default 0.95 (95%) we can adjust the argument <code>conf.level</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(snailDat<span class="sc">$</span>size, <span class="at">conf.level =</span> <span class="fl">0.99</span>)<span class="sc">$</span>conf.int</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 18.92986 20.24832
+attr(,"conf.level")
+[1] 0.99</code></pre>
+</div>
+</div>
+</section>
+<section id="hypothesis-testing-of-a-mean" class="level3" data-number="13.1.2">
+<h3 data-number="13.1.2" class="anchored" data-anchor-id="hypothesis-testing-of-a-mean"><span class="header-section-number">13.1.2</span> Hypothesis testing of a mean</h3>
+<p>When formulating our hypotheses for a mean, we need to transform what we want to investigate into mathematical expressions. We also need to ensure that we use the correct mathematical symbol in the alternative hypothesis for the test to be conducted correctly depending on if we are interested in a two- or one-sided test.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>One of the most important things to remember when formulating statistical hypotheses is that the equal sign (<span class="math inline">\(=\)</span>) <strong>always</strong> should be placed in the null hypothesis. What this means in practice is that the null hypothesis is describing a value that is assumed to be true in the population and the evidence found in the sample is calculated using the null hypothesis as the “truth”.</p>
+<p>If we want the two hypotheses to cover all possible outcomes in a one-sided test, we can formulate the null hypothesis to “less than or equal” (<span class="math inline">\(\le\)</span>) or “greater than or equal” (<span class="math inline">\(\ge\)</span>), which both include the <span class="math inline">\(=\)</span> in its denotation.</p>
+</div>
+</div>
+<p>For example, if we were interested in investigating whether the mean size of snail shells is larger than 19, we would set up hypotheses as follows:</p>
+<p><span class="math display">\[\begin{align*}
+  &amp;H_0: \mu \le 19 \\
+  &amp;H_1: \mu &gt; 19
+\end{align*}\]</span></p>
+<p>We now make use of the full functionality of the <code>t.test()</code> function but need to take some time to adjust some of the arguments. Looking at the documentation we can focus on the following arguments of interest:</p>
+<ul>
+<li><code>x</code>: specifies the variable we want to investigate,</li>
+<li><code>alternative</code>: specifies the type of alternative hypothesis to be tested, with values “two.sided”, “less”, or “greater”,</li>
+<li><code>mu</code>: specifies the value we assume the mean has in the null hypothesis</li>
+</ul>
+<p>In accordance with our one-sided alternative hypothesis and the value 19, the function we write in R would be as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(<span class="at">x =</span> snailDat<span class="sc">$</span>size, </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">alternative =</span> <span class="st">"greater"</span>,</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">mu =</span> <span class="dv">19</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    One Sample t-test
+
+data:  snailDat$size
+t = 2.3217, df = 222, p-value = 0.01058
+alternative hypothesis: true mean is greater than 19
+95 percent confidence interval:
+ 19.16999      Inf
+sample estimates:
+mean of x 
+ 19.58909 </code></pre>
+</div>
+</div>
+<p>The output contains a lot of information in a seemingly unstructured manner which is one of the disadvantages of R, the outputs are not always as clearly structured like other software.</p>
+<p>Let us look at the output row by row below the title of the output:</p>
+<ul>
+<li>The first row provides information about which variable the test is performed on.</li>
+<li>The second row provides information about the actual test where:
+<ul>
+<li>t is the computed test statistic,</li>
+<li>df is the degrees of freedom in the t-distribution,</li>
+<li>p-value is the p-value of the test.</li>
+</ul></li>
+<li>The third row provides information about the type of alternative hypothesis that is being tested.</li>
+<li>The fourth and fifth rows provide a calculated confidence interval defined by the <code>alternative</code> argument</li>
+<li>The last rows in the output provide descriptive statistics from the sample.</li>
+</ul>
+<p>To make a decision from this test, we can directly compare the calculated p-value from the output with the specified significance level. If the p-value is lower, we can reject <span class="math inline">\(H_0\)</span>, otherwise, we cannot reject it.</p>
+</section>
+<section id="visualizing-the-hypothesis-testing" class="level3" data-number="13.1.3">
+<h3 data-number="13.1.3" class="anchored" data-anchor-id="visualizing-the-hypothesis-testing"><span class="header-section-number">13.1.3</span> Visualizing the hypothesis testing</h3>
+<p>We can also make use of visualizations to determine the decision to be made. Assuming the null hypothesis to be “true”, the standardized sampling distribution of the sample mean would look as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample information</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(snailDat)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(snailDat<span class="sc">$</span>size)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>sd <span class="ot">&lt;-</span> <span class="fu">sd</span>(snailDat<span class="sc">$</span>size)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create data frame for plotting</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="fl">3.5</span>, <span class="fl">3.5</span>, <span class="at">length.out =</span> <span class="dv">1000</span>),</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> <span class="fu">dt</span>(x, <span class="at">df =</span> n <span class="sc">-</span> <span class="dv">1</span>)</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the distributions</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"x"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="24_Statistical_inference_in_R_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption>The t-distribution under the null hypothesis</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The distribution is centered on the standardized mean, 0, and the distance from 0 indicates how many standard deviations away from the hypothesized mean the evidence in the sample is located. The test statistic from the output, 2.3217, shows that the sample drawn had a larger mean shell size than the null hypothesis — a positive value indicates the sample is larger than the null mean, a negative larger value indicates the sample is smaller than the null mean.</p>
+<p>We can add the test statistic to the visualization with:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"x"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fl">2.3217</span>, <span class="at">color =</span> <span class="st">"firebrick"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="24_Statistical_inference_in_R_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption>The null distribution with the test statistic marked in red</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We can see that the test statistic is placed quite a bit away from the expected outcome that should arise if the null hypothesis was true and the next step is to determine whether or not this is far enough away from the null mean to say we have falsified the null hypothesis or not.</p>
+<p>This is where we make use of the p-value. As defined in <a href="23_Statistical_inference.html#sec-p-value" class="quarto-xref"><span>Section 12.2.1.5</span></a>, the p-value is a probability that we would find a sample with a more extreme sample mean than the current. The direction of “extreme” is determined by inequality sign in the alternative hypothesis, in this case <span class="math inline">\(&gt; 19\)</span>, leading to the probability calculated as <span class="math inline">\(P(t &gt; 2.3217) = 0.01058\)</span>.</p>
+<p>We then compare the p-value to the level of significance to determine if the evidence is far enough away to reject the null hypothesis. The level of significance is placed on the same side of the distribution that the alternative hypothesis defines as “more extreme”, in this case the positive end.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Defines the significance level</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculates the quantile value that corresponds to the level of significance</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>critValue <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="at">p =</span> alpha, <span class="at">df =</span> n <span class="sc">-</span> <span class="dv">1</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(data, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y)) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="dv">1</span>, <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"x"</span>, <span class="at">y =</span> <span class="st">"Density"</span>) <span class="sc">+</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_area</span>(<span class="at">data =</span> <span class="fu">subset</span>(data, x <span class="sc">&gt;=</span> critValue), <span class="at">fill =</span> <span class="st">"black"</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_area</span>(<span class="at">data =</span> <span class="fu">subset</span>(data, x <span class="sc">&gt;=</span> <span class="fl">2.3217</span>), <span class="at">fill =</span> <span class="st">"firebrick"</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="24_Statistical_inference_in_R_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption>Highlighting the p-value with the null distribution</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In this case the p-value (red) is smaller than the significance level (black) resulting in the conclusion that we can reject <span class="math inline">\(H_0\)</span>.</p>
+</section>
+</section>
+<section id="inference-of-a-proportion" class="level2" data-number="13.2">
+<h2 data-number="13.2" class="anchored" data-anchor-id="inference-of-a-proportion"><span class="header-section-number">13.2</span> Inference of a proportion</h2>
+<p>A proportion is a special case of a mean if we assume that the variable of interest only contain 1s and 0s where 1 denotes a unit with a specific characteristic. Unfortunately we cannot use the assumptions for a mean as the proportion can only take on values between 0 and 1, whereas a mean can be any real value. We must instead look at inference of a proportion as its own type of method with its own assumptions.</p>
+<p>There are three main ways to make inferences about a proportion; using the binomial distribution of the <strong>count</strong> of values with the characteristic, approximating the distribution with the normal distribution using the Wald method, or calculating the absolute minimum and maximum proportions that could have been measured in the sample.</p>
+<p>For inference about proportions using the Wald approximation, the following requirements must be met:</p>
+<ul>
+<li>independence in the sample,
+<ul>
+<li>can be fulfilled by using conducting a Simple Random Sample (SRS).</li>
+</ul></li>
+<li>the variable must be binomial distributed,
+<ul>
+<li>the variable must calculate the number of successes from n independent trials.</li>
+</ul></li>
+<li>the sample proportion, <span class="math inline">\(\hat{p}\)</span>, must be considered normally distributed,
+<ul>
+<li>specifically <span class="math inline">\(n\cdot \hat{p} &gt; 5\)</span> and <span class="math inline">\(n\cdot \hat{q} &gt; 5\)</span> where <span class="math inline">\(\hat{p}\)</span> is the probability of a success and <span class="math inline">\(\hat{q}\)</span> is <span class="math inline">\(1 - \hat{p}\)</span>.</li>
+</ul></li>
+</ul>
+<section id="confidence-interval-of-a-proportion" class="level3" data-number="13.2.1">
+<h3 data-number="13.2.1" class="anchored" data-anchor-id="confidence-interval-of-a-proportion"><span class="header-section-number">13.2.1</span> Confidence interval of a proportion</h3>
+<p>Similar to <code>t.test()</code> we can create confidence intervals in R using <code>prop.test()</code>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Note that <code>prop.test()</code> uses another variant of the Wald interval with additional continuity corrections, called a <em>Wilson interval</em> (<span class="citation" data-cites="Wilson1927">Wilson (<a href="99_References.html#ref-Wilson1927" role="doc-biblioref">1927</a>)</span>), so the comparison to the Wald formula is not entirely identical.</p>
+</div>
+</div>
+<p>For example, we are interested in making inference about the proportion of snails that live in an arid habitat. The two different intervals would be calculated as:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Wald Interval</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">nrow</span>(snailDat)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> (snailDat<span class="sc">$</span>habitat <span class="sc">==</span> <span class="st">"arid"</span>) <span class="sc">|&gt;</span> <span class="fu">sum</span>() <span class="sc">/</span> n</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(p <span class="sc">*</span> (<span class="dv">1</span><span class="sc">-</span>p) <span class="sc">/</span> (n<span class="dv">-1</span>))</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>z <span class="ot">&lt;-</span> <span class="fu">qnorm</span>(<span class="at">p =</span> .<span class="dv">975</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>p <span class="sc">-</span> z <span class="sc">*</span> se </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4409603</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>p <span class="sc">+</span> z <span class="sc">*</span> se</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.5724926</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Wilson Interval</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>object <span class="ot">&lt;-</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  snailDat<span class="sc">$</span>habitat <span class="sc">|&gt;</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prop.test</span>(<span class="at">correct =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>object<span class="sc">$</span>conf.int</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4415519 0.5716732
+attr(,"conf.level")
+[1] 0.95</code></pre>
+</div>
+</div>
+<p><code>prop.test()</code> makes use of <code>table()</code> to create a frequency table of the two categories where the first is used as the category of interest to create the interval for. If there are more than two categories in the variable of interest, we first must create a new variable that returns one value if the observation is the one sought and another if it is not.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Using table()</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>snailDat<span class="sc">$</span>habitat <span class="sc">|&gt;</span> </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+ arid humid 
+  113   110 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Creating a new variable and then table()</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>snailDat <span class="sc">|&gt;</span> </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">arid =</span> </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>           <span class="fu">if_else</span>(</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>             habitat <span class="sc">==</span> <span class="st">"arid"</span>, </span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">true =</span> <span class="st">"yes"</span>, </span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">false =</span> <span class="st">"no"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>           <span class="co"># Converts to a factor with manual order of levels</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>           <span class="fu">factor</span>(<span class="at">levels =</span> <span class="fu">c</span>(<span class="st">"yes"</span>, <span class="st">"no"</span>))</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>         ) <span class="sc">|&gt;</span> </span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(arid) <span class="sc">|&gt;</span> </span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>arid
+yes  no 
+113 110 </code></pre>
+</div>
+</div>
+<section id="using-the-binomial-distribution" class="level4" data-number="13.2.1.1">
+<h4 data-number="13.2.1.1" class="anchored" data-anchor-id="using-the-binomial-distribution"><span class="header-section-number">13.2.1.1</span> Using the binomial distribution</h4>
+<p>We can also make use of the binomial distribution to create the confidence interval if we cannot fulfill the assumption that the statistic is normally distributed.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>object <span class="ot">&lt;-</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  snailDat<span class="sc">$</span>habitat <span class="sc">|&gt;</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">binom.test</span>()</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>object<span class="sc">$</span>conf.int</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4391590 0.5741128
+attr(,"conf.level")
+[1] 0.95</code></pre>
+</div>
+</div>
+<!-- TODO Write more about what the binomial distribution changes in terms of the formula -->
+</section>
+</section>
+<section id="hypothesis-test-of-a-proportion" class="level3" data-number="13.2.2">
+<h3 data-number="13.2.2" class="anchored" data-anchor-id="hypothesis-test-of-a-proportion"><span class="header-section-number">13.2.2</span> Hypothesis test of a proportion</h3>
+<p>Similar to the hypothesis testing of a mean, we can formulate hypothesis that investigate specific values of a proportion.</p>
+<p>For example we could be interested in whether or not the majority of snails live in an arid environment. The term “majority” means more than 50% and because this statement does not include an equal sign, it needs to be formulated in the alternative hypothesis.</p>
+<p><span class="math display">\[
+\begin{aligned}
+  &amp;H_0: p \le 0.50 \\
+  &amp;H_1: p &gt; 0.50
+\end{aligned}
+\]</span></p>
+<p>We now make use of the full functionality of the prop.test() function but need to take some time to adjust some of the arguments. Looking at the documentation we can focus on the following arguments of interest:</p>
+<p>-x: specifies the number of successes (e.g., defective items), -n: specifies the number of trials (e.g., total items), -alternative: specifies the type of alternative hypothesis to be tested, with values “two.sided”, “less”, or “greater”, -p: specifies the value we assume the proportion has in the null hypothesis.</p>
+<p>In accordance with our one-sided alternative hypothesis and the value 0.50, the function we write in R would be as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>snailDat<span class="sc">$</span>habitat <span class="sc">|&gt;</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">prop.test</span>(<span class="at">alternative =</span> <span class="st">"greater"</span>, <span class="at">p =</span> <span class="fl">0.50</span>, <span class="at">correct =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    1-sample proportions test without continuity correction
+
+data:  table(snailDat$habitat), null probability 0.5
+X-squared = 0.040359, df = 1, p-value = 0.4204
+alternative hypothesis: true p is greater than 0.5
+95 percent confidence interval:
+ 0.451908 1.000000
+sample estimates:
+        p 
+0.5067265 </code></pre>
+</div>
+</div>
+<p>The output contains a lot of information in a seemingly unstructured manner which is one of the disadvantages of R, the outputs are not always as clearly structured like other software.</p>
+<p>Let us look at the output row by row below the title of the output:</p>
+<ul>
+<li>The first row provides information about the data and the null proportion being investigated.</li>
+<li>The second row provides information about the actual test where:
+<ul>
+<li>X-squared is the computed test statistic,</li>
+<li>df is the degrees of freedom,</li>
+<li>p-value is the p-value of the test.</li>
+</ul></li>
+<li>The third row provides information about the type of alternative hypothesis that is being tested.</li>
+<li>The fourth and fifth rows provide a calculated confidence interval defined by the alternative argument.</li>
+<li>The last row provides the sample proportion.</li>
+</ul>
+<p>To make a decision from this test, we can directly compare the calculated p-value from the output with the specified significance level. If the p-value is lower, we can reject <span class="math inline">\(H_0\)</span>, otherwise, we cannot reject it.</p>
+</section>
+</section>
+<section id="exercises" class="level2" data-number="13.3">
+<h2 data-number="13.3" class="anchored" data-anchor-id="exercises"><span class="header-section-number">13.3</span> Exercises</h2>
+<p>David Lack <span class="citation" data-cites="lack1945galapagos">(<a href="99_References.html#ref-lack1945galapagos" role="doc-biblioref">Lack et al. 1945</a>)</span> conducted analyses of information about finches on the Galápagos Islands during the first half of the 20th century, using data collected by the California Academy of Sciences during their expeditions from 1905-06. The data set <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/darwin-finches.csv"><code>darwin-finches.csv</code></a> contains a subset of the collected information from four species within the genus Geospiza. The six variables are:</p>
+<ul>
+<li><code>island</code>: Abbreviation of the island where the specimen was examined;</li>
+<li><code>species</code>: Genus and species of the specimen;</li>
+<li><code>sex</code>: F or M;</li>
+<li><code>beak_height</code>: height of the bird’s beak (mm);</li>
+<li><code>upper_beak_length</code>: length of the upper part of the bird’s beak from the base to the tip (mm);</li>
+<li><code>nostril_upper_beak_length</code>: similar to <code>upper_beak_length</code> but measures from the nostril to the tip of the beak (mm).</li>
+</ul>
+<p><strong>Ensure that the data set appears as expected in the R environment before proceeding with the exercises!</strong></p>
+<ol type="1">
+<li><p>Construct a 95% confidence interval for the proportion of <em>Geospiza magnirostris</em> in the population using the normal approximation. Is the method suitable for this data? Interpret the interval.</p></li>
+<li><p>Investigate whether the proportion of Geospiza magnirostris is significantly greater than 10%. Calculate the p-value for the test using the normal and binomial distribution to draw your conclusions. Compare the two p-values and discuss the practical difference between the two methods and their conclusion.</p></li>
+<li><p>Investigate whether the average beak height among Geospiza magnirostris is significantly <strong>different from</strong> 19.5 mm.</p></li>
+<li><p>Investigate whether the average beak height among Geospiza magnirostris is significantly <strong>less than</strong> 19.5 mm.</p></li>
+<li><p>Calculate two confidence intervals that examines the same hypotheses as in c) and d) respectively. What is the practical difference between the two interpretations of the intervals?</p></li>
+</ol>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-lack1945galapagos" class="csl-entry" role="listitem">
+Lack, D., E. C. Van Dyke, R. T. Orr, R. H. Alden, J. D. Ifft, and Berkeley. Museum of Vertebrate Zoology University of California. 1945. <em>The Galapagos Finches (Geospizinae) a Study in Variation, by David Lack</em>. Early Naturalists in the Far West, nos. 19-22. California academy of sciences. <a href="https://books.google.se/books?id=gISquwEACAAJ">https://books.google.se/books?id=gISquwEACAAJ</a>.
+</div>
+<div id="ref-Wilson1927" class="csl-entry" role="listitem">
+Wilson, Edwin B. 1927. <span>“Probable Inference, the Law of Succession, and Statistical Inference.”</span> <em>Journal of the American Statistical Association</em> 22 (158): 209–12. <a href="https://doi.org/10.1080/01621459.1927.10502953">https://doi.org/10.1080/01621459.1927.10502953</a>.
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./23_Statistical_inference.html" class="pagination-link" aria-label="Introduction to statistical inference">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Introduction to statistical inference</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./25_Statistical_inference_two.html" class="pagination-link" aria-label="Comparing two groups">
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

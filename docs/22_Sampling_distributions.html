@@ -289,8 +289,14 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./24_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
+  <a href="./24_Statistical_inference_in_R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Statistical inference in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./25_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
   </div>
 </li>
       </ul>
@@ -307,43 +313,43 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_Linear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./45_Intro_map.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./46_Multiple_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -360,7 +366,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./99_References.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">References</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
       </ul>
@@ -376,7 +382,8 @@ window.Quarto = {
    
   <ul>
   <li><a href="#simulation-of-the-sampling-distribution" id="toc-simulation-of-the-sampling-distribution" class="nav-link active" data-scroll-target="#simulation-of-the-sampling-distribution"><span class="header-section-number">11.1</span> Simulation of the sampling distribution</a></li>
-  <li><a href="#sampling-distribution-of-the-mean" id="toc-sampling-distribution-of-the-mean" class="nav-link" data-scroll-target="#sampling-distribution-of-the-mean"><span class="header-section-number">11.2</span> Sampling distribution of the mean</a></li>
+  <li><a href="#sec-sampling-distribution-mean" id="toc-sec-sampling-distribution-mean" class="nav-link" data-scroll-target="#sec-sampling-distribution-mean"><span class="header-section-number">11.2</span> Sampling distribution of the mean</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">11.3</span> Exercises</a></li>
   </ul>
 </nav>
     </div>
@@ -385,7 +392,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./21_Probabilities_and_distributions.html">Part II: Introductory statistics</a></li><li class="breadcrumb-item"><a href="./22_Sampling_distributions.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Sampling distributions</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Sampling distributions</span></h1>
+<h1 class="title"><span id="sec-sampling-distributions" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Sampling distributions</span></span></h1>
 </div>
 
 
@@ -473,7 +480,7 @@ Important
 <span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Adds the sample mean</span></span>
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(</span>
 <span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">xintercept =</span> <span class="fu">mean</span>(wolvesSample<span class="sc">$</span>weight), </span>
-<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"lightblue"</span>, </span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"black"</span>, </span>
 <span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="dv">1</span></span>
 <span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -484,7 +491,7 @@ Important
 </div>
 </div>
 </div>
-<p>We can see that the sample mean (light blue line) overestimates the population mean (dark red line) but if we were to draw another sample of the same size the sample mean would be a different value.</p>
+<p>We can see that the sample mean (black vertical line) overestimates the population mean (red vertical line) but if we were to draw another sample of the same size the sample mean would be a different value.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -656,14 +663,23 @@ Note
 </blockquote>
 <p>What constitutes as a large number is can be different in different scenarios, but in the case above we saw that when n &gt; 30, the histogram looked approximately normal. Most literature use n &gt; 30 as the rule of thumb when the central limit theorem can be applied.</p>
 </section>
-<section id="sampling-distribution-of-the-mean" class="level2" data-number="11.2">
-<h2 data-number="11.2" class="anchored" data-anchor-id="sampling-distribution-of-the-mean"><span class="header-section-number">11.2</span> Sampling distribution of the mean</h2>
+<section id="sec-sampling-distribution-mean" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="sec-sampling-distribution-mean"><span class="header-section-number">11.2</span> Sampling distribution of the mean</h2>
 <p>If the random variable X is <strong>not</strong> normally distributed we need to rely on the central limit theorem to use the normal distribution. If n &gt; 30 we can then state that:</p>
 <p><span id="eq-samp-dist-mean"><span class="math display">\[
 \bar{X} \approx N\left(\mu_{\bar{X}} = \mu_X; \sigma_{\bar{X}} = \frac{\sigma_X}{n}\right)
 \tag{11.1}\]</span></span> where the mean of the sample mean (<span class="math inline">\(\mu_{\bar{X}}\)</span>) is the same as the mean of X, and the standard deviation of the sample mean (<span class="math inline">\(\sigma_{\bar{X}}\)</span>) is the standard deviation of X divided by the sample size n.</p>
 <p>Within biological data the sample sizes tend to be small, most of the times n &lt; 30. This means that the central limit theorem <strong>cannot</strong> be applied and we cannot assume that the sampling distribution of <span class="math inline">\(\bar{X}\)</span> is approximately normal distributed. Instead we would need to rely on properties of <em>linear combinations</em>.</p>
 <p>A sum or mean of independent random variables, <span class="math inline">\(X_1\)</span>-<span class="math inline">\(X_n\)</span>, are examples of linear combinations that keep many of the properties from the original variables. For instance if X follows the normal distribution, the mean of X will also follow the normal distribution regardless of how big the sample is. The same mean and standard deviation as in <a href="#eq-samp-dist-mean" class="quarto-xref">Equation&nbsp;<span>11.1</span></a> apply and <span class="math inline">\(\bar{X}\)</span> now follows an exact normal distribution.</p>
+</section>
+<section id="exercises" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="exercises"><span class="header-section-number">11.3</span> Exercises</h2>
+<p>For the exercises we will return to the <code>iris</code> dataset seen in earlier chapters (e.g. <a href="05_Basic_data_wrangling.html#sec-wrangling-exercises" class="quarto-xref"><span>Section 5.3</span></a>). For the next questions assume that the petal length of the <em>setosa</em> species is normally distributed with a mean length of 1.46 cm and a standard deviation of 0.174 cm.</p>
+<ol type="1">
+<li><p>What is the probability of finding the mean petal length of 10 setosa plants less than 1.1 cm?</p></li>
+<li><p>What is the probability of finding the mean petal length of 10 setosa plants between 1.1 and 1.46 cm?</p></li>
+<li><p>How does the answers to these questions differ from question 3 and 4 in <a href="21_Probabilities_and_distributions.html#sec-probabilities-exercises" class="quarto-xref"><span>Section 10.3</span></a>? What law is this evidence of?</p></li>
+</ol>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">

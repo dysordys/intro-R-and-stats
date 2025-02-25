@@ -273,8 +273,14 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./24_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
+  <a href="./24_Statistical_inference_in_R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Statistical inference in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./25_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
   </div>
 </li>
       </ul>
@@ -291,43 +297,43 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_Linear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./45_Intro_map.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./46_Multiple_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -344,7 +350,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./99_References.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">References</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
       </ul>
@@ -374,7 +380,7 @@ window.Quarto = {
   </ul></li>
   <li><a href="#finding-quantiles" id="toc-finding-quantiles" class="nav-link" data-scroll-target="#finding-quantiles"><span class="header-section-number">10.2.3</span> Finding quantiles</a></li>
   </ul></li>
-  <li><a href="#summary-and-exercises" id="toc-summary-and-exercises" class="nav-link" data-scroll-target="#summary-and-exercises"><span class="header-section-number">10.3</span> Summary and exercises</a></li>
+  <li><a href="#sec-probabilities-exercises" id="toc-sec-probabilities-exercises" class="nav-link" data-scroll-target="#sec-probabilities-exercises"><span class="header-section-number">10.3</span> Summary and exercises</a></li>
   </ul>
 </nav>
     </div>
@@ -403,15 +409,16 @@ window.Quarto = {
 <p>Within statistics we want to make decisions that are influenced by uncertainty. For example how often do we expect to find a snail larger than the mean size? Depending on the snail we sample, we might find one larger than the mean or not. In order to understand this event we can use <em>probabilities</em> to inform us whether this event is something that occurs often or not. Probabilities are also useful in making decisions, for instance should I bring my umbrella with me when I leave in case it will rain? Probabilities are something us humans weigh and assess semi-consciously all the time when making decisions and statistics is just a formalization of these concepts with proper numbers.</p>
 <section id="what-is-a-probability" class="level2" data-number="10.1">
 <h2 data-number="10.1" class="anchored" data-anchor-id="what-is-a-probability"><span class="header-section-number">10.1</span> What is a probability?</h2>
-<p>A probability describes the chance (or risk) of an <em>event</em> — a snail is larger than the mean size — occurring. There are three common definitions of a probability:</p>
+<p>A probability is a representation (or model) of the chance that an <em>event</em> — for example “a snail is larger than the mean size of all snails” — occurs. It it our way of modelling a natural phenomenon that is impacted by randomness.</p>
+<p>There are three common ways of measuring a probability:</p>
 <ol type="1">
 <li>Using relative frequencies</li>
 <li>Using reasoning</li>
 <li>Using subjectivity</li>
 </ol>
-<p>In <a href="07_Creating_figures.html#sec-distributions" class="quarto-xref"><span>Section 7.3.2</span></a> we presented a way to show which values and how often they appear within a variable. This corresponds to the relative frequency definition, we calculate how often an event has occurred — a specific value of the variable has been observed — out of the total number of samples observed. This way of defining a probability is an approximation as the samples observed might not represent the population from which they are drawn from, but the <em>law of large numbers</em> proves that if the sample is big enough the relative frequencies are close to the true probabilities.</p>
-<p>These true probabilities are calculated using the second definition. There are times when reasoning or information about the population cannot be used hence the need for relative frequencies. Using reasoning we can define a probability as the ratio between “the number of outcomes that fulfill the desired event” and the “total number of outcomes that are possible to occur”.</p>
-<p>The third definition is not something that we commonly use for calculations, at least not in the areas of statistics covered by this text, but it is closely tied to the semi-conscious assessments we humans do on a regular basis. The probability of it raining and you deciding to take your umbrella with you is subjective in the sense that one person might look at the weather and think that the probability of rain is high whereas another person looking at the same weather might have other pieces of knowledge that makes them think the probability is low. This definition of probability is difficult to measure, so the remainder of this text will focus on the two earlier definitions.</p>
+<p>In <a href="07_Creating_figures.html#sec-distributions" class="quarto-xref"><span>Section 7.3.2</span></a> we presented a way to show which values and how often they appear within a variable. This corresponds to the relative frequency definition, we calculate how often an event has occurred — a specific value of the variable has been observed — out of the total number of samples observed. This way of defining a probability is an approximation as the samples observed might not represent the population from which they are drawn from, but the <em>law of large numbers</em> proves that if the sample is big enough the relative frequencies are close to the theoretical probabilities.</p>
+<p>These theoretical probabilities are calculated using the second definition. Using reasoning we can define a probability as the ratio between “the number of outcomes that fulfill the desired event” and the “total number of outcomes that are possible to occur”.</p>
+<p>The third definition is not something that we commonly use for calculations, at least not in the areas of statistics covered by this book, but it is closely tied to the semi-conscious assessments we humans do on a regular basis. The probability of it raining and you deciding to take your umbrella with you is subjective in the sense that one person might look at the weather and think that the probability of rain is high whereas another person looking at the same weather might have other pieces of knowledge that makes them think the probability is low. This definition of probability is difficult to measure, so the remainder of this text will focus on the two earlier definitions.</p>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -719,8 +726,8 @@ f(x) = \frac{1}{\sigma \sqrt{2\pi}} \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\rig
 </div>
 </section>
 </section>
-<section id="summary-and-exercises" class="level2" data-number="10.3">
-<h2 data-number="10.3" class="anchored" data-anchor-id="summary-and-exercises"><span class="header-section-number">10.3</span> Summary and exercises</h2>
+<section id="sec-probabilities-exercises" class="level2" data-number="10.3">
+<h2 data-number="10.3" class="anchored" data-anchor-id="sec-probabilities-exercises"><span class="header-section-number">10.3</span> Summary and exercises</h2>
 <p>We can measure uncertainty with the help of probabilities and probability distributions allow us to asses how likely an event is to occur. In discrete distributions there is a distinct difference between inequalities using &lt; and <span class="math inline">\(\le\)</span>, while in the continuous case the probability of a specific outcome is essentially 0 that there is no practical difference. We can use functions in R to both calculate probabilities of a specific outcome (e.g.&nbsp;<code>dbinom</code>), probabilities of inequalities (e.g.&nbsp;<code>pbinom</code>), or quantiles from a given probability (e.g.&nbsp;<code>qbinom</code>).</p>
 <p>For the exercises we will return to the <code>iris</code> dataset seen in earlier chapters (e.g. <a href="05_Basic_data_wrangling.html#sec-wrangling-exercises" class="quarto-xref"><span>Section 5.3</span></a>). For these questions we assume that the prevalence of the <code>species</code> in a specific area are:</p>
 <div class="cell">

@@ -20,40 +20,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -64,7 +30,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./24_Statistical_inference_two.html" rel="next">
+<link href="./24_Statistical_inference_in_R.html" rel="next">
 <link href="./22_Sampling_distributions.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -269,8 +235,14 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./24_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
+  <a href="./24_Statistical_inference_in_R.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Statistical inference in R</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./25_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
   </div>
 </li>
       </ul>
@@ -287,43 +259,43 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_Linear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./45_Intro_map.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./46_Multiple_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -340,7 +312,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./99_References.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">References</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
       </ul>
@@ -355,11 +327,20 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#parametric-methods" id="toc-parametric-methods" class="nav-link active" data-scroll-target="#parametric-methods"><span class="header-section-number">12.1</span> Parametric methods</a>
+  <li><a href="#sec-confidence-interval" id="toc-sec-confidence-interval" class="nav-link active" data-scroll-target="#sec-confidence-interval"><span class="header-section-number">12.1</span> Confidence intervals</a></li>
+  <li><a href="#sec-hypothesis-testing" id="toc-sec-hypothesis-testing" class="nav-link" data-scroll-target="#sec-hypothesis-testing"><span class="header-section-number">12.2</span> Hypothesis testing</a>
   <ul>
-  <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing"><span class="header-section-number">12.1.1</span> Hypothesis testing</a></li>
-  <li><a href="#confidence-intervals" id="toc-confidence-intervals" class="nav-link" data-scroll-target="#confidence-intervals"><span class="header-section-number">12.1.2</span> Confidence Intervals</a></li>
+  <li><a href="#step-by-step-process" id="toc-step-by-step-process" class="nav-link" data-scroll-target="#step-by-step-process"><span class="header-section-number">12.2.1</span> Step by step process</a>
+  <ul class="collapse">
+  <li><a href="#checking-assumptions" id="toc-checking-assumptions" class="nav-link" data-scroll-target="#checking-assumptions"><span class="header-section-number">12.2.1.1</span> Checking assumptions</a></li>
+  <li><a href="#the-hypotheses" id="toc-the-hypotheses" class="nav-link" data-scroll-target="#the-hypotheses"><span class="header-section-number">12.2.1.2</span> The hypotheses</a></li>
+  <li><a href="#the-risk-of-making-a-wrong-decision" id="toc-the-risk-of-making-a-wrong-decision" class="nav-link" data-scroll-target="#the-risk-of-making-a-wrong-decision"><span class="header-section-number">12.2.1.3</span> The risk of making a wrong decision</a></li>
+  <li><a href="#the-collected-evidence" id="toc-the-collected-evidence" class="nav-link" data-scroll-target="#the-collected-evidence"><span class="header-section-number">12.2.1.4</span> The collected evidence</a></li>
+  <li><a href="#sec-p-value" id="toc-sec-p-value" class="nav-link" data-scroll-target="#sec-p-value"><span class="header-section-number">12.2.1.5</span> The decision boundary</a></li>
+  <li><a href="#conclusions-and-interpretations" id="toc-conclusions-and-interpretations" class="nav-link" data-scroll-target="#conclusions-and-interpretations"><span class="header-section-number">12.2.1.6</span> Conclusions and interpretations</a></li>
   </ul></li>
+  </ul></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">12.3</span> Exercises</a></li>
   </ul>
 </nav>
     </div>
@@ -385,97 +366,175 @@ window.Quarto = {
 </header>
 
 
-<p><em>Statistical inference</em> are methods that we can use to infer something about the population based on a smaller sample. These methods take into account the inherent uncertainty within a sample to either provide a hopefully informative interval of values where we expect a parameter to be within or a conclusion about specific values of a parameter. We will in this chapter focus on investigating one population (or group).</p>
-<p>We will cover two types of inference methods, <em>parametric</em> and <em>non-parametric</em> methods. The main difference between the two is whether or not we assume that the sample statistic has a distribution. Non-parametric tests are also called <em>distribution free</em> tests to actually describe that difference.</p>
-<section id="parametric-methods" class="level2" data-number="12.1">
-<h2 data-number="12.1" class="anchored" data-anchor-id="parametric-methods"><span class="header-section-number">12.1</span> Parametric methods</h2>
-<p>When describing a property of a population, we would like to make inference of the proportion (<span class="math inline">\(p\)</span>) or the mean (<span class="math inline">\(\mu\)</span>). Whether we want to calculate an interval or test hypotheses, the methods described needs to fulfill some criteria.</p>
-<p>For inference about proportions, the following requirements must be met:</p>
-<ul>
-<li>independence in the sample,
-<ul>
-<li>can be fulfilled by using conducting a Simple Random Sample (SRS).</li>
-</ul></li>
-<li>the variable must be binomial distributed,
-<ul>
-<li>the variable must calculate the number of successes from n independent trials.</li>
-</ul></li>
-<li>the sample proportion, <span class="math inline">\(\hat{p}\)</span>, must be considered normally distributed,
-<ul>
-<li>specifically <span class="math inline">\(n\cdot p &gt; 5\)</span> and <span class="math inline">\(n\cdot q &gt; 5\)</span> where p is the probability of a success and q is 1 - p.</li>
-</ul></li>
-</ul>
-<p>For inference about means, the following requirements must be met:</p>
-<ul>
-<li>independence in the sample,
-<ul>
-<li>can be fulfilled by using conducting a Simple Random Sample (SRS).</li>
-</ul></li>
-<li>the sample mean, <span class="math inline">\(\bar{X}\)</span>, must be considered normally distributed,
-<ul>
-<li>can be achieved using the Central Limit Theorem (CLT) if the sample is sufficiently large, where the rule of thumb is <span class="math inline">\(n &gt; 30\)</span>. CLT states that a mean (or sum) of identically distributed variables will be approximately normally distributed in this case.</li>
-<li>if the sample is small, then the variable of interest, <span class="math inline">\(X\)</span>, must be considered normally distributed. This means that the transformation applied to the mean will also be normally distributed.</li>
-</ul></li>
-</ul>
-<section id="hypothesis-testing" class="level3" data-number="12.1.1">
-<h3 data-number="12.1.1" class="anchored" data-anchor-id="hypothesis-testing"><span class="header-section-number">12.1.1</span> Hypothesis testing</h3>
-<p>In hypothesis testing of a mean, we can follow a five-step process.</p>
+<p>In the previous chapters we have extensively covered methods that describe a data set in one way or another, either by summarizing a data using its measures of center and spread or visualizing its distribution using an appropriate figure. All of these methods focus only on describing the data set collected which might not always what we want to use as the basis for making decisions. It is commonplace to use a random sample as a representation of the underlying population, but describing the sample does not account for the uncertainty that the random sampling creates.</p>
+<p><em>Statistical inference</em> are methods that we can use to infer something about the population based on a smaller sample. These methods take into account the inherent uncertainty within a sample to either provide a — hopefully informative — interval of values where we expect a parameter to be within or a conclusion about specific values of a parameter. We will in this chapter focus on investigating one population or group with the help of two types of inference, <em>parametric</em> and <em>non-parametric</em> methods. The main difference between the two is whether or not we assume that the sample statistic has a known distribution or not. Non-parametric methods are also sometimes called <em>distribution free</em> methods to specifically describe that difference.</p>
+<p>Within statistical inference we can focus on methods relating to the measure of center, such as the mean (<span class="math inline">\(\mu\)</span>) or median, for a quantitative variable or methods relating to a proportion (<span class="math inline">\(p\)</span>) for a qualitative variable. Whether we want to calculate an interval or test hypotheses, using a parametric method needs to fulfill some criteria in order for the results to be a trustworthy.</p>
+<p>The goal is to ascertain more information about the unknown parameter either by using a <em>confidence interval</em> or <em>hypothesis test</em> using the information from the sample. Confidence intervals produces a range of values which we assume with a degree of <em>confidence</em> covers the parameter value while hypothesis tests can either falsify or not falsify a hypothesis we consider being true about the parameter.</p>
+<section id="sec-confidence-interval" class="level2" data-number="12.1">
+<h2 data-number="12.1" class="anchored" data-anchor-id="sec-confidence-interval"><span class="header-section-number">12.1</span> Confidence intervals</h2>
+<!-- TODO INTRODUCE THIS -->
+<p>In <a href="22_Sampling_distributions.html" class="quarto-xref"><span>Chapter 11</span></a> we saw how the values of a statistic were impacted by the sample they were calculated from, producing a distribution of all the statistics that is centered on the population parameter. In practice we only draw one sample but we can make use of the shape of the sampling distribution to account for the uncertainty.</p>
+<p>There exist many different confidence intervals for many different parameters but the main structure is always the same. The center point of the interval is the <em>point estimate</em> from the sample while the width of the interval is calculated using the <em>margin of error</em>.</p>
+<p><span id="eq-conf-interval"><span class="math display">\[
+\begin{aligned}
+\text{Point Estimate } \pm \text{ Margin of Error}
+\end{aligned}
+\tag{12.1}\]</span></span> The margin of error takes two things into account; first the uncertainty of the sampling distribution, and second the level of confidence of the interval. The confidence level is a proportion that determines how confident we are that the true parameter is covered by the interval and if we were to draw all the possible samples from the population, the level describes the proportion of intervals that actually covers the true parameter.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>While the confidence level tries to explain a concept of convergence, in practice we usually only draw one sample which creates some difficulty in interpreting a confidence interval. We can say that an interval can either cover or not cover the true parameter but that’s not informative so we instead phrase our interpretation as <strong>“the interval covers the true parameter with the given confidence level”</strong>. If we want to be absolute certain that the interval covers the true parameter the level of confidence would be 100%, which results in an interval that also covers the entirety of the sample space, <span class="math inline">\(-\infty \le \text{parameter} \le \infty\)</span>. This does not give us any information at all about the parameter so we tend to use confidence levels of 90%, 95% or 99%.</p>
+</section>
+<section id="sec-hypothesis-testing" class="level2" data-number="12.2">
+<h2 data-number="12.2" class="anchored" data-anchor-id="sec-hypothesis-testing"><span class="header-section-number">12.2</span> Hypothesis testing</h2>
+<p>Statistical hypothesis testing takes its inspiration from philosophy, namely the <em>hypothetico-deductive model</em>. The method describes a structure of creating hypotheses with connected evidence that would follow if the hypothesis is true and evidence that would follow if the hypothesis is false. Given this premise we can then use observations to conclude whether or not the hypothesis is falsified or not.</p>
+<p>The process of testing statistical hypotheses uses this theory to shape different steps we can use for any and all types of hypothesis testing. If we know which parameter or type of conclusion we want to make, we can decide to use a specific hypothesis test and follow the following steps:</p>
 <ol type="1">
-<li>Check the requirements</li>
-<li>Formulate hypotheses and the significance level</li>
-<li>Calculate the test statistic</li>
-<li>Calculate the critical or p-value</li>
-<li>Draw conclusions</li>
+<li>Check if the test’s assumptions are fulfilled</li>
+<li>Formulate a <em>null</em> (<span class="math inline">\(H_0\)</span>) and <em>alternative</em> (<span class="math inline">\(H_1\)</span>) hypothesis</li>
+<li>Define the acceptable risk of making a wrong decision.</li>
+<li>Observe evidence in collected data</li>
+<li>Determine if the evidence falsifies the null hypothesis or not</li>
+<li>Draw conclusions and interpret the results</li>
 </ol>
-<p>During step 4 and 5 we will make use of R to help us, but the other steps are still important to determine what we are trying to accomplish with the test.</p>
-<p>When formulating our hypotheses, we need to transform what we want to investigate into mathematical expressions. We also need to ensure that we use the correct mathematical symbol in the alternative hypothesis for the test to be conducted correctly.</p>
-<p>We use the function <code>t.test()</code> which has the following arguments of interest:</p>
-<p><code>x</code> - specifies the variable we want to investigate, <code>alternative</code> - specifies the type of alternative hypothesis to be tested, with values “two.sided”, “less”, or “greater”, <code>mu</code> - specifies the value we want to test, <code>conf.level</code> - specifies the confidence level for the test, given in decimal form.</p>
-<p>For example, if we were interested in investigating whether the mean size of snails is larger than 19, we would set up hypotheses as follows:</p>
-<p><span class="math display">\[\begin{align*}
-  H_0&amp;: \mu \le 19 \\
-H_1&amp;: \mu &gt; 19
-\end{align*}\]</span></p>
-<p>With a significance level of 5 percent, the function we write in R would be as follows:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(<span class="at">x =</span> snailDat<span class="sc">$</span>size, </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">alternative =</span> <span class="st">"greater"</span>,</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">mu =</span> <span class="dv">19</span>,</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">conf.level =</span> <span class="fl">0.95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-    One Sample t-test
-
-data:  snailDat$size
-t = 2.3217, df = 222, p-value = 0.01058
-alternative hypothesis: true mean is greater than 19
-95 percent confidence interval:
- 19.16999      Inf
-sample estimates:
-mean of x 
- 19.58909 </code></pre>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
 </div>
 </div>
-<p>In the output, we see a lot of information, and here we see a disadvantage of R, that the outputs are not clearly structured like in other software.</p>
-<p>The following information can be gleaned from the different lines:</p>
-<ul>
-<li>The first line provides information about which variable the test is performed on.</li>
-<li>The second line provides information from the test where t is the computed test statistic, df is the degrees of freedom in the t-distribution, and p-value is the p-value of the test.</li>
-<li>The third line provides information about the type of alternative hypothesis that has been tested.</li>
-<li>The fourth and fifth lines provide a calculated confidence interval which could be used to answer the alternative hypothesis. In this case, since we have an alternative hypothesis specified as &gt;, a one-sided lower confidence interval is calculated.</li>
-<li>The last lines in the output provide descriptive statistics from the sample.</li>
-<li>To make a decision from this test, we can directly compare the calculated p-value from the output with the specified significance level. If the p-value is lower, we can reject <span class="math inline">\(H_0\)</span>, otherwise, we cannot reject it.</li>
-</ul>
+<div class="callout-body-container callout-body">
+<p>These steps assume that data concerning the problem has been collected but in some studies we might actually start with formulating hypotheses in order to guide us to what type of data we need to collect.</p>
+</div>
+</div>
+<p>Most of these steps are more philosophical than mathematical in nature, in fact it is only within step 4 and 5 we actually make use of mathematical formulas. This means that we will be limited in the use of tools — such as a calculator, R or any other computer software — for only these specific steps and we need to make sure that we are using correct data and the correct formulas for the given problem as well as interpret them in the correct manner.</p>
+<section id="step-by-step-process" class="level3" data-number="12.2.1">
+<h3 data-number="12.2.1" class="anchored" data-anchor-id="step-by-step-process"><span class="header-section-number">12.2.1</span> Step by step process</h3>
+<p>This sub-chapter will describe each of the steps in the procedure a bit more in detail while still focusing on the general way of thinking. Explicit descriptions of the procedure in relation to specific parameters will be given later in this chapter.</p>
+<section id="checking-assumptions" class="level4" data-number="12.2.1.1">
+<h4 data-number="12.2.1.1" class="anchored" data-anchor-id="checking-assumptions"><span class="header-section-number">12.2.1.1</span> Checking assumptions</h4>
+<p>For every method of inference there are usually some assumptions that must be fulfilled in order for the method to actually produce reliable results. These assumptions can be anything from the variable type or scale to specific distributions the statistic must follow. It is not only important to state a given method’s assumption but actually check that they are fulfilled so the results are presented in its proper context and gives some weight that they are reliable to make decisions from.</p>
 </section>
-<section id="confidence-intervals" class="level3" data-number="12.1.2">
-<h3 data-number="12.1.2" class="anchored" data-anchor-id="confidence-intervals"><span class="header-section-number">12.1.2</span> Confidence Intervals</h3>
-<p>For interval estimation of a mean, the same function as for hypothesis testing, <code>t.test()</code>, can be used where the alternative argument specifies the type of interval being calculated. Note that for one-sided intervals, we must specify the alternative hypothesis that matches the restriction.</p>
-<p>A tip for assessing this is to look at the phrasing used in <span class="math inline">\(H_1\)</span> and replace the tested value with the limit we calculate. For example, the alternative hypothesis, “more than 19” <span class="math inline">\(H_1: \mu &gt; 19\)</span>, would result in a one-sided lower confidence interval as follows: <span class="math display">\[
-  \mu &gt; \bar{x} - t_{\alpha(1); n-1} \cdot \frac{s}{\sqrt{n}}
-\]</span> which we saw in the earlier output. In the output, we are only interested in the calculated confidence interval, which means we do not need to specify any value for <code>mu</code> since it only affects the calculation of the t-test.</p>
+<section id="the-hypotheses" class="level4" data-number="12.2.1.2">
+<h4 data-number="12.2.1.2" class="anchored" data-anchor-id="the-hypotheses"><span class="header-section-number">12.2.1.2</span> The hypotheses</h4>
+<p>The null hypothesis is the currently considered truth — or status quo — which we want to falsify while the alternative hypothesis is, as the name implies, the alternative to it describing something else. One thing to keep in mind when formulating these hypotheses is that the null hypothesis can never be proven directly, it can only be falsified or not. “Not falsifying” a null hypothesis is philosophically not the same as “proving” it, even though looking at the language of the two words one can assume they are equivalent.</p>
+<p>In contrast to the philosophical theory, statistical hypotheses require a quite strict formulation, most often directly related to specific mathematical values. We also restrict the two hypotheses to cover all possible outcomes, which means we cannot use one set of hypotheses to test multiple different alternatives.</p>
+</section>
+<section id="the-risk-of-making-a-wrong-decision" class="level4" data-number="12.2.1.3">
+<h4 data-number="12.2.1.3" class="anchored" data-anchor-id="the-risk-of-making-a-wrong-decision"><span class="header-section-number">12.2.1.3</span> The risk of making a wrong decision</h4>
+<p>Similar to the confidence level from <a href="#sec-confidence-interval" class="quarto-xref"><span>Section 12.1</span></a>, we will never be able to conclude the correct hypothesis with absolute certainty so we need to take into account some risk.</p>
+<p>The <em>significance level</em> (<span class="math inline">\(\alpha\)</span>) — calculated as 1 - confidence level — describes the risk of rejecting a true null hypothesis. It is commonly set to 0.01, 0.05 or 0.10, which means we are willing to accept a 1%, 5% or 10% risk of rejecting the null hypothesis when it is actually true.</p>
+<p>This is only one of the types of errors we can make, called the <em>Type I error</em>, the other being the failure to reject a null hypothesis that is in fact false, the <em>Type II error</em>. We can visualize the four possible scenarios in a table:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Decision &nbsp;Truth</th>
+<th><span class="math inline">\(H_0\)</span> True</th>
+<th><span class="math inline">\(H_0\)</span> False</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Reject <span class="math inline">\(H_0\)</span></td>
+<td>Type I error</td>
+<td>Correct</td>
+</tr>
+<tr class="even">
+<td>Fail to Reject <span class="math inline">\(H_0\)</span></td>
+<td>Correct</td>
+<td>Type II error</td>
+</tr>
+</tbody>
+</table>
+<p>There exists a trade-off between the two types of errors, when the risk for Type I error is small the risk for Type II error is large and vice-versa. When we decide the significance level for a test we need to decide which of these risks are more important to minimize, using <span class="math inline">\(\alpha = 0.01\)</span> results in a higher risk of Type II error, while using <span class="math inline">\(\alpha = 0.10\)</span> results in a comparatively lower risk of Type II error. In many fields the use of <span class="math inline">\(\alpha = 0.05\)</span> gives an overall minimal risk for both errors.</p>
+</section>
+<section id="the-collected-evidence" class="level4" data-number="12.2.1.4">
+<h4 data-number="12.2.1.4" class="anchored" data-anchor-id="the-collected-evidence"><span class="header-section-number">12.2.1.4</span> The collected evidence</h4>
+<p>The data we collect should be viewed as objective as possible. Within statistics this step includes a measurement of how far away from the null hypothesis the data is located, with larger values indicating we have observed evidence that falsifies that hypothesis.</p>
+</section>
+<section id="sec-p-value" class="level4" data-number="12.2.1.5">
+<h4 data-number="12.2.1.5" class="anchored" data-anchor-id="sec-p-value"><span class="header-section-number">12.2.1.5</span> The decision boundary</h4>
+<p>Using the significance level we can determine a boundary for which we conclude that the collected data is far enough away to determine we have strong evidence to falsify the null hypothesis. We can do this in two ways; through a quantile value from the same scale as the measurement of the data’s distance from the null hypothesis, or a probability of collecting a sample with data even further away — more extreme — from the null hypothesis.</p>
+<p>The second alternative is more commonly known as <em>p-values</em> which we compare directly to the significance level. If the probability of collecting a sample that is more extreme is lower than the risk of Type I error, we conclude that the null hypothesis has been falsified. If the probability of collecting a sample that is more extreme is higher than the risk of Type I error, we conclude that we do not have strong enough evidence to falsify the null hypothesis.</p>
+</section>
+<section id="conclusions-and-interpretations" class="level4" data-number="12.2.1.6">
+<h4 data-number="12.2.1.6" class="anchored" data-anchor-id="conclusions-and-interpretations"><span class="header-section-number">12.2.1.6</span> Conclusions and interpretations</h4>
+<p>If we falsify the null hypothesis we have found evidence for the alternative, while if we do not falsify the null hypothesis it <strong>does not</strong> mean we have found evidence for the null. This distinction is very important and must be used when interpreting the results.</p>
+<p>In order to “prove” a null hypothesis we would need to conduct multiple hypothesis tests — each with a new random sample — that all fail to reject the same null hypothesis, thereby giving corroborating evidence for the same hypothesis.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Example of hypothesis testing">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Example of hypothesis testing
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<!-- TODO -->
+<p>Assume we are Aristotle in Ancient Greece and want to disprove the current thinking that the Earth is flat. This could be one way to set up a hypothesis test to investigate that statement.</p>
+<ol type="1">
+<li>Assumptions</li>
+</ol>
+<p>This specific hypothesis test does not have any clear assumptions but we could argue that a simple assumption is unbiased data collection.</p>
+<ol start="2" type="1">
+<li>Formulate a null and alternative hypothesis:</li>
+</ol>
+<p>Null Hypothesis (<span class="math inline">\(H_0\)</span>): The Earth is flat.<br>
+Alternative Hypothesis (<span class="math inline">\(H_1\)</span>): The Earth is not flat.</p>
+<p>To each of these hypotheses there are experiments that can be set up which has expected evidence to support them. For example we could hold a strong light 10 meters over sea level on a big field and measure at which height above sea level we locate the light in our binoculars at different distances from the light source.</p>
+<p>If the earth was flat we would expect the light to be seen at the same height regardless of the distance from the source, while if the earth was not, we would expect it to be visible only at different heights when the distance changes.</p>
+<ol start="3" type="1">
+<li>Define the acceptable risk of making a wrong decision:</li>
+</ol>
+<p>For this experiment we can define some form of height margin that we assume comes from measurement errors leading to us not being able to falsify the null hypothesis.</p>
+<ol start="4" type="1">
+<li>Observe evidence in collected data:</li>
+</ol>
+<p>Set up the experiment with the light source and measure the height above sea level where we locate the source in our binoculars at different distances.</p>
+<ol start="5" type="1">
+<li>Determine if the evidence falsifies the null hypothesis or not:</li>
+</ol>
+<p>Using the margin described in step 3, we can calculate the actual height differences that we require to be observed for us to determine if we have falsified the null hypothesis or not.</p>
+<ol start="6" type="1">
+<li>Draw conclusions and interpret the results:</li>
+</ol>
+<p>If the evidence strongly supports the alternative hypothesis and the null hypothesis is rejected, we conclude that the Earth is not flat.</p>
+<p>If the evidence does not strongly support the alternative hypothesis, we fail to reject the null hypothesis, meaning we do not have enough evidence to conclude that the Earth is not flat.</p>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="exercises" class="level2" data-number="12.3">
+<h2 data-number="12.3" class="anchored" data-anchor-id="exercises"><span class="header-section-number">12.3</span> Exercises</h2>
+<p>Assume a small population where the true parameter value is 25. We measure all four (4) possible samples of a set size from this population and measure the following confidence intervals:</p>
+<p><span class="math display">\[
+\begin{aligned}
+5 \le \text{parameter} \le 20\\
+5 \le \text{parameter} \le 65\\
+5 \le \text{parameter} \le 65\\
+10 \le \text{parameter} \le 65
+\end{aligned}
+\]</span></p>
+<ol type="1">
+<li><p>What is the confidence level of the interval?</p></li>
+<li><p>What is the level of type 1 error of the interval and how is it shown in practice?</p></li>
+</ol>
+<p>Assume some new information has come to light, for example time has passed or other external forces has caused a shift in the population, that casts doubt on the value of the true parameter. Let us take a sample from this new population and do some investigating.</p>
+<ol start="3" type="1">
+<li><p>Formulate with words a null and alternative hypothesis that can be used to investigate the value of the parameter.</p></li>
+<li><p>What evidence would we expect to see if the null and alternative hypothesis respectively would be true?</p></li>
+<li><p>Explain what the type I and type II errors would mean in practice, given the hypotheses formulated in 3.</p></li>
+</ol>
 
 
 </section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>You can look through this <a href="https://rpsychologist.com/d3/ci/" target="_blank">interactive visualization</a> of confidence intervals that continuously draws samples and calculates intervals from the same population where we know the true mean.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
 </section>
 
 </main> <!-- /main -->
@@ -906,8 +965,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./24_Statistical_inference_two.html" class="pagination-link" aria-label="Comparing two groups">
-        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./24_Statistical_inference_in_R.html" class="pagination-link" aria-label="Statistical inference in R">
+        <span class="nav-page-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">Statistical inference in R</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
