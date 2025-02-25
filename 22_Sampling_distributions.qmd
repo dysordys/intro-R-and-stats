@@ -1,4 +1,4 @@
-# Sampling distributions
+# Sampling distributions {#sec-sampling-distributions}
 In the previous chapter we have focused on probability distributions for a random variable that describes a characteristic of the observed unit. We can also consider a sample statistic --- e.g. the sample mean --- a random variable because the units the statistic is calculated from are drawn randomly from a population, thereby being affected by randomness. The probability distribution of all statistics calculated from all possible samples **of the same size** is called a *sampling distribution*.
 
 Sampling distributions are a vital part of *statistical inference* --- the process of interpreting the unknown population parameter based on the sample statistic --- which we will begin covering in the next chapter. However we must first get an understanding of the properties of a sampling distribution and a couple of laws that can be used to determine the shape of them.
@@ -88,13 +88,13 @@ wolves |>
   # Adds the sample mean
   geom_vline(
     xintercept = mean(wolvesSample$weight), 
-    color = "lightblue", 
+    color = "black", 
     linewidth = 1
   )
 
 ```
 
-We can see that the sample mean (light blue line) overestimates the population mean (dark red line) but if we were to draw another sample of the same size the sample mean would be a different value.
+We can see that the sample mean (black vertical line) overestimates the population mean (red vertical line) but if we were to draw another sample of the same size the sample mean would be a different value.
 
 ```{r}
 #| echo: FALSE
@@ -123,7 +123,7 @@ wolves |>
   # Adds the sample mean
   geom_vline(
     xintercept = mean(wolvesSample2$weight), 
-    color = "lightblue", 
+    color = "black", 
     linewidth = 1
   ) 
 
@@ -321,7 +321,7 @@ This phenomenon we see --- that the sampling distribution follows the normal dis
 
 What constitutes as a large number is can be different in different scenarios, but in the case above we saw that when n > 30, the histogram looked approximately normal. Most literature use n > 30 as the rule of thumb when the central limit theorem can be applied.
 
-## Sampling distribution of the mean
+## Sampling distribution of the mean {#sec-sampling-distribution-mean}
 
 If the random variable X is **not** normally distributed we need to rely on the central limit theorem to use the normal distribution. If n > 30 we can then state that:
 
@@ -335,6 +335,15 @@ Within biological data the sample sizes tend to be small, most of the times n < 
 A sum or mean of independent random variables, $X_1$-$X_n$, are examples of linear combinations that keep many of the properties from the original variables. For instance if X follows the normal distribution, the mean of X will also follow the normal distribution regardless of how big the sample is. The same mean and standard deviation as in @eq-samp-dist-mean apply and $\bar{X}$ now follows an exact normal distribution.
 
 
+## Exercises
+
+For the exercises we will return to the `iris` dataset seen in earlier chapters (e.g. @sec-wrangling-exercises). For the next questions assume that the petal length of the *setosa* species is normally distributed with a mean length of 1.46 cm and a standard deviation of 0.174 cm.
+
+1. What is the probability of finding the mean petal length of 10 setosa plants less than 1.1 cm?
+
+2. What is the probability of finding the mean petal length of 10 setosa plants between 1.1 and 1.46 cm?
+
+3. How does the answers to these questions differ from question 3 and 4 in @sec-probabilities-exercises? What law is this evidence of?
 
 
 
