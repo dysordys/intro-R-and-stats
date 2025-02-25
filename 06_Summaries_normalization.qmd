@@ -4,9 +4,21 @@
 
 When given a dataset -- such as the snail data in @sec-snail -- it is difficult or even impossible to look at the entire set and understand the information it provides. It is therefore important to be able to describe aspects of the data, such as the different variables and observations, through the use of statistical measurements.
 
-We will be relying on the file [`pop_data.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/pop_data.zip). Download the file and set your working directory to the folder where you saved it. This is a comma-separated file (CSV), so you can load it using `read_delim`, with the delimiter specified as the comma. As usual, we first load the `tidyverse` package:
+We will be relying on the file [`pop_data.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/pop_data.zip). Download the file and set your working directory to the folder where you saved it. This is a comma-separated file (CSV), so you can load it using `read_delim`, with the delimiter specified as the comma. 
 
-<!-- TODO We noted in NBIC66 that read_delim does not allow for custom decimal separators meaning that not all csv files can be correctly read by that function, case of ; column separator and , as decimal. I would recommend focusing on read_csv and read_csv2, although they do not allow for changing the symbols, they account for the two different variants of csv files. -->
+:::{.callout-important}
+There are cases that require another argument. For instance csv-files created from Excel using the European standard format returns a file separated by `;` while the decimal symbol is `,`. The common symbol that R uses for decimals is `.` so even if we were to read that file with the correct delimiter into R, numerical values would not be imported correctly. 
+
+In order to change the decimal symbol while using `read_delim()` you will need to change the `locale` argument. 
+
+```{r}
+#| eval: false
+read_delim(PATH, delim = ";", locale=locale(decimal_mark = ","))
+```
+
+:::
+
+As usual, we first load the `tidyverse` package:
 
 ```{r}
 #| message: false
