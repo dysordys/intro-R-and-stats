@@ -355,7 +355,7 @@ snails |>
 
 Another way of characterizing uncertainty is to turn away from the spread of values in the actual raw data and instead focus on the uncertainty of an estimated quantity such as the mean. The rest of this subsection shows how to calculate confidence intervals for estimated means, and is intended for those who are already familiar with some basic statistical concepts. Alternatively, this section can be referred back to after reading the second part of the book.
 
-In case we want to calculate the 95% confidence intervals of the mean values, we first obtain some necessary summary statistics: the number of observations (sample size) in each group; the standard error of the mean (standard deviation divided by the square root of the sample size); and finally, the confidence interval itself (read off from the quantile function of the *t*-distribution, with one fewer degrees of freedom than the sample size). We can then include these confidence intervals on top of the mean values:
+We can also make use of statistical inference, for instance 95% confidence intervals of the mean (they will be explained more in detail in @sec-confidence-interval and @sec-confint-mean). We must first obtain some necessary summary statistics: the number of observations (sample size) in each group; the standard error of the mean (standard deviation divided by the square root of the sample size); and finally, the confidence interval itself (read off from the quantile function of the *t*-distribution, with one fewer degrees of freedom than the sample size). We can then include these confidence intervals on top of the mean values:
 
 ```{r}
 snails |>
@@ -372,6 +372,12 @@ snails |>
   geom_errorbar(width = 0.2) +
   labs(y = "mean shell shape, +/- 95% confidence interval")
 ```
+
+:::{.callout-important}
+
+It is important to note that these visualizations do not take into account the variance between the groups in a correct manner. What this means is that we **cannot** make conclusions about the differences between groups. We must instead calculate a confidence interval of the difference in means between the groups which we will do in @sec-parametric-comparison.
+
+:::
 
 In the literature, it is common to encounter bar-and-whisker plots to represent the same information as above. These replace the points showing the means with bars that start from zero. One should be aware of how to read and make such graphs. This is almost trivially simple: all one needs to do is replace `geom_point` with `geom_col`.
 
