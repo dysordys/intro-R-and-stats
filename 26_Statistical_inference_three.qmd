@@ -1,0 +1,7 @@
+# Statistical inference in qualitative variables {#sec-inference-qualitative}
+
+
+
+
+## Exercises
+
