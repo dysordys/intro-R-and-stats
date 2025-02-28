@@ -17,12 +17,12 @@ Taking the theoretical framework defined in @sec-stat-inf-intro we will in this 
 For inference about a mean, the following assumptions must be met:
 
 1. independence in the sample,
-    - can be fulfilled by using conducting a Simple Random Sample (SRS).
+    - can be fulfilled by using a Simple Random Sample (SRS).
 2. the sample mean, $\bar{X}$, must be considered normally distributed,
     - can be fulfilled using the Central Limit Theorem (CLT) if the sample is sufficiently large, where the rule of thumb is $n > 30$. CLT states that a mean (or sum) of identically distributed variables will be approximately normally distributed in this case.
     - if the sample is small, then the variable of interest, $X$, must be considered normally distributed. This means that the transformation applied to the mean will also be normally distributed.
 
-### Confidence interval of a mean
+### Confidence interval of a mean {#sec-confint-mean}
 
 Using the sample distribution of the mean from @sec-sampling-distribution-mean and the structure from @eq-conf-interval, the confidence interval of a mean is calculated as:
 
@@ -340,7 +340,7 @@ To make a decision from this test, we can directly compare the calculated p-valu
 
 ## Exercises
 
-David Lack [@lack1945galapagos] conducted analyses of information about finches on the Galápagos Islands during the first half of the 20th century, using data collected by the California Academy of Sciences during their expeditions from 1905-06. The data set [`darwin-finches.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/darwin-finches.csv) contains a subset of the collected information from four species within the genus Geospiza. The six variables are:
+David Lack [@lack1945galapagos] conducted analyses of information about finches on the Galápagos Islands during the first half of the 20th century, using data collected by the California Academy of Sciences during their expeditions from 1905-06. The dataset [`darwin-finches.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/darwin-finches.csv) contains a subset of the collected information from four species within the genus Geospiza. The six variables are:
 
 - `island`: Abbreviation of the island where the specimen was examined;
 - `species`: Genus and species of the specimen;
@@ -349,7 +349,7 @@ David Lack [@lack1945galapagos] conducted analyses of information about finches 
 - `upper_beak_length`: length of the upper part of the bird's beak from the base to the tip (mm);
 - `nostril_upper_beak_length`: similar to `upper_beak_length` but measures from the nostril to the tip of the beak (mm).
 
-**Ensure that the data set appears as expected in the R environment before proceeding with the exercises!**
+**Ensure that the dataset appears as expected in the R environment before proceeding with the exercises!**
 
 1. Construct a 95% confidence interval for the proportion of *Geospiza magnirostris* in the population using the normal approximation. Is the method suitable for this data? Interpret the interval.
 
