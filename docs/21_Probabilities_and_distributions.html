@@ -280,7 +280,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./25_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Statistical inference in two groups</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./26_Statistical_inference_three.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in qualitative variables</span></span></a>
   </div>
 </li>
       </ul>
@@ -297,43 +303,43 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_Linear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./45_Intro_map.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./46_Multiple_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -350,7 +356,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./99_References.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">References</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
       </ul>
@@ -471,7 +477,7 @@ P(x) = \binom{n}{x} p^x (1-p)^{n-x}
 <section id="dbinom" class="level4" data-number="10.2.1.1">
 <h4 data-number="10.2.1.1" class="anchored" data-anchor-id="dbinom"><span class="header-section-number">10.2.1.1</span> <code>dbinom</code></h4>
 <p>The probability distribution of X can be presented in a table or a visualization. For a visualization, similar to the bar plots we have created earlier the x-axis should contain the different values the variable can be and the height of each bar correspond to the probability of each value. We can calculate the probability of each value with <code>dbinom</code>.</p>
-<p>The data set sent to <code>ggplot</code> contain the actual heights of the bars so we assign the y argument in <code>aes</code> to the probabilities and tell <code>geom_bar</code> to actually use the values provided by adding <code>stat = "identity"</code>.</p>
+<p>The dataset sent to <code>ggplot</code> contain the actual heights of the bars so we assign the y argument in <code>aes</code> to the probabilities and tell <code>geom_bar</code> to actually use the values provided by adding <code>stat = "identity"</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Defining the number of trials and probability of success</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">10</span></span>
@@ -485,7 +491,7 @@ P(x) = \binom{n}{x} p^x (1-p)^{n-x}
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">px =</span> <span class="fu">dbinom</span>(<span class="at">x =</span> x, <span class="at">size =</span> n, <span class="at">prob =</span> p)</span>
 <span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>By default, R handles the variable x as a continuous numeric variable no matter if the data set only contains whole numbers, so for the sake of clarity we should adjust the x-axis to show each whole number. An easy way to do this is to convert the variable x to a <code>factor</code> inside the visualization as we then force R to show each category on the x-axis.</p>
+<p>By default, R handles the variable x as a continuous numeric variable no matter if the dataset only contains whole numbers, so for the sake of clarity we should adjust the x-axis to show each whole number. An easy way to do this is to convert the variable x to a <code>factor</code> inside the visualization as we then force R to show each category on the x-axis.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span> </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> </span>

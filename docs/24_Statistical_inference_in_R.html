@@ -296,7 +296,13 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./25_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Statistical inference in two groups</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./26_Statistical_inference_three.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in qualitative variables</span></span></a>
   </div>
 </li>
       </ul>
@@ -313,43 +319,43 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_Linear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./45_Intro_map.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./46_Multiple_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -366,7 +372,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./99_References.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">References</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
       </ul>
@@ -383,7 +389,7 @@ window.Quarto = {
   <ul>
   <li><a href="#inference-of-a-mean" id="toc-inference-of-a-mean" class="nav-link active" data-scroll-target="#inference-of-a-mean"><span class="header-section-number">13.1</span> Inference of a mean</a>
   <ul>
-  <li><a href="#confidence-interval-of-a-mean" id="toc-confidence-interval-of-a-mean" class="nav-link" data-scroll-target="#confidence-interval-of-a-mean"><span class="header-section-number">13.1.1</span> Confidence interval of a mean</a></li>
+  <li><a href="#sec-confint-mean" id="toc-sec-confint-mean" class="nav-link" data-scroll-target="#sec-confint-mean"><span class="header-section-number">13.1.1</span> Confidence interval of a mean</a></li>
   <li><a href="#hypothesis-testing-of-a-mean" id="toc-hypothesis-testing-of-a-mean" class="nav-link" data-scroll-target="#hypothesis-testing-of-a-mean"><span class="header-section-number">13.1.2</span> Hypothesis testing of a mean</a></li>
   <li><a href="#visualizing-the-hypothesis-testing" id="toc-visualizing-the-hypothesis-testing" class="nav-link" data-scroll-target="#visualizing-the-hypothesis-testing"><span class="header-section-number">13.1.3</span> Visualizing the hypothesis testing</a></li>
   </ul></li>
@@ -428,7 +434,7 @@ window.Quarto = {
 <ol type="1">
 <li>independence in the sample,
 <ul>
-<li>can be fulfilled by using conducting a Simple Random Sample (SRS).</li>
+<li>can be fulfilled by using a Simple Random Sample (SRS).</li>
 </ul></li>
 <li>the sample mean, <span class="math inline">\(\bar{X}\)</span>, must be considered normally distributed,
 <ul>
@@ -436,8 +442,8 @@ window.Quarto = {
 <li>if the sample is small, then the variable of interest, <span class="math inline">\(X\)</span>, must be considered normally distributed. This means that the transformation applied to the mean will also be normally distributed.</li>
 </ul></li>
 </ol>
-<section id="confidence-interval-of-a-mean" class="level3" data-number="13.1.1">
-<h3 data-number="13.1.1" class="anchored" data-anchor-id="confidence-interval-of-a-mean"><span class="header-section-number">13.1.1</span> Confidence interval of a mean</h3>
+<section id="sec-confint-mean" class="level3" data-number="13.1.1">
+<h3 data-number="13.1.1" class="anchored" data-anchor-id="sec-confint-mean"><span class="header-section-number">13.1.1</span> Confidence interval of a mean</h3>
 <p>Using the sample distribution of the mean from <a href="22_Sampling_distributions.html#sec-sampling-distribution-mean" class="quarto-xref"><span>Section 11.2</span></a> and the structure from <a href="23_Statistical_inference.html#eq-conf-interval" class="quarto-xref">Equation&nbsp;<span>12.1</span></a>, the confidence interval of a mean is calculated as:</p>
 <p><span class="math display">\[
 \begin{aligned}
@@ -793,7 +799,7 @@ sample estimates:
 </section>
 <section id="exercises" class="level2" data-number="13.3">
 <h2 data-number="13.3" class="anchored" data-anchor-id="exercises"><span class="header-section-number">13.3</span> Exercises</h2>
-<p>David Lack <span class="citation" data-cites="lack1945galapagos">(<a href="99_References.html#ref-lack1945galapagos" role="doc-biblioref">Lack et al. 1945</a>)</span> conducted analyses of information about finches on the Galápagos Islands during the first half of the 20th century, using data collected by the California Academy of Sciences during their expeditions from 1905-06. The data set <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/darwin-finches.csv"><code>darwin-finches.csv</code></a> contains a subset of the collected information from four species within the genus Geospiza. The six variables are:</p>
+<p>David Lack <span class="citation" data-cites="lack1945galapagos">(<a href="99_References.html#ref-lack1945galapagos" role="doc-biblioref">Lack et al. 1945</a>)</span> conducted analyses of information about finches on the Galápagos Islands during the first half of the 20th century, using data collected by the California Academy of Sciences during their expeditions from 1905-06. The dataset <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/darwin-finches.csv"><code>darwin-finches.csv</code></a> contains a subset of the collected information from four species within the genus Geospiza. The six variables are:</p>
 <ul>
 <li><code>island</code>: Abbreviation of the island where the specimen was examined;</li>
 <li><code>species</code>: Genus and species of the specimen;</li>
@@ -802,7 +808,7 @@ sample estimates:
 <li><code>upper_beak_length</code>: length of the upper part of the bird’s beak from the base to the tip (mm);</li>
 <li><code>nostril_upper_beak_length</code>: similar to <code>upper_beak_length</code> but measures from the nostril to the tip of the beak (mm).</li>
 </ul>
-<p><strong>Ensure that the data set appears as expected in the R environment before proceeding with the exercises!</strong></p>
+<p><strong>Ensure that the dataset appears as expected in the R environment before proceeding with the exercises!</strong></p>
 <ol type="1">
 <li><p>Construct a 95% confidence interval for the proportion of <em>Geospiza magnirostris</em> in the population using the normal approximation. Is the method suitable for this data? Interpret the interval.</p></li>
 <li><p>Investigate whether the proportion of Geospiza magnirostris is significantly greater than 10%. Calculate the p-value for the test using the normal and binomial distribution to draw your conclusions. Compare the two p-values and discuss the practical difference between the two methods and their conclusion.</p></li>
@@ -1250,8 +1256,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./25_Statistical_inference_two.html" class="pagination-link" aria-label="Comparing two groups">
-        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./25_Statistical_inference_two.html" class="pagination-link" aria-label="Statistical inference in two groups">
+        <span class="nav-page-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Statistical inference in two groups</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -267,7 +267,13 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./25_Statistical_inference_two.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Comparing two groups</span></span></a>
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">Statistical inference in two groups</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./26_Statistical_inference_three.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in qualitative variables</span></span></a>
   </div>
 </li>
       </ul>
@@ -284,43 +290,43 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./41_Linear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">Simple linear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./45_Intro_map.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Higher-order functions and mapping</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./46_Multiple_analysis.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">Nested data and multiple analysis</span></span></a>
   </div>
 </li>
       </ul>
@@ -337,7 +343,7 @@ div.csl-indent {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./99_References.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">References</span></span></a>
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">References</span></span></a>
   </div>
 </li>
       </ul>
@@ -850,7 +856,7 @@ Figure&nbsp;8.1: The density distribution of three different species, with their
 </div>
 </div>
 <p>Another way of characterizing uncertainty is to turn away from the spread of values in the actual raw data and instead focus on the uncertainty of an estimated quantity such as the mean. The rest of this subsection shows how to calculate confidence intervals for estimated means, and is intended for those who are already familiar with some basic statistical concepts. Alternatively, this section can be referred back to after reading the second part of the book.</p>
-<p>In case we want to calculate the 95% confidence intervals of the mean values, we first obtain some necessary summary statistics: the number of observations (sample size) in each group; the standard error of the mean (standard deviation divided by the square root of the sample size); and finally, the confidence interval itself (read off from the quantile function of the <em>t</em>-distribution, with one fewer degrees of freedom than the sample size). We can then include these confidence intervals on top of the mean values:</p>
+<p>We can also make use of statistical inference, for instance 95% confidence intervals of the mean (they will be explained more in detail in <a href="23_Statistical_inference.html#sec-confidence-interval" class="quarto-xref"><span>Section 12.1</span></a> and <a href="24_Statistical_inference_in_R.html#sec-confint-mean" class="quarto-xref"><span>Section 13.1.1</span></a>). We must first obtain some necessary summary statistics: the number of observations (sample size) in each group; the standard error of the mean (standard deviation divided by the square root of the sample size); and finally, the confidence interval itself (read off from the quantile function of the <em>t</em>-distribution, with one fewer degrees of freedom than the sample size). We can then include these confidence intervals on top of the mean values:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(habitat) <span class="sc">|&gt;</span></span>
@@ -871,6 +877,19 @@ Figure&nbsp;8.1: The density distribution of three different species, with their
 <p><img src="08_Further_plotting_options_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It is important to note that these visualizations do not take into account the variance between the groups in a correct manner. What this means is that we <strong>cannot</strong> make conclusions about the differences between groups. We must instead calculate a confidence interval of the difference in means between the groups which we will do in <a href="25_Statistical_inference_two.html#sec-parametric-comparison" class="quarto-xref"><span>Section 14.2</span></a>.</p>
 </div>
 </div>
 <p>In the literature, it is common to encounter bar-and-whisker plots to represent the same information as above. These replace the points showing the means with bars that start from zero. One should be aware of how to read and make such graphs. This is almost trivially simple: all one needs to do is replace <code>geom_point</code> with <code>geom_col</code>.</p>
