@@ -1,7 +1,21 @@
 # Statistical inference in qualitative variables {#sec-inference-qualitative}
 
+The previous chapters have focused on quantitative variables, except for the proportion or binomial tests of a specific category in a qualitative variable. If we want to compare groups of a  qualitative variables we are in this part of the book limited in the methods available. 
 
+## $\chi^2$-test for independence
+The *$\chi^2$-test for independence* (pronounced chi-square) is used to determine if there is a significant association between two categorical variables. It compares the observed frequencies in each category to the frequencies we would expect if the variables were independent.
+
+## $\chi^2$-test for goodness-of-fit
+The **$\chi^2$ goodness-of-fit test** is used to determine if a sample data matches a population with a specific distribution. It compares the observed frequencies in each category to the expected frequencies based on the specified distribution.
 
 
 ## Exercises
+The material to be analyzed in these exercises is a collection of phosphorus levels in 4189 lakes from different parts of Sweden. The phosphorus levels have been divided into five different condition classes. The data set can be found via [`lake-phosphorus.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/lake-phosphorus.csv).
 
+This task aims to analyze the collected data from the Swedish lakes. What we want to investigate is whether there is a dependency between condition class and region.
+
+1. Formulate hypotheses that describe what you want to investigate and set the level of significance.
+
+2. Show the expected values and check that the assumptions for the test has been fulfilled. 
+
+3. Conduct the full test and interpret the results of the output. Does the data provide evidence that there is a dependency between the region of Sweden and the amount of phosphorus in the lakes?
