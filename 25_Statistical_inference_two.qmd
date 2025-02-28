@@ -1,8 +1,9 @@
-# Comparing two groups {#sec-wilcox}
+# Statistical inference in two groups {#sec-inference-comparison}
 
-## Introductory example and the Wilcoxon rank sum test {#sec-example-wilcox}
+We do not have to limit ourselves to only making inference on one population or group. In fact most analyses that are conducted focus on comparing groups with one another in some capacity. In this chapter we will focus on the simplest of those comparisons, when we only have two groups.
 
-In this chapter we will take a first look at statistical tests of a very simple kind: comparing two groups of data. To illustrate why statistical inference is needed in such comparisons, let us take a look at a fictive dataset ([`fictive_bird_example.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/fictive_bird_example.zip)) which contains equally fictive weight measurements of different bird individuals from the same species. The birds are assumed to come from two islands, a larger and a smaller one. The question is: do the data provide evidence of *insular dwarfism*---the phenomenon that the body sizes of species tend to decline on small islands over evolutionary time?
+## Introductory example {#sec-example-comparison}
+To illustrate why statistical inference is needed in such comparisons, let us take a look at a fictive dataset ([`fictive_bird_example.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/fictive_bird_example.zip)) which contains equally fictive weight measurements of different bird individuals from the same species. The birds are assumed to come from two islands, a larger and a smaller one. The question is: do the data provide evidence of *insular dwarfism*---the phenomenon that the body sizes of species tend to decline on small islands over evolutionary time?
 
 We can load the data:
 
@@ -38,86 +39,142 @@ bird |>
   ungroup()
 ```
 
-Can we conclude that the two samples are indeed different, and birds on the smaller island tend to be smaller, supporting the insular dwarfism hypothesis? As mentioned above, the data are fictive---they are not based on actual measurements. **In fact, these "observations" were created by sampling each data point from the same distribution, regardless of island**: a normal distribution with mean 20 and standard deviation 5. This means that any supposedly observed difference between the samples must be accidental. Would various statistical methods detect a difference? One thing we can do is what we have learned in @sec-CI: compute the 95% confidence intervals of the means, and see whether and how much they overlap.
+Can we conclude that the two samples are indeed different, and birds on the smaller island tend to be smaller, supporting the insular dwarfism hypothesis? As mentioned above, the data are fictive---they are not based on actual measurements. **In fact, these "observations" were created by sampling each data point from the same distribution, regardless of island**: a normal distribution with mean 20 and standard deviation 5. This means that any supposedly observed difference between the samples must be accidental. 
+
+In @sec-CI we looked at ways of visualizing two individual confidence intervals but determined that we did not take into account the variance between the groups properly to draw any statistical conclusions.
+
+## Parametric test {#sec-parametric-comparison}
+Let us wait no longer, and perform a statistical test. Instead of looking at two single groups of means we now look at the difference between them. Similar to the parametric test for a single mean there are several assumptions that must be fulfilled in order for us to find the results reliable.
+
+1. independence within both samples,
+    - can be fulfilled by using a Simple Random Sample (SRS).
+2. independence between samples,
+    - can as well be fulfilled by using one SRS for the entire data or one SRS per group **and** there is no inherent relationship between the data points in each group.
+3. the sample mean, $\bar{X}$, **of each sample** must be considered normally distributed,
+    - can be fulfilled using the Central Limit Theorem (CLT) if the sample is sufficiently large, where the rule of thumb is $n_1 > 30$ and $n_2 > 30$. CLT states that a mean (or sum) of identically distributed variables will be approximately normally distributed in this case.
+    - if the sample is small, then the variable of interest, $X$, must be considered normally distributed. This means that the transformation applied to the mean will also be normally distributed.
+
+:::{.callout-important}
+Suppose you want to study the effect of a specific fertilizer on the growth of a particular plant species. You could set up an experiment where you measure the height of the same group of plants before and after applying the fertilizer. In this case, the samples are dependent because the measurements are taken from the same plants at two different times, the height of the plant before the treatment is going to affect the height of the plant after the treatment. 
+
+This example does not fulfill the second assumption, even if the plants were to be selected using an SRS. We would have to use a statistical test for **dependent samples** which we will cover later in this chapter.
+:::
+
+If all assumptions are fulfilled we could describe the parameter of interest as the difference between the two means:
+$$
+\begin{aligned}
+\bar{\mu}_1 - \bar{\mu}_2
+\end{aligned}
+$$
+where 1 and 2 denote the larger and smaller island respectively. To simplify things we could just use $\bar{\mu}_L - \bar{\mu}_S$ to make it clear which mean corresponds to which group. 
+
+It does not matter which group we denote to which side of the difference, just that we remember the order and what evidence we expect to see that can falsify our null hypothesis. For example if we want to find evidence for the *insular dwarfism* theory we need to place the evidence of that theory in $H_1$. This might feel a bit counter-intuitive to the process defined in @sec-hypothesis-testing but there are two aspects to take into account; 
+
+1. we can only find evidence in support of an alternative hypothesis, never a null hypothesis, and 
+2. within statistics, the null hypothesis must always include the equal ($=$) sign. 
+
+We can find evidence of the insular dwarfism theory no matter if the difference is a really small or really big positive number^[Remember that the theory says the sizes are smaller on a smaller island!] --- as long as there is a difference --- so the evidence to support the theory would be defined in the alternative hypothesis as:
+$$
+\begin{aligned}
+  &H_0: \bar{\mu}_L - \bar{\mu}_S \le 0\\
+  &H_1: \bar{\mu}_L - \bar{\mu}_S > 0
+\end{aligned}
+$$
+
+The dataset is structured as a tidy data which means we can make use of *formula notation* in R to conduct the test of the difference. Using the tidy format, the function `t.test()` takes two arguments: a *formula*, and the *data* to be analyzed, in the form of a data frame or tibble. The formula in the first argument establishes a relationship between two (or more) columns of the data. We will discuss formulas and their syntax in more detail later. 
+
+For now: the way to write them is to first type the variable we wish to predict, then a tilde (`~`), and then the explanatory variable (predictor) by which the data are subdivided into the two groups. In our case, we are trying to explain the difference in weight between the islands, so `weight` comes before the tilde and the predictor `island` comes after. The default value to test for is 0, so we do not need to change that argument to conform to our hypotheses, but we need to set the one-sided $H_1$ in `alternative`.
 
 ```{r}
-bird |>
-  group_by(island) |>
-  summarize(mean = mean(weight), # Means of the two groups
-            sd = sd(weight), # Standard deviations
-            N = n(), # Sample sizes
-            SEM = sd / sqrt(N), # Standard errors of the means
-            CI = qt(1 - 0.025, N - 1)) |> # Confidence intervals
-  ungroup() |> # Ungroup the data (not necessary here, but a good habit)
-  ggplot(aes(x = island, y = mean, ymin = mean - CI, ymax = mean + CI)) +
-  geom_point(color = "steelblue") +
-  geom_errorbar(color = "steelblue", width = 0.2) +
-  labs(y = "mean and 95% confidence interval") +
-  theme_bw()
+
+t.test(weight ~ island, data = bird, alternative = "greater")
+
 ```
 
-As seen, there is overlap between the 95% confidence intervals. While that by itself is not conclusive, it is an indication that the difference between the two samples may not be as relevant as it might have initially looked.
+:::{.callout-note}
 
-Let us wait no longer, and perform a statistical test. One widely used test to check if two samples differ from one another is the *Wilcoxon rank sum test* (also known as the *Mann-Whitney test*). Its implementation is as follows:
+Make sure to note the order of the groups stated in the `alternative hypothesis` of the output. In this case it says "*true difference in means between group larger and group smaller is greater than 0*" which is what we defined in $H_1$. 
+
+If the text is different from what we defined in our hypotheses, we must change the factor levels of the grouping variable in the data to the same order as we have set. We can do this by manually setting the order in the `levels` argument of `factor()`.
 
 ```{r}
-wilcox.test(weight ~ island, data = bird)
+
+bird <- bird |> 
+  mutate(island = factor(island, levels = c("larger", "smaller")))
+
+```
+:::
+
+Similar to the output from the one-sample t-test we can compare the p-value to the level of significance in order to determine if the null hypothesis can be rejected or not. In this example the p-value of 0.03468 is lower than the significance level of 0.05 which means we reject $H_0$. We then conclude that with 5% significance we have found evidence in support of the insular dwarfism theory.^[In this case we know that it is not true given we created the sample ourselves, so we have now encountered a type I error in practice.]
+
+### Assumption of equal variance
+When performing a two-sample t-test, we need to consider whether the variances of the two groups are equal or unequal. This decision impacts the test we use and the reliability of our results.
+
+If we assume that the variances of the two groups are equal, we use a *pooled variance*. This assumption can simplify calculations and increase the power of the test if it holds true, however, if the variances are not equal, this assumption can lead to incorrect conclusions.
+
+To perform a t-test with equal variances in R, we use the var.equal = TRUE argument in the t.test() function:
+
+```{r}
+t.test(weight ~ island, data = bird, alternative = "greater", var.equal = TRUE)
 ```
 
-The function takes two arguments: a *formula*, and the *data* to be analyzed, in the form of a data frame or tibble. The formula in the first argument establishes a relationship between two (or more) columns of the data. We will discuss formulas and their syntax in more detail later. For now: the way to write them is to first type the variable we wish to predict, then a tilde (`~`), and then the explanatory variable (predictor) by which the data are subdivided into the two groups. In our case, we are trying to explain the difference in weight between the islands, so `weight` comes before the tilde and the predictor `island` comes after.
+If we do not assume equal variances, we use Welch's t-test, which adjusts the degrees of freedom to account for the difference in variances. This approach is more robust when the variances are indeed different between the two groups. To perform a t-test without assuming equal variances, we simply omit the var.equal argument or set it to FALSE which is the default.
 
-Let us now look at the output produced by `wilcox.test` above. Most of it is not particularly relevant for us: we are first informed that a Wilcoxon rank sum exact test is being performed; then we see that we are explaining weight differences by island; then we see the test statistic W itself (we need not concern ourselves with its precise meaning); then the p-value; and finally, a reminder of what the alternative hypothesis is (the null hypothesis is that the shift in location is in fact zero).
+We can use a visualization of the distribution for the two to approximate whether or not the variances are equal. 
 
-One piece of datum we are interested in is the p-value. This tells us the probability of observing a result *at least* as extreme as we see in our data, given that the null hypothesis is true. In our case, we are measuring how different the two samples are from one another, and the null hypothesis is that the only difference we might observe is due purely to chance. We find that the probability of this being the case, given our data, is 0.056. What this number means is that we have a roughly one-in-eighteen chance that the observed difference is nothing but a fluke. Since science leans towards erring on the side of caution (i.e., we would rather miss out on making a discovery than falsely claim having seen an effect), this value is in general a bit too high for comfort. And indeed: since in this case we know that the data were generated by sampling from the same distribution, any distinctiveness between them is incidental.
+## Non-parametric test {#sec-nonparametric-comparison}
+
+If the assumptions of the parametric tests --- specifically the assumption of normality --- cannot be fulfilled, we can instead choose to use a non-parametric alternative. One widely used test to check if two samples differ from one another is the *Wilcoxon rank sum test* (also known as the *Mann-Whitney test*). This test does not look at a specific parameter but rather the general idea of the measure of center, which is called the location.
+
+Its implementation is as follows:
+
+```{r}
+wilcox.test(weight ~ island, data = bird, alternative = "greater")
+```
+
+Most of the output is not particularly relevant for us: we are first informed that a Wilcoxon rank sum exact test is being performed; then we see that we are explaining weight differences by island; then we see the test statistic W itself (we need not concern ourselves with its precise meaning); then the p-value; and finally, a reminder of what the alternative hypothesis is (the null hypothesis is that the shift in location is in fact zero).
+
+We find that the p-value, given our data, is 0.02794. What this number means is that we have a roughly one-in-thirtysix chance that the observed difference is nothing but a fluke. Comparing this to the level of significance we conclude that $H_0$ can be rejected.
 
 :::{.callout-warning}
-In many subfields of science, it is standard practice to consider p-values falling below 0.05 as "significant" and those falling above as "non-significant". Besides the fact that such a one-size-fits-all approach ought to be suspect even under the best of circumstances, a significance threshold of 0.05 is awfully permissive to errors. In fact, we should expect about one out of twenty ($1 / 0.05$) of all papers ever published which have reported $p = 0.05$ to be wrong! Digging deeper into this issue reveals that the figure is possibly much worse---see, e.g., @Colquhoun2014. One way to ameliorate the problem is to adopt a less exclusive and parochial view of p-values. Instead of having rigid significance thresholds, p-values can simply be reported as-is, and interpreted for what they are: the probability that the outcome is at least as extreme as observed, assuming that the null model holds. Treating this information as just another piece of the larger data puzzle is a first step towards avoiding the erroneous classification of random patterns as results.
+In many subfields of science, it is standard practice to consider p-values falling below 0.05 as "significant" and those falling above as "non-significant". Besides the fact that such a one-size-fits-all approach ought to be suspect even under the best of circumstances, a significance threshold of 0.05 is awfully permissive to errors. In fact, we should expect about one out of twenty ($1 / 0.05$) of all papers ever published which have reported $p = 0.05$ to be wrong! Digging deeper into this issue reveals that the figure is possibly much worse---see, e.g., @Colquhoun2014. 
+
+One way to ameliorate the problem is to adopt a less exclusive and parochial view of p-values. Instead of having rigid significance thresholds, p-values can simply be reported as-is, and interpreted for what they are: the probability that the outcome is at least as extreme as observed, assuming that the null model holds. Treating this information as just another piece of the larger data puzzle is a first step towards avoiding the erroneous classification of random patterns as results.
+
+We must keep in mind that we cannot use this when comparing p-values between different tests and determine which is "more significant". This will become important in @sec-linreg.
 :::
 
 Apart from the p-value which measures whether the observed effect is likely to have been due to chance alone, another important piece of information is some measure of the *effect size:* how different are the two samples? We have already computed the means and medians; their differences across the islands provide one way of measuring this effect size. It is possible to add a calculation of the effect size, as well as the confidence intervals, to the Wilcoxon rank sum test. All one needs to do is pass `conf.int = TRUE` as an argument:
 
 ```{r}
-wilcox.test(weight ~ island, data = bird, conf.int = TRUE)
+wilcox.test(weight ~ island, data = bird, 
+            conf.int = TRUE, alternative = "greater")
 ```
 
-As additional output, we now receive the 95% confidence interval, as well as the explicit difference between the "locations" of the two samples. (A small word of caution: this "difference in location" is neither the difference of the means nor the difference of the medians, but the median of the difference between samples from the two groups of data---feel free to check the help pages by typing `?wilcox.test` for more details.) The confidence interval, as seen, includes zero, which can be interpreted as being difficult to rule out the possibility that the observed difference in location is just due to chance.
+As additional output, we now receive the 95% confidence interval, as well as the explicit difference between the "locations" of the two samples. (A small word of caution: this "difference in location" is neither the difference of the means nor the difference of the medians, but the median of the difference between samples from the two groups of data---feel free to check the help pages by typing `?wilcox.test` for more details.) If he interval were to cover 0, the practical interpretation would be that it is difficult to rule out the possibility that the observed difference in location is just due to chance.
 
 The default confidence level of 95% can be changed via the `conf.level` argument. For example, to use a 99% confidence interval instead:
 
 ```{r}
-wilcox.test(weight ~ island, data = bird, conf.int = TRUE, conf.level = 0.99)
+wilcox.test(weight ~ island, data = bird, 
+            conf.int = TRUE, conf.level = 0.99, alternative = "greater")
 ```
-
-In summary, the Wilcoxon rank sum test failed to yield serious evidence in favor of rejecting the null hypothesis. Therefore, we cannot claim with any confidence that our fictive birds have different sizes across the two islands. While failure to reject the null is not the same as confirming that the null is true (absence of evidence is not evidence of absence!), the notion that the two samples are different could not be supported. In this particular case, since we ourselves have created the original data using the null hypothesis, we have the privilege of knowing that this is the truth. When working with real data, such knowledge is generally not available.
-
 
 ## Some general conclusions
 
-The example of @sec-example-wilcox illustrates two important general points.
+The example of @sec-example-comparison illustrates two important general points.
 
 First, instead of jumping into statistical tests, we started the analysis with qualitative and descriptive data exploration: we plotted the data, computed its means and medians, etc. This is almost always the correct way to go.^[The exception is when one analyzes data from a pre-registered experimental design. In that case, one must follow whatever statistical techniques were agreed upon before data collection even started.] To perform tests blindly, without visually exploring the data first, is rarely a good idea.
 
 Second, we only performed the statistical test after we have made an effort to understand the data, and after setting clear expectations about what we might find. We knew, going into the test, that finding a difference between the two island samples was questionable. And indeed, the test revealed that such a distinction cannot be made in good conscience. Following a similar strategy for all statistical inference can prevent a lot of frustration. To make the point more sharply: do not perform a statistical test without knowing what its result will be! A more nuanced way of saying the same thing is that if you think you see a relationship in your data, then you should also make sure that your observation is not just a mirage, by using a statistical test. But if a relationship is not visually evident, you should first ask the question whether it makes much sense to try to explore it statistically.
 
+In summary, the tests yielded evidence in favor of rejecting the null hypothesis (in support of the alternative). Therefore, we can conclude that with 5% significance our fictive birds have smaller sizes on the smaller island. In this particular case, since we ourselves have created the original data using the null hypothesis, we have the privilege of knowing that this is false. When working with real data, such knowledge is generally not available.
+
 ## Parametric versus non-parametric tests
 
-The Wilcoxon rank sum test we employed is *non-parametric:* it does not assume either the data or the residuals to come from any particular distribution. This is both the test's advantage and disadvantage. It is an advantage because fewer assumptions must be satisfied for the test to be applicable. Non-parametric techniques also tend to fare better when only limited data are available. Since in many areas of biology (such as ecology) data are hard to come by, datasets are correspondingly small, making non-parametric techniques a natural candidate for interrogating the data with. On the downside, non-parametric tests tend to be less powerful than parametric ones: the additional assumptions of parametric tests may allow for sharper inference---provided that those assumptions are actually met by the real data, of course.
+The Wilcoxon rank sum test we employed does not assume either the data or the residuals to come from any particular distribution. This is both the test's advantage and disadvantage. It is an advantage because fewer assumptions must be satisfied for the test to be applicable. Non-parametric techniques also tend to fare better when only limited data are available. Since in many areas of biology (such as ecology) data are hard to come by, datasets are correspondingly small, making non-parametric techniques a natural candidate for interrogating the data with. On the downside, non-parametric tests tend to be less powerful than parametric ones: the additional assumptions of parametric tests may allow for sharper inference---provided that those assumptions are actually met by the real data, of course.
 
-One of the most common parametric alternatives to the Wilcoxon rank sum test is Welch's *t*-test. Like the Wilcoxon rank sum test, the *t*-test assumes the independence of the two samples. In addition, it also assumes that the samples are normally distributed. Let us see what the *t*-test says about our fictive bird data:
-
-```{r}
-t.test(weight ~ island, data = bird)
-```
-
-The format of the output is similar to the one with the Wilcoxon rank sum test; the main differences are that the confidence intervals are included by default, and that the observed means of the two samples are also reported. Like with `wilcox.test`, the confidence level can be adjusted through the argument `conf.level`:
-
-```{r}
-t.test(weight ~ island, data = bird, conf.level = 0.99)
-```
-
-Importantly, the message conveyed by the p-value of 0.069 is in line with what we saw from the Wilcoxon rank sum test: there is no strong evidence to claim that the two samples are different. In this particular case, it does not make any qualitative difference whether one uses the parametric *t*-test or the non-parametric Wilcoxon rank sum test.
-
-In other situations, the choice of test may matter more. The data in [`t_wilcox_example.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/t_wilcox_example.zip) have also been artificially created as an example. They contain two groups of "measurements". In the first group (group `x`), the data have been sampled from a lognormal distribution with mean 0 and standard deviation 1. In the second group (group `y`), the data have been sampled from a lognormal distribution with mean 1 and standard deviation 1. Thus, we know *a priori* that the two distributions from which the samples were created have different means, and a statistical test may be able to reveal this difference. However, since the data are heavily non-normal, a *t*-test will struggle to do so. Let us load and visualize the data first:
+The conclusions drawn from both of these tests in the sections above were the same, but in other situations, the choice of test may matter more. The data in [`t_wilcox_example.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/t_wilcox_example.zip) have also been artificially created as an example. They contain two groups of "measurements". In the first group (group `x`), the data have been sampled from a lognormal distribution with mean 0 and standard deviation 1. In the second group (group `y`), the data have been sampled from a lognormal distribution with mean 1 and standard deviation 1. Thus, we know *a priori* that the two distributions from which the samples were created have different means, and a statistical test may be able to reveal this difference. However, since the data are heavily non-normal, a *t*-test will struggle to do so. Let us load and visualize the data first:
 
 ```{r}
 #| message: false
@@ -144,6 +201,33 @@ wilcox.test(measurement ~ group, data = example, conf.int = TRUE)
 ```
 
 The p-value of 0.01 means that there is a one-in-a-hundred probability that the observed difference is due only to chance.
+
+## Dependent samples
+
+When dealing with dependent samples, the measurements are related in some way, such as repeated measurements on the same subjects. This dependency must be accounted for in the analysis.
+
+The most common parametric test for dependent samples is the *paired t-test*. This test compares the means of two related groups to determine if there is a statistically significant difference between them. One additional assumption is that observations in the two groups can be paired together to create a paired difference that is analyzed similar to a one-sample test for the mean of the difference, $\mu_d$.
+
+In R we can no longer make use of the formula notation but must instead add the two groups of values if the argument `paired = TRUE` is used.
+
+```{r}
+#| eval: false
+  
+t.test(x = before, y = after, data = dataset, paired = TRUE)
+```
+
+<!-- TODO ADD PROPER DATA TO SHOW THIS -->
+
+When the assumptions of the paired t-test are not met, we can use a non-parametric test such as the *Wilcoxon signed-rank test*. This test does not assume normality and is used to compare the location differences between paired observations.
+
+```{r}
+#| eval: false
+
+# Conducting a Wilcoxon signed-rank test
+wilcox.test(x = before, y = after, data = dataset, paired = TRUE)
+
+```
+
 
 ## Statistical tests in a data analysis pipeline: The underscore notation {#sec-dot}
 
