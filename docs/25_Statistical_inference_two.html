@@ -424,46 +424,46 @@ window.Quarto = {
 <pre><code># A tibble: 40 × 2
    island  weight
    &lt;chr&gt;    &lt;dbl&gt;
- 1 smaller  21.8 
- 2 smaller  19.0 
- 3 smaller  19.0 
- 4 smaller  21.2 
- 5 smaller  15.8 
- 6 smaller  14.3 
- 7 smaller  19.9 
- 8 smaller   9.68
- 9 smaller  17.0 
-10 smaller  12.7 
-11 smaller  22.0 
-12 smaller  15.7 
-13 smaller  16.7 
-14 smaller  27.9 
-15 smaller  17.4 
-16 smaller  12.6 
-17 smaller  33.4 
-18 smaller  25.8 
-19 smaller  20.1 
-20 smaller  21.3 
-21 larger   20.4 
-22 larger   28.3 
-23 larger   19.2 
-24 larger   24.1 
-25 larger   27.7 
-26 larger   16.1 
-27 larger   17.3 
-28 larger   21.2 
-29 larger   28.8 
-30 larger   21.9 
-31 larger   17.4 
-32 larger   13.0 
-33 larger   26.6 
-34 larger   27.0 
-35 larger   19.0 
-36 larger   25.2 
-37 larger   16.5 
-38 larger   25.2 
-39 larger   24.4 
-40 larger   24.7 </code></pre>
+ 1 smaller   22.9
+ 2 smaller   23.6
+ 3 smaller   19.4
+ 4 smaller   17.7
+ 5 smaller   23.0
+ 6 smaller   10.9
+ 7 smaller   23.2
+ 8 smaller   18.6
+ 9 smaller   18.6
+10 smaller   15.4
+11 smaller   19.4
+12 smaller   29.1
+13 smaller   21.8
+14 smaller   22.6
+15 smaller   16.2
+16 smaller   24.1
+17 smaller   15.6
+18 smaller   18.3
+19 smaller   25.6
+20 smaller   21.5
+21 larger    23.9
+22 larger    27.3
+23 larger    16.8
+24 larger    12.2
+25 larger    12.0
+26 larger    29.0
+27 larger    17.6
+28 larger    23.1
+29 larger    23.1
+30 larger    19.2
+31 larger    24.1
+32 larger    31.0
+33 larger    30.2
+34 larger    28.2
+35 larger    21.3
+36 larger    22.5
+37 larger    18.4
+38 larger    11.7
+39 larger    28.8
+40 larger    20.1</code></pre>
 </div>
 </div>
 <p>A quick visualization below looks promising, with individuals on the smaller island indeed appearing to be smaller:</p>
@@ -505,11 +505,11 @@ Note
 <pre><code># A tibble: 2 × 3
   island   mean median
   &lt;chr&gt;   &lt;dbl&gt;  &lt;dbl&gt;
-1 larger   22.2   23.0
-2 smaller  19.2   19.0</code></pre>
+1 larger   22.0   22.8
+2 smaller  20.4   20.5</code></pre>
 </div>
 </div>
-<p>Can we conclude that the two samples are indeed different, and birds on the smaller island tend to be smaller, supporting the insular dwarfism hypothesis? As mentioned above, the data are fictive—they are not based on actual measurements. <strong>In fact, these “observations” were created by sampling each data point from the same distribution, regardless of island</strong>: a normal distribution with mean 20 and standard deviation 5. This means that any supposedly observed difference between the samples must be accidental. Would various statistical methods detect a difference? One thing we can do is what we have learned in <a href="08_Further_plotting_options.html#sec-CI" class="quarto-xref"><span>Section 8.4</span></a>: compute the 95% confidence intervals of the means, and see whether and how much they overlap.</p>
+<p>Can we conclude that the two samples are indeed different, and birds on the smaller island tend to be smaller, supporting the insular dwarfism hypothesis? As mentioned above, the data are fictive—they are not based on actual measurements. <strong>In fact, these “observations” were created by sampling each data point from the same distribution, regardless of island</strong>: a normal distribution with mean 20 and standard deviation 5. This means that any supposedly observed difference between the samples must be accidental. Would various statistical methods detect a difference? One thing we can do is what we have learned in <a href="08_Further_plotting_options.html#sec-CI" class="quarto-xref"><span>Section 8.4</span></a>: compute the confidence intervals of the means, and see whether and how much they overlap.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>bird <span class="sc">|&gt;</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(island) <span class="sc">|&gt;</span></span>
@@ -532,7 +532,7 @@ Note
 </div>
 </div>
 </div>
-<p>As seen, there is overlap between the 95% confidence intervals. While that by itself is not conclusive, it is an indication that the difference between the two samples may not be as relevant as it might have initially looked.</p>
+<p>As seen, the 95% confidence intervals exhibit substantial overlap. While that by itself is not conclusive, it is an indication that the difference between the two samples may not be as relevant as it might have initially looked.</p>
 <p>Let us wait no longer, and perform a statistical test. One widely used test to check if two samples differ from one another is the <em>Wilcoxon rank sum test</em> (also known as the <em>Mann-Whitney test</em>). Its implementation is as follows:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">wilcox.test</span>(weight <span class="sc">~</span> island, <span class="at">data =</span> bird)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -541,7 +541,7 @@ Note
     Wilcoxon rank sum exact test
 
 data:  weight by island
-W = 271, p-value = 0.05589
+W = 237, p-value = 0.3273
 alternative hypothesis: true location shift is not equal to 0</code></pre>
 </div>
 </div>
@@ -569,13 +569,13 @@ Warning
     Wilcoxon rank sum exact test
 
 data:  weight by island
-W = 271, p-value = 0.05589
+W = 237, p-value = 0.3273
 alternative hypothesis: true location shift is not equal to 0
 95 percent confidence interval:
- -0.018386  6.820811
+ -1.70  5.43
 sample estimates:
 difference in location 
-              3.436204 </code></pre>
+                  1.53 </code></pre>
 </div>
 </div>
 <p>As additional output, we now receive the 95% confidence interval, as well as the explicit difference between the “locations” of the two samples. (A small word of caution: this “difference in location” is neither the difference of the means nor the difference of the medians, but the median of the difference between samples from the two groups of data—feel free to check the help pages by typing <code>?wilcox.test</code> for more details.) The confidence interval, as seen, includes zero, which can be interpreted as being difficult to rule out the possibility that the observed difference in location is just due to chance.</p>
@@ -587,13 +587,13 @@ difference in location
     Wilcoxon rank sum exact test
 
 data:  weight by island
-W = 271, p-value = 0.05589
+W = 237, p-value = 0.3273
 alternative hypothesis: true location shift is not equal to 0
 99 percent confidence interval:
- -1.16832  7.70439
+ -3.14  6.33
 sample estimates:
 difference in location 
-              3.436204 </code></pre>
+                  1.53 </code></pre>
 </div>
 </div>
 <p>In summary, the Wilcoxon rank sum test failed to yield serious evidence in favor of rejecting the null hypothesis. Therefore, we cannot claim with any confidence that our fictive birds have different sizes across the two islands. While failure to reject the null is not the same as confirming that the null is true (absence of evidence is not evidence of absence!), the notion that the two samples are different could not be supported. In this particular case, since we ourselves have created the original data using the null hypothesis, we have the privilege of knowing that this is the truth. When working with real data, such knowledge is generally not available.</p>
@@ -615,13 +615,13 @@ difference in location
     Welch Two Sample t-test
 
 data:  weight by island
-t = 1.8704, df = 36.92, p-value = 0.06937
+t = 0.99716, df = 33.742, p-value = 0.3258
 alternative hypothesis: true difference in means between group larger and group smaller is not equal to 0
 95 percent confidence interval:
- -0.2520327  6.2997175
+ -1.700731  4.975731
 sample estimates:
  mean in group larger mean in group smaller 
-             22.18479              19.16095 </code></pre>
+              22.0195               20.3820 </code></pre>
 </div>
 </div>
 <p>The format of the output is similar to the one with the Wilcoxon rank sum test; the main differences are that the confidence intervals are included by default, and that the observed means of the two samples are also reported. Like with <code>wilcox.test</code>, the confidence level can be adjusted through the argument <code>conf.level</code>:</p>
@@ -632,13 +632,13 @@ sample estimates:
     Welch Two Sample t-test
 
 data:  weight by island
-t = 1.8704, df = 36.92, p-value = 0.06937
+t = 0.99716, df = 33.742, p-value = 0.3258
 alternative hypothesis: true difference in means between group larger and group smaller is not equal to 0
 99 percent confidence interval:
- -1.366524  7.414209
+ -2.845009  6.120009
 sample estimates:
  mean in group larger mean in group smaller 
-             22.18479              19.16095 </code></pre>
+              22.0195               20.3820 </code></pre>
 </div>
 </div>
 <p>Importantly, the message conveyed by the p-value of 0.069 is in line with what we saw from the Wilcoxon rank sum test: there is no strong evidence to claim that the two samples are different. In this particular case, it does not make any qualitative difference whether one uses the parametric <em>t</em>-test or the non-parametric Wilcoxon rank sum test.</p>
@@ -716,13 +716,13 @@ difference in location
     Wilcoxon rank sum exact test
 
 data:  weight by island
-W = 271, p-value = 0.05589
+W = 237, p-value = 0.3273
 alternative hypothesis: true location shift is not equal to 0
 95 percent confidence interval:
- -0.018386  6.820811
+ -1.70  5.43
 sample estimates:
 difference in location 
-              3.436204 </code></pre>
+                  1.53 </code></pre>
 </div>
 </div>
 <p>The underscore stands for the object being piped in—which, in our case, is simply the tibble <code>bird</code>. The <code>data = _</code> argument therefore evaluates to <code>data = bird</code>.</p>

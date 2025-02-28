@@ -38,7 +38,7 @@ bird |>
   ungroup()
 ```
 
-Can we conclude that the two samples are indeed different, and birds on the smaller island tend to be smaller, supporting the insular dwarfism hypothesis? As mentioned above, the data are fictive---they are not based on actual measurements. **In fact, these "observations" were created by sampling each data point from the same distribution, regardless of island**: a normal distribution with mean 20 and standard deviation 5. This means that any supposedly observed difference between the samples must be accidental. Would various statistical methods detect a difference? One thing we can do is what we have learned in @sec-CI: compute the 95% confidence intervals of the means, and see whether and how much they overlap.
+Can we conclude that the two samples are indeed different, and birds on the smaller island tend to be smaller, supporting the insular dwarfism hypothesis? As mentioned above, the data are fictive---they are not based on actual measurements. **In fact, these "observations" were created by sampling each data point from the same distribution, regardless of island**: a normal distribution with mean 20 and standard deviation 5. This means that any supposedly observed difference between the samples must be accidental. Would various statistical methods detect a difference? One thing we can do is what we have learned in @sec-CI: compute the confidence intervals of the means, and see whether and how much they overlap.
 
 ```{r}
 bird |>
@@ -56,7 +56,7 @@ bird |>
   theme_bw()
 ```
 
-As seen, there is overlap between the 95% confidence intervals. While that by itself is not conclusive, it is an indication that the difference between the two samples may not be as relevant as it might have initially looked.
+As seen, the 95% confidence intervals exhibit substantial overlap. While that by itself is not conclusive, it is an indication that the difference between the two samples may not be as relevant as it might have initially looked.
 
 Let us wait no longer, and perform a statistical test. One widely used test to check if two samples differ from one another is the *Wilcoxon rank sum test* (also known as the *Mann-Whitney test*). Its implementation is as follows:
 

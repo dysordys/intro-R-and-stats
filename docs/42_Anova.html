@@ -526,13 +526,10 @@ difference in location
 <p>Once it is installed, the package should be loaded:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FSA)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'FSA' was built under R version 4.4.2</code></pre>
-</div>
 </div>
 <p>And then, the Dunn test (<code>dunnTest</code>) follows the familiar syntax of receiving a formula and the data:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dunnTest</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dunnTest</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Dunn (1964) Kruskal-Wallis multiple comparison</code></pre>
 </div>
@@ -553,7 +550,7 @@ difference in location
 <h2 data-number="17.2" class="anchored" data-anchor-id="sec-onewayanova"><span class="header-section-number">17.2</span> One-way ANOVA and Tukey’s test</h2>
 <p>The Kruskal–Wallis test is the non-parametric analogue of <em>one-way ANOVA</em> (ANalysis Of VAriance). The “one-way” in the name refers to the property that there is a single factor indexing the groups, as discussed earlier. ANOVA relies on assumptions such as normality of the residuals and having the same number of observations in each group (balanced design). Otherwise, it is much like the Kruskal–Wallis test.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> Perhaps surprisingly, the function in R that performs an ANOVA is the same <code>lm</code> that we have used in <a href="41_Linear_regression.html" class="quarto-xref"><span>Chapter 16</span></a> for performing linear regression:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -566,7 +563,7 @@ Coefficients:
 </div>
 <p>The output takes some care to interpret correctly: out of the three coefficients listed, <code>(Intercept)</code> is the mean weight in the control group; <code>grouptrt1</code> is the <em>difference</em> of the mean weight in treatment 1 from the control; and <code>grouptrt2</code> is the difference of the mean weight in treatment 2 from the control. (We will come back to this, as well as why the <code>lm</code> function was used, in <a href="#sec-lmaov" class="quarto-xref"><span>Section 17.3</span></a>.) To get more information, one can pass the result of <code>lm</code> to a function called <code>anova</code>. Despite its name, the role of this function is not to actually perform the ANOVA (that was done by <code>lm</code>), but to display its results using the sum-of-squares table, which is also known as the ANOVA table. In this table, each factor indexing the groups, as well as their interactions (if present), get one row:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth) <span class="sc">|&gt;</span> <span class="fu">anova</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth) <span class="sc">|&gt;</span> <span class="fu">anova</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -581,7 +578,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 <p>The p-value above, in the row belonging to the factor <code>group</code>, under the column <code>Pr(&gt;F)</code>, is the analogue of the p-value calculated by the Kruskal–Wallis test (which was 0.01842). We can see that the two tests agree qualitatively.</p>
 <p>Just as the Dunn test is a post-hoc test for the Kruskal–Wallis test, Tukey’s honest significance test is a post-hoc test for an ANOVA. The corresponding function in R is called <code>TukeyHSD</code>, and it should be applied to the result of the <code>lm</code> function—with one caveat. Tukey’s test requires the output of the ANOVA to be in a particular format. Therefore, before passing the result of <code>lm</code> to <code>TukeyHSD</code>, we first have to pass it to a helper function called <code>aov</code> (“analysis of variance”). Like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth) <span class="sc">|&gt;</span> <span class="fu">aov</span>() <span class="sc">|&gt;</span> <span class="fu">TukeyHSD</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth) <span class="sc">|&gt;</span> <span class="fu">aov</span>() <span class="sc">|&gt;</span> <span class="fu">TukeyHSD</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Tukey multiple comparisons of means
     95% family-wise confidence level
@@ -598,13 +595,13 @@ trt2-trt1  0.865  0.1737839 1.5562161 0.0120064</code></pre>
 <p>The table is similar to the one produced by the Dunn test, with a few differences. The first column tells us which groups of data are compared. The second column is the raw difference between the group means, the third and fourth are the lower and upper limits of a 95% confidence interval for the difference, and the last one are the p-values (adjusted for multiple comparisons). In this case, the results from the Dunn test and the Tukey test are in agreement: only the difference between the two control groups stands out as having a reasonable chance of being real. The fact that the Kruskal–Wallis test and an ANOVA lead to the same conclusion increases the trust we can place in their results being correct.</p>
 <p>The <code>aov</code> function serves no purpose above, except to put the data in a format which <code>TukeyHSD</code> can work with. In case using this intermediary feels like a hassle, one can easily make life simpler, by writing a helper function which automatically calls it, together with the Tukey test:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>tukey.test <span class="ot">&lt;-</span> <span class="cf">function</span>(lmFit) {</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  lmFit <span class="sc">|&gt;</span> <span class="fu">aov</span>() <span class="sc">|&gt;</span> <span class="fu">TukeyHSD</span>()</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>tukey.test <span class="ot">&lt;-</span> <span class="cf">function</span>(lmFit) {</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  lmFit <span class="sc">|&gt;</span> <span class="fu">aov</span>() <span class="sc">|&gt;</span> <span class="fu">TukeyHSD</span>()</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>(See <a href="03_Functions.html" class="quarto-xref"><span>Chapter 3</span></a> to review how functions are written.) Here <code>lmFit</code> is a model fit object returned by the <code>lm</code> function. Using this, we can rewrite the above more simply:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth) <span class="sc">|&gt;</span> <span class="fu">tukey.test</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth) <span class="sc">|&gt;</span> <span class="fu">tukey.test</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Tukey multiple comparisons of means
     95% family-wise confidence level
@@ -624,52 +621,52 @@ trt2-trt1  0.865  0.1737839 1.5562161 0.0120064</code></pre>
 <p>At first glance, it appears strange that the function performing an ANOVA is the same as the one doing linear regression, <code>lm</code>. Aren’t the two methods very different from one another? After all, ANOVA compares data in different groups, whereas linear regression fits a line to a bunch of data points.</p>
 <p>As surprising as it may sound, the two are not different. There is a way of formulating an ANOVA which is exactly analogous to a linear model. To illustrate this idea, let us first consider a dataset with just two groups of data. The fictive bird data from <a href="25_Statistical_inference_two.html" class="quarto-xref"><span>Chapter 14</span></a> (<a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/fictive_bird_example.zip"><code>fictive_bird_example.csv</code></a>) will work well:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>bird <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"fictive_bird_example.csv"</span>)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(bird, <span class="at">n =</span> <span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>bird <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"fictive_bird_example.csv"</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(bird, <span class="at">n =</span> <span class="cn">Inf</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 40 × 2
    island  weight
    &lt;chr&gt;    &lt;dbl&gt;
- 1 smaller  21.8 
- 2 smaller  19.0 
- 3 smaller  19.0 
- 4 smaller  21.2 
- 5 smaller  15.8 
- 6 smaller  14.3 
- 7 smaller  19.9 
- 8 smaller   9.68
- 9 smaller  17.0 
-10 smaller  12.7 
-11 smaller  22.0 
-12 smaller  15.7 
-13 smaller  16.7 
-14 smaller  27.9 
-15 smaller  17.4 
-16 smaller  12.6 
-17 smaller  33.4 
-18 smaller  25.8 
-19 smaller  20.1 
-20 smaller  21.3 
-21 larger   20.4 
-22 larger   28.3 
-23 larger   19.2 
-24 larger   24.1 
-25 larger   27.7 
-26 larger   16.1 
-27 larger   17.3 
-28 larger   21.2 
-29 larger   28.8 
-30 larger   21.9 
-31 larger   17.4 
-32 larger   13.0 
-33 larger   26.6 
-34 larger   27.0 
-35 larger   19.0 
-36 larger   25.2 
-37 larger   16.5 
-38 larger   25.2 
-39 larger   24.4 
-40 larger   24.7 </code></pre>
+ 1 smaller   22.9
+ 2 smaller   23.6
+ 3 smaller   19.4
+ 4 smaller   17.7
+ 5 smaller   23.0
+ 6 smaller   10.9
+ 7 smaller   23.2
+ 8 smaller   18.6
+ 9 smaller   18.6
+10 smaller   15.4
+11 smaller   19.4
+12 smaller   29.1
+13 smaller   21.8
+14 smaller   22.6
+15 smaller   16.2
+16 smaller   24.1
+17 smaller   15.6
+18 smaller   18.3
+19 smaller   25.6
+20 smaller   21.5
+21 larger    23.9
+22 larger    27.3
+23 larger    16.8
+24 larger    12.2
+25 larger    12.0
+26 larger    29.0
+27 larger    17.6
+28 larger    23.1
+29 larger    23.1
+30 larger    19.2
+31 larger    24.1
+32 larger    31.0
+33 larger    30.2
+34 larger    28.2
+35 larger    21.3
+36 larger    22.5
+37 larger    18.4
+38 larger    11.7
+39 larger    28.8
+40 larger    20.1</code></pre>
 </div>
 </div>
 <p>Let us denote the <code>weight</code> of individual <span class="math inline">\(i\)</span> by <span class="math inline">\(y_i\)</span>. We wish to predict this based on whether the island is large or small, using a linear model. This can be done in full analogy with <a href="41_Linear_regression.html#eq-linreg" class="quarto-xref">Equation&nbsp;<span>16.1</span></a>, using the following equation:</p>
@@ -680,40 +677,40 @@ y_i
 <p>On the surface, this is exactly the same equation as <a href="41_Linear_regression.html#eq-linreg" class="quarto-xref">Equation&nbsp;<span>16.1</span></a>. But there is one important difference: in an ANOVA, we give a different meaning to the <span class="math inline">\(x_i\)</span>. <strong>This variable should take on the value 1 if individual <em>i</em> is from the smaller island and the value 0 if it is from the larger island.</strong> (It could also be the other way round; it does not matter as long as we choose one convention and stay consistent.) The <span class="math inline">\(\epsilon_i\)</span> are still the residuals, measuring the deviation of the points from the ideal prediction. What is the “ideal” prediction here? Well, without the <span class="math inline">\(\epsilon_i\)</span> term, <a href="#eq-aov1way-basic" class="quarto-xref">Equation&nbsp;<span>17.1</span></a> reads <span class="math inline">\(y_i = \beta_0 + \beta_1 x_i\)</span>. If individual <span class="math inline">\(i\)</span> is from the larger island, <span class="math inline">\(x_i = 0\)</span>, and we have <span class="math inline">\(y_i = \beta_0\)</span>. So the intercept <span class="math inline">\(\beta_0\)</span> corresponds to the mean prediction for the weight of the birds in the larger island. Conversely, if individual <span class="math inline">\(i\)</span> is from the smaller island, then <span class="math inline">\(x_i = 1\)</span>, and so <span class="math inline">\(y_i = \beta_0 + \beta_1 \cdot 1 = \beta_0 + \beta_1\)</span>. In other words, <span class="math inline">\(\beta_1\)</span> is the <em>difference</em> in mean weight between the smaller and the larger island.</p>
 <p>We can see this in action by running <code>lm</code> and then <code>summary</code> on these data:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> island, <span class="at">data =</span> bird) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> island, <span class="at">data =</span> bird) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
 lm(formula = weight ~ island, data = bird)
 
 Residuals:
-   Min     1Q Median     3Q    Max 
--9.478 -3.390 -0.199  2.856 14.212 
+     Min       1Q   Median       3Q      Max 
+-10.3295  -3.0320   0.7405   2.8680   8.9605 
 
 Coefficients:
               Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)     22.185      1.143   19.41   &lt;2e-16 ***
-islandsmaller   -3.024      1.617   -1.87   0.0691 .  
+(Intercept)     22.019      1.161  18.963   &lt;2e-16 ***
+islandsmaller   -1.638      1.642  -0.997    0.325    
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
-Residual standard error: 5.112 on 38 degrees of freedom
-Multiple R-squared:  0.08431,   Adjusted R-squared:  0.06021 
-F-statistic: 3.499 on 1 and 38 DF,  p-value: 0.06914</code></pre>
+Residual standard error: 5.193 on 38 degrees of freedom
+Multiple R-squared:  0.0255,    Adjusted R-squared:  -0.0001456 
+F-statistic: 0.9943 on 1 and 38 DF,  p-value: 0.325</code></pre>
 </div>
 </div>
 <p>The intercept, 22.185, is the mean weight on the larger island. To get the mean weight on the smaller one, we must add the intercept to the other coefficient, labelled <code>islandsmaller</code> in the table. That sum is 19.161. Indeed, if we compute the means of the two groups, we get exactly the same answers:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>bird <span class="sc">|&gt;</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(island) <span class="sc">|&gt;</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(weight)) <span class="sc">|&gt;</span></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>bird <span class="sc">|&gt;</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(island) <span class="sc">|&gt;</span></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean =</span> <span class="fu">mean</span>(weight)) <span class="sc">|&gt;</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 2
   island    mean
   &lt;chr&gt;    &lt;dbl&gt;
-1 larger  22.185
-2 smaller 19.161</code></pre>
+1 larger  22.020
+2 smaller 20.382</code></pre>
 </div>
 </div>
 <p>The rest of the regression table now reads exactly as it would in performing simple linear regression. For example, the p-values are the probability of getting coefficients at least as large as the inferred ones just by chance (assuming normal and independent residuals with equal variance across the groups).</p>
@@ -735,7 +732,7 @@ F-statistic: 3.499 on 1 and 38 DF,  p-value: 0.06914</code></pre>
 \tag{17.3}\]</span></span></p>
 <p>We can get the usual statistics on them by using <code>summary</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -760,10 +757,10 @@ F-statistic: 4.846 on 2 and 27 DF,  p-value: 0.01591</code></pre>
 </div>
 <p>Since <code>ctrl</code> comes earliest in the alphabet, it serves as the intercept. Its estimated value, 5.032, is the mean plant weight in the control group. The estimates in the rows <code>grouptrt1</code> and <code>grouptrt2</code> (these names were created by mushing together the name of the column in which the factor is found with the factors’ names themselves) are the <span class="math inline">\(\beta_1\)</span> and <span class="math inline">\(\beta_2\)</span> coefficients of <a href="#eq-aov1way3group" class="quarto-xref">Equation&nbsp;<span>17.3</span></a>, respectively. That is, they are the deviations from the baseline provided by <code>(Intercept)</code>. So we can surmise that the estimated mean of <code>trt1</code> is 5.032 - 0.371 = 4.661, and that of <code>trt2</code> is 5.032 + 0.494 = 5.526. Indeed, this is what we find relying on simple summaries computing the means in each group:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>PlantGrowth <span class="sc">|&gt;</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">|&gt;</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">meanWeight =</span> <span class="fu">mean</span>(weight)) <span class="sc">|&gt;</span></span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>PlantGrowth <span class="sc">|&gt;</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(group) <span class="sc">|&gt;</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">meanWeight =</span> <span class="fu">mean</span>(weight)) <span class="sc">|&gt;</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 2
   group meanWeight
@@ -780,11 +777,11 @@ F-statistic: 4.846 on 2 and 27 DF,  p-value: 0.01591</code></pre>
 <h2 data-number="17.4" class="anchored" data-anchor-id="sec-diagnostic-anova"><span class="header-section-number">17.4</span> Using diagnostic plots on an ANOVA</h2>
 <p>Since ANOVA is just linear regression in disguise, the same assumptions must be fulfilled about the residuals: their variance should not depend on the group, they should be independent, and they should be normally distributed. We can use the same diagnostic plots as we did in <a href="41_Linear_regression.html#sec-diagnostics" class="quarto-xref"><span>Section 16.3</span></a>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggfortify)</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth) <span class="sc">|&gt;</span></span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">smooth.colour =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggfortify)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth) <span class="sc">|&gt;</span></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">smooth.colour =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
