@@ -69,7 +69,7 @@ In the binomial case the functions are called `dbinom`, `pbinom`, `qbinom` and `
 #### `dbinom`
 The probability distribution of X can be presented in a table or a visualization. For a visualization, similar to the bar plots we have created earlier the x-axis should contain the different values the variable can be and the height of each bar correspond to the probability of each value. We can calculate the probability of each value with `dbinom`.
 
-The data set sent to `ggplot` contain the actual heights of the bars so we assign the y argument in `aes` to the probabilities and tell `geom_bar` to actually use the values provided by adding `stat = "identity"`. 
+The dataset sent to `ggplot` contain the actual heights of the bars so we assign the y argument in `aes` to the probabilities and tell `geom_bar` to actually use the values provided by adding `stat = "identity"`. 
 
 ```{r}
 
@@ -86,7 +86,7 @@ snails <-
   )
 ```
 
-By default, R handles the variable x as a continuous numeric variable no matter if the data set only contains whole numbers, so for the sake of clarity we should adjust the x-axis to show each whole number. An easy way to do this is to convert the variable x to a `factor` inside the visualization as we then force R to show each category on the x-axis.
+By default, R handles the variable x as a continuous numeric variable no matter if the dataset only contains whole numbers, so for the sake of clarity we should adjust the x-axis to show each whole number. An easy way to do this is to convert the variable x to a `factor` inside the visualization as we then force R to show each category on the x-axis.
 
 ```{r}
 #| label: fig-snail-binom
