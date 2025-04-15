@@ -326,9 +326,9 @@ What constitutes as a large number is can be different in different scenarios, b
 If the random variable X is **not** normally distributed we need to rely on the central limit theorem to use the normal distribution. If n > 30 we can then state that:
 
 $$
-\bar{X} \approx N\left(\mu_{\bar{X}} = \mu_X; \sigma_{\bar{X}} = \frac{\sigma_X}{n}\right)
+\bar{X} \approx N\left(\mu_{\bar{X}} = \mu_X; \sigma_{\bar{X}} = \frac{\sigma_X}{\sqrt{n}}\right)
 $$ {#eq-samp-dist-mean}
-where the mean of the sample mean ($\mu_{\bar{X}}$) is the same as the mean of X, and the standard deviation of the sample mean ($\sigma_{\bar{X}}$) is the standard deviation of X divided by the sample size n.
+where the mean of the sample mean ($\mu_{\bar{X}}$) is the same as the mean of X, and the standard deviation of the sample mean ($\sigma_{\bar{X}}$) is the standard deviation of X divided by the root of the sample size n.
 
 Within biological data the sample sizes tend to be small, most of the times n < 30. This means that the central limit theorem **cannot** be applied and we cannot assume that the sampling distribution of $\bar{X}$ is approximately normal distributed. Instead we would need to rely on properties of  *linear combinations*. 
 
