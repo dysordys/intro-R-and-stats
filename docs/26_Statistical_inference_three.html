@@ -20,6 +20,40 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -364,11 +398,81 @@ window.Quarto = {
 <p>The previous chapters have focused on quantitative variables, except for the proportion or binomial tests of a specific category in a qualitative variable. If we want to compare groups of a qualitative variables we are in this part of the book limited in the methods available.</p>
 <section id="chi2-test-for-independence" class="level2" data-number="15.1">
 <h2 data-number="15.1" class="anchored" data-anchor-id="chi2-test-for-independence"><span class="header-section-number">15.1</span> <span class="math inline">\(\chi^2\)</span>-test for independence</h2>
-<p>The <em><span class="math inline">\(\chi^2\)</span>-test for independence</em> (pronounced chi-square) is used to determine if there is a significant association between two categorical variables. It compares the observed frequencies in each category to the frequencies we would expect if the variables were independent.</p>
+<p>The <em><span class="math inline">\(\chi^2\)</span>-test for independence</em> (pronounced chi-square) is used to determine if there is a significant association between two categorical variables. It compares the observed frequencies in each category to the frequencies we would expect if the variables were independent. For example, you might want to test whether the distribution of plant species is different across habitats or whether treatment groups in a study differ in their responses.</p>
+<p>Formally we state the hypotheses as: <span class="math display">\[
+\begin{aligned}
+&amp;H_0: \text{The variables are independent}\\
+&amp;H_1: \text{The variables are dependent}
+\end{aligned}
+\]</span></p>
+<p>The process calculates the difference in observed frequencies with the expected frequencies under the null hypothesis.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\chi^2 = \sum_{\text{cells}} \frac{(O_i - E_i)^2}{E_i}
+\end{aligned}
+\]</span> where:</p>
+<ul>
+<li><span class="math inline">\(O_i\)</span> is the observed frequency in cell <span class="math inline">\(i\)</span>,</li>
+<li><span class="math inline">\(E_i\)</span> is the expected frequency in cell <span class="math inline">\(i\)</span> under the assumption of independence.</li>
+</ul>
+<p>The expected frequency is calculated as: <span class="math display">\[
+\begin{aligned}
+E_i = \frac{(\text{row total}) \times (\text{column total})}{\text{grand total}}
+\end{aligned}
+\]</span></p>
+<p>The assumptions for the test is that no more than 20% of the expected frequencies are lower than 5, and none are lower than 1. If this assumption does not hold, we cannot in earnest believe the test results.</p>
+<p>Suppose you are studying whether different plant species are distributed differently across two habitat types (“Forest” and “Grassland”). The observed counts are as follows:</p>
+<ul>
+<li>Species A: 30 in Forest, 20 in Grassland</li>
+<li>Species B: 25 in Forest, 15 in Grassland</li>
+<li>Species C: 10 in Forest, 5 in Grassland</li>
+</ul>
+<p>You can create a contingency table and run the chi-square test:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a contingency table</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>observed <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">20</span>, </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>                     <span class="dv">25</span>, <span class="dv">15</span>, </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>                     <span class="dv">10</span>, <span class="dv">5</span>), </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">byrow =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(observed) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Species A"</span>, <span class="st">"Species B"</span>, <span class="st">"Species C"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(observed) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Forest"</span>, <span class="st">"Grassland"</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Run the chi-square test using the custom chi.sq() function</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>chi_result <span class="ot">&lt;-</span> <span class="fu">chisq.test</span>(observed)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the test results</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(chi_result)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's Chi-squared test
+
+data:  observed
+X-squared = 0.22716, df = 2, p-value = 0.8926</code></pre>
+</div>
+</div>
+<p>The output shows a p-value which can be used to determine whether we can reject the <span class="math inline">\(H_0\)</span> or not.</p>
 </section>
 <section id="chi2-test-for-goodness-of-fit" class="level2" data-number="15.2">
 <h2 data-number="15.2" class="anchored" data-anchor-id="chi2-test-for-goodness-of-fit"><span class="header-section-number">15.2</span> <span class="math inline">\(\chi^2\)</span>-test for goodness-of-fit</h2>
 <p>The <strong><span class="math inline">\(\chi^2\)</span> goodness-of-fit test</strong> is used to determine if a sample data matches a population with a specific distribution. It compares the observed frequencies in each category to the expected frequencies based on the specified distribution.</p>
+<p>For example when using the binomial distribution as the null hypothesis, we are checking if a dichotomous outcome (such as “defective” vs.&nbsp;“non‐defective” or “success” vs.&nbsp;“failure”) occurs with a specified probability, <span class="math inline">\(p\)</span>. We assume that in <span class="math inline">\(N\)</span> independent trials, the probability of success is given by <span class="math inline">\(p\)</span>. Under this hypothesis, the expected number of successes and failures is computed as follows:</p>
+<p><span class="math display">\[ \begin{aligned}
+E_{\text{success}} = N \cdot p \quad \text{and} \quad E_{\text{failure}} = N \cdot (1-p).
+\end{aligned} \]</span></p>
+<p>Suppose we have observed counts <span class="math inline">\(O_{\text{success}}\)</span> and <span class="math inline">\(O_{\text{failure}}\)</span>. The <span class="math inline">\(\chi^2\)</span> test statistic is then calculated by comparing these observed counts with the expected counts:</p>
+<p><span class="math display">\[ \begin{aligned}
+\chi^2 = \frac{(O_{\text{success}} - E_{\text{success}})^2}{E_{\text{success}}} + \frac{(O_{\text{failure}} - E_{\text{failure}})^2}{E_{\text{failure}}}.
+\end{aligned} \]</span></p>
+<p>Since we have two categories (success and failure), the degrees of freedom for this test is given by:</p>
+<p><span class="math display">\[ \begin{aligned}
+\text{df} = k - 1,
+\end{aligned} \]</span></p>
+<p>where ( k = 2 ). Therefore, in our scenario,</p>
+<p><span class="math display">\[ \begin{aligned}
+\text{df} = 2 - 1 = 1.
+\end{aligned} \]</span></p>
+<p>If the p-value associated with the computed <span class="math inline">\(\chi^2\)</span> statistic (evaluated using a chi-square distribution with 1 degree of freedom) is less than the chosen significance level (typically <span class="math inline">\(\alpha = 0.05\)</span>), the null hypothesis is rejected. This result indicates that the observed frequencies significantly deviate from those expected under the assumed binomial distribution.</p>
+<p>This use of the <span class="math inline">\(\chi^2\)</span>-test is in practice very similar to the test for independence, but the main difference is what <span class="math inline">\(H_0\)</span> represents — a specific distribution instead of independence — and how the expected values are calculated.</p>
 </section>
 <section id="exercises" class="level2" data-number="15.3">
 <h2 data-number="15.3" class="anchored" data-anchor-id="exercises"><span class="header-section-number">15.3</span> Exercises</h2>

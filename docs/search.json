@@ -927,7 +927,7 @@
     "href": "26_Statistical_inference_three.html",
     "title": "15  Statistical inference in qualitative variables",
     "section": "",
-    "text": "15.1 \\(\\chi^2\\)-test for independence\nThe \\(\\chi^2\\)-test for independence (pronounced chi-square) is used to determine if there is a significant association between two categorical variables. It compares the observed frequencies in each category to the frequencies we would expect if the variables were independent.",
+    "text": "15.1 \\(\\chi^2\\)-test for independence\nThe \\(\\chi^2\\)-test for independence (pronounced chi-square) is used to determine if there is a significant association between two categorical variables. It compares the observed frequencies in each category to the frequencies we would expect if the variables were independent. For example, you might want to test whether the distribution of plant species is different across habitats or whether treatment groups in a study differ in their responses.\nFormally we state the hypotheses as: \\[\n\\begin{aligned}\n&H_0: \\text{The variables are independent}\\\\\n&H_1: \\text{The variables are dependent}\n\\end{aligned}\n\\]\nThe process calculates the difference in observed frequencies with the expected frequencies under the null hypothesis.\n\\[\n\\begin{aligned}\n\\chi^2 = \\sum_{\\text{cells}} \\frac{(O_i - E_i)^2}{E_i}\n\\end{aligned}\n\\] where:\nThe expected frequency is calculated as: \\[\n\\begin{aligned}\nE_i = \\frac{(\\text{row total}) \\times (\\text{column total})}{\\text{grand total}}\n\\end{aligned}\n\\]\nThe assumptions for the test is that no more than 20% of the expected frequencies are lower than 5, and none are lower than 1. If this assumption does not hold, we cannot in earnest believe the test results.\nSuppose you are studying whether different plant species are distributed differently across two habitat types (“Forest” and “Grassland”). The observed counts are as follows:\nYou can create a contingency table and run the chi-square test:\n# Create a contingency table\nobserved &lt;- matrix(c(30, 20, \n                     25, 15, \n                     10, 5), \n                   nrow = 3, byrow = TRUE)\nrownames(observed) &lt;- c(\"Species A\", \"Species B\", \"Species C\")\ncolnames(observed) &lt;- c(\"Forest\", \"Grassland\")\n\n# Run the chi-square test using the custom chi.sq() function\nchi_result &lt;- chisq.test(observed)\n\n# Display the test results\nprint(chi_result)\n\n\n    Pearson's Chi-squared test\n\ndata:  observed\nX-squared = 0.22716, df = 2, p-value = 0.8926\nThe output shows a p-value which can be used to determine whether we can reject the \\(H_0\\) or not.",
     "crumbs": [
       "Part II: Introductory statistics",
       "<span class='chapter-number'>15</span>  <span class='chapter-title'>Statistical inference in qualitative variables</span>"
@@ -938,7 +938,7 @@
     "href": "26_Statistical_inference_three.html#chi2-test-for-goodness-of-fit",
     "title": "15  Statistical inference in qualitative variables",
     "section": "15.2 \\(\\chi^2\\)-test for goodness-of-fit",
-    "text": "15.2 \\(\\chi^2\\)-test for goodness-of-fit\nThe \\(\\chi^2\\) goodness-of-fit test is used to determine if a sample data matches a population with a specific distribution. It compares the observed frequencies in each category to the expected frequencies based on the specified distribution.",
+    "text": "15.2 \\(\\chi^2\\)-test for goodness-of-fit\nThe \\(\\chi^2\\) goodness-of-fit test is used to determine if a sample data matches a population with a specific distribution. It compares the observed frequencies in each category to the expected frequencies based on the specified distribution.\nFor example when using the binomial distribution as the null hypothesis, we are checking if a dichotomous outcome (such as “defective” vs. “non‐defective” or “success” vs. “failure”) occurs with a specified probability, \\(p\\). We assume that in \\(N\\) independent trials, the probability of success is given by \\(p\\). Under this hypothesis, the expected number of successes and failures is computed as follows:\n\\[ \\begin{aligned}\nE_{\\text{success}} = N \\cdot p \\quad \\text{and} \\quad E_{\\text{failure}} = N \\cdot (1-p).\n\\end{aligned} \\]\nSuppose we have observed counts \\(O_{\\text{success}}\\) and \\(O_{\\text{failure}}\\). The \\(\\chi^2\\) test statistic is then calculated by comparing these observed counts with the expected counts:\n\\[ \\begin{aligned}\n\\chi^2 = \\frac{(O_{\\text{success}} - E_{\\text{success}})^2}{E_{\\text{success}}} + \\frac{(O_{\\text{failure}} - E_{\\text{failure}})^2}{E_{\\text{failure}}}.\n\\end{aligned} \\]\nSince we have two categories (success and failure), the degrees of freedom for this test is given by:\n\\[ \\begin{aligned}\n\\text{df} = k - 1,\n\\end{aligned} \\]\nwhere ( k = 2 ). Therefore, in our scenario,\n\\[ \\begin{aligned}\n\\text{df} = 2 - 1 = 1.\n\\end{aligned} \\]\nIf the p-value associated with the computed \\(\\chi^2\\) statistic (evaluated using a chi-square distribution with 1 degree of freedom) is less than the chosen significance level (typically \\(\\alpha = 0.05\\)), the null hypothesis is rejected. This result indicates that the observed frequencies significantly deviate from those expected under the assumed binomial distribution.\nThis use of the \\(\\chi^2\\)-test is in practice very similar to the test for independence, but the main difference is what \\(H_0\\) represents — a specific distribution instead of independence — and how the expected values are calculated.",
     "crumbs": [
       "Part II: Introductory statistics",
       "<span class='chapter-number'>15</span>  <span class='chapter-title'>Statistical inference in qualitative variables</span>"
@@ -1327,6 +1327,17 @@
     "crumbs": [
       "References",
       "<span class='chapter-number'>23</span>  <span class='chapter-title'>References</span>"
+    ]
+  },
+  {
+    "objectID": "26_Statistical_inference_three.html#chi2-test-for-independence",
+    "href": "26_Statistical_inference_three.html#chi2-test-for-independence",
+    "title": "15  Statistical inference in qualitative variables",
+    "section": "",
+    "text": "\\(O_i\\) is the observed frequency in cell \\(i\\),\n\\(E_i\\) is the expected frequency in cell \\(i\\) under the assumption of independence.\n\n\n\n\n\nSpecies A: 30 in Forest, 20 in Grassland\nSpecies B: 25 in Forest, 15 in Grassland\nSpecies C: 10 in Forest, 5 in Grassland",
+    "crumbs": [
+      "Part II: Introductory statistics",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>Statistical inference in qualitative variables</span>"
     ]
   }
 ]
