@@ -455,9 +455,15 @@ X-squared = 0.22716, df = 2, p-value = 0.8926</code></pre>
 <section id="chi2-test-for-goodness-of-fit" class="level2" data-number="15.2">
 <h2 data-number="15.2" class="anchored" data-anchor-id="chi2-test-for-goodness-of-fit"><span class="header-section-number">15.2</span> <span class="math inline">\(\chi^2\)</span>-test for goodness-of-fit</h2>
 <p>The <strong><span class="math inline">\(\chi^2\)</span> goodness-of-fit test</strong> is used to determine if a sample data matches a population with a specific distribution. It compares the observed frequencies in each category to the expected frequencies based on the specified distribution.</p>
-<p>For example when using the binomial distribution as the null hypothesis, we are checking if a dichotomous outcome (such as “defective” vs.&nbsp;“non‐defective” or “success” vs.&nbsp;“failure”) occurs with a specified probability, <span class="math inline">\(p\)</span>. We assume that in <span class="math inline">\(N\)</span> independent trials, the probability of success is given by <span class="math inline">\(p\)</span>. Under this hypothesis, the expected number of successes and failures is computed as follows:</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp;H_0: \text{X follows a binomial distribution with probability p}\\
+&amp;H_1: \text{X does not follow a binomial distribution with probability p}
+\end{aligned}
+\]</span></p>
+<p>For example when using the binomial distribution as the null hypothesis, we are checking if a dichotomous outcome (such as “defective” vs.&nbsp;“non‐defective” or “success” vs.&nbsp;“failure”) occurs with a specified probability, <span class="math inline">\(p\)</span>. We assume that in <span class="math inline">\(n\)</span> independent trials, the probability of success is given by <span class="math inline">\(p\)</span>. Under this hypothesis, the expected number of successes and failures is computed as follows:</p>
 <p><span class="math display">\[ \begin{aligned}
-E_{\text{success}} = N \cdot p \quad \text{and} \quad E_{\text{failure}} = N \cdot (1-p).
+E_{\text{success}} = n \cdot p \quad \text{and} \quad E_{\text{failure}} = n \cdot (1-p).
 \end{aligned} \]</span></p>
 <p>Suppose we have observed counts <span class="math inline">\(O_{\text{success}}\)</span> and <span class="math inline">\(O_{\text{failure}}\)</span>. The <span class="math inline">\(\chi^2\)</span> test statistic is then calculated by comparing these observed counts with the expected counts:</p>
 <p><span class="math display">\[ \begin{aligned}

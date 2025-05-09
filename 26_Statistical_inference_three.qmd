@@ -74,7 +74,7 @@ $$
 For example when using the binomial distribution as the null hypothesis, we are checking if a dichotomous outcome (such as “defective” vs. “non‐defective” or “success” vs. “failure”) occurs with a specified probability, $p$. We assume that in $n$ independent trials, the probability of success is given by $p$. Under this hypothesis, the expected number of successes and failures is computed as follows:
 
 $$ \begin{aligned}
-E_{\text{success}} = n \cdot \hat{p} \quad \text{and} \quad E_{\text{failure}} = n \cdot (1-\hat{p}).
+E_{\text{success}} = n \cdot p \quad \text{and} \quad E_{\text{failure}} = n \cdot (1-p).
 \end{aligned} $$
 
 Suppose we have observed counts $O_{\text{success}}$ and $O_{\text{failure}}$. The $\chi^2$ test statistic is then calculated by comparing these observed counts with the expected counts:
