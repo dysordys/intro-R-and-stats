@@ -27,7 +27,7 @@ set.seed(5)
 ## Simulation of the sampling distribution 
 The sample mean $\bar{X}$ is an *estimator*^[The term statistic refers to the summarized measurement of a sample which is calculated by an estimator.] of the population mean $\mu$ because it is used to estimate the value of the unknown parameter. Depending on the sample drawn, the sample mean will result in different values.
 
-Say we want to measure the weight of a population of 60 wolves located in Southern Sweden (adapted from @Svensson2023) by randomly sampling 5 wolves. For the purposes of this example, assume the population weights of all wolves are found in `wolves2023.csv`.
+Say we want to measure the weight of a population of 60 wolves located in Southern Sweden (adapted from @Svensson2023) by randomly sampling 5 wolves. For the purposes of this example, assume the population weights of all wolves are found in [`wolves2023.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/wolves2023.csv).
 
 ```{r}
 #| message: false
