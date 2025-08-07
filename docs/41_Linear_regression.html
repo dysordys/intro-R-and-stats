@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -84,17 +84,17 @@ div.csl-indent {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./42_Anova.html" rel="next">
+<link href="./42_Multiple_and_Nonlinear_regression.html" rel="next">
 <link href="./40_Intro_adv_statistics.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8da5b4427184b79ecddefad3d342027e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -122,6 +122,10 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<script src="site_libs/kePrint-0.0.1/kePrint.js"></script>
+
+<link href="site_libs/lightable-0.0.1/lightable.css" rel="stylesheet">
+
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -319,7 +323,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Relationships between variables</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -330,20 +334,20 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+  <a href="./42_Multiple_and_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression UNDER CONSTRUCTION</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+  <a href="./43_Anova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+  <a href="./44_Anova_two_way.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -387,12 +391,38 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#sec-linreg-intro" id="toc-sec-linreg-intro" class="nav-link active" data-scroll-target="#sec-linreg-intro"><span class="header-section-number">17.1</span> The intercept and slope of a linear model</a></li>
-  <li><a href="#interpreting-the-results-of-a-linear-regression" id="toc-interpreting-the-results-of-a-linear-regression" class="nav-link" data-scroll-target="#interpreting-the-results-of-a-linear-regression"><span class="header-section-number">17.2</span> Interpreting the results of a linear regression</a></li>
-  <li><a href="#sec-diagnostics" id="toc-sec-diagnostics" class="nav-link" data-scroll-target="#sec-diagnostics"><span class="header-section-number">17.3</span> Diagnostic plots</a></li>
-  <li><a href="#sec-anscombe" id="toc-sec-anscombe" class="nav-link" data-scroll-target="#sec-anscombe"><span class="header-section-number">17.4</span> More on diagnostics: Anscombe’s quartet</a></li>
-  <li><a href="#sec-theilsen" id="toc-sec-theilsen" class="nav-link" data-scroll-target="#sec-theilsen"><span class="header-section-number">17.5</span> A non-parametric method: Theil–Sen regression</a></li>
-  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">17.6</span> Exercises</a></li>
+  <li><a href="#sec-example-data" id="toc-sec-example-data" class="nav-link active" data-scroll-target="#sec-example-data"><span class="header-section-number">17.1</span> Example data</a></li>
+  <li><a href="#sec-model-estimation" id="toc-sec-model-estimation" class="nav-link" data-scroll-target="#sec-model-estimation"><span class="header-section-number">17.2</span> Model estimation</a>
+  <ul>
+  <li><a href="#sec-model-fit-example" id="toc-sec-model-fit-example" class="nav-link" data-scroll-target="#sec-model-fit-example"><span class="header-section-number">17.2.1</span> Model estimation in R</a></li>
+  </ul></li>
+  <li><a href="#sec-residual-analysis" id="toc-sec-residual-analysis" class="nav-link" data-scroll-target="#sec-residual-analysis"><span class="header-section-number">17.3</span> Model diagnostics</a>
+  <ul>
+  <li><a href="#sec-residual-simple" id="toc-sec-residual-simple" class="nav-link" data-scroll-target="#sec-residual-simple"><span class="header-section-number">17.3.1</span> Residual analysis</a>
+  <ul class="collapse">
+  <li><a href="#normal-distribution" id="toc-normal-distribution" class="nav-link" data-scroll-target="#normal-distribution"><span class="header-section-number">17.3.1.1</span> Normal distribution</a></li>
+  <li><a href="#constant-variance" id="toc-constant-variance" class="nav-link" data-scroll-target="#constant-variance"><span class="header-section-number">17.3.1.2</span> Constant variance</a></li>
+  <li><a href="#independence" id="toc-independence" class="nav-link" data-scroll-target="#independence"><span class="header-section-number">17.3.1.3</span> Independence</a></li>
+  </ul></li>
+  <li><a href="#creating-a-custom-function-diagnosticplots" id="toc-creating-a-custom-function-diagnosticplots" class="nav-link" data-scroll-target="#creating-a-custom-function-diagnosticplots"><span class="header-section-number">17.3.2</span> Creating a custom function (<code>diagnosticPlots</code>)</a></li>
+  <li><a href="#sec-anscombe" id="toc-sec-anscombe" class="nav-link" data-scroll-target="#sec-anscombe"><span class="header-section-number">17.3.3</span> More on diagnostics: Anscombe’s quartet</a></li>
+  </ul></li>
+  <li><a href="#sec-inference" id="toc-sec-inference" class="nav-link" data-scroll-target="#sec-inference"><span class="header-section-number">17.4</span> Statistical inference</a>
+  <ul>
+  <li><a href="#sec-regression-anova" id="toc-sec-regression-anova" class="nav-link" data-scroll-target="#sec-regression-anova"><span class="header-section-number">17.4.1</span> ANOVA</a>
+  <ul class="collapse">
+  <li><a href="#sec-regression-anova-table" id="toc-sec-regression-anova-table" class="nav-link" data-scroll-target="#sec-regression-anova-table"><span class="header-section-number">17.4.1.1</span> ANOVA Table</a></li>
+  </ul></li>
+  <li><a href="#f-test-for-the-model" id="toc-f-test-for-the-model" class="nav-link" data-scroll-target="#f-test-for-the-model"><span class="header-section-number">17.4.2</span> F-test for the Model</a></li>
+  <li><a href="#t-test-for-individual-parameters" id="toc-t-test-for-individual-parameters" class="nav-link" data-scroll-target="#t-test-for-individual-parameters"><span class="header-section-number">17.4.3</span> t-test for individual parameters</a></li>
+  </ul></li>
+  <li><a href="#sec-r-square" id="toc-sec-r-square" class="nav-link" data-scroll-target="#sec-r-square"><span class="header-section-number">17.5</span> Simple evaluation metrics</a></li>
+  <li><a href="#sec-predictions" id="toc-sec-predictions" class="nav-link" data-scroll-target="#sec-predictions"><span class="header-section-number">17.6</span> Predictions</a>
+  <ul>
+  <li><a href="#mean-of-y-for-given-x" id="toc-mean-of-y-for-given-x" class="nav-link" data-scroll-target="#mean-of-y-for-given-x"><span class="header-section-number">17.6.1</span> Mean of Y for given <span class="math inline">\(X\)</span></a></li>
+  <li><a href="#individual-prediction-of-y-for-given-x" id="toc-individual-prediction-of-y-for-given-x" class="nav-link" data-scroll-target="#individual-prediction-of-y-for-given-x"><span class="header-section-number">17.6.2</span> Individual prediction of Y for given <span class="math inline">\(X\)</span></a></li>
+  </ul></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">17.7</span> Exercises</a></li>
   </ul>
 </nav>
     </div>
@@ -418,98 +448,102 @@ window.Quarto = {
 </header>
 
 
-<section id="sec-linreg-intro" class="level2" data-number="17.1">
-<h2 data-number="17.1" class="anchored" data-anchor-id="sec-linreg-intro"><span class="header-section-number">17.1</span> The intercept and slope of a linear model</h2>
+<!-- Creates a shortcommand for sums -->
+<p>The first step in a regression analysis is to explore the dataset. Regardless of whether we conducted an observational or experimental study, we have likely selected a response variable beforehand that we want to describe or predict using other variables. The goal of exploring the data is to gain insights that can help us in later steps; which variables are relevant to include in a model, what each relationship looks like, and whether there are any issues with the collected data that need to be corrected.</p>
+<p>Some key questions we need to answer are:</p>
+<ul>
+<li>What type and scale do the variables have?</li>
+<li>Around which values do the variables range? What are their minimum and maximum values, their measures of central tendency and spread?</li>
+<li>How are the variables distributed? What type of distribution seems to describe the variable; normal, uniform, skewed?</li>
+<li>Are there any outliers present?</li>
+</ul>
+<p>Once we’ve answered these questions, it becomes much easier to build a correct model structure and evaluate any estimated models.</p>
+<p>We can investigate these points using simple functions (e.g., <code>mean()</code>, <code>min()</code>, <code>summary(variable)</code>), but we can also gain relevant information through individual and pairwise visualizations of the variables.</p>
+<section id="sec-example-data" class="level2" data-number="17.1">
+<h2 data-number="17.1" class="anchored" data-anchor-id="sec-example-data"><span class="header-section-number">17.1</span> Example data</h2>
 <p>As an introductory example, let us load the Galápagos land snail data from Floreana Island (<a href="04_Data_reading.html#sec-snail" class="quarto-xref"><span>Section 4.2.2</span></a>). We look only at individuals belonging to the species <em>Naesiotus nux</em>, and plot the shell shape measurement against the shell size measurement for each of them:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>snails <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"island-FL.csv"</span>)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>snails <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"island-FL.csv"</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"nux"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>nux <span class="ot">&lt;-</span> snails <span class="sc">|&gt;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"nux"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>nux <span class="sc">|&gt;</span> </span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-shape-size" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-shape-size-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="41_Linear_regression_files/figure-html/fig-shape-size-1.png" class="img-fluid figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-shape-size-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;17.1: Scatter plot showing the relationship between shell shape and size
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>The question we want to answer using this plot is whether larger shells (indicated by larger values of the <code>size</code> variable) tend to also be more elongated (larger values of <code>shape</code>) or not. A casual look would suggest that this is indeed the case. In fact, one can plot these points together with a linear estimator (<a href="07_Creating_figures.html#sec-smooth" class="quarto-xref"><span>Section 7.3.3</span></a>) showing the trend in the data:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"nux"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"goldenrod"</span>) <span class="sc">+</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>There are two questions we would like to answer:</p>
+<p>Both of these variables are continuous quantitative, which means we can create a scatter plot where each observation is represented by a point. The explanatory variable is placed on the x-axis and the response variable on the y-axis. The point cloud in the scatter plot can give us information about the relationship between the two variables. We focus on four main points:</p>
 <ol type="1">
-<li>How can one obtain the above line? More generally: how can one determine the best-fitting line going through any set of points?</li>
-<li>Is the observed upwards slope meaningful? That is, if we were to scatter a bunch of points randomly on a plot, how likely is it that we would get a best-fitting line that is as steep as the one above (or steeper) just by chance? The problem is the same as it was in <a href="25_Statistical_inference_two.html#sec-example-comparison" class="quarto-xref"><span>Section 14.1</span></a>, where we weren’t sure whether the observed difference between the two hypothetical groups of birds has any meaning.</li>
+<li>Is the relationship linear?</li>
+<li>Is the relationship positive or negative?</li>
+<li>Is the relationship strong or weak?</li>
+<li>Are there any outliers?</li>
 </ol>
-<p>Let us begin with the first of these questions. It is easy to get an approximately correct answer just by looking at the data. A straight line is defined by two parameters: its intercept and slope. The intercept is the point at which the line crosses the <span class="math inline">\(y\)</span>-axis (i.e., its value when <span class="math inline">\(x\)</span> is zero). The slope is the amount of rise or fall in <span class="math inline">\(y\)</span>, given one unit of increase in <span class="math inline">\(x\)</span>. We can estimate these quantities even without the help of the yellow line above. We see that the data go from about <span class="math inline">\(20\)</span> to <span class="math inline">\(28\)</span> along the <span class="math inline">\(x\)</span>-axis, and from about <span class="math inline">\(-0.05\)</span> to <span class="math inline">\(-0.02\)</span> along the <span class="math inline">\(y\)</span>-axis. So the total rise is <span class="math inline">\(0.03\)</span> vertically, over <span class="math inline">\(8\)</span> units horizontally—for an approximate slope of <span class="math inline">\(0.03 / 8 \approx 0.0038\)</span>. Then, since the line is at about <span class="math inline">\(-0.05\)</span> when <span class="math inline">\(x\)</span> is <span class="math inline">\(20\)</span>, we can back-calculate the intercept as <span class="math inline">\(-0.05 - 20\cdot 0.0038 \approx -0.126\)</span>. So as a crude guess, we know that the line’s intercept and slope cannot be too far off from these values.</p>
-<p>To go further and obtain the best-fitting line to a set of points, we have to agree on what we mean by “best”. Here is the idea. Let us denote the intercept by <span class="math inline">\(\beta_0\)</span> and the slope by <span class="math inline">\(\beta_1\)</span>. We can then use the data to write down the following set of equations, one for each data point <span class="math inline">\(i\)</span>:</p>
-<p><span id="eq-linreg"><span class="math display">\[
-y_i
-= \beta_0 + \beta_1 \cdot x_i + \epsilon_i
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Defining the proper variable type and scale is very important in this exploratory step. Using the wrong type of visualization can easily misconstrue the relationship and send us on a wild goose chase.</p>
+<p>We cannot use scatter plots to visualize the relationship between qualitative explanatory variables and a continuous response variable. Instead, we need visualizations that account for the qualitative scale, usually ordinal or nominal.</p>
+<p>There are several ways to visualize the distribution of the response variable across levels of the explanatory variable, such as grouped histograms or box plots, but one type of visualization that shows distribution details is a <em>violin plot</em>. A violin plot is a mirrored density plot, where areas with many observations have a larger area under the curve. Using <code>ggplot2</code>, we can create such a plot with <code>geom_violin()</code>.</p>
+</div>
+</div>
+<p><a href="#fig-shape-size" class="quarto-xref">Figure&nbsp;<span>17.1</span></a> shows a very sparse relationship that is a bit difficult to interpret. One could say that the relationship appears mostly linear, as an increase in shell size leads to a unidirectional change (increase/positive relationship) in shell shape. However, the relationship is not very strong, as there is a lot of variation in the shape values for each size value. There are also some outliers, which we can see as points that are far from the main point cloud.</p>
+<p>We can calculate <em>Pearson’s correlation coefficient</em> (<span class="math inline">\(r\)</span>) so we don’t have to rely on a subjective interpretation of the strength.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> This coefficient measures the strength of the <strong>linear relationship</strong> between two quantitative variables and is appropriate in this case. A value near 0 indicates no or weak relationship, while values near -1 or +1 indicate a strong negative or positive relationship, respectively.</p>
+<p><span class="math display">\[
+r = 0.358
+\]</span></p>
+<p>This is an additional indication that the correlation between the two variables is relatively weak, mostly due to the large variation in shape values for each size value. The correlation coefficient is not very high, but it is positive, indicating that larger shells tend to be more elongated.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If the scatter plot shows a non-linear and non-monotonic (not unidirectional) relationship, the Pearson correlation coefficient will not accurately describe the strength of the relationship. It is easy to rely solely on the correlation coefficient since it is simple to calculate for many variable pairs, but it can often miss relevant information. A visualization enables the identification of complex relationships that often require different modeling approaches.</p>
+</div>
+</div>
+<p>After gathering information from visualizations and descriptive statistics, the next step in the process is to build the structure of the model.</p>
+<p><span id="eq-snail-simple"><span class="math display">\[
+\text{shape}_i = \beta_0 + \beta_1 \cdot \text{size}_i + \varepsilon_i
 \tag{17.1}\]</span></span></p>
-<p>Here <span class="math inline">\(x_i\)</span> is the <span class="math inline">\(x\)</span>-coordinate of the <span class="math inline">\(i\)</span>th data point, and <span class="math inline">\(y_i\)</span> is its <span class="math inline">\(y\)</span>-coordinate (these quantities are therefore known from the data). Then, since it is unlikely that the line will go through any one point exactly, one has to also add the error that is the distance of the line from the point—that is what <span class="math inline">\(\epsilon_i\)</span> does.</p>
-<p>Any choice of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> define a line, and therefore also define the <span class="math inline">\(\epsilon_i\)</span> as the distances of the points from that line. This is visualized for two examples below, the first of which is the crude estimate we have calculated above:</p>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>The vertical lines are the <span class="math inline">\(\epsilon_i\)</span>, measuring the deviation from the line and the actual data points. That is, <span class="math inline">\(\epsilon_i\)</span> is the leftover error after we attempt to model the location of the points using our simple line. Except that in statistics, we tend to use the Latin word for “leftover”, and call the <span class="math inline">\(\epsilon_i\)</span> the <em>residual errors</em> or simply the <em>residuals</em>.</p>
-<p>It is intuitively obvious that the first line (with intercept <span class="math inline">\(\beta_0 = -0.126\)</span> and slope <span class="math inline">\(\beta_1 = 0.0038\)</span>) is better than the second one (intercept <span class="math inline">\(\beta_0 = 0.148\)</span> and slope <span class="math inline">\(\beta_1 = -0.0051\)</span>). This is because the magnitudes of the residuals <span class="math inline">\(\epsilon_i\)</span> tend to be larger for the right panel. We can formalize this intuition by defining the best line as <em>the line with <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> values that minimize <span class="math inline">\(\sum_i \epsilon_i^2\)</span>, the sum of squared residuals.</em><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The process of finding the line is thus to try out many different combinations of the slope <span class="math inline">\(\beta_0\)</span> and the intercept <span class="math inline">\(\beta_1\)</span>, calculate <span class="math inline">\(\sum_i \epsilon_i^2\)</span> for each, and pick the line that minimizes this sum.</p>
-<p>In reality, there are of course better ways of finding the best-fitting line than this trial-and-error method, but conceptually this is the idea behind obtaining the intercept and slope. R has a built-in function which will obtain the best line, called <code>lm</code> (short for “linear model”). It works similarly to the <code>wilcox.test</code> and <code>t.test</code> functions from <a href="25_Statistical_inference_two.html" class="quarto-xref"><span>Chapter 14</span></a>: it first takes a <em>formula</em> as an input, and then the <em>data</em>. In our example:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(shape <span class="sc">~</span> size, <span class="at">data =</span> snails <span class="sc">|&gt;</span> <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"nux"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = shape ~ size, data = filter(snails, species == "nux"))
-
-Coefficients:
-(Intercept)         size  
-  -0.129240     0.004083  </code></pre>
-</div>
-</div>
-<p>The formula is a shorthand way of writing <a href="#eq-linreg" class="quarto-xref">Equation&nbsp;<span>17.1</span></a>. The way to write it is simple: we first write the name of the column in the data that is the <em>response</em> variable—that is, the <span class="math inline">\(y_i\)</span> that we wish to predict. We then write a tilde (<code>~</code>), followed by the name of the data column that is the <em>predictor</em> variable—the <span class="math inline">\(x_i\)</span>. For a linear model, it is understood that there is always an intercept <span class="math inline">\(\beta_0\)</span> and a residual term <span class="math inline">\(\epsilon_i\)</span>. We therefore do not bother writing those out. It is also understood that there is a coefficient <span class="math inline">\(\beta_1\)</span> multiplying the predictor (<code>size</code>, in our case), so we do not need to write that out either. This really simplifies writing formulas: instead of having to enter the equivalent of <a href="#eq-linreg" class="quarto-xref">Equation&nbsp;<span>17.1</span></a>, we simply type out <code>response ~ predictor</code>. That said, it is important to be aware that what is really going on under the hood is using <a href="#eq-linreg" class="quarto-xref">Equation&nbsp;<span>17.1</span></a> to find the intercept <span class="math inline">\(\beta_0\)</span> and the slope <span class="math inline">\(\beta_1\)</span>.</p>
-<p>These are seen in the output above. Instead of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span>, the intercept is denoted <code>(Intercept)</code>, and the slope is simply given the same name as the predictor variable—<code>size</code>, in this case. So what we learn is that the intercept of the best-fitting line is -0.129, and its slope is 0.0041.</p>
-<p>As a reminder, the above code chunk could have also been written using pipes and the underscore notation (<a href="25_Statistical_inference_two.html#sec-dot" class="quarto-xref"><span>Section 14.7</span></a>), for identical results:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"nux"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(shape <span class="sc">~</span> size, <span class="at">data =</span> _)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = shape ~ size, data = filter(snails, species == "nux"))
-
-Coefficients:
-(Intercept)         size  
-  -0.129240     0.004083  </code></pre>
-</div>
-</div>
-<p>The fitting of a line to data goes by the (perhaps confusing) name of <em>linear regression</em>—see the historical note below for why this is so.</p>
+<p>Regardless of whether the model includes one or several explanatory variables, we must always keep in mind the five assumptions presented in <a href="40_Intro_adv_statistics.html#sec-model-assumptions" class="quarto-xref"><span>Section 16.1.1</span></a>, especially the assumption of linearity. If we have discovered non-linear relationships in the exploratory step, we need to model a more complex relationship than what is shown in <a href="#eq-snail-simple" class="quarto-xref">Equation&nbsp;<span>17.1</span></a>.</p>
+</section>
+<section id="sec-model-estimation" class="level2" data-number="17.2">
+<h2 data-number="17.2" class="anchored" data-anchor-id="sec-model-estimation"><span class="header-section-number">17.2</span> Model estimation</h2>
+<p><a href="#eq-snail-simple" class="quarto-xref">Equation&nbsp;<span>17.1</span></a> shows the “true” model based on all observed values in the population, but (nearly) all studies are based on some form of sample. Even a population census during a specific period can be considered a sample in time if the model is intended to be used after the study period ends.</p>
+<p>We can denote the estimated model with its <em>estimated parameters</em> as:</p>
+<p><span id="eq-snail-simple-est"><span class="math display">\[
+\hat{Y}_i = b_0 + b_1 \cdot X_{1i}
+\tag{17.2}\]</span></span></p>
+<p>where: <span class="math display">\[\begin{align*}
+  \hat{Y}_i &amp;= \text{estimated value of the response variable for observation } i\\
+  b_0 &amp;= \text{estimate of the intercept}\\
+  b_1 &amp;= \text{estimate of the slope parameter}
+\end{align*}\]</span></p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -520,47 +554,115 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>The term “regression” comes from a paper by the method’s inventor, Sir Francis Galton (half-cousin to Charles Darwin). Galton was studying a specific problem: the relationship between the body heights of humans and their children. He noticed that when plotting the heights of parents along the y-axis and that of their children along the x-axis, the slope of the best-fitting line is always smaller than one. The implication is that very tall parents, on average, tend to have shorter children than themselves, and conversely: children of very short parents are on average taller than their elders. Galton described this phenomenon in a study called “Regression towards mediocrity in hereditary stature” <span class="citation" data-cites="Galton1886">(<a href="99_References.html#ref-Galton1886" role="doc-biblioref">Galton 1886</a>)</span>. In it, he also worked out the method of finding the best line that fits the data, and thus the name <em>regression</em> stuck to the method—even though the process of fitting a line to points has nothing whatsoever to do with anything “regressing”.</p>
-<p>Incidentally, the very brief biological explanation of Galton’s finding is as follows. An individual’s height <span class="math inline">\(H\)</span> can be modeled as <span class="math inline">\(H = G + E\)</span>, where <span class="math inline">\(G\)</span> denotes heritable (genetic) contributions, and <span class="math inline">\(E\)</span> denotes other, more or less random, environmental contributions. An exceptionally tall individual likely scores high on both <span class="math inline">\(G\)</span> and <span class="math inline">\(E\)</span>. Consequently, the individual’s offspring will also likely score high on <span class="math inline">\(G\)</span>, inheriting it from the parents. But, since <span class="math inline">\(E\)</span> is not inherited, the child’s chances of also scoring really high on <span class="math inline">\(E\)</span> are exactly those as for anyone else in the population: it could happen, but is unlikely. Typically, the child will have a more or less average value for <span class="math inline">\(E\)</span>. Thus, parents with high <span class="math inline">\(G\)</span> and high <span class="math inline">\(E\)</span> will tend to have offspring with high <span class="math inline">\(G\)</span> and average <span class="math inline">\(E\)</span>, and so very tall parents end up with tall-but-not-quite-as-tall children as themselves. The same argument holds for very short parents, <em>mutatis mutandis</em>. More broadly, the same holds for any heritable and continuously varying trait (body size, length of mandibles, amount of oil in seeds, rooting depth, and so on, for millions of examples), as long as it can be modeled as emerging from the sum of genetic and environmental factors.</p>
+<p>Some literature uses <span class="math inline">\(\hat{\beta}\)</span> to denote estimated parameters.</p>
 </div>
 </div>
-</section>
-<section id="interpreting-the-results-of-a-linear-regression" class="level2" data-number="17.2">
-<h2 data-number="17.2" class="anchored" data-anchor-id="interpreting-the-results-of-a-linear-regression"><span class="header-section-number">17.2</span> Interpreting the results of a linear regression</h2>
-<p>What do the intercept and slope found above actually <em>mean</em>? And what is the purpose of fitting a straight line to data in the first place?</p>
-<p>The purpose is twofold. First, we want to be able to make useful predictions using the data. By finding the best-fitting line, we are able to say: “increasing the shell size of an <em>N. nux</em> individual by one unit contributes, on average, <span class="math inline">\(0.0041\)</span> extra units to the shape”. Of course, any such prediction is to be used within a limited range. For example, with the coefficients <span class="math inline">\(\beta_0 = -0.129\)</span> and <span class="math inline">\(\beta_1 = 0.0041\)</span>, it would follow that a snail of size zero would have a predicted shell shape of <span class="math inline">\(y = \beta_0 + \beta_1 \cdot 0 = \beta_0 = -0.129\)</span>. But a shell of size zero cannot have any sort of shape (obviously). The implication is clear: for shell sizes that are close to the range of observed values, one can use the linear model as an approximation, but beyond that range it can easily break down. This is important to keep in mind at all times when interpreting regression results.</p>
-<p>The second purpose is to be able to say whether there is any actual relationship between the response and the predictor (here, shell shape and shell size). Let us look at the plot again:</p>
+<p>We want this model to best describe the relationship so we first need to define what we mean by “best”. If we project two different estimated simple linear models onto a scatter plot of the two variables (<a href="#fig-reg-errors" class="quarto-xref">Figure&nbsp;<span>17.2</span></a>), each line will not hit all points exactly, each observation will lie at a certain distance from the regression line. This distance is the observation’s <em>residual</em>, denoted by <span class="math inline">\(e_i\)</span>, an estimate of <span class="math inline">\(\varepsilon_i\)</span>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"nux"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<div id="fig-reg-errors" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-reg-errors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="41_Linear_regression_files/figure-html/fig-reg-errors-1.png" class="img-fluid figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-reg-errors-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;17.2: Visualization of regression model residuals
+</figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>If we are being fully honest with ourselves, it is not quite obvious whether the observed positive relationship isn’t simply a fluke: intuitively, it is quite conceivable that the above plot could have been obtained by just randomly spewing points on a canvas. The procedure of finding the intercept and slope of a line which minimizes the sum of squared residuals <span class="math inline">\(\sum_i \epsilon_i^2\)</span> can be applied to any set of points. It is an entirely different question whether the inferred intercept and slope are meaningfully different from zero. One function of linear regression is to provide an answer to that question.</p>
-<p>If being able to do so sounds a bit too good to be true, then there are some bad news coming: it is. Unfortunately, there is no fully general procedure that will distinguish randomness from real patterns. That said, there are certain assumptions one can make which do allow us to do just that:</p>
-<ol type="1">
-<li>The error terms <span class="math inline">\(\epsilon_i\)</span> are independent from one another.</li>
-<li>They have constant variance (that is, the variation in the data is roughly the same regardless of the value of the predictor).</li>
-<li>Finally, the <span class="math inline">\(\epsilon_i\)</span> are also normally distributed.</li>
-</ol>
-<p>We should not fool ourselves: these assumptions <em>are</em> restrictive. But they hold often enough to have some use. We will see shortly how one can ascertain that they do in fact hold (<a href="#sec-diagnostics" class="quarto-xref"><span>Section 17.3</span></a>). Before doing that however, let us see how we can get the information about whether the inferred parameters are reliably different from zero. This is achieved using the function <code>summary</code>, which takes a fitted linear model (created by <code>lm</code>) and returns a table:</p>
+<p>The vertical lines are the estimated residuals, measuring the deviation from the line and the actual data points. It is intuitively obvious that the first line (with intercept <span class="math inline">\(b_0 = -0.126\)</span> and slope <span class="math inline">\(b_1 = 0.0038\)</span>) is better than the second one (intercept <span class="math inline">\(b_0 = 0.148\)</span> and slope <span class="math inline">\(b_1 = -0.0051\)</span>). This is because the size of the residuals tend to be larger for the right panel. The model on the left is estimated using <em>Ordinary Least Squares</em> (OLS), where the goal is to minimize the model’s total error, whereas the one on the right is just a random line drawn on the graph.</p>
+<p>Mathematically, we calculate <span class="math inline">\(e_i = Y_i - \hat{Y}_i\)</span>, where <span class="math inline">\(Y_i\)</span> is the observed value (the point) and <span class="math inline">\(\hat{Y}_i\)</span> is the model’s estimated value (the line). OLS estimates all model parameters so that the total error (<strong>Sum of Squares of Error</strong>, SSE)<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> for all observations is minimized:</p>
+<p><span id="eq-sse"><span class="math display">\[
+SSE = \sum_{i = 1}^n e_i^2 = \sum_{i = 1}^n (Y_i - \hat{Y}_i)^2
+\tag{17.3}\]</span></span></p>
+<p>In simple linear regression, we can use simple formulas for the two parameter estimates, <span class="math inline">\(b_0\)</span> and <span class="math inline">\(b_1\)</span>, that minimize SSE. However, as soon as we include multiple variables, this becomes significantly more complex. For these complex calculations we instead make use of matrix algebra, which happen behind the scenes in R when using the the function <code>lm()</code>.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Formulas for parameter estimates in simple linear regression are: <span class="math display">\[\begin{align*}
+  b_1 &amp;= \frac{\sum_{i=1}^n(X_i - \bar{X})(Y_i - \bar{Y})}{\sum_{i=1}^n(X_i - \bar{X})^2}\\
+  b_0 &amp;= \bar{Y} - b_1 \cdot \bar{X}
+\end{align*}\]</span></p>
+<p><span class="math inline">\(b_1\)</span> can also be reformulated as: <span class="math display">\[
+\begin{aligned}
+\frac{\sum_{i=1}^n(X_i \cdot Y_i) - \frac{\sum_{i=1}^nX_i \cdot \sum_{i=1}^nY_i}{n}}{\sum_{i=1}^nX_i^2 - \frac{(\sum_{i=1}^nX_i)^2}{n}}
+\end{aligned}
+\]</span></p>
+</div>
+</div>
+<section id="sec-model-fit-example" class="level3" data-number="17.2.1">
+<h3 data-number="17.2.1" class="anchored" data-anchor-id="sec-model-fit-example"><span class="header-section-number">17.2.1</span> Model estimation in R</h3>
+<p>To fit a linear regression model in R, we use the <code>lm()</code> function with the following arguments:</p>
+<ul>
+<li><code>formula</code>: the model structure as a formula object</li>
+<li><code>data</code>: the dataset containing the variables</li>
+</ul>
+<p>A formula object is a special format R uses to describe the relationship between variables. Generally, the format is <code>y ~ x</code>, where <code>x</code> consists of the explanatory variables, for example <code>shape ~ size</code>.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you have not experienced problems already, using <code>lm()</code> requires that we have the correct variable type for all variables as we expect. Make sure that any continuous variable is read as <code>numeric</code>!</p>
+</div>
+</div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"nux"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(shape <span class="sc">~</span> size, <span class="at">data =</span> _) <span class="sc">|&gt;</span> <span class="co"># Fit linear model</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>() <span class="co"># Obtain regression table</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>simpleModel <span class="ot">&lt;-</span> <span class="fu">lm</span>(<span class="at">formula =</span> shape <span class="sc">~</span> size, <span class="at">data =</span> nux)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>With <code>summary()</code>, we get a detailed output of the model that includes the estimated parameters which are also called <em>regression coefficients</em>. When presenting such output, we can use <code>kable()</code> or <code>xtable()</code> for a cleaner display.</p>
+<div id="tip-lm-objects" class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip&nbsp;17.1
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To create this clean output of the coefficients, we need to extract a specific part of <code>summary()</code> using <code>coef()</code>. The documentation for <code>lm()</code> provides more information about what can be retrieved from the resulting regression object.</p>
+<p>R is an object-oriented programming language, and the <code>lm()</code> function returns an object of class “lm”, which is a list. It is easy to extract desired parts from that list when needed. There are many functions associated with objects of class “lm”:</p>
+<ul>
+<li><code>coef()</code>: Returns regression coefficients<br>
+</li>
+<li><code>residuals()</code>: Returns residuals<br>
+</li>
+<li><code>fitted()</code>: Returns estimated values (<span class="math inline">\(\hat{Y}\)</span>)<br>
+</li>
+<li><code>summary()</code>: Returns a summary analysis of the regression model. This function returns an object of class “summary.lm”. See <code>?summary.lm</code> in the documentation. <code>coef()</code> also works on these objects as shown above.<br>
+</li>
+<li><code>anova()</code>: Returns the ANOVA table for the model<br>
+</li>
+<li><code>predict()</code>: Makes predictions for (new) x-values, i.e., calculates <span class="math inline">\(\hat{Y}\)</span> for given x-values. Can also calculate confidence intervals and prediction intervals for <span class="math inline">\(\hat{Y}\)</span>. See <code>?predict.lm()</code> for details.<br>
+</li>
+<li><code>confint()</code>: Calculates confidence intervals for the regression coefficients</li>
+</ul>
+<p>It is also useful to use <code>str()</code> on lm objects. Check <code>?lm()</code> under the “Value” section to see the different components of the object. We will make use of a couple of these objects in later chapters.</p>
+</div>
+</div>
+<div id="fig-reg-summary-bad" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-reg-summary-bad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(simpleModel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = shape ~ size, data = filter(snails, species == "nux"))
+lm(formula = shape ~ size, data = nux)
 
 Residuals:
       Min        1Q    Median        3Q       Max 
@@ -578,112 +680,466 @@ Multiple R-squared:  0.1279,    Adjusted R-squared:  0.1036
 F-statistic: 5.278 on 1 and 36 DF,  p-value: 0.02752</code></pre>
 </div>
 </div>
-<p>The output first prints the function call to <code>lm</code> we used. Then it gives a quick overview of the residuals: the minimum and maximum values, the point of the first and third quantiles, and the median—in other words, it contains the same information one would use to create a box plot with. This ought to give a quick and rough idea of whether the residuals are violently skewed, or have at least a chance of being normally distributed, which was one of the key assumption behind linear regression above. (We will discuss a better method for assessing the normality of the residuals in <a href="#sec-diagnostics" class="quarto-xref"><span>Section 17.3</span></a>.) The next item in the output is the most important part: the table of fitted regression coefficients (intercept and slope). Here we can find the estimated values of the coefficients, their standard error, an associated t-statistic (ignore this for now), and the p-values (the <code>Pr(&gt;|t|)</code> column).</p>
-<p>The p-values measure how likely it would have been to obtain the same regression parameters just by chance—by randomly throwing points on the plot. By “random”, we mean a process that strictly observes the assumptions about the independence, normality, and constant variance of the residuals. Based on this, it is highly unlikely that the intercept’s true value is zero. But generally we are more interested in the slope, because this is what tells us whether there is in fact any relationship between the measured quantities. Here the p-value associated with the slope is 0.028. That is, if we were to repeatedly generate as many random points as we see in the data and measure the slope of the best fitting line, we would observe a slope at least as steep as our inferred <span class="math inline">\(0.0041\)</span> once every <span class="math inline">\(1/0.028 \approx 36\)</span> tries. While that is good indication that the relationship is not simply due to chance, one would not bet one’s life on it either.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
-<p>There is some further information at the bottom of the output. The “residual standard error” is an estimate for the standard deviation of the residuals <span class="math inline">\(\epsilon_i\)</span> (recall that we assumed this standard deviation to be constant and independent of <span class="math inline">\(i\)</span>). “Multiple R-squared” is the fraction of variation in the data explained by the model. “Adjusted R-squared” is the same but takes into account how many parameters were used to fit the model. Finally, there is information on the F-statistic, which we will not be look at here.</p>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-reg-summary-bad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;17.3: Not a very clean output
+</figcaption>
+</figure>
+</div>
+<div class="cell" data-tbl-cap-location="top">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(simpleModel) <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coef</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_tibble</span>(<span class="at">rownames =</span> <span class="cn">NA</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames_to_column</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at"> </span><span class="st">`</span> <span class="ot">=</span> rowname,</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">Estimate =</span> Estimate,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">StdError =</span> <span class="st">`</span><span class="at">Std. Error</span><span class="st">`</span>,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">t-value</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">t value</span><span class="st">`</span>,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">`</span><span class="at">p-value</span><span class="st">`</span> <span class="ot">=</span> <span class="st">`</span><span class="at">Pr(&gt;|t|)</span><span class="st">`</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">digits =</span> <span class="dv">4</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">"striped"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tbl-reg-summary-good" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-cap-location="top">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-reg-summary-good-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;17.1: A clean table of the model’s estimated parameters
+</figcaption>
+<div aria-describedby="tbl-reg-summary-good-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table quarto-disable-processing="true" class="table table-striped" style="margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;">  </th>
+   <th style="text-align:right;"> Estimate </th>
+   <th style="text-align:right;"> StdError </th>
+   <th style="text-align:right;"> t-value </th>
+   <th style="text-align:right;"> p-value </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> (Intercept) </td>
+   <td style="text-align:right;"> -0.1292 </td>
+   <td style="text-align:right;"> 0.0407 </td>
+   <td style="text-align:right;"> -3.1749 </td>
+   <td style="text-align:right;"> 0.0031 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> size </td>
+   <td style="text-align:right;"> 0.0041 </td>
+   <td style="text-align:right;"> 0.0018 </td>
+   <td style="text-align:right;"> 2.2974 </td>
+   <td style="text-align:right;"> 0.0275 </td>
+  </tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p><a href="#tbl-reg-summary-good" class="quarto-xref">Table&nbsp;<span>17.1</span></a> shows the estimated parameters (coefficients). For example, we can see that for each additional size of shell, the shape increases by approximately 0.0041 units on average.</p>
+<p>The intercept is only relevant to interpret if the <em>value range</em> includes all zeros; if the data covers the region where all explanatory variables take the value 0. In this example, there is no data in that region, which means the intercept value has no meaningful interpretation.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Even though the interpretation of the intercept may not be meaningful, it <strong>must</strong> be included in the model in order for the OLS estimation to minimize SSE. If the intercept were removed, it would correspond to a line forced to cross the y-axis at <span class="math inline">\(y = 0\)</span>, which would result in a model that does not meet our criteria of the “best” model.</p>
+</div>
+</div>
 </section>
-<section id="sec-diagnostics" class="level2" data-number="17.3">
-<h2 data-number="17.3" class="anchored" data-anchor-id="sec-diagnostics"><span class="header-section-number">17.3</span> Diagnostic plots</h2>
-<p>As advertised, it is possible (and important) to check whether the assumptions behind linear regression actually hold. There is a convenient way to do so, via <em>diagnostic plots</em>. Such plots can be created via the <code>autoplot</code> function of the <code>ggfortify</code> package. We can therefore install this package first, in case we do not have it already:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"ggfortify"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>And then load it:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggfortify)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning: package 'ggfortify' was built under R version 4.4.3</code></pre>
-</div>
-</div>
-<p>And now, we can simply give the result of the <code>lm</code> function as input to the function <code>autoplot</code>:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"nux"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(shape <span class="sc">~</span> size, <span class="at">data =</span> _) <span class="sc">|&gt;</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>We see four plots above. The top left of these shows the residuals against the fitted values. If the points have no trends of increase, decrease, valleys, or humps, and the spread of the points is roughly constant, then they adhere to the assumptions of linear regression. The blue line attempts to capture whether there is an overall trend in the data; in this case, it would be hard to argue that any trend is due to something else than chance.</p>
-<p>The bottom left plot is much the same as the top left one, except it takes the absolute values of the residuals. This is done because, since residuals will by definition be more or less symmetrically distributed around zero, one can effectively double the precision of the diagnostic by focusing only on magnitudes. For statistical reasons that do not concern us here, the square roots of these absolute values tend to behave much better, which is why we see the square root being taken along the y-axis. This plot is good for spotting whether the variance of the residuals depends on the fitted values. To satisfy the requirements of linear regression, there should be no such dependence.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> The blue line is again a locally-weighted estimate, which ought to be as flat as possible.</p>
-<p>The top right graph offers a visualization of how well the residuals follow a normal distribution. The idea behind this <em>quantile-quantile plot</em> (Q-Q plot) is that if the residuals are indeed normally distributed, then we can line them up in increasing order along the x-axis, and for each of them, plot the theoretically expected value (based on normality) along the y-axis. If these observed vs.&nbsp;theoretically predicted values fall on the dashed straight line, then there is a perfect match between theory and observation, and the residuals are normally distributed. The stronger the deviation from the dashed line indicating a perfect theoretical match, the more non-normal the residuals are.</p>
-<p>The bottom right graph measures the “leverage” of each point, which is a measure of how sensitively the regression reacts to removing one data point. We will not be concerned with this plot.</p>
-<p>The blue smoother lines often do more to confuse than to help. For example, one can see a slight dip in the blue line in the bottom left graph, but looking at all points together reveals how little this trend means. The <code>smooth.colour = NA</code> argument removes the blue lines:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"nux"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(shape <span class="sc">~</span> size, <span class="at">data =</span> _) <span class="sc">|&gt;</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">smooth.colour =</span> <span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>One may go even further. Since <code>autoplot</code> returns a <code>ggplot</code> object, we can add various theme options to make the plot prettier. We can also increase the transparency of the points to better see where and how much they overlap with one another:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"nux"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(shape <span class="sc">~</span> size, <span class="at">data =</span> _) <span class="sc">|&gt;</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">smooth.colour =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>(Small note: the color argument to <code>autoplot</code> must be spelled <code>colour</code>. We do not have the freedom to spell it either <code>color</code> or <code>colour</code>, like we do in ordinary ggplot functions.) Now that we have a cleaner plot, how do we interpret it. Let us proceed one by one. The top left plot is as good as it can get: there is a blurb of points scattered around zero, with no systematic increase or decrease. Similarly, the bottom left plot is excellent, revealing that the spread of the residuals does not depend on the fitted values. Finally, the top right quantile-quantile plot reveals that the residuals follow the theoretically expected normal distribution beautifully. In short, these diagnostics show that the assumptions behind the linear regression model are nicely fulfilled.</p>
-<p>To give an example of what not-so-good diagnostics might look like, let us repeat the procedure for a different species: <em>N. galapaganus</em> instead of <em>N. nux</em>. Here are the raw data together with the fitted line:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"galapaganus"</span>) <span class="sc">|&gt;</span> <span class="co"># Choose a different species</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> size, <span class="at">y =</span> shape)) <span class="sc">+</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">"goldenrod"</span>) <span class="sc">+</span></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>And the corresponding diagnostic plots:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>snails <span class="sc">|&gt;</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"galapaganus"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lm</span>(shape <span class="sc">~</span> size, <span class="at">data =</span> _) <span class="sc">|&gt;</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">smooth.colour =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>Looking at the top left, one gets at the very least somewhat suspicious that there is a trend in these points, first going down, then up, then down again at the end. Next, while the bottom left plot is not disastrous, it again might suggest that the variance of the residuals is higher for smaller fitted values than for larger ones. Finally, the quantile-quantile plot is clearly no good: small residuals are consistently overestimated (the theoretical values are larger than the actual ones), and large residuals are underestimated. This means that any results obtained from a linear regression ought to be treated with caution. Possibly, methods other than linear regression are needed to understand these data.</p>
 </section>
-<section id="sec-anscombe" class="level2" data-number="17.4">
-<h2 data-number="17.4" class="anchored" data-anchor-id="sec-anscombe"><span class="header-section-number">17.4</span> More on diagnostics: Anscombe’s quartet</h2>
+<section id="sec-residual-analysis" class="level2" data-number="17.3">
+<h2 data-number="17.3" class="anchored" data-anchor-id="sec-residual-analysis"><span class="header-section-number">17.3</span> Model diagnostics</h2>
+<p>After fitting a model based on observations from visualizations and descriptive statistics, we can interpret the estimated relationship between the explanatory variables and the response variable, as we did in <a href="#sec-model-fit-example" class="quarto-xref"><span>Section 17.2.1</span></a>. However, there are two aspects we have yet to consider:</p>
+<ul>
+<li>we cannot assume these interpretations describe the true relationship since we do not yet know if the model is an appropriate representation,</li>
+<li>these interpretations only describe the collected sample, not the population we want to draw conclusions for.</li>
+</ul>
+<p>To assess the appropriateness of the model, we must examine whether it meets the assumptions presented in <a href="40_Intro_adv_statistics.html#sec-model-assumptions" class="quarto-xref"><span>Section 16.1.1</span></a> through <em>residual analysis</em>, and conclusions about the population can be made using statistical inference. We <strong>always</strong> begin by evaluating the model’s appropriateness because the inference methods also rely on these assumptions being met.</p>
+<p>Remember <a href="40_Intro_adv_statistics.html#eq-lin-reg" class="quarto-xref">Equation&nbsp;<span>16.1</span></a>? When modeling each individual observation, <span class="math inline">\(\varepsilon_i\)</span> measures the difference between the regression line and the actual observation, which means we can shift the model’s assumptions presented in <a href="40_Intro_adv_statistics.html#sec-model-assumptions" class="quarto-xref"><span>Section 16.1.1</span></a> from <span class="math inline">\(Y|X\)</span> to <span class="math inline">\(\varepsilon\)</span>. <span id="eq-lin-reg-assumptions"><span class="math display">\[
+  \varepsilon \overset{\mathrm{iid}}{\sim} N(0, \sigma^2)
+\tag{17.4}\]</span></span></p>
+<p>This reformulation gives us a good starting point to evaluate the suitability of a estimated model.</p>
+<section id="sec-residual-simple" class="level3" data-number="17.3.1">
+<h3 data-number="17.3.1" class="anchored" data-anchor-id="sec-residual-simple"><span class="header-section-number">17.3.1</span> Residual analysis</h3>
+<p>Residual analysis involves calculating and visually exploring the residuals from a model against the model assumptions <span class="math inline">\(\varepsilon\overset{iid}{\sim}N(0, \sigma^2)\)</span>. Since we estimate error term with residuals, in practice we check if the residuals are independent, normally distributed with mean 0 and constant variance. Residuals can also be used to assess whether the estimated linear model is appropriately structured, i.e.&nbsp;whether the relationship between the response variable and the explanatory variables is linear.</p>
+<p>For simplicity, we can extract the residuals as well as the observed and estimated values of the response variable from the estimated model (see <a href="#tip-lm-objects" class="quarto-xref">Tip&nbsp;<span>17.1</span></a>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dataset for visualizations</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>residualData <span class="ot">&lt;-</span> </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Extracts the residuals from the model</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">residuals =</span> <span class="fu">residuals</span>(simpleModel),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># The observed response values from the data</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> nux<span class="sc">$</span>shape,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Extracts the estimated response values from the model</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">yHat =</span> <span class="fu">fitted</span>(simpleModel)</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We will visualize these variables in various forms using <code>ggplot2</code>, which requires a <code>data.frame</code> or <code>tibble</code> with data.</p>
+<section id="normal-distribution" class="level4" data-number="17.3.1.1">
+<h4 data-number="17.3.1.1" class="anchored" data-anchor-id="normal-distribution"><span class="header-section-number">17.3.1.1</span> Normal distribution</h4>
+<p>We can examine the assumption of normally distributed residuals using a histogram and/or a QQ plot (<strong>q</strong>uantile-<strong>q</strong>uantile plot).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(residualData) <span class="sc">+</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> residuals, <span class="at">y =</span> <span class="fu">after_stat</span>(density)) <span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">10</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Residuals"</span>, <span class="at">y =</span> <span class="st">"Density"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption>Distribution of residuals</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(residualData) <span class="sc">+</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Use standardized residuals</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">sample =</span> <span class="fu">scale</span>(residuals)) <span class="sc">+</span> </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_qq</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Theoretical Quantiles"</span>, <span class="at">y =</span> <span class="st">"Observed Quantiles"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption>Observed residual quantiles compared to theoretical normal quantiles</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In the histogram, we want to see the symmetric, bell-shaped form of the normal distribution centered around 0, which can sometimes be difficult to detect especially with small datasets. The QQ plot shows the observed and theoretical quantiles, where we want the points to follow the drawn line for a “perfect” normal distribution.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Remember that quantiles is a generalization of a quartile that divides the observed values into equal parts.</p>
+<p>The observed quantiles takes the information from the variable and defines each value as a specific quantile in order from smallest to largest.</p>
+<p>The theoretical quantile assumes that the data is normally distributed with its given mean and standard deviation and for each observation calculates its quantile position within that distribution. We did that “manually” in <a href="21_Probabilities_and_distributions.html#sec-continuous-distributions" class="quarto-xref"><span>Section 10.2.2</span></a> using <code>pnorm()</code>.</p>
+<p>The QQ plot then maps for each observation the observed quantile against the theoretical and draws a line where we would expect the points to lie if the data were normally distributed. If the points follow close to the line, we can assume that the data is approximately normally distributed.</p>
+</div>
+</div>
+<p>For this model, we do not see any clear deviations from the expected pattern, which suggests that the residuals are normally distributed. However, we can never be 100% certain that the assumption is met, especially with small datasets.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We can consider the assumption of normality to be violated if these plots show strong deviations from what we expect. Even when we know a sample is drawn from a normal distribution, the histogram may not always show the shape we are looking for.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">rnorm</span>(<span class="dv">30</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> <span class="fu">after_stat</span>(density)) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">10</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"x"</span>, <span class="at">y =</span> <span class="st">"Density"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption>Distribution of a sample from the actual normal distribution</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Strong deviations from normality may include, for example, multiple areas of high density:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">runif</span>(<span class="dv">30</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> <span class="fu">after_stat</span>(density)) <span class="sc">+</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">10</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"x"</span>, <span class="at">y =</span> <span class="st">"Density"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption>Distribution of a sample from other distributions</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>or a highly skewed distribution:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">rchisq</span>(<span class="dv">30</span>, <span class="at">df =</span> <span class="dv">2</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>) <span class="sc">|&gt;</span> </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggplot</span>() <span class="sc">+</span> </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> <span class="fu">after_stat</span>(density)) <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">10</span>, <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"x"</span>, <span class="at">y =</span> <span class="st">"Density"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption>Distribution of a sample from other distributions</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>These plots suggest that the model is missing an explanatory variable or needs to be transformed in some way to meet the assumption.</p>
+<p>If the QQ plot shows clear patterns that deviate from the line — for example if the points curve around the line — it means the model does not meet the assumption of a linear relationship.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption>Example of patterns in a QQ plot</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="constant-variance" class="level4" data-number="17.3.1.2">
+<h4 data-number="17.3.1.2" class="anchored" data-anchor-id="constant-variance"><span class="header-section-number">17.3.1.2</span> Constant variance</h4>
+<p>We can check the assumption of constant variance in the residuals using a scatter plot with residuals on the y-axis and either the estimated values or observed values of the explanatory or response variable on the x-axis. Typically, the estimated values of the response are used so that the x-axis reflects the entire model, but other variables may be useful to visualize to identify potential causes of a violated assumption.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(residualData) <span class="sc">+</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> yHat, <span class="at">y =</span> residuals) <span class="sc">+</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Estimated Values"</span>, <span class="at">y =</span> <span class="st">"Residuals"</span>) <span class="sc">+</span> </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">yintercept =</span> <span class="dv">0</span>)</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Imaginary boundaries</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fl">0.05</span>),</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"#d9230f"</span>,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="dv">2</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">yintercept =</span> <span class="fl">0.05</span>),</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"#d9230f"</span>,</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">linetype =</span> <span class="dv">2</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-ex-eq-var" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-ex-eq-var-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="41_Linear_regression_files/figure-html/fig-ex-eq-var-1.png" class="img-fluid figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-ex-eq-var-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;17.4: Spread of residuals against estimated values
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>To meet the assumption of constant variance, the points at each cross-section of x-values should be evenly spread around the same limits. Think of it as placing an imaginary boundary two parallel lines along the maximum and minimum values of the residuals (the two red dashed lines in <a href="#fig-ex-eq-var" class="quarto-xref">Figure&nbsp;<span>17.4</span></a>), and the majority of points should be scattered between them with no big gaps from the point to the boundary. In <a href="#fig-ex-eq-var" class="quarto-xref">Figure&nbsp;<span>17.4</span></a>, we see that the variation seem to diminish with larger estimated values as observations fall further from the boundary. Since the dataset is relatively small and only three of the observations (<span class="math inline">\(\hat{Y} &gt; -0.025\)</span>) cause the issue we could consider the residuals to meet the assumption of constant variance.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If the lines covering the maximum and minimum values of the residuals are not parallel, the model does not meet the requirement of constant variance.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption>Example of non-constant variance in residuals</figcaption>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid figure-img" width="480"></p>
+<figcaption>Example of non-constant variance in residuals</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>These phenomena usually mean that the entire model or parts of it need to be transformed to meet the assumption of constant variance.</p>
+<p>We can also identify problems with linearity in this scatter plot. The figure below shows roughly constant variance in terms of variation across each cross-section of the x-axis, but there is a clear pattern in the residuals. This means the model has not successfully captured the relationship. In this case, it would be appropriate to visualize the residuals against each explanatory variable to identify which ones contribute to the non-linear relationship.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption>Pattern in residuals indicating a non-linear relationship</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="independence" class="level4" data-number="17.3.1.3">
+<h4 data-number="17.3.1.3" class="anchored" data-anchor-id="independence"><span class="header-section-number">17.3.1.3</span> Independence</h4>
+<p>Most often we assess this assumption based on the data collection process. Only when we know the data has a time aspect — such as in time series data or when the same unit has been measured multiple times — we check that the model has accounted for this dependence properly.</p>
+<p>A line plot of residuals in observation order can be used to examine independence, but as mentioned, this visualization is only used in special cases. The line plot should show “randomness,” meaning no clear patterns in the residuals.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(residualData) <span class="sc">+</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">aes</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(residualData), <span class="at">y =</span> residuals) <span class="sc">+</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span> </span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Obs. index"</span>, <span class="at">y =</span> <span class="st">"Residuals"</span>) <span class="sc">+</span> </span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(<span class="at">yintercept =</span> <span class="dv">0</span>),</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"black"</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption>Residuals in observation order</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Other examples of data with dependence include:</p>
+<ul>
+<li>We collect data from individuals, but some individuals come from the same family, which may create dependence between them.</li>
+<li>We collect spatial data, such as temperature or rainfall at different locations in Östergötland. It is common for there to be positive correlation (a dependence) between geographically close observations.</li>
+</ul>
+</section>
+</section>
+<section id="creating-a-custom-function-diagnosticplots" class="level3" data-number="17.3.2">
+<h3 data-number="17.3.2" class="anchored" data-anchor-id="creating-a-custom-function-diagnosticplots"><span class="header-section-number">17.3.2</span> Creating a custom function (<code>diagnosticPlots</code>)</h3>
+<p>You will encounter these residual plots many times when conducting regression analyses, so to simplify their generation we can create a custom function that does all of this for us at once. The <code>cowplot</code> package provides a function (<code>plot_grid</code>) that can combine multiple plots into one.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">#' Custom function diagnosticPlots that generate visualizations of residuals</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param model A fitted model object of class "lm"</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param alpha Defines the opacity of the points (0-1)</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param bins  Defines the number of bins in the histogram</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co">#' @param scaleLocation Boolean if a scale location graph should be added</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>diagnosticPlots <span class="ot">&lt;-</span> </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">function</span>(</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    model, </span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="dv">1</span>, </span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">bins =</span> <span class="dv">10</span>, </span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">scaleLocation =</span> <span class="cn">FALSE</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>  ) {</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (alpha <span class="sc">&lt;</span> <span class="dv">0</span> <span class="sc">|</span> alpha <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>      <span class="fu">stop</span>(<span class="st">"alpha must be between 0 and 1"</span>)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (bins <span class="sc">&lt;=</span> <span class="dv">0</span>) {</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>      <span class="fu">stop</span>(<span class="st">"bins must be a positive number"</span>)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Summarizes the residuals, observed and fitted values in a tibble</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    residualData <span class="ot">&lt;-</span> </span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>      dplyr<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>        <span class="at">residuals =</span> <span class="fu">residuals</span>(model),</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># The response variable is the first column in the model's model object</span></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>        <span class="at">y =</span> model<span class="sc">$</span>model[,<span class="dv">1</span>],</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>        <span class="at">yHat =</span> <span class="fu">fitted</span>(model)</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>      )</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generates the histogram to assess normality</span></span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>    p1 <span class="ot">&lt;-</span> </span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(residualData) <span class="sc">+</span> </span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> residuals, <span class="at">y =</span> <span class="fu">after_stat</span>(density)) <span class="sc">+</span></span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">geom_histogram</span>(<span class="at">bins =</span> bins, <span class="at">fill =</span> <span class="st">"steelblue"</span>, <span class="at">color =</span> <span class="st">"black"</span>) <span class="sc">+</span> </span>
+<span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Residuals"</span>, <span class="at">y =</span> <span class="st">"Density"</span>)</span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generates the scatter plot to assess constant variance</span></span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a>    p2 <span class="ot">&lt;-</span> </span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(residualData) <span class="sc">+</span> </span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> yHat, <span class="at">y =</span> residuals) <span class="sc">+</span> </span>
+<span id="cb14-43"><a href="#cb14-43" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">geom_hline</span>(<span class="fu">aes</span>(<span class="at">yintercept =</span> <span class="dv">0</span>)) <span class="sc">+</span> </span>
+<span id="cb14-44"><a href="#cb14-44" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> alpha) <span class="sc">+</span> </span>
+<span id="cb14-45"><a href="#cb14-45" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb14-46"><a href="#cb14-46" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Estimated Values"</span>, <span class="at">y =</span> <span class="st">"Residuals"</span>)</span>
+<span id="cb14-47"><a href="#cb14-47" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-48"><a href="#cb14-48" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Generates the QQ plot to assess normality</span></span>
+<span id="cb14-49"><a href="#cb14-49" aria-hidden="true" tabindex="-1"></a>    p3 <span class="ot">&lt;-</span> </span>
+<span id="cb14-50"><a href="#cb14-50" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(residualData) <span class="sc">+</span> </span>
+<span id="cb14-51"><a href="#cb14-51" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Use standardized residuals</span></span>
+<span id="cb14-52"><a href="#cb14-52" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">sample =</span> <span class="fu">scale</span>(residuals)) <span class="sc">+</span> </span>
+<span id="cb14-53"><a href="#cb14-53" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">geom_qq_line</span>() <span class="sc">+</span> </span>
+<span id="cb14-54"><a href="#cb14-54" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">geom_qq</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> alpha) <span class="sc">+</span></span>
+<span id="cb14-55"><a href="#cb14-55" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">theme_bw</span>() <span class="sc">+</span> </span>
+<span id="cb14-56"><a href="#cb14-56" aria-hidden="true" tabindex="-1"></a>      ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x=</span> <span class="st">"Theoretical Quantiles"</span>, <span class="at">y =</span> <span class="st">"Observed Quantiles"</span>)</span>
+<span id="cb14-57"><a href="#cb14-57" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-58"><a href="#cb14-58" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If scaleLocation is TRUE, add a scale location plot</span></span>
+<span id="cb14-59"><a href="#cb14-59" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (scaleLocation) {</span>
+<span id="cb14-60"><a href="#cb14-60" aria-hidden="true" tabindex="-1"></a>      p4 <span class="ot">&lt;-</span> </span>
+<span id="cb14-61"><a href="#cb14-61" aria-hidden="true" tabindex="-1"></a>        ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(residualData) <span class="sc">+</span> </span>
+<span id="cb14-62"><a href="#cb14-62" aria-hidden="true" tabindex="-1"></a>        ggplot2<span class="sc">::</span><span class="fu">aes</span>(<span class="at">x =</span> yHat, <span class="at">y =</span> <span class="fu">sqrt</span>(<span class="fu">abs</span>(residuals))) <span class="sc">+</span> </span>
+<span id="cb14-63"><a href="#cb14-63" aria-hidden="true" tabindex="-1"></a>        ggplot2<span class="sc">::</span><span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> alpha) <span class="sc">+</span> </span>
+<span id="cb14-64"><a href="#cb14-64" aria-hidden="true" tabindex="-1"></a>        ggplot2<span class="sc">::</span><span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb14-65"><a href="#cb14-65" aria-hidden="true" tabindex="-1"></a>        ggplot2<span class="sc">::</span><span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Estimated Values"</span>, <span class="at">y =</span> <span class="fu">expression</span>(<span class="fu">sqrt</span>(<span class="st">"|Residuals|"</span>)))</span>
+<span id="cb14-66"><a href="#cb14-66" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb14-67"><a href="#cb14-67" aria-hidden="true" tabindex="-1"></a>      cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(p1, p2, p3, p4, <span class="at">nrow =</span> <span class="dv">2</span>)</span>
+<span id="cb14-68"><a href="#cb14-68" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb14-69"><a href="#cb14-69" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb14-70"><a href="#cb14-70" aria-hidden="true" tabindex="-1"></a>      cowplot<span class="sc">::</span><span class="fu">plot_grid</span>(p1, p2, p3, <span class="at">nrow =</span> <span class="dv">2</span>)  </span>
+<span id="cb14-71"><a href="#cb14-71" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb14-72"><a href="#cb14-72" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-73"><a href="#cb14-73" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb14-74"><a href="#cb14-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-75"><a href="#cb14-75" aria-hidden="true" tabindex="-1"></a><span class="fu">diagnosticPlots</span>(simpleModel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-snail-resid" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-snail-resid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="41_Linear_regression_files/figure-html/fig-snail-resid-1.png" class="img-fluid figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-snail-resid-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;17.5: Residual plots in a single image
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>In summary, <a href="#fig-snail-resid" class="quarto-xref">Figure&nbsp;<span>17.5</span></a> shows that the residuals seem to meet the assumptions of normal distribution with mean 0 and constant variance. There are no clear patterns in any plot that suggest otherwise nor that the model fails to capture part of the relationship. A few outliers have been identified, specifically three observations with large estimated values. The conclusion is that the model is a suitable simplification of reality.</p>
+</section>
+<section id="sec-anscombe" class="level3" data-number="17.3.3">
+<h3 data-number="17.3.3" class="anchored" data-anchor-id="sec-anscombe"><span class="header-section-number">17.3.3</span> More on diagnostics: Anscombe’s quartet</h3>
 <p>To further illustrate how diagnostics can be used to visually judge whether the assumptions of linear regression are met, let us take a look at a famous dataset that was designed for precisely this purpose <span class="citation" data-cites="Anscombe1973">(<a href="99_References.html#ref-Anscombe1973" role="doc-biblioref">Anscombe 1973</a>)</span>. The data are built into R (with the name <code>anscombe</code>), but are not in the most convenient format:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(anscombe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(anscombe)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   x1 x2 x3 x4    y1   y2    y3    y4
 1  10 10 10  8  8.04 9.14  7.46  6.58
@@ -701,10 +1157,11 @@ F-statistic: 5.278 on 1 and 36 DF,  p-value: 0.02752</code></pre>
 </div>
 <p>These are actually four datasets merged into one: <code>x1</code> and <code>y1</code> are <span class="math inline">\(x\)</span>- and <span class="math inline">\(y\)</span>-coordinates of the points from the first set, <code>x2</code> and <code>y2</code> from the second set, and so on. We can use <code>pivot_longer</code> to put these data in tidy format:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>ans_long <span class="ot">&lt;-</span> anscombe <span class="sc">|&gt;</span></span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="fu">c</span>(<span class="st">".value"</span>, <span class="st">"set"</span>),</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_pattern =</span> <span class="st">"(.)(.)"</span>)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ans_long)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>ansLong <span class="ot">&lt;-</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  anscombe <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">everything</span>(), <span class="at">names_to =</span> <span class="fu">c</span>(<span class="st">".value"</span>, <span class="st">"set"</span>),</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_pattern =</span> <span class="st">"(.)(.)"</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(ansLong)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 44 × 3
    set       x     y
@@ -724,27 +1181,27 @@ F-statistic: 5.278 on 1 and 36 DF,  p-value: 0.02752</code></pre>
 </div>
 <p>We can now visualize each set, along with linear fits:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>ans_long <span class="sc">|&gt;</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> set)) <span class="sc">+</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> set, <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">labeller =</span> label_both) <span class="sc">+</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>ansLong <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">color =</span> set)) <span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm, <span class="at">se =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> set, <span class="at">nrow =</span> <span class="dv">2</span>, <span class="at">labeller =</span> label_both) <span class="sc">+</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>The data have been carefully crafted so that the least-squares regression line has an intercept of 3 and a slope of 0.5 for each of the four sets. Furthermore, the p-values are also identical to many decimal places. But this visual representation reveals what would have been much harder to intuit otherwise: that only the first set has a real chance of conforming to the assumptions of linear regression. Performing the regression on just this set and creating diagnostic plots:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> <span class="fu">filter</span>(ans_long, set <span class="sc">==</span> <span class="st">"1"</span>)) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> <span class="fu">filter</span>(ansLong, set <span class="sc">==</span> <span class="st">"1"</span>)) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = y ~ x, data = filter(ans_long, set == "1"))
+lm(formula = y ~ x, data = filter(ansLong, set == "1"))
 
 Residuals:
      Min       1Q   Median       3Q      Max 
@@ -761,13 +1218,12 @@ Residual standard error: 1.237 on 9 degrees of freedom
 Multiple R-squared:  0.6665,    Adjusted R-squared:  0.6295 
 F-statistic: 17.99 on 1 and 9 DF,  p-value: 0.00217</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> <span class="fu">filter</span>(ans_long, set <span class="sc">==</span> <span class="st">"1"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">smooth.colour =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> <span class="fu">filter</span>(ansLong, set <span class="sc">==</span> <span class="st">"1"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diagnosticPlots</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -775,11 +1231,11 @@ F-statistic: 17.99 on 1 and 9 DF,  p-value: 0.00217</code></pre>
 <p>While the number of data points is small, there is otherwise nothing to suggest in these diagnostic plots that there is anything wrong with the regression.</p>
 <p>The situation changes for the other three sets. Let us look at set 2:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> <span class="fu">filter</span>(ans_long, set <span class="sc">==</span> <span class="st">"2"</span>)) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> <span class="fu">filter</span>(ansLong, set <span class="sc">==</span> <span class="st">"2"</span>)) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = y ~ x, data = filter(ans_long, set == "2"))
+lm(formula = y ~ x, data = filter(ansLong, set == "2"))
 
 Residuals:
     Min      1Q  Median      3Q     Max 
@@ -796,25 +1252,24 @@ Residual standard error: 1.237 on 9 degrees of freedom
 Multiple R-squared:  0.6662,    Adjusted R-squared:  0.6292 
 F-statistic: 17.97 on 1 and 9 DF,  p-value: 0.002179</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> <span class="fu">filter</span>(ans_long, set <span class="sc">==</span> <span class="st">"2"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">smooth.colour =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> <span class="fu">filter</span>(ansLong, set <span class="sc">==</span> <span class="st">"2"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diagnosticPlots</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Blindly reading off the p-values without considering the diagnostic plots might lead one to take them seriously. This would be wrong however, as the assumptions of the linear regression are clearly not fulfilled. The left two diagnostics show that the residuals are not independent, and certainly not homoscedastic. The Q-Q plot additionally shows that they are not even normally distributed.</p>
+<p>Blindly reading off the p-values without considering the diagnostic plots might lead one to take them seriously. This would be wrong however, as the assumptions of the linear regression are clearly not fulfilled. The right diagnostics show that the residuals are not independent, and certainly not homoscedastic (equal variance). The QQ plot and histogram additionally shows that they are not even normally distributed.</p>
 <p>In set 3, the trends are driven too much by a single outlier:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> <span class="fu">filter</span>(ans_long, set <span class="sc">==</span> <span class="st">"3"</span>)) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> <span class="fu">filter</span>(ansLong, set <span class="sc">==</span> <span class="st">"3"</span>)) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = y ~ x, data = filter(ans_long, set == "3"))
+lm(formula = y ~ x, data = filter(ansLong, set == "3"))
 
 Residuals:
     Min      1Q  Median      3Q     Max 
@@ -831,24 +1286,23 @@ Residual standard error: 1.236 on 9 degrees of freedom
 Multiple R-squared:  0.6663,    Adjusted R-squared:  0.6292 
 F-statistic: 17.97 on 1 and 9 DF,  p-value: 0.002176</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> <span class="fu">filter</span>(ans_long, set <span class="sc">==</span> <span class="st">"3"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">smooth.colour =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> <span class="fu">filter</span>(ansLong, set <span class="sc">==</span> <span class="st">"3"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diagnosticPlots</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>As before, the left two diagnostic plots show that the independence of the residuals is violated. Finally, in set 4, the whole regression is based on a single point whose predictor <code>x</code> is different from that of the rest:</p>
+<p>As before, the right diagnostic plots show that the independence of the residuals is violated. Finally, in set 4, the whole regression is based on a single point whose predictor <code>x</code> is different from that of the rest:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> <span class="fu">filter</span>(ans_long, set <span class="sc">==</span> <span class="st">"4"</span>)) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> <span class="fu">filter</span>(ansLong, set <span class="sc">==</span> <span class="st">"4"</span>)) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lm(formula = y ~ x, data = filter(ans_long, set == "4"))
+lm(formula = y ~ x, data = filter(ansLong, set == "4"))
 
 Residuals:
    Min     1Q Median     3Q    Max 
@@ -865,83 +1319,36 @@ Residual standard error: 1.236 on 9 degrees of freedom
 Multiple R-squared:  0.6667,    Adjusted R-squared:  0.6297 
 F-statistic:    18 on 1 and 9 DF,  p-value: 0.002165</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> <span class="fu">filter</span>(ans_long, set <span class="sc">==</span> <span class="st">"4"</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">smooth.colour =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> <span class="fu">filter</span>(ansLong, set <span class="sc">==</span> <span class="st">"4"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diagnosticPlots</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>Clearly, the assumption that the residual variances are independent of the predictor is heavily violated.</p>
-<p>These examples are there to urge caution when interpreting regression statistics. This problem becomes much more acute when relying on <em>multiple regression</em>, where there is more than one predictor variable (<a href="43_Anova_two_way.html" class="quarto-xref"><span>Chapter 19</span></a>). Since high-dimensional data cannot be visualized as easily as the datasets above, often the diagnostic plots are the only way to tell whether the assumptions of regression hold or not.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>These examples are there to urge caution when interpreting regression statistics. This problem becomes much more acute when relying on <em>multiple regression</em>, where there is more than one predictor variable. Since high-dimensional data cannot be visualized as easily as the datasets above, often the <strong>diagnostic plots are the only way to tell whether the assumptions of regression hold or not.</strong></p>
+</div>
+</div>
 </section>
-<section id="sec-theilsen" class="level2" data-number="17.5">
-<h2 data-number="17.5" class="anchored" data-anchor-id="sec-theilsen"><span class="header-section-number">17.5</span> A non-parametric method: Theil–Sen regression</h2>
-<p>The method of linear regression discussed so far is called <em>least-squares regression</em>, due to the fact that it relies on minimizing the sum of squared residuals <span class="math inline">\(\sum_i \epsilon_i^2\)</span>. A non-parametric alternative to this method is <em>Theil–Sen regression</em>. This is generally much more robust against outliers than the least-squares method. It also does not require that the residuals are normally distributed. There are also two disadvantages, the main one being that it can only be used for simple regression (one single predictor). It can also be slower to compute, but with today’s computers, this is rarely an issue.</p>
-<p>The way Theil–Sen regression works is simple:</p>
-<ul>
-<li>A line is fit between all possible pairs of points, and their slopes are recorded.</li>
-<li>The overall regression slope <em>m</em> is the median of all these pairwise slopes.</li>
-<li>The intercept <em>b</em> is the median of all <em>y</em><sub><em>i</em></sub> – <em>m</em> <em>x</em><sub><em>i</em></sub> values, where <em>x</em><sub><em>i</em></sub> is the <em>i</em>th measurement of the predictor and <em>y</em><sub><em>i</em></sub> the corresponding response.</li>
-</ul>
-<p>To use the Theil–Sen regression, one has to install the package <code>mblm</code> (“median-based linear models”):</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">"mblm"</span>)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mblm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>The function performing the regression is itself called <code>mblm</code>. A note of caution: its data argument, for some reason, is not called <code>data</code> but <code>dataframe</code>. Let us apply it to set 3 in the Anscombe dataset (the one with the single strong outlier):</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mblm</span>(y <span class="sc">~</span> x, <span class="at">dataframe =</span> <span class="fu">filter</span>(ans_long, set <span class="sc">==</span> <span class="st">"3"</span>)) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-mblm(formula = y ~ x, dataframe = filter(ans_long, set == "3"))
-
-Residuals:
-    Min      1Q  Median      3Q     Max 
--0.0045 -0.0022  0.0000  0.0025  4.2435 
-
-Coefficients:
-             Estimate       MAD V value Pr(&gt;|V|)   
-(Intercept) 4.0050000 0.0074130      65  0.00501 **
-x           0.3455000 0.0007413      66  0.00380 **
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
-
-Residual standard error: 1.415 on 9 degrees of freedom</code></pre>
-</div>
-</div>
-<p>As seen, the predicted intercept and slope are no longer 3 and 0.5, but 4 and 0.35 instead. Also, in the regression table above, the median absolute deviation (MAD) of the parameters is reported instead of their standard error, as the MAD is a non-parametric measure of spread.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> The p-values (<code>Pr(&gt;|V|)</code>) in the table are like those in the regression tables from applying <code>summary</code> to <code>lm</code>—however, since Theil–Sen regression is a non-parametric method, these p-values are based on a Wilcoxon rank sum test instead of a t-test.</p>
-<p>We can visualize the Theil–Sen regression alongside the least-squares regression, for a better comparison of what they do:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>leastSquaresFit <span class="ot">&lt;-</span> <span class="fu">lm</span>(y <span class="sc">~</span> x, <span class="at">data =</span> <span class="fu">filter</span>(ans_long, set <span class="sc">==</span> <span class="st">"3"</span>))</span>
-<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>TheilSenFit <span class="ot">&lt;-</span> <span class="fu">mblm</span>(y <span class="sc">~</span> x, <span class="at">dataframe =</span> <span class="fu">filter</span>(ans_long, set <span class="sc">==</span> <span class="st">"3"</span>))</span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>ans_long <span class="sc">|&gt;</span></span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(set <span class="sc">==</span> <span class="st">"3"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="st">`</span><span class="at">least squares</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">predict</span>(leastSquaresFit),</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Theil-Sen</span><span class="st">`</span> <span class="ot">=</span> <span class="fu">predict</span>(TheilSenFit)) <span class="sc">|&gt;</span></span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols =</span> <span class="fu">c</span>(<span class="st">"least squares"</span>, <span class="st">"Theil-Sen"</span>),</span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>               <span class="at">names_to =</span> <span class="st">"type"</span>, <span class="at">values_to =</span> <span class="st">"prediction"</span>) <span class="sc">|&gt;</span></span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y), <span class="at">color =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> prediction), <span class="at">color =</span> <span class="st">"goldenrod"</span>) <span class="sc">+</span></span>
-<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(. <span class="sc">~</span> type) <span class="sc">+</span></span>
-<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>The Theil–Sen regression correctly recognizes the outlier for what it is, and remains unaffected by it.</p>
+</section>
+<section id="sec-inference" class="level2" data-number="17.4">
+<h2 data-number="17.4" class="anchored" data-anchor-id="sec-inference"><span class="header-section-number">17.4</span> Statistical inference</h2>
+<p>Once we have confirmed that the model is suitable, i.e.&nbsp;that it fulfills its assumptions, we can focus on interpreting the model’s results in relation to the population. In regression analysis, we can perform several types of statistical inference: on the entire model, on groups of parameters, or on individual parameters.</p>
+<p>We can start with an <em>F-test</em> for the entire model to determine whether at least one slope parameter is significant — whether the model is worth investigating further — and then perform individual <em>t-tests</em> for each parameter to assess which explanatory variables have a significant effect on the response variable. Since qualitative variables often consist of multiple parameters, these need to be combined to examine the variable’s overall relationship, which we can do with a <em>partial F-test</em>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -952,31 +1359,319 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>In the code above, we relied on a function called <code>predict</code>. This simply returns the model-predicted results for each value of the predictor:</p>
+<p>In the case of simple linear regression the entire model, groups of parameters and individual parameters are all one and the same test because we only include one explanatory variable (one slope parameter) in the model. Once we start adding more variables to the model these three types of inference differ and we choose the one suitable for the analysis we want to perform.</p>
+</div>
+</div>
+<p>Before diving into the details of the different tests, we need to present the <em>ANOVA</em> table, which is used to break down the variation in the response variable into the model’s components: the explanatory variables and the error term.</p>
+<section id="sec-regression-anova" class="level3" data-number="17.4.1">
+<h3 data-number="17.4.1" class="anchored" data-anchor-id="sec-regression-anova"><span class="header-section-number">17.4.1</span> ANOVA</h3>
+<p><strong>An</strong>alysis <strong>o</strong>f <strong>Va</strong>riance is a collection of methods that calculate the variation of different model components. The goal of a model is to explain the <em>total variation</em> in the response variable as effectively as possible. Everything the explanatory variables help to describe is called the <em>explained variation</em>, and what the model fails to explain (the remaining error) is the <em>unexplained variation</em>.</p>
+<p><span id="eq-variation-components"><span class="math display">\[
+\underbrace{Y}_\text{total variation} = \underbrace{\beta_0 + \beta_1 \cdot X}_\text{explained variation} + \underbrace{\mathbf{\varepsilon}}_\text{unexplained variation}
+\tag{17.5}\]</span></span></p>
+<p><a href="#eq-variation-components" class="quarto-xref">Equation&nbsp;<span>17.5</span></a> shows that the total variation is the sum of the explained and unexplained variation, which is also reflected in the formulas for each component. Each component is calculated as follows:</p>
+<p><span class="math display">\[
+  \text{total variation} = SST = \sum_{i=1}^n(Y_i - \bar{Y})^2
+\]</span> This corresponds to the numerator for the variance of <span class="math inline">\(Y\)</span>. The total variation describes how much variation exist if we were to use the mean of <span class="math inline">\(Y\)</span> as the model.</p>
+<p><span class="math display">\[
+  \text{unexplained variation} = SSE = \sum_{i=1}^n(Y_i - \hat{Y_i})^2
+\]</span></p>
+<p>We have previously used SSE as a measure of model error (see <a href="#eq-sse" class="quarto-xref">Equation&nbsp;<span>17.3</span></a>), describing the variation of the observed and estimated value.</p>
+<p><span class="math display">\[
+  \text{explained variation} = SSR = \sum_{i=1}^n(\hat{Y_i} - \bar{Y})^2
+\]</span></p>
+<p>SSR describes the variation between the model’s estimated values and the mean of <span class="math inline">\(Y\)</span>. This can be interpreted as how much more variation the model explains compared to the mean, or simply, how much better the model is at explaining variation in <span class="math inline">\(Y\)</span> than only its mean.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Adding these all together we can simplify its sum as: <span class="math display">\[
+  \sum_{i=1}^n(Y_i - \bar{Y})^2 = \sum_{i=1}^n(\underbrace{\hat{Y_i}}_\text{positive estimates} - \bar{Y})^2 + \sum_{i=1}^n(Y_i - \underbrace{\hat{Y_i}}_\text{negative estimates})^2
+\]</span> where the positive and negative estimates cancel each other out to produce the left hand side.</p>
+</div>
+</div>
+<p>We can also visualize this relationship in a stacked bar chart. The total height of the bar is SST, while the different segments show how much of the total variation is explained or unexplained in a given model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(leastSquaresFit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="480"></p>
+<figcaption>Visualization of the different sources of variation</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<section id="sec-regression-anova-table" class="level4" data-number="17.4.1.1">
+<h4 data-number="17.4.1.1" class="anchored" data-anchor-id="sec-regression-anova-table"><span class="header-section-number">17.4.1.1</span> ANOVA Table</h4>
+<p>An ANOVA table is a way to efficiently summarize these components and show additional information, such as <em>degrees of freedom</em> (<span class="math inline">\(df\)</span>) for each component and <em>mean squares</em>.</p>
+<p>Degrees of freedom describe how many slope parameters are estimated for each part<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> and mean squares show the average variation per degree of freedom, <span class="math inline">\(\frac{SS}{df}\)</span>.</p>
+<div class="cell" data-tbl-cap-location="top">
+<div id="tbl-anova-example" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-cap-location="top">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-anova-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;17.2: Simple ANOVA table
+</figcaption>
+<div aria-describedby="tbl-anova-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 26%">
+<col style="width: 18%">
+<col style="width: 31%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Source</th>
+<th style="text-align: left;">DF</th>
+<th style="text-align: left;">Sum of Squares</th>
+<th style="text-align: left;">Mean Square</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Model (Regression)</td>
+<td style="text-align: left;"><span class="math inline">\(df_R = k\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(SSR\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(MSR = \frac{SSR}{df_R}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Error</td>
+<td style="text-align: left;"><span class="math inline">\(df_E = n - (k + 1)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(SSE\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(MSE = \frac{SSE}{df_E}\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Total</td>
+<td style="text-align: left;"><span class="math inline">\(df_T = n - 1\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(SST\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>A simple ANOVA table like <a href="#tbl-anova-example" class="quarto-xref">Table&nbsp;<span>17.2</span></a> shows only the three main components, but different software may display other breakdowns by default. In a multiple linear regression model, it is common to further divide the explained variation, for example into <em>sequential sums of squares</em> (<a href="42_Multiple_and_Nonlinear_regression.html#sec-seq-ss" class="quarto-xref"><span>Section 18.0.1</span></a>).</p>
+<p>Using the different sources of variation, we can calculate tests for the whole model or parts of it using various F-tests, while the individual parameter estimates and their associated standard errors can be used in tests for individual slope parameters.</p>
+</section>
+</section>
+<section id="f-test-for-the-model" class="level3" data-number="17.4.2">
+<h3 data-number="17.4.2" class="anchored" data-anchor-id="f-test-for-the-model"><span class="header-section-number">17.4.2</span> F-test for the Model</h3>
+<p>In linear regression, an F-test for the entire model is a good starting point to determine whether at least one slope parameter is significant. We examine the hypotheses:</p>
+<p><span class="math display">\[\begin{align*}
+H_0&amp;: \beta_1 = \beta_2 = \beta_3 = \cdots = \beta_k = 0\\
+H_a&amp;: \text{At least one of } \beta_j \text{ in } H_0 \text{ is different from } 0
+\end{align*}\]</span></p>
+<p>If at least one slope parameter is significant, it means there is at least one variable that contributes some explained variation, hence the model is better than using just <span class="math inline">\(\bar{Y}\)</span>. The test statistic examines the relationship between explained and unexplained variation via their mean squares:</p>
+<p><span class="math display">\[
+F_{test} = \frac{SSR / k}{SSE / (n - (k+1))} = \frac{MSR}{MSE}
+\]</span></p>
+<p>The test statistic follows an <em>F-distribution</em> governed by two degrees of freedom: <span class="math inline">\(df_1\)</span> from the numerator and <span class="math inline">\(df_2\)</span> from the denominator in the calculation, i.e., the model and error degrees of freedom respectively. If <span class="math inline">\(H_0\)</span> is true, the test statistic will be 0, while if <span class="math inline">\(H_a\)</span> is true, the test statistic will be a large positive number. Since both mean squares are positive, the ratio will always be positive, and we can reject <span class="math inline">\(H_0\)</span> if the test statistic is sufficiently far from 0.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="41_Linear_regression_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+<figcaption>Different F-distributions and their degrees of freedom</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Using the output from <code>summary()</code>, we can find the result of the F-test at the bottom row.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(simpleModel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>       1        2        3        4        5        6        7        8 
-7.999727 7.000273 9.498909 7.500000 8.499455 9.998636 6.000818 5.001364 
-       9       10       11 
-8.999182 6.500545 5.501091 </code></pre>
+<pre><code>
+Call:
+lm(formula = shape ~ size, data = nux)
+
+Residuals:
+      Min        1Q    Median        3Q       Max 
+-0.048880 -0.016772  0.001423  0.013181  0.048515 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)   
+(Intercept) -0.129240   0.040706  -3.175  0.00307 **
+size         0.004083   0.001777   2.297  0.02752 * 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.02275 on 36 degrees of freedom
+Multiple R-squared:  0.1279,    Adjusted R-squared:  0.1036 
+F-statistic: 5.278 on 1 and 36 DF,  p-value: 0.02752</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(TheilSenFit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>     1      2      3      4      5      6      7      8      9     10     11 
-7.4600 6.7690 8.4965 7.1145 7.8055 8.8420 6.0780 5.3870 8.1510 6.4235 5.7325 </code></pre>
+</div>
+<p><code>F-statistic: 5.278 on 1 and 36 DF,  p-value: 0.02752</code> the p-value can be interpreted as we would any hypothesis test, comparing it against the chosen significance level (<strong>chosen before estimating the model!</strong>). Since the p-value is less than 5 percent, we can reject <span class="math inline">\(H_0\)</span> and conclude that at least one of the variables is associated with the response variable.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+</section>
+<section id="t-test-for-individual-parameters" class="level3" data-number="17.4.3">
+<h3 data-number="17.4.3" class="anchored" data-anchor-id="t-test-for-individual-parameters"><span class="header-section-number">17.4.3</span> t-test for individual parameters</h3>
+<p>Even though the F-test for the model and the individual t-test for the slope is the same test in a simple linear regression, this is not the case for a multiple regression model. As such it is not appropriate to look at the ANOVA table when we want to examine individual parameters. Instead, we should use the coefficient table from the <code>summary()</code> output.</p>
+<p>Formally, the hypotheses are:</p>
+<p><span class="math display">\[
+\begin{aligned}
+H_0 &amp;: \beta_j = 0\\
+H_a &amp;: \beta_j \ne 0
+\end{aligned}
+\]</span></p>
+<p>where <span class="math inline">\(j\)</span> is one of the slope parameters in the model.</p>
+<p>The test statistic is calculated from the estimated slope parameter and its standard error:</p>
+<p><span class="math display">\[
+t_{test} = \frac{b_j - 0}{s_{b_j}}
+\]</span></p>
+<p>The test statistic follows a t-distribution under <span class="math inline">\(H_0\)</span> with <span class="math inline">\(n - (k + 1)\)</span> degrees of freedom.</p>
+<p>In R, t-tests are included in the coefficient table, which we can extract from the <code>summary()</code> object using <code>coef()</code>.</p>
+<div class="cell" data-tbl-cap-location="top">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(simpleModel) <span class="sc">|&gt;</span> </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coef</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">round</span>(<span class="dv">4</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable</span>(<span class="at">format =</span> <span class="st">"markdown"</span>,</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">col.names =</span> </span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>          <span class="fu">c</span>(</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Variable"</span>, </span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Estimate"</span>, </span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>            <span class="st">"Std. Error"</span>, </span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>            <span class="st">"t-value"</span>, </span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>            <span class="st">"p-value"</span></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>          ), </span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">parse =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_styling</span>(<span class="st">"striped"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tbl-coef-example" class="cell quarto-float quarto-figure quarto-figure-center anchored" data-tbl-cap-location="top">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-coef-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;17.3: Coefficient table for a model with associated t-tests for individual parameters
+</figcaption>
+<div aria-describedby="tbl-coef-example-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table quarto-disable-processing="true" class="table table-striped" style="margin-left: auto; margin-right: auto;">
+ <thead>
+  <tr>
+   <th style="text-align:left;"> Variable </th>
+   <th style="text-align:right;"> Estimate </th>
+   <th style="text-align:right;"> Std. Error </th>
+   <th style="text-align:right;"> t-value </th>
+   <th style="text-align:right;"> p-value </th>
+  </tr>
+ </thead>
+<tbody>
+  <tr>
+   <td style="text-align:left;"> (Intercept) </td>
+   <td style="text-align:right;"> -0.1292 </td>
+   <td style="text-align:right;"> 0.0407 </td>
+   <td style="text-align:right;"> -3.1749 </td>
+   <td style="text-align:right;"> 0.0031 </td>
+  </tr>
+  <tr>
+   <td style="text-align:left;"> size </td>
+   <td style="text-align:right;"> 0.0041 </td>
+   <td style="text-align:right;"> 0.0018 </td>
+   <td style="text-align:right;"> 2.2974 </td>
+   <td style="text-align:right;"> 0.0275 </td>
+  </tr>
+</tbody>
+</table>
+
 </div>
 </div>
+</figure>
+</div>
+</div>
+<p>In <a href="#tbl-coef-example" class="quarto-xref">Table&nbsp;<span>17.3</span></a>, we see that the p-value for the slope is less than 5 percent which means we can reject <span class="math inline">\(H_0\)</span> at the 5% significance level, meaning the variable has a significant effect on the response variable.</p>
+</section>
+</section>
+<section id="sec-r-square" class="level2" data-number="17.5">
+<h2 data-number="17.5" class="anchored" data-anchor-id="sec-r-square"><span class="header-section-number">17.5</span> Simple evaluation metrics</h2>
+<p>Just because a model is appropriate, meets model assumptions, and contains significant parameters does not mean it is the best model that can explain the response or even that it is a good one. With the help of various evaluation metrics, we can get an overview of how good the model is.</p>
+<p>The <em>coefficient of determination</em> (<span class="math inline">\(R^2\)</span>) describes what proportion of the total variation is explained by the model’s explanatory variables. With this description, we can calculate <span class="math inline">\(R^2\)</span> as:</p>
+<p><span class="math display">\[
+R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST}
+\]</span> Given that this is a proportion of the total variation its values range from 0 (model is useless at explaining the response) to 1 (model perfectly explains the response) and is interpreted in percent.</p>
+<p>The coefficient of determination is called <em>multiple R-squared</em> in R and can be found at the second to last line in the <code>summary()</code> output. <code>Multiple R-squared:  0.1279</code> is interpreted as approximately 13 percent of the total variation in snail shape is explained by the snail size, which is a very low value.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Good models typically have an <span class="math inline">\(R^2\)</span> value above 0.5, meaning that at least half of the total variation is explained by the model. However, this is not a strict rule and depends on the context of the analysis. In some fields, such as social sciences, an <span class="math inline">\(R^2\)</span> value of 0.3 or even lower may be considered acceptable.</p>
+<p>Whenever we get a low coefficient, we should consider the model structure and whether it is appropriate for the data. We can also consider adding more explanatory variables to the model, transforming existing variables, or using a different type of model altogether.</p>
+<p>Sometimes there is just too much variation in the data that cannot be explained by any measured variable, and the best model we can produce is still a poor one. In these cases, we should be careful not to add too many variables or transformations that do not significantly improve the model’s predictive power.</p>
 </div>
 </div>
 </section>
-<section id="exercises" class="level2" data-number="17.6">
-<h2 data-number="17.6" class="anchored" data-anchor-id="exercises"><span class="header-section-number">17.6</span> Exercises</h2>
+<section id="sec-predictions" class="level2" data-number="17.6">
+<h2 data-number="17.6" class="anchored" data-anchor-id="sec-predictions"><span class="header-section-number">17.6</span> Predictions</h2>
+<p>We can also use the estimated model to <em>predict</em> new values of the response variable for new observations. From the estimated regression line, we substitute each variable with the observation’s actual value and get a simple sum that describes the response variable’s value on the line.</p>
+<p>Predictions involve estimating the value of <span class="math inline">\(Y\)</span> given observed values of <span class="math inline">\(X\)</span> using the estimated regression line. These predictions will fall along the line, which further motivates that the model needs to be appropriate and good. We don’t want a prediction in one area to be more accurate than a prediction in another, or for the regression line to generally be a poor representation of the response variable. The model is based on a specific <em>domain</em>, the observed values of <span class="math inline">\(X\)</span>, and predictions should be made within this domain.</p>
+<p>There are certain cases, such as in time series analysis, where predictions are made outside the domain, but there is a time dependency that enables these <em>extrapolations</em>. In “normal” regression, we should avoid extrapolating the regression line outside the domain.</p>
+<section id="mean-of-y-for-given-x" class="level3" data-number="17.6.1">
+<h3 data-number="17.6.1" class="anchored" data-anchor-id="mean-of-y-for-given-x"><span class="header-section-number">17.6.1</span> Mean of Y for given <span class="math inline">\(X\)</span></h3>
+<p>If we are interested in the average value of the response variable for all new observations with given values of <span class="math inline">\(X\)</span>, we can estimate <span class="math inline">\(\mu_{Y|X_0}\)</span> where <span class="math inline">\(X_0\)</span> contains values for the new observation. We use the estimated regression model and calculate a point prediction of the response variable with the help of <code>predict()</code> which substitutes the values of <span class="math inline">\(X_0\)</span> into the regression equation:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>x0 <span class="ot">&lt;-</span> </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">size =</span> <span class="dv">23</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>  simpleModel, </span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> x0,</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">interval =</span> <span class="st">"confidence"</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         fit         lwr         upr
+1 -0.0353207 -0.04283735 -0.02780405</code></pre>
+</div>
+</div>
+<p>The interval estimate for a mean becomes a confidence interval because we are making inference of <strong>all</strong> possible new observations with the shell size of 23 units.</p>
+</section>
+<section id="individual-prediction-of-y-for-given-x" class="level3" data-number="17.6.2">
+<h3 data-number="17.6.2" class="anchored" data-anchor-id="individual-prediction-of-y-for-given-x"><span class="header-section-number">17.6.2</span> Individual prediction of Y for given <span class="math inline">\(X\)</span></h3>
+<p>If we are instead interested in a single value of <span class="math inline">\(Y\)</span> with given values of <span class="math inline">\(X\)</span>, we can estimate <span class="math inline">\(Y_{X_0}\)</span>. Since the prediction uses the same estimated model the point estimate will be the same as the mean prediction, but the interval estimate will be wider because it accounts for the additional uncertainty of predicting a single value rather than the mean of all possible values. We can use <code>predict()</code> with the <code>interval</code> argument set to <code>"prediction"</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  simpleModel, </span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> x0,</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">interval =</span> <span class="st">"prediction"</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         fit         lwr        upr
+1 -0.0353207 -0.08206763 0.01142622</code></pre>
+</div>
+</div>
+<p>The interval estimate of an individual observation becomes a prediction interval because we only account for one new observation with the shell size of 23 units.</p>
+</section>
+</section>
+<section id="exercises" class="level2" data-number="17.7">
+<h2 data-number="17.7" class="anchored" data-anchor-id="exercises"><span class="header-section-number">17.7</span> Exercises</h2>
+<p>The file <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/plant_growth_rate.zip"><code>plant_growth_rate.csv</code></a> contains individual plant growth data (mm/week), as a function of soil moisture content.</p>
 <ol type="1">
-<li><p>The file <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/plant_growth_rate.zip"><code>plant_growth_rate.csv</code></a> contains individual plant growth data (mm/week), as a function of soil moisture content. Do plants grow better in more moist soils? Visualize the relationship, then perform and interpret a linear regression using the parametric (least squares) method. Use diagnostic plots to check whether the assumptions of the model are satisfied.</p></li>
-<li><p>It is difficult to measure the height of a tree. By contrast, the diameter at breast height (DBH) is easy to measure. Can one infer the height of a tree by measuring its DBH? The built-in dataset <code>trees</code> contains DBH data (labeled <code>Girth</code>), as well as measured height and timber volume of 31 felled black cherry trees. You can ignore timber volume, and focus instead on how well DBH predicts tree height. Plot the relationship, perform least-squares linear regression, and create diagnostic plots. Interpret the results, and summarize how reliable it is to use DBH to infer tree height.</p></li>
-<li><p>The Galápagos land snail data (<a href="04_Data_reading.html#sec-snail" class="quarto-xref"><span>Section 4.2.2</span></a>) contain seven species. Apart from <em>Naesiotus nux</em> and <em>N. galapaganus</em> that were analyzed in this chapter, it also has <em>N. calvus</em>, <em>N. invalidus</em>, <em>N. rugulosus</em>, <em>N. unifasciatus</em>, and <em>N. ustulatus</em>. Perform the analysis of regressing shell shape against shell size for each of these, using least-squares linear regression. Use diagnostic plots to interpret the regression results.</p></li>
-<li><p>Repeat exercises 1-3 using Theil–Sen regression instead of ordinary least squares. (Hint for interpreting the results: this method makes no assumptions about the normality of the residuals.)</p></li>
+<li>Investigate the type and scale of the variables.</li>
+<li>Summarize descriptive statistics for each variable.</li>
+<li>Visualize the distribution of each variable.</li>
+<li>Create a scatter plot showing the relationship between the two variables in the sample. Interpret it based on the four key pieces of information a scatter plot can provide.</li>
+<li>Summarize your observations and justify whether or not you think a simple linear regression model is suitable.</li>
+<li>Fit a linear regression model using <code>lm()</code> and interpret the regression coefficients.</li>
+<li>Create diagnostic plots to check whether the assumptions of the model are satisfied.</li>
+<li>Perform an F-test for the model and interpret the result. Do the same for a t-test for the slope parameter.</li>
+<li>Summarize your findings along with the coefficient of determination and determine whether or not the model is suitable for predicting plant growth based on soil moisture content.</li>
+</ol>
+<p>It is difficult to measure the height of a tree. By contrast, the diameter at breast height (DBH) is easy to measure. Can one infer the height of a tree by measuring its DBH? The built-in dataset <code>trees</code> contains DBH data (labeled <code>Girth</code>), as well as measured height and timber volume of 31 felled black cherry trees. You can ignore timber volume, and focus instead on how well DBH predicts tree height.</p>
+<ol type="1">
+<li>Repeat steps 1-9 from the previous exercise using the <code>trees</code> dataset.</li>
+<li>Predict the height of a tree with a DBH of 20 cm, and interpret a confidence interval for the mean height of all trees with that DBH.</li>
 </ol>
 
 
@@ -984,18 +1679,21 @@ Note
 <div id="ref-Anscombe1973" class="csl-entry" role="listitem">
 Anscombe, Francis J. 1973. <span>“<span class="nocase">Graphs in Statistical Analysis</span>.”</span> <em>American Statistician</em> 27 (1): 17–21. <a href="https://doi.org/10.1080/00031305.1973.10478966">https://doi.org/10.1080/00031305.1973.10478966</a>.
 </div>
-<div id="ref-Galton1886" class="csl-entry" role="listitem">
-Galton, Francis. 1886. <span>“<span class="nocase">Regression Towards Mediocrity in Hereditary Stature</span>.”</span> <em>Journal of the Anthropological Institute of Great Britain and Ireland</em> 15: 246–63.
+<div id="ref-kendall1955rank" class="csl-entry" role="listitem">
+Kendall, Maurice G. 1955. <em>Rank Correlation Methods, 2nd Ed.</em> Oxford, England: Hafner Publishing Co.
+</div>
+<div id="ref-spearman1904" class="csl-entry" role="listitem">
+Spearman, C. 1904. <span>“The Proof and Measurement of Association Between Two Things.”</span> <em>The American Journal of Psychology</em> 15 (1): 72–101. <a href="http://www.jstor.org/stable/1412159">http://www.jstor.org/stable/1412159</a>.
 </div>
 </div>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Why the sum of <em>squared</em> residuals, and not just their simple sum? This is to prevent very large positive and very large negative deviations canceling each other out in the sum, making it appear as if the total deviation was very small. Squared deviations are always nonnegative and therefore do not suffer from this cancellation problem.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Imagine you go bungee jumping and are told by the staff: “It is completely safe. Only one out of 36 jumps on average end up with a fatality—for a negligible probability of 0.028.” Would you take the jump? Translated to statistics: would a p-value of 0.028 (or worse, the higher 0.05 which is often a “standard” cutoff) truly convince you that what you are seeing is a real effect?<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>In technical terms, the variation should be <em>homoscedastic</em> (be approximately the same for all values of the predictor) as opposed to <em>heteroscedastic</em>. This is the same as saying that the variance of the residuals <span class="math inline">\(\epsilon_i\)</span> should be independent of <span class="math inline">\(i\)</span>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>The median absolute deviation (MAD) over a set of data points <span class="math inline">\(x_i\)</span> is defined as <span class="math inline">\(\text{MAD} = \text{median}(|x_i - \text{median}(x)|)\)</span>, where <span class="math inline">\(\text{median}(x)\)</span> is the median of the data.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Or other measures of association strength, e.g., Kendall <span class="citation" data-cites="kendall1955rank">(<a href="99_References.html#ref-kendall1955rank" role="doc-biblioref">Kendall 1955</a>)</span> or Spearman <span class="citation" data-cites="spearman1904">(<a href="99_References.html#ref-spearman1904" role="doc-biblioref">Spearman 1904</a>)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Why the sum of <em>squared</em> residuals, and not just their simple sum? This is to prevent very large positive and very large negative deviations canceling each other out in the sum, making it appear as if the total deviation was very small. Squared deviations are always non-negative and therefore do not suffer from this cancellation problem.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Degrees of freedom actually describe how many pieces of independent information are available for a calculation. Think back to the calculation of sample standard deviation, where the degrees of freedom are <span class="math inline">\(n - 1\)</span>, the number of observations minus 1, because we estimate the mean when calculating the standard deviation.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>If we had made a different decision (not rejecting the null hypothesis), it would not be relevant to continue with the analysis, or at least the remaining analysis should focus on investigating why a linear regression model we expect to show a relationship based on pairwise scatter plots does not show it collectively.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
@@ -1082,8 +1780,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -1194,7 +1890,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
@@ -1422,13 +2117,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./40_Intro_adv_statistics.html" class="pagination-link" aria-label="Statistical inference in more than two groups">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span>
+      <a href="./40_Intro_adv_statistics.html" class="pagination-link" aria-label="Relationships between variables">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Relationships between variables</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./42_Anova.html" class="pagination-link" aria-label="The Kruskal--Wallis test and one-way ANOVA">
-        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./42_Multiple_and_Nonlinear_regression.html" class="pagination-link" aria-label="More general linear models; nonlinear regression UNDER CONSTRUCTION">
+        <span class="nav-page-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression UNDER CONSTRUCTION</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

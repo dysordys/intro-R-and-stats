@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.5.57">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>16&nbsp; Statistical inference in more than two groups – Introduction to data analysis and visualization with R</title>
+<title>16&nbsp; Relationships between variables – Introduction to data analysis and visualization with R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,7 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -37,10 +57,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8da5b4427184b79ecddefad3d342027e.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -69,6 +89,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -81,7 +130,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_Intro_adv_statistics.html">Part III: Advanced statistics</a></li><li class="breadcrumb-item"><a href="./40_Intro_adv_statistics.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_Intro_adv_statistics.html">Part III: Advanced statistics</a></li><li class="breadcrumb-item"><a href="./40_Intro_adv_statistics.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Relationships between variables</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -236,7 +285,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./40_Intro_adv_statistics.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></a>
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Relationships between variables</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -247,20 +296,20 @@ ul.task-list li input[type="checkbox"] {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./42_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+  <a href="./42_Multiple_and_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression UNDER CONSTRUCTION</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./43_Anova_two_way.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
+  <a href="./43_Anova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./44_Nonlinear_regression.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">More general linear models; nonlinear regression</span></span></a>
+  <a href="./44_Anova_two_way.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">Two-way ANOVA and the Scheirer–Ray–Hare test</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -299,15 +348,28 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
-    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
-        
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#linear-regression-models" id="toc-linear-regression-models" class="nav-link active" data-scroll-target="#linear-regression-models"><span class="header-section-number">16.1</span> Linear regression models</a>
+  <ul>
+  <li><a href="#sec-model-assumptions" id="toc-sec-model-assumptions" class="nav-link" data-scroll-target="#sec-model-assumptions"><span class="header-section-number">16.1.1</span> Model assumptions</a></li>
+  </ul></li>
+  <li><a href="#study-design-and-additional-variables" id="toc-study-design-and-additional-variables" class="nav-link" data-scroll-target="#study-design-and-additional-variables"><span class="header-section-number">16.2</span> Study design and additional variables</a>
+  <ul>
+  <li><a href="#sec-control" id="toc-sec-control" class="nav-link" data-scroll-target="#sec-control"><span class="header-section-number">16.2.1</span> Control variables</a></li>
+  </ul></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_Intro_adv_statistics.html">Part III: Advanced statistics</a></li><li class="breadcrumb-item"><a href="./40_Intro_adv_statistics.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./40_Intro_adv_statistics.html">Part III: Advanced statistics</a></li><li class="breadcrumb-item"><a href="./40_Intro_adv_statistics.html"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Relationships between variables</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-stat-inf-adv" class="quarto-section-identifier"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Statistical inference in more than two groups</span></span></h1>
+<h1 class="title"><span id="sec-reg-intro" class="quarto-section-identifier"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">Relationships between variables</span></span></h1>
 </div>
 
 
@@ -324,9 +386,308 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>PLACEHOLDER TEXT FOR INTRODUCING ADVANCED STATISTICS</p>
+<p>Investigating relationships between variables is a common step in understanding connections or phenomena occurring in the real world. For example, how the age of a tree affects its volume, how different doses of a medicine affect an individual’s blood pressure, or how a person’s age and education level affect their starting salary.</p>
+<p><em>Regression analysis</em> is a group of methods that fit mathematical models which best provide a simplified picture of reality. Generally, the term <em>model</em> refer to artificial constructions or representations created to increase understanding of something real. A model airplane is not a real airplane but can be used to understand how an airplane is built and how it can handle air flows and other phenomena. Another classic example is the painting <em>“Ceci n’est pas une pipe”</em> by René Magritte (<a href="#fig-pipe" class="quarto-xref">Figure&nbsp;<span>16.1</span></a>), which shows a representation — a model — of a pipe, not a functioning pipe.</p>
+<div id="fig-pipe" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pipe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/a/a7/Ceci_n%27est_pas_une_pipe_graffiti_in_Bucharest.jpg" class="img-fluid figure-img" width="400"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-pipe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16.1: bixentro, CC BY 2.0, via Wikimedia Commons
+</figcaption>
+</figure>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The term “regression” comes from a paper by the method’s inventor, Sir Francis Galton (half-cousin to Charles Darwin). Galton was studying a specific problem: the relationship between the body heights of humans and their children. He noticed that when plotting the heights of parents along the y-axis and that of their children along the x-axis, the slope of the best-fitting line is always smaller than one. The implication is that very tall parents, on average, tend to have shorter children than themselves, and conversely: children of very short parents are on average taller than their elders. Galton described this phenomenon in a study called “Regression towards mediocrity in hereditary stature” <span class="citation" data-cites="Galton1886">(<a href="99_References.html#ref-Galton1886" role="doc-biblioref">Galton 1886</a>)</span>. In it, he also worked out the method of finding the best line that fits the data, and thus the name <em>regression</em> stuck to the method—even though the process of fitting a line to points has nothing whatsoever to do with anything “regressing”.</p>
+<p>Incidentally, the very brief biological explanation of Galton’s finding is as follows. An individual’s height <span class="math inline">\(H\)</span> can be modeled as <span class="math inline">\(H = G + E\)</span>, where <span class="math inline">\(G\)</span> denotes heritable (genetic) contributions, and <span class="math inline">\(E\)</span> denotes other, more or less random, environmental contributions. An exceptionally tall individual likely scores high on both <span class="math inline">\(G\)</span> and <span class="math inline">\(E\)</span>. Consequently, the individual’s offspring will also likely score high on <span class="math inline">\(G\)</span>, inheriting it from the parents. But, since <span class="math inline">\(E\)</span> is not inherited, the child’s chances of also scoring really high on <span class="math inline">\(E\)</span> are exactly those as for anyone else in the population: it could happen, but is unlikely. Typically, the child will have a more or less average value for <span class="math inline">\(E\)</span>. Thus, parents with high <span class="math inline">\(G\)</span> and high <span class="math inline">\(E\)</span> will tend to have offspring with high <span class="math inline">\(G\)</span> and average <span class="math inline">\(E\)</span>, and so very tall parents end up with tall-but-not-quite-as-tall children as themselves. The same argument holds for very short parents, <em>mutatis mutandis</em>. More broadly, the same holds for any heritable and continuously varying trait (body size, length of mandibles, amount of oil in seeds, rooting depth, and so on, for millions of examples), as long as it can be modeled as emerging from the sum of genetic and environmental factors.</p>
+</div>
+</div>
+<section id="linear-regression-models" class="level2" data-number="16.1">
+<h2 data-number="16.1" class="anchored" data-anchor-id="linear-regression-models"><span class="header-section-number">16.1</span> Linear regression models</h2>
+<p>There are many different types of regression models, but in the simplest case, a <em>linear</em> model is applied when the relationship between variables, for example X and Y, is assumed to be unidirectional and constant. We can write this linear model as: <span id="eq-lin-reg"><span class="math display">\[
+Y_i = \beta_0 + \beta_1 \cdot X_i + \varepsilon_i
+\tag{16.1}\]</span></span></p>
+<p>where:</p>
+<ul>
+<li><span class="math inline">\(Y\)</span> is the <em>dependent/response variable</em> assumed to be affected by <span class="math inline">\(X\)</span>,</li>
+<li><span class="math inline">\(X\)</span> is the <em>independent/explanatory variable</em> assumed to affect <span class="math inline">\(Y\)</span>,</li>
+<li><span class="math inline">\(i\)</span> is the <em>i</em>:th observation of the data,</li>
+<li><span class="math inline">\(\beta_0\)</span> is the model’s <em>intercept</em>, where the regression line crosses the y-axis at <span class="math inline">\(X = 0\)</span>.</li>
+<li><span class="math inline">\(\beta_1\)</span> is the <em>slope</em> that describes the unidirectional relationship between <span class="math inline">\(X\)</span> and <span class="math inline">\(Y\)</span>. More specifically, it describes the change in <span class="math inline">\(Y\)</span> when <span class="math inline">\(X\)</span> increases by one unit.</li>
+<li><span class="math inline">\(\varepsilon\)</span> is the model’s <em>error term</em>, the distance between the observed value of <span class="math inline">\(Y\)</span> and the model’s estimated value <span class="math inline">\(\hat{Y}\)</span>.</li>
+</ul>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If multiple explanatory variables are assumed to affect the response variable, the linear model is extended with several <span class="math inline">\(\beta_j\)</span>, one for each explanatory variable <span class="math inline">\(X_j\)</span>. More on that in <a href="42_Multiple_and_Nonlinear_regression.html" class="quarto-xref"><span>Chapter 18</span></a>.</p>
+</div>
+</div>
+<section id="sec-model-assumptions" class="level3" data-number="16.1.1">
+<h3 data-number="16.1.1" class="anchored" data-anchor-id="sec-model-assumptions"><span class="header-section-number">16.1.1</span> Model assumptions</h3>
+<p>The purpose of a model is to provide a suitable simplification of reality but in order to do that it needs to fulfill some criteria or be constructed using some assumptions. A linear regression model can be a suitable simplification of a relationship between two variables if the following assumptions are met:</p>
+<ol type="1">
+<li>for each value of <span class="math inline">\(X\)</span>, there exists a random variable <span class="math inline">\(Y\)</span> with a finite mean and variance,</li>
+<li>all observations are independent of each other,</li>
+<li>the mean of <span class="math inline">\(Y\)</span> for every value of <span class="math inline">\(X\)</span>, <span class="math inline">\(\mu_{Y|X}\)</span>, can be modeled linearly,</li>
+<li>the variance of <span class="math inline">\(Y\)</span> is the same for all values of <span class="math inline">\(X\)</span>, <span class="math inline">\(\sigma^2_{Y|X} \equiv \sigma^2\)</span>,</li>
+<li>the random variable <span class="math inline">\(Y\)</span> is normally distributed for all values of <span class="math inline">\(X\)</span>.</li>
+</ol>
+<p>Together these assumptions can be summarized as:</p>
+<p><span class="math display">\[
+   Y|X \overset{\mathrm{iid}}{\sim} N(\mu_{Y|X}, \sigma^2)
+\]</span> where <span class="math inline">\(\mathrm{iid}\)</span> means “independent and identically distributed”, corresponding to assumption 2.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There is no assumption that <span class="math inline">\(Y \sim N(\mu_Y, \sigma^2_Y)\)</span>! All assumptions for a linear regression model focus on the fact that <strong>with the help of <span class="math inline">\(X\)</span></strong>, we have a normally distributed random variable <span class="math inline">\(Y\)</span>.</p>
+</div>
+</div>
+<p>If the assumption of linearity is met, we can model the expected value of <span class="math inline">\(Y|X\)</span> with the linear model: <span id="eq-lin-reg-exp"><span class="math display">\[
+  E[Y|X] = \beta_0 + \beta_1 \cdot X
+\tag{16.2}\]</span></span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The expected value of a random variable is the mean of its distribution, which is why we can use the notation <span class="math inline">\(E[Y|X]\)</span> to denote the mean of the distribution of <span class="math inline">\(Y\)</span> given <span class="math inline">\(X\)</span>.</p>
+<p>Unlike <a href="#eq-lin-reg" class="quarto-xref">Equation&nbsp;<span>16.1</span></a>, <a href="#eq-lin-reg-exp" class="quarto-xref">Equation&nbsp;<span>16.2</span></a> lacks the model’s error term because we are now modeling only the mean of the random variable’s distribution, <span class="math inline">\(\mu_{Y|X}\)</span>. The error term describes the uncertainty around the mean, which is the variance of the distribution.</p>
+</div>
+</div>
+<div id="fig-airplane-ai" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-airplane-ai-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="./images/model_airplane_chatgpt.webp" class="img-fluid figure-img" width="400"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-airplane-ai-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16.2: Unsuitable airplane model, <span class="citation" data-cites="chatgpt2024">(<a href="99_References.html#ref-chatgpt2024" role="doc-biblioref"><span>“Create a Model of a Commercial Airplane Where Some Parts Are Taken from a Car or a Boat”</span> 2024</a>)</span>
+</figcaption>
+</figure>
+</div>
+<p>If a model airplane is constructed without following the same assumptions as a real airplane, the model will not be suitable for the understanding or simplification of reality. The same applies to regression models; if the model does not meet its assumptions, conclusions drawn may not align with reality. We will cover more of how this is done in practice in <a href="41_Linear_regression.html#sec-residual-analysis" class="quarto-xref"><span>Section 17.3</span></a>.</p>
+</section>
+</section>
+<section id="study-design-and-additional-variables" class="level2" data-number="16.2">
+<h2 data-number="16.2" class="anchored" data-anchor-id="study-design-and-additional-variables"><span class="header-section-number">16.2</span> Study design and additional variables</h2>
+<p>Apart from the assumptions, a regression model does not necessarily describe a “cause-and-effect” relationship, or as we usually call it, a <em>causal</em> relationship from X to Y. Relationships can sometimes arise purely by chance, where there is no logical connection between the variables.</p>
+<p>This type of relationship is referred to as a <em>correlation</em> and although correlation mathematically describes a relationship, it is most often not appropriate or irrelevant to use or interpret that model in reality.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-correlation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-correlation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="40_Intro_adv_statistics_files/figure-html/fig-correlation-1.png" class="img-fluid figure-img" width="480">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-correlation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16.3: The relationship between the number of movies Nicolas Cage appeared in and the number of drowning deaths between 1999 and 2009 in the USA <span class="citation" data-cites="cdcNCHSNational imdbNicolasCage">(<a href="99_References.html#ref-cdcNCHSNational" role="doc-biblioref"><span>“<span>C</span><span>D</span><span>C</span> - <span>N</span><span>C</span><span>H</span><span>S</span> - <span>N</span>ational <span>C</span>enter for <span>H</span>ealth <span>S</span>tatistics — Cdc.gov”</span></a>; <a href="99_References.html#ref-imdbNicolasCage" role="doc-biblioref"><span>“<span>N</span>icolas <span>C</span>age | <span>A</span>ctor, <span>P</span>roducer, <span>D</span>irector — Imdb.com”</span></a>)</span>
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-correlation" class="quarto-xref">Figure&nbsp;<span>16.3</span></a> shows an example of a relationship where the two variables have no logical connection to each other but have been observed to have a positive correlation, when one’s value increases the other does as well. Describing this relationship would not provide any information about reality, so an important part of regression analysis is assessing the suitability and relevance of selected variables. A regression model cannot distinguish between causal and correlation relationships, which means we must consider what kind and how data has been collected in order to use and interpret the models correctly.</p>
+<p>The example in the figure was collected as an <em>observational study</em>, where measurements (the number of deaths and movies) for each unit (year) were observed from various registry data. With an observational study, we are not able to control the relationship between these variables, and the study itself has not considered any specific cause and effect direction between the two. Therefore, we can only draw conclusions about correlations from an observational study — we can say that years that have more movies with Nicolas Cage also have more deaths, which is not actually relevant — but we cannot say anything about the causal effect.</p>
+<p>To be able to draw conclusions about causal relationships, we need to conduct an <em>experimental study</em> where we control the values of the explanatory variable and the direction of the relationship; the response variable is assumed to be directly affected by the explanatory variable(s). Medical studies, such as studies on the effectiveness of the COVID-19 vaccine in preventing infection, are typical examples of experimental studies where an explanatory variable (dose) is given to certain groups of measurement units while other influencing effects are controlled to isolate the true impact of the explanatory variable.</p>
+<section id="sec-control" class="level3" data-number="16.2.1">
+<h3 data-number="16.2.1" class="anchored" data-anchor-id="sec-control"><span class="header-section-number">16.2.1</span> Control variables</h3>
+<p>In an observational study, we can sometimes observe <em>control variables</em> that can adjust the actual impact of the explanatory variable, but it is primarily in experimental studies that these types of variables are used. Unobserved variables are called <em>confounding</em> effects (or <em>confounders</em>) and are assumed to influence both the explanatory and response variable.</p>
+<p>In the following two figures called relational graphs, the main explanatory variable and the chosen response variable are shown as ovals. The observed control (solid) and unobserved confounder (dashed) variables are shown as rectangles.</p>
+<div id="fig-obs-relation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-obs-relation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell" data-fig-height="2" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<svg width="672" height="192" viewbox="0.00 0.00 181.86 116.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<title>G</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-112 177.86,-112 177.86,4 -4,4"></polygon>
+<!-- Confounder -->
+<g id="node1" class="node">
+<title>Confounder</title>
+<polygon fill="none" stroke="black" stroke-dasharray="5,2" points="129.38,-108 46.63,-108 46.63,-72 129.38,-72 129.38,-108"></polygon>
+<text text-anchor="middle" x="88.01" y="-85.8" font-family="Times,serif" font-size="14.00">Confounder</text>
+</g>
+<!-- Movies -->
+<g id="node2" class="node">
+<title>Movies</title>
+<ellipse fill="none" stroke="black" cx="40.01" cy="-18" rx="40.01" ry="18"></ellipse>
+<text text-anchor="middle" x="40.01" y="-13.8" font-family="Times,serif" font-size="14.00">Movies</text>
+</g>
+<!-- Confounder&#45;&gt;Movies -->
+<g id="edge2" class="edge">
+<title>Confounder-&gt;Movies</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M76.14,-71.7C70.42,-63.35 63.45,-53.18 57.16,-44.02"></path>
+<polygon fill="black" stroke="black" points="59.95,-41.89 51.41,-35.62 54.17,-45.85 59.95,-41.89"></polygon>
+</g>
+<!-- Deaths -->
+<g id="node3" class="node">
+<title>Deaths</title>
+<ellipse fill="none" stroke="black" cx="136.01" cy="-18" rx="37.71" ry="18"></ellipse>
+<text text-anchor="middle" x="136.01" y="-13.8" font-family="Times,serif" font-size="14.00">Deaths</text>
+</g>
+<!-- Confounder&#45;&gt;Deaths -->
+<g id="edge3" class="edge">
+<title>Confounder-&gt;Deaths</title>
+<path fill="none" stroke="black" stroke-dasharray="5,2" d="M99.87,-71.7C105.59,-63.35 112.57,-53.18 118.85,-44.02"></path>
+<polygon fill="black" stroke="black" points="121.84,-45.85 124.61,-35.62 116.07,-41.89 121.84,-45.85"></polygon>
+</g>
+<!-- Movies&#45;&gt;Deaths -->
+<g id="edge1" class="edge">
+<title>Movies-&gt;Deaths</title>
+<path fill="none" stroke="black" d="M80.13,-18C82.74,-18 85.35,-18 87.96,-18"></path>
+<polygon fill="black" stroke="black" points="88.03,-21.5 98.03,-18 88.03,-14.5 88.03,-21.5"></polygon>
+</g>
+</g>
+</svg>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-obs-relation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16.4: Example of the relationship between variables in an observational study.
+</figcaption>
+</figure>
+</div>
+<p>Since the relationship in <a href="#fig-obs-relation" class="quarto-xref">Figure&nbsp;<span>16.4</span></a> between movies and deaths likely arose by chance, there are most certainly unobserved confounder variables influencing both.</p>
+<div id="fig-exp-relation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-exp-relation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell" data-fig-height="2" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<svg width="672" height="192" viewbox="0.00 0.00 255.87 116.00" xmlns="http://www.w3.org/2000/svg" xlink="http://www.w3.org/1999/xlink" style="; max-width: none; max-height: none">
+<g id="graph0" class="graph" transform="scale(1 1) rotate(0) translate(4 112)">
+<title>G</title>
+<polygon fill="white" stroke="transparent" points="-4,4 -4,-112 251.87,-112 251.87,4 -4,4"></polygon>
+<!-- Age -->
+<g id="node1" class="node">
+<title>Age</title>
+<polygon fill="none" stroke="black" points="170.5,-108 116.5,-108 116.5,-72 170.5,-72 170.5,-108"></polygon>
+<text text-anchor="middle" x="143.5" y="-85.8" font-family="Times,serif" font-size="14.00">Age</text>
+</g>
+<!-- BloodPressure -->
+<g id="node4" class="node">
+<title>BloodPressure</title>
+<ellipse fill="none" stroke="black" cx="180.5" cy="-18" rx="67.23" ry="18"></ellipse>
+<text text-anchor="middle" x="180.5" y="-13.8" font-family="Times,serif" font-size="14.00">BloodPressure</text>
+</g>
+<!-- Age&#45;&gt;BloodPressure -->
+<g id="edge2" class="edge">
+<title>Age-&gt;BloodPressure</title>
+<path fill="none" stroke="black" d="M152.65,-71.7C156.91,-63.64 162.06,-53.89 166.77,-44.98"></path>
+<polygon fill="black" stroke="black" points="169.89,-46.58 171.46,-36.1 163.7,-43.31 169.89,-46.58"></polygon>
+</g>
+<!-- Gender -->
+<g id="node2" class="node">
+<title>Gender</title>
+<polygon fill="none" stroke="black" points="246.21,-108 188.8,-108 188.8,-72 246.21,-72 246.21,-108"></polygon>
+<text text-anchor="middle" x="217.5" y="-85.8" font-family="Times,serif" font-size="14.00">Gender</text>
+</g>
+<!-- Gender&#45;&gt;BloodPressure -->
+<g id="edge3" class="edge">
+<title>Gender-&gt;BloodPressure</title>
+<path fill="none" stroke="black" d="M208.36,-71.7C204.1,-63.64 198.95,-53.89 194.24,-44.98"></path>
+<polygon fill="black" stroke="black" points="197.31,-43.31 189.55,-36.1 191.12,-46.58 197.31,-43.31"></polygon>
+</g>
+<!-- Medicine -->
+<g id="node3" class="node">
+<title>Medicine</title>
+<ellipse fill="none" stroke="black" cx="47.5" cy="-18" rx="47.51" ry="18"></ellipse>
+<text text-anchor="middle" x="47.5" y="-13.8" font-family="Times,serif" font-size="14.00">Medicine</text>
+</g>
+<!-- Medicine&#45;&gt;BloodPressure -->
+<g id="edge1" class="edge">
+<title>Medicine-&gt;BloodPressure</title>
+<path fill="none" stroke="black" d="M95.04,-18C97.67,-18 100.3,-18 102.93,-18"></path>
+<polygon fill="black" stroke="black" points="103.07,-21.5 113.07,-18 103.07,-14.5 103.07,-21.5"></polygon>
+</g>
+</g>
+</svg>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-exp-relation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16.5: Example of the relationship between variables in an experimental study.
+</figcaption>
+</figure>
+</div>
+<p>The effect of a medicine on blood pressure can also be influenced by a person’s age and gender <span class="citation" data-cites="gu2008">(<a href="99_References.html#ref-gu2008" role="doc-biblioref">Gu et al. 2008</a>)</span>, which are two observed control variables included in <a href="#fig-exp-relation" class="quarto-xref">Figure&nbsp;<span>16.5</span></a> to isolate the effect of the explanatory variable.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-cdcNCHSNational" class="csl-entry" role="listitem">
+<span>“<span>C</span><span>D</span><span>C</span> - <span>N</span><span>C</span><span>H</span><span>S</span> - <span>N</span>ational <span>C</span>enter for <span>H</span>ealth <span>S</span>tatistics — Cdc.gov.”</span> <a href="https://www.cdc.gov/nchs/" class="uri">https://www.cdc.gov/nchs/</a>.
+</div>
+<div id="ref-chatgpt2024" class="csl-entry" role="listitem">
+<span>“Create a Model of a Commercial Airplane Where Some Parts Are Taken from a Car or a Boat.”</span> 2024. OpenAI. <a href="https://chat.openai.com/chat">https://chat.openai.com/chat</a>.
+</div>
+<div id="ref-Galton1886" class="csl-entry" role="listitem">
+Galton, Francis. 1886. <span>“<span class="nocase">Regression Towards Mediocrity in Hereditary Stature</span>.”</span> <em>Journal of the Anthropological Institute of Great Britain and Ireland</em> 15: 246–63.
+</div>
+<div id="ref-gu2008" class="csl-entry" role="listitem">
+Gu, Qiuping, Vicki L. Burt, Ryne Paulose-Ram, and Charles F. Dillon. 2008. <span>“<span class="nocase">Gender Differences in Hypertension Treatment, Drug Utilization Patterns, and Blood Pressure Control Among US Adults With Hypertension: Data From the National Health and Nutrition Examination Survey 1999–2004</span>.”</span> <em>American Journal of Hypertension</em> 21 (7): 789–98. <a href="https://doi.org/10.1038/ajh.2008.185">https://doi.org/10.1038/ajh.2008.185</a>.
+</div>
+<div id="ref-imdbNicolasCage" class="csl-entry" role="listitem">
+<span>“<span>N</span>icolas <span>C</span>age | <span>A</span>ctor, <span>P</span>roducer, <span>D</span>irector — Imdb.com.”</span> <a href="https://www.imdb.com/name/nm0000115/" class="uri">https://www.imdb.com/name/nm0000115/</a>.
+</div>
+</div>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -411,8 +772,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
   clipboard.on('success', onCopySuccess);
   if (window.document.getElementById('quarto-embedded-source-code-modal')) {
-    // For code content inside modals, clipBoardJS needs to be initialized with a container option
-    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
     const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
       text: getTextToCopy,
       container: window.document.getElementById('quarto-embedded-source-code-modal')
@@ -523,7 +882,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
