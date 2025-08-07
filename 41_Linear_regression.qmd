@@ -1,61 +1,126 @@
 # Simple linear regression {#sec-linreg}
 
-## The intercept and slope of a linear model {#sec-linreg-intro}
+<!-- Creates a shortcommand for sums -->
+\newcommand{\Sum}[1]{\sum_{i=1}^#1}
 
+The first step in a regression analysis is to explore the dataset. Regardless of whether we conducted an observational or experimental study, we have likely selected a response variable beforehand that we want to describe or predict using other variables. The goal of exploring the data is to gain insights that can help us in later steps; which variables are relevant to include in a model, what each relationship looks like, and whether there are any issues with the collected data that need to be corrected.
+
+Some key questions we need to answer are:
+
+- What type and scale do the variables have?
+- Around which values do the variables range? What are their minimum and maximum values, their measures of central tendency and spread?
+- How are the variables distributed? What type of distribution seems to describe the variable; normal, uniform, skewed?
+- Are there any outliers present?
+
+Once we’ve answered these questions, it becomes much easier to build a correct model structure and evaluate any estimated models. 
+
+We can investigate these points using simple functions (e.g., `mean()`, `min()`, `summary(variable)`), but we can also gain relevant information through individual and pairwise visualizations of the variables.
+
+## Example data {#sec-example-data}
 As an introductory example, let us load the Galápagos land snail data from Floreana Island (@sec-snail). We look only at individuals belonging to the species *Naesiotus nux*, and plot the shell shape measurement against the shell size measurement for each of them:
 
 ```{r}
 #| message: false
-library(tidyverse)
+#| fig-cap: Scatter plot showing the relationship between shell shape and size
+#| fig-height: 3
+#| fig-width: 5
+#| label: fig-shape-size
 
 snails <- read_csv("island-FL.csv")
 
-snails |>
-  filter(species == "nux") |>
+nux <- snails |>
+  filter(species == "nux")
+
+nux |> 
   ggplot(aes(x = size, y = shape)) +
   geom_point(color = "steelblue") +
   theme_bw()
 ```
 
-The question we want to answer using this plot is whether larger shells (indicated by larger values of the `size` variable) tend to also be more elongated (larger values of `shape`) or not. A casual look would suggest that this is indeed the case. In fact, one can plot these points together with a linear estimator (@sec-smooth) showing the trend in the data:
+Both of these variables are continuous quantitative, which means we can create a scatter plot where each observation is represented by a point. The explanatory variable is placed on the x-axis and the response variable on the y-axis. The point cloud in the scatter plot can give us information about the relationship between the two variables. We focus on four main points:
 
-```{r}
-#| message: false
-snails |>
-  filter(species == "nux") |>
-  ggplot(aes(x = size, y = shape)) +
-  geom_point(color = "steelblue") +
-  geom_smooth(method = lm, se = FALSE, color = "goldenrod") +
-  theme_bw()
-```
+1. Is the relationship linear?
+2. Is the relationship positive or negative?
+3. Is the relationship strong or weak?
+4. Are there any outliers?
 
-There are two questions we would like to answer:
+:::{.callout-important}
+Defining the proper variable type and scale is very important in this exploratory step. Using the wrong type of visualization can easily misconstrue the relationship and send us on a wild goose chase.
 
-1.  How can one obtain the above line? More generally: how can one determine the best-fitting line going through any set of points?
-2.  Is the observed upwards slope meaningful? That is, if we were to scatter a bunch of points randomly on a plot, how likely is it that we would get a best-fitting line that is as steep as the one above (or steeper) just by chance? The problem is the same as it was in @sec-example-comparison, where we weren't sure whether the observed difference between the two hypothetical groups of birds has any meaning.
+We cannot use scatter plots to visualize the relationship between qualitative explanatory variables and a continuous response variable. Instead, we need visualizations that account for the qualitative scale, usually ordinal or nominal. 
 
-Let us begin with the first of these questions. It is easy to get an approximately correct answer just by looking at the data. A straight line is defined by two parameters: its intercept and slope. The intercept is the point at which the line crosses the $y$-axis (i.e., its value when $x$ is zero). The slope is the amount of rise or fall in $y$, given one unit of increase in $x$. We can estimate these quantities even without the help of the yellow line above. We see that the data go from about $20$ to $28$ along the $x$-axis, and from about $-0.05$ to $-0.02$ along the $y$-axis. So the total rise is $0.03$ vertically, over $8$ units horizontally---for an approximate slope of $0.03 / 8 \approx 0.0038$. Then, since the line is at about $-0.05$ when $x$ is $20$, we can back-calculate the intercept as $-0.05 - 20\cdot 0.0038 \approx -0.126$. So as a crude guess, we know that the line's intercept and slope cannot be too far off from these values.
+There are several ways to visualize the distribution of the response variable across levels of the explanatory variable, such as grouped histograms or box plots, but one type of visualization that shows distribution details is a *violin plot*. A violin plot is a mirrored density plot, where areas with many observations have a larger area under the curve. Using `ggplot2`, we can create such a plot with `geom_violin()`.
+:::
 
-To go further and obtain the best-fitting line to a set of points, we have to agree on what we mean by "best". Here is the idea. Let us denote the intercept by $\beta_0$ and the slope by $\beta_1$. We can then use the data to write down the following set of equations, one for each data point $i$:
+@fig-shape-size shows a very sparse relationship that is a bit difficult to interpret. One could say that the relationship appears mostly linear, as an increase in shell size leads to a unidirectional change (increase/positive relationship) in shell shape. However, the relationship is not very strong, as there is a lot of variation in the shape values for each size value. There are also some outliers, which we can see as points that are far from the main point cloud.
+
+We can calculate *Pearson’s correlation coefficient* ($r$) so we don’t have to rely on a subjective interpretation of the strength.^[Or other measures of association strength, e.g., Kendall [@kendall1955rank] or Spearman [@spearman1904].] This coefficient measures the strength of the **linear relationship** between two quantitative variables and is appropriate in this case. A value near 0 indicates no or weak relationship, while values near -1 or +1 indicate a strong negative or positive relationship, respectively.
 
 $$
-y_i
-= \beta_0 + \beta_1 \cdot x_i + \epsilon_i
-$$ {#eq-linreg}
+r = `r cor(nux$shape, nux$size) |> round(3)`
+$$
 
-Here $x_i$ is the $x$-coordinate of the $i$th data point, and $y_i$ is its $y$-coordinate (these quantities are therefore known from the data). Then, since it is unlikely that the line will go through any one point exactly, one has to also add the error that is the distance of the line from the point---that is what $\epsilon_i$ does.
+This is an additional indication that the correlation between the two variables is relatively weak, mostly due to the large variation in shape values for each size value. The correlation coefficient is not very high, but it is positive, indicating that larger shells tend to be more elongated.
 
-Any choice of $\beta_0$ and $\beta_1$ define a line, and therefore also define the $\epsilon_i$ as the distances of the points from that line. This is visualized for two examples below, the first of which is the crude estimate we have calculated above:
+::: {.callout-important}
+If the scatter plot shows a non-linear and non-monotonic (not unidirectional) relationship, the Pearson correlation coefficient will not accurately describe the strength of the relationship. It is easy to rely solely on the correlation coefficient since it is simple to calculate for many variable pairs, but it can often miss relevant information. A visualization enables the identification of complex relationships that often require different modeling approaches.
+:::
+
+After gathering information from visualizations and descriptive statistics, the next step in the process is to build the structure of the model. 
+
+$$
+\text{shape}_i = \beta_0 + \beta_1 \cdot \text{size}_i + \varepsilon_i
+$$ {#eq-snail-simple}
+
+Regardless of whether the model includes one or several explanatory variables, we must always keep in mind the five assumptions presented in @sec-model-assumptions, especially the assumption of linearity. If we have discovered non-linear relationships in the exploratory step, we need to model a more complex relationship than what is shown in @eq-snail-simple.
+
+## Model estimation {#sec-model-estimation}
+@eq-snail-simple shows the "true" model based on all observed values in the population, but (nearly) all studies are based on some form of sample. Even a population census during a specific period can be considered a sample in time if the model is intended to be used after the study period ends.
+
+We can denote the estimated model with its *estimated parameters* as:
+
+$$
+\hat{Y}_i = b_0 + b_1 \cdot X_{1i}
+$$ {#eq-snail-simple-est}
+
+where:
+\begin{align*}
+  \hat{Y}_i &= \text{estimated value of the response variable for observation } i\\
+  b_0 &= \text{estimate of the intercept}\\
+  b_1 &= \text{estimate of the slope parameter}
+\end{align*}
+
+::: {.callout-note}
+Some literature uses $\hat{\beta}$ to denote estimated parameters.
+:::
+
+We want this model to best describe the relationship so we first need to define what we mean by "best". If we project two different estimated simple linear models onto a scatter plot of the two variables (@fig-reg-errors), each line will not hit all points exactly, each observation will lie at a certain distance from the regression line. This distance is the observation’s *residual*, denoted by $e_i$, an estimate of $\varepsilon_i$.
 
 ```{r}
-#| echo: false
-#| message: false
-#| fig-height: 3.6
-tibble(b0 = c(-0.126, 0.148), b1 = c(0.0038, -0.0051)) |>
-  mutate(case = as_factor(str_c("beta[0]==", b0, "~~~beta[1]==", b1))) |>
-  crossing(snails |> filter(species == "nux") |> select(size, shape)) |>
-  mutate(shapehat = b0 + b1 * size,
-         res = shape - shapehat) |>
+#| fig-cap: Visualization of regression model residuals
+#| fig-height: 3
+#| fig-width: 5 
+#| label: fig-reg-errors
+#| echo: FALSE
+
+tibble(
+  b0 = c(-0.126, 0.148),
+  b1 = c(0.0038, -0.0051)
+  ) |>
+  mutate(
+    case = 
+      as_factor(
+        str_c("b[0]==", b0, "~~~b[1]==", b1)
+        )
+    ) |>
+  crossing(
+    nux |> 
+      select(size, shape)
+  ) |> 
+  mutate(
+    shapehat = b0 + b1 * size,
+    res = shape - shapehat
+  ) |>
   ggplot() +
   geom_point(aes(x = size, y = shape), color = "steelblue") +
   geom_line(aes(x = size, y = shapehat), color = "goldenrod") +
@@ -66,162 +131,514 @@ tibble(b0 = c(-0.126, 0.148), b1 = c(0.0038, -0.0051)) |>
   theme_bw()
 ```
 
-The vertical lines are the $\epsilon_i$, measuring the deviation from the line and the actual data points. That is, $\epsilon_i$ is the leftover error after we attempt to model the location of the points using our simple line. Except that in statistics, we tend to use the Latin word for "leftover", and call the $\epsilon_i$ the *residual errors* or simply the *residuals*.
+The vertical lines are the estimated residuals, measuring the deviation from the line and the actual data points. It is intuitively obvious that the first line (with intercept $b_0 = -0.126$ and slope $b_1 = 0.0038$) is better than the second one (intercept $b_0 = 0.148$ and slope $b_1 = -0.0051$). This is because the size of the residuals tend to be larger for the right panel. The model on the left is estimated using *Ordinary Least Squares* (OLS), where the goal is to minimize the model’s total error, whereas the one on the right is just a random line drawn on the graph.  
 
-It is intuitively obvious that the first line (with intercept $\beta_0 = -0.126$ and slope $\beta_1 = 0.0038$) is better than the second one (intercept $\beta_0 = 0.148$ and slope $\beta_1 = -0.0051$). This is because the magnitudes of the residuals $\epsilon_i$ tend to be larger for the right panel. We can formalize this intuition by defining the best line as *the line with $\beta_0$ and $\beta_1$ values that minimize $\sum_i \epsilon_i^2$, the sum of squared residuals.*^[Why the sum of *squared* residuals, and not just their simple sum? This is to prevent very large positive and very large negative deviations canceling each other out in the sum, making it appear as if the total deviation was very small. Squared deviations are always nonnegative and therefore do not suffer from this cancellation problem.] The process of finding the line is thus to try out many different combinations of the slope $\beta_0$ and the intercept $\beta_1$, calculate $\sum_i \epsilon_i^2$ for each, and pick the line that minimizes this sum.
+Mathematically, we calculate $e_i = Y_i - \hat{Y}_i$, where $Y_i$ is the observed value (the point) and $\hat{Y}_i$ is the model’s estimated value (the line). OLS estimates all model parameters so that the total error (**Sum of Squares of Error**, SSE)^[Why the sum of *squared* residuals, and not just their simple sum? This is to prevent very large positive and very large negative deviations canceling each other out in the sum, making it appear as if the total deviation was very small. Squared deviations are always non-negative and therefore do not suffer from this cancellation problem.] for all observations is minimized:
 
-In reality, there are of course better ways of finding the best-fitting line than this trial-and-error method, but conceptually this is the idea behind obtaining the intercept and slope. R has a built-in function which will obtain the best line, called `lm` (short for "linear model"). It works similarly to the `wilcox.test` and `t.test` functions from @sec-inference-comparison: it first takes a *formula* as an input, and then the *data*. In our example:
+$$
+SSE = \sum_{i = 1}^n e_i^2 = \sum_{i = 1}^n (Y_i - \hat{Y}_i)^2
+$$ {#eq-sse}
 
-```{r}
-lm(shape ~ size, data = snails |> filter(species == "nux"))
-```
+In simple linear regression, we can use simple formulas for the two parameter estimates, $b_0$ and $b_1$, that minimize SSE. However, as soon as we include multiple variables, this becomes significantly more complex. For these complex calculations we instead make use of matrix algebra, which happen behind the scenes in R when using the the function `lm()`.
 
-The formula is a shorthand way of writing @eq-linreg. The way to write it is simple: we first write the name of the column in the data that is the *response* variable---that is, the $y_i$ that we wish to predict. We then write a tilde (`~`), followed by the name of the data column that is the *predictor* variable---the $x_i$. For a linear model, it is understood that there is always an intercept $\beta_0$ and a residual term $\epsilon_i$. We therefore do not bother writing those out. It is also understood that there is a coefficient $\beta_1$ multiplying the predictor (`size`, in our case), so we do not need to write that out either. This really simplifies writing formulas: instead of having to enter the equivalent of @eq-linreg, we simply type out `response ~ predictor`. That said, it is important to be aware that what is really going on under the hood is using @eq-linreg to find the intercept $\beta_0$ and the slope $\beta_1$.
+::: {.callout-note}
+Formulas for parameter estimates in simple linear regression are:
+\begin{align*}
+  b_1 &= \frac{\Sum{n}(X_i - \bar{X})(Y_i - \bar{Y})}{\Sum{n}(X_i - \bar{X})^2}\\
+  b_0 &= \bar{Y} - b_1 \cdot \bar{X}
+\end{align*}
 
-These are seen in the output above. Instead of $\beta_0$ and $\beta_1$, the intercept is denoted `(Intercept)`, and the slope is simply given the same name as the predictor variable---`size`, in this case. So what we learn is that the intercept of the best-fitting line is -0.129, and its slope is 0.0041.
-
-As a reminder, the above code chunk could have also been written using pipes and the underscore notation (@sec-dot), for identical results:
-
-```{r}
-snails |>
-  filter(species == "nux") |>
-  lm(shape ~ size, data = _)
-```
-
-The fitting of a line to data goes by the (perhaps confusing) name of *linear regression*---see the historical note below for why this is so.
-
-:::{.callout-note}
-The term "regression" comes from a paper by the method's inventor, Sir Francis Galton (half-cousin to Charles Darwin). Galton was studying a specific problem: the relationship between the body heights of humans and their children. He noticed that when plotting the heights of parents along the y-axis and that of their children along the x-axis, the slope of the best-fitting line is always smaller than one. The implication is that very tall parents, on average, tend to have shorter children than themselves, and conversely: children of very short parents are on average taller than their elders. Galton described this phenomenon in a study called "Regression towards mediocrity in hereditary stature" [@Galton1886]. In it, he also worked out the method of finding the best line that fits the data, and thus the name *regression* stuck to the method---even though the process of fitting a line to points has nothing whatsoever to do with anything "regressing".
-
-Incidentally, the very brief biological explanation of Galton's finding is as follows. An individual's height $H$ can be modeled as $H = G + E$, where $G$ denotes heritable (genetic) contributions, and $E$ denotes other, more or less random, environmental contributions. An exceptionally tall individual likely scores high on both $G$ and $E$. Consequently, the individual's offspring will also likely score high on $G$, inheriting it from the parents. But, since $E$ is not inherited, the child's chances of also scoring really high on $E$ are exactly those as for anyone else in the population: it could happen, but is unlikely. Typically, the child will have a more or less average value for $E$. Thus, parents with high $G$ and high $E$ will tend to have offspring with high $G$ and average $E$, and so very tall parents end up with tall-but-not-quite-as-tall children as themselves. The same argument holds for very short parents, *mutatis mutandis*. More broadly, the same holds for any heritable and continuously varying trait (body size, length of mandibles, amount of oil in seeds, rooting depth, and so on, for millions of examples), as long as it can be modeled as emerging from the sum of genetic and environmental factors.
+$b_1$ can also be reformulated as:
+$$
+\begin{aligned}
+ \frac{\Sum{n}(X_i \cdot Y_i) - \frac{\Sum{n}X_i \cdot \Sum{n}Y_i}{n}}{\Sum{n}X_i^2 - \frac{(\Sum{n}X_i)^2}{n}}
+\end{aligned}
+$$
 :::
 
+### Model estimation in R {#sec-model-fit-example}
+To fit a linear regression model in R, we use the `lm()` function with the following arguments:
 
-## Interpreting the results of a linear regression
+- `formula`: the model structure as a formula object
+- `data`: the dataset containing the variables
 
-What do the intercept and slope found above actually *mean*? And what is the purpose of fitting a straight line to data in the first place?
+A formula object is a special format R uses to describe the relationship between variables. Generally, the format is `y ~ x`, where `x` consists of the explanatory variables, for example `shape ~ size`.
 
-The purpose is twofold. First, we want to be able to make useful predictions using the data. By finding the best-fitting line, we are able to say: "increasing the shell size of an *N. nux* individual by one unit contributes, on average, $0.0041$ extra units to the shape". Of course, any such prediction is to be used within a limited range. For example, with the coefficients $\beta_0 = -0.129$ and $\beta_1 = 0.0041$, it would follow that a snail of size zero would have a predicted shell shape of $y = \beta_0 + \beta_1 \cdot 0 = \beta_0 = -0.129$. But a shell of size zero cannot have any sort of shape (obviously). The implication is clear: for shell sizes that are close to the range of observed values, one can use the linear model as an approximation, but beyond that range it can easily break down. This is important to keep in mind at all times when interpreting regression results.
-
-The second purpose is to be able to say whether there is any actual relationship between the response and the predictor (here, shell shape and shell size). Let us look at the plot again:
-
-```{r}
-snails |>
-  filter(species == "nux") |>
-  ggplot(aes(x = size, y = shape)) +
-  geom_point(color = "steelblue") +
-  theme_bw()
-```
-
-If we are being fully honest with ourselves, it is not quite obvious whether the observed positive relationship isn't simply a fluke: intuitively, it is quite conceivable that the above plot could have been obtained by just randomly spewing points on a canvas. The procedure of finding the intercept and slope of a line which minimizes the sum of squared residuals $\sum_i \epsilon_i^2$ can be applied to any set of points. It is an entirely different question whether the inferred intercept and slope are meaningfully different from zero. One function of linear regression is to provide an answer to that question.
-
-If being able to do so sounds a bit too good to be true, then there are some bad news coming: it is. Unfortunately, there is no fully general procedure that will distinguish randomness from real patterns. That said, there are certain assumptions one can make which do allow us to do just that:
-
-1.  The error terms $\epsilon_i$ are independent from one another.
-2.  They have constant variance (that is, the variation in the data is roughly the same regardless of the value of the predictor).
-3.  Finally, the $\epsilon_i$ are also normally distributed.
-
-We should not fool ourselves: these assumptions *are* restrictive. But they hold often enough to have some use. We will see shortly how one can ascertain that they do in fact hold (@sec-diagnostics). Before doing that however, let us see how we can get the information about whether the inferred parameters are reliably different from zero. This is achieved using the function `summary`, which takes a fitted linear model (created by `lm`) and returns a table:
+:::{.callout-important}
+If you have not experienced problems already, using `lm()` requires that we have the correct variable type for all variables as we expect. Make sure that any continuous variable is read as `numeric`!
+:::
 
 ```{r}
-snails |>
-  filter(species == "nux") |>
-  lm(shape ~ size, data = _) |> # Fit linear model
-  summary() # Obtain regression table
+#| code-fold: false
+
+simpleModel <- lm(formula = shape ~ size, data = nux)
 ```
 
-The output first prints the function call to `lm` we used. Then it gives a quick overview of the residuals: the minimum and maximum values, the point of the first and third quantiles, and the median---in other words, it contains the same information one would use to create a box plot with. This ought to give a quick and rough idea of whether the residuals are violently skewed, or have at least a chance of being normally distributed, which was one of the key assumption behind linear regression above. (We will discuss a better method for assessing the normality of the residuals in @sec-diagnostics.) The next item in the output is the most important part: the table of fitted regression coefficients (intercept and slope). Here we can find the estimated values of the coefficients, their standard error, an associated t-statistic (ignore this for now), and the p-values (the `Pr(>|t|)` column).
+With `summary()`, we get a detailed output of the model that includes the estimated parameters which are also called *regression coefficients*. When presenting such output, we can use `kable()` or `xtable()` for a cleaner display.
 
-The p-values measure how likely it would have been to obtain the same regression parameters just by chance---by randomly throwing points on the plot. By "random", we mean a process that strictly observes the assumptions about the independence, normality, and constant variance of the residuals. Based on this, it is highly unlikely that the intercept's true value is zero. But generally we are more interested in the slope, because this is what tells us whether there is in fact any relationship between the measured quantities. Here the p-value associated with the slope is 0.028. That is, if we were to repeatedly generate as many random points as we see in the data and measure the slope of the best fitting line, we would observe a slope at least as steep as our inferred $0.0041$ once every $1/0.028 \approx 36$ tries. While that is good indication that the relationship is not simply due to chance, one would not bet one's life on it either.^[Imagine you go bungee jumping and are told by the staff: "It is completely safe. Only one out of 36 jumps on average end up with a fatality---for a negligible probability of 0.028." Would you take the jump? Translated to statistics: would a p-value of 0.028 (or worse, the higher 0.05 which is often a "standard" cutoff) truly convince you that what you are seeing is a real effect?]
+::: {#tip-lm-objects .callout-tip}
+To create this clean output of the coefficients, we need to extract a specific part of `summary()` using `coef()`. The documentation for `lm()` provides more information about what can be retrieved from the resulting regression object.
 
-There is some further information at the bottom of the output. The "residual standard error" is an estimate for the standard deviation of the residuals $\epsilon_i$ (recall that we assumed this standard deviation to be constant and independent of $i$). "Multiple R-squared" is the fraction of variation in the data explained by the model. "Adjusted R-squared" is the same but takes into account how many parameters were used to fit the model. Finally, there is information on the F-statistic, which we will not be look at here.
+R is an object-oriented programming language, and the `lm()` function returns an object of class "lm", which is a list. It is easy to extract desired parts from that list when needed. There are many functions associated with objects of class "lm":
 
+- `coef()`: Returns regression coefficients  
+- `residuals()`: Returns residuals  
+- `fitted()`: Returns estimated values ($\hat{Y}$)  
+- `summary()`: Returns a summary analysis of the regression model. This function returns an object of class "summary.lm". See `?summary.lm` in the documentation. `coef()` also works on these objects as shown above.  
+- `anova()`: Returns the ANOVA table for the model  
+- `predict()`: Makes predictions for (new) x-values, i.e., calculates $\hat{Y}$ for given x-values. Can also calculate confidence intervals and prediction intervals for $\hat{Y}$. See `?predict.lm()` for details.  
+- `confint()`: Calculates confidence intervals for the regression coefficients  
 
-## Diagnostic plots {#sec-diagnostics}
+It is also useful to use `str()` on lm objects. Check `?lm()` under the "Value" section to see the different components of the object. We will make use of a couple of these objects in later chapters.
+:::
 
-As advertised, it is possible (and important) to check whether the assumptions behind linear regression actually hold. There is a convenient way to do so, via *diagnostic plots*. Such plots can be created via the `autoplot` function of the `ggfortify` package. We can therefore install this package first, in case we do not have it already:
+::: {#fig-reg-summary-bad}
+```{r}
+summary(simpleModel)
+```
+Not a very clean output
+:::
 
 ```{r}
-#| eval: false
-install.packages("ggfortify")
+#| tbl-cap: A clean table of the model's estimated parameters
+#| tbl-cap-location: top
+#| label: tbl-reg-summary-good
+
+summary(simpleModel) |> 
+  coef() |> 
+  as_tibble(rownames = NA) |> 
+  rownames_to_column() |> 
+  rename(
+    ` ` = rowname,
+    Estimate = Estimate,
+    StdError = `Std. Error`,
+    `t-value` = `t value`,
+    `p-value` = `Pr(>|t|)`
+  ) |> 
+  kable(
+    digits = 4
+  ) |> 
+  kable_styling("striped")
 ```
 
-And then load it:
+@tbl-reg-summary-good shows the estimated parameters (coefficients). For example, we can see that for each additional size of shell, the shape increases by approximately 0.0041 units on average.
+
+The intercept is only relevant to interpret if the *value range* includes all zeros; if the data covers the region where all explanatory variables take the value 0. In this example, there is no data in that region, which means the intercept value has no meaningful interpretation.
+
+::: {.callout-important}
+Even though the interpretation of the intercept may not be meaningful, it **must** be included in the model in order for the OLS estimation to minimize SSE. If the intercept were removed, it would correspond to a line forced to cross the y-axis at $y = 0$, which would result in a model that does not meet our criteria of the "best" model.
+:::
+
+## Model diagnostics {#sec-residual-analysis}
+
+After fitting a model based on observations from visualizations and descriptive statistics, we can interpret the estimated relationship between the explanatory variables and the response variable, as we did in @sec-model-fit-example. However, there are two aspects we have yet to  consider:
+
+- we cannot assume these interpretations describe the true relationship since we do not yet know if the model is an appropriate representation,
+- these interpretations only describe the collected sample, not the population we want to draw conclusions for.
+
+To assess the appropriateness of the model, we must examine whether it meets the assumptions presented in @sec-model-assumptions through *residual analysis*, and conclusions about the population can be made using statistical inference. We **always** begin by evaluating the model’s appropriateness because the inference methods also rely on these assumptions being met.
+
+Remember @eq-lin-reg? When modeling each individual observation, $\varepsilon_i$ measures the difference between the regression line and the actual observation, which means we can shift the model's assumptions presented in @sec-model-assumptions from $Y|X$ to $\varepsilon$. 
+$$
+  \varepsilon \overset{\mathrm{iid}}{\sim} N(0, \sigma^2)
+$$ {#eq-lin-reg-assumptions}
+
+This reformulation gives us a good starting point to evaluate the suitability of a estimated model.
+
+### Residual analysis {#sec-residual-simple}
+
+Residual analysis involves calculating and visually exploring the residuals from a model against the model assumptions $\varepsilon\overset{iid}{\sim}N(0, \sigma^2)$. Since we estimate error term with residuals, in practice we check if the residuals are independent, normally distributed with mean 0 and constant variance. Residuals can also be used to assess whether the estimated linear model is appropriately structured, i.e. whether the relationship between the response variable and the explanatory variables is linear.
+
+For simplicity, we can extract the residuals as well as the observed and estimated values of the response variable from the estimated model (see @tip-lm-objects).
 
 ```{r}
-library(ggfortify)
+#| code-fold: false
+
+# Create a dataset for visualizations
+
+residualData <- 
+  tibble(
+    # Extracts the residuals from the model
+    residuals = residuals(simpleModel),
+    # The observed response values from the data
+    y = nux$shape,
+    # Extracts the estimated response values from the model
+    yHat = fitted(simpleModel)
+  )
 ```
 
-And now, we can simply give the result of the `lm` function as input to the function `autoplot`:
+We will visualize these variables in various forms using `ggplot2`, which requires a `data.frame` or `tibble` with data.
+
+#### Normal distribution
+
+We can examine the assumption of normally distributed residuals using a histogram and/or a QQ plot (**q**uantile-**q**uantile plot).
 
 ```{r}
-#| fig-height: 6
-snails |>
-  filter(species == "nux") |>
-  lm(shape ~ size, data = _) |>
-  autoplot()
+#| fig-cap: Distribution of residuals
+#| fig-height: 3
+#| fig-width: 5 
+
+ggplot(residualData) + 
+  aes(x = residuals, y = after_stat(density)) +
+  geom_histogram(bins = 10, fill = "steelblue", color = "black") + 
+  theme_bw() + 
+  labs(x = "Residuals", y = "Density")
 ```
-
-We see four plots above. The top left of these shows the residuals against the fitted values. If the points have no trends of increase, decrease, valleys, or humps, and the spread of the points is roughly constant, then they adhere to the assumptions of linear regression. The blue line attempts to capture whether there is an overall trend in the data; in this case, it would be hard to argue that any trend is due to something else than chance.
-
-The bottom left plot is much the same as the top left one, except it takes the absolute values of the residuals. This is done because, since residuals will by definition be more or less symmetrically distributed around zero, one can effectively double the precision of the diagnostic by focusing only on magnitudes. For statistical reasons that do not concern us here, the square roots of these absolute values tend to behave much better, which is why we see the square root being taken along the y-axis. This plot is good for spotting whether the variance of the residuals depends on the fitted values. To satisfy the requirements of linear regression, there should be no such dependence.^[In technical terms, the variation should be *homoscedastic* (be approximately the same for all values of the predictor) as opposed to *heteroscedastic*. This is the same as saying that the variance of the residuals $\epsilon_i$ should be independent of $i$.] The blue line is again a locally-weighted estimate, which ought to be as flat as possible.
-
-The top right graph offers a visualization of how well the residuals follow a normal distribution. The idea behind this *quantile-quantile plot* (Q-Q plot) is that if the residuals are indeed normally distributed, then we can line them up in increasing order along the x-axis, and for each of them, plot the theoretically expected value (based on normality) along the y-axis. If these observed vs. theoretically predicted values fall on the dashed straight line, then there is a perfect match between theory and observation, and the residuals are normally distributed. The stronger the deviation from the dashed line indicating a perfect theoretical match, the more non-normal the residuals are.
-
-The bottom right graph measures the "leverage" of each point, which is a measure of how sensitively the regression reacts to removing one data point. We will not be concerned with this plot.
-
-The blue smoother lines often do more to confuse than to help. For example, one can see a slight dip in the blue line in the bottom left graph, but looking at all points together reveals how little this trend means. The `smooth.colour = NA` argument removes the blue lines:
 
 ```{r}
-#| warning: false
-#| fig-height: 6
-snails |>
-  filter(species == "nux") |>
-  lm(shape ~ size, data = _) |>
-  autoplot(smooth.colour = NA)
+#| fig-cap: Observed residual quantiles compared to theoretical normal quantiles
+#| fig-height: 3
+#| fig-width: 5 
+
+ggplot(residualData) + 
+  # Use standardized residuals
+  aes(sample = scale(residuals)) + 
+  geom_qq_line() +
+  geom_qq(color = "steelblue") +
+  theme_bw() + 
+  labs(x = "Theoretical Quantiles", y = "Observed Quantiles")
 ```
 
-One may go even further. Since `autoplot` returns a `ggplot` object, we can add various theme options to make the plot prettier. We can also increase the transparency of the points to better see where and how much they overlap with one another:
+In the histogram, we want to see the symmetric, bell-shaped form of the normal distribution centered around 0, which can sometimes be difficult to detect especially with small datasets. The QQ plot shows the observed and theoretical quantiles, where we want the points to follow the drawn line for a "perfect" normal distribution.
+
+:::{.callout-note}
+Remember that quantiles is a generalization of a quartile that divides the observed values into equal parts. 
+
+The observed quantiles takes the information from the variable and defines each value as a specific quantile in order from smallest to largest. 
+
+The theoretical quantile assumes that the data is normally distributed with its given mean and standard deviation and for each observation calculates its quantile position within that distribution. We did that "manually" in @sec-continuous-distributions using `pnorm()`.
+
+The QQ plot then maps for each observation the observed quantile against the theoretical and draws a line where we would expect the points to lie if the data were normally distributed. If the points follow close to the line, we can assume that the data is approximately normally distributed.
+:::
+
+For this model, we do not see any clear deviations from the expected pattern, which suggests that the residuals are normally distributed. However, we can never be 100% certain that the assumption is met, especially with small datasets.
+
+::: {.callout-important}
+We can consider the assumption of normality to be violated if these plots show strong deviations from what we expect. Even when we know a sample is drawn from a normal distribution, the histogram may not always show the shape we are looking for.
 
 ```{r}
-#| warning: false
-#| fig-height: 6
-snails |>
-  filter(species == "nux") |>
-  lm(shape ~ size, data = _) |>
-  autoplot(smooth.colour = NA, colour = "steelblue", alpha = 0.7) +
-  theme_bw()
+#| fig-cap: Distribution of a sample from the actual normal distribution
+#| fig-height: 3
+#| fig-width: 5 
+set.seed(1234)
+
+tibble(
+  x = rnorm(30)
+) |> 
+ ggplot() + 
+  aes(x = x, y = after_stat(density)) +
+  geom_histogram(bins = 10, fill = "steelblue", color = "black") + 
+  theme_bw() + 
+  labs(x = "x", y = "Density")
 ```
 
-(Small note: the color argument to `autoplot` must be spelled `colour`. We do not have the freedom to spell it either `color` or `colour`, like we do in ordinary ggplot functions.) Now that we have a cleaner plot, how do we interpret it. Let us proceed one by one. The top left plot is as good as it can get: there is a blurb of points scattered around zero, with no systematic increase or decrease. Similarly, the bottom left plot is excellent, revealing that the spread of the residuals does not depend on the fitted values. Finally, the top right quantile-quantile plot reveals that the residuals follow the theoretically expected normal distribution beautifully. In short, these diagnostics show that the assumptions behind the linear regression model are nicely fulfilled.
-
-To give an example of what not-so-good diagnostics might look like, let us repeat the procedure for a different species: *N. galapaganus* instead of *N. nux*. Here are the raw data together with the fitted line:
+Strong deviations from normality may include, for example, multiple areas of high density:
 
 ```{r}
-snails |>
-  filter(species == "galapaganus") |> # Choose a different species
-  ggplot(aes(x = size, y = shape)) +
-  geom_point(color = "steelblue") +
-  geom_smooth(method = lm, se = FALSE, color = "goldenrod") +
-  theme_bw()
+#| fig-cap: Distribution of a sample from other distributions
+#| fig-height: 3
+#| fig-width: 5 
+set.seed(1234)
+
+tibble(
+  x = runif(30)
+) |> 
+ ggplot() + 
+  aes(x = x, y = after_stat(density)) +
+  geom_histogram(bins = 10, fill = "steelblue", color = "black") + 
+  theme_bw() + 
+  labs(x = "x", y = "Density")
 ```
 
-And the corresponding diagnostic plots:
+or a highly skewed distribution:
 
 ```{r}
-#| warning: false
-#| fig-height: 6
-snails |>
-  filter(species == "galapaganus") |>
-  lm(shape ~ size, data = _) |>
-  autoplot(smooth.colour = NA, colour = "steelblue", alpha = 0.7) +
-  theme_bw()
+#| fig-cap: Distribution of a sample from other distributions
+#| fig-height: 3
+#| fig-width: 5
+set.seed(1234)
+
+tibble(
+  x = rchisq(30, df = 2)
+) |> 
+ ggplot() + 
+  aes(x = x, y = after_stat(density)) +
+  geom_histogram(bins = 10, fill = "steelblue", color = "black") + 
+  theme_bw() + 
+  labs(x = "x", y = "Density")
 ```
 
-Looking at the top left, one gets at the very least somewhat suspicious that there is a trend in these points, first going down, then up, then down again at the end. Next, while the bottom left plot is not disastrous, it again might suggest that the variance of the residuals is higher for smaller fitted values than for larger ones. Finally, the quantile-quantile plot is clearly no good: small residuals are consistently overestimated (the theoretical values are larger than the actual ones), and large residuals are underestimated. This means that any results obtained from a linear regression ought to be treated with caution. Possibly, methods other than linear regression are needed to understand these data.
+These plots suggest that the model is missing an explanatory variable or needs to be transformed in some way to meet the assumption.
 
+If the QQ plot shows clear patterns that deviate from the line --- for example if the points curve around the line --- it means the model does not meet the assumption of a linear relationship.
 
-## More on diagnostics: Anscombe's quartet {#sec-anscombe}
+```{r}
+#| echo: false
+#| fig-cap: Example of patterns in a QQ plot
+#| fig-height: 3
+#| fig-width: 5 
+
+data <- 
+  tibble(
+    x = seq(0, 10, by = 0.1),
+    y = sin(x) + rnorm(n = 101, sd = 0.2)
+  )
+
+exModel <- lm(y ~ x, data = data)
+
+ggplot(tibble(residuals = resid(exModel))) + 
+  # Use standardized residuals
+  aes(sample = scale(residuals)) + 
+  geom_qq_line() +
+  geom_qq(color = "steelblue") +
+  theme_bw() + 
+  labs(x = "Theoretical Quantiles", y = "Observed Quantiles")
+```
+:::
+
+#### Constant variance
+
+We can check the assumption of constant variance in the residuals using a scatter plot with residuals on the y-axis and either the estimated values or observed values of the explanatory or response variable on the x-axis. Typically, the estimated values of the response are used so that the x-axis reflects the entire model, but other variables may be useful to visualize to identify potential causes of a violated assumption.
+
+```{r}
+#| fig-cap: Spread of residuals against estimated values
+#| fig-height: 3
+#| fig-width: 5
+#| label: fig-ex-eq-var 
+
+ggplot(residualData) + 
+  aes(x = yHat, y = residuals) + 
+  geom_point(color = "steelblue") + 
+  theme_bw() +
+  labs(x = "Estimated Values", y = "Residuals") + 
+  geom_hline(
+    aes(yintercept = 0)
+  ) + 
+  # Imaginary boundaries
+  geom_hline(
+    aes(yintercept = -0.05),
+    color = "#d9230f",
+    linetype = 2
+  ) + 
+  geom_hline(
+    aes(yintercept = 0.05),
+    color = "#d9230f",
+    linetype = 2
+  )
+```
+
+To meet the assumption of constant variance, the points at each cross-section of x-values should be evenly spread around the same limits. Think of it as placing an imaginary boundary two parallel lines along the maximum and minimum values of the residuals (the two red dashed lines in @fig-ex-eq-var), and the majority of points should be scattered between them with no big gaps from the point to the boundary. In @fig-ex-eq-var, we see that the variation seem to diminish with larger estimated values as observations fall further from the boundary. Since the dataset is relatively small and only three of the observations ($\hat{Y} > -0.025$) cause the issue we could consider the residuals to meet the assumption of constant variance.
+
+::: {.callout-important}
+If the lines covering the maximum and minimum values of the residuals are not parallel, the model does not meet the requirement of constant variance.
+
+```{r}
+#| fig-cap: Example of non-constant variance in residuals
+#| fig-height: 3
+#| fig-width: 5 
+#| echo: false
+
+n <- 100
+
+data <- 
+  tibble(
+    x = seq(1, 10, length.out = n),
+    yInc = 3 * x + rnorm(n, sd = 0.5 * x),
+    yDec = 3 * x + rnorm(n, sd = 10 / x),
+    y2 = x^2 + rnorm(n, sd = 2)
+  )
+
+model1 <- lm(yInc ~ x, data = data)
+model2 <- lm(yDec ~ x, data = data)
+model3 <- lm(y2 ~ x, data = data)
+
+ggplot(tibble(residuals = resid(model1), yHat = fitted(model1))) + 
+  aes(x = yHat, y = residuals) + 
+  geom_point(color = "steelblue") + 
+  theme_bw() +
+  labs(x = "Estimated Values", y = "Residuals") + 
+  geom_hline(
+    aes(yintercept = 0)
+  ) + 
+  # Imaginary boundaries
+  geom_abline(
+    slope = 0.35,
+    intercept = 0,
+    color = "#d9230f",
+    linetype = 2
+  ) + 
+  geom_abline(
+    slope = -0.35,
+    intercept = 0,
+    color = "#d9230f",
+    linetype = 2
+  ) 
+
+ggplot(tibble(residuals = resid(model2), yHat = fitted(model2))) + 
+  aes(x = yHat, y = residuals) + 
+  geom_point(color = "steelblue") + 
+  theme_bw() +
+  labs(x = "Estimated Values", y = "Residuals") + 
+  geom_hline(
+    aes(yintercept = 0)
+  ) + 
+  # Imaginary boundaries
+  geom_abline(
+    slope = -0.15,
+    intercept = 6,
+    color = "#d9230f",
+    linetype = 2
+  ) + 
+  geom_abline(
+    slope = 0.15,
+    intercept = -6,
+    color = "#d9230f",
+    linetype = 2
+  )
+```
+
+These phenomena usually mean that the entire model or parts of it need to be transformed to meet the assumption of constant variance.
+
+We can also identify problems with linearity in this scatter plot. The figure below shows roughly constant variance in terms of variation across each cross-section of the x-axis, but there is a clear pattern in the residuals. This means the model has not successfully captured the relationship. In this case, it would be appropriate to visualize the residuals against each explanatory variable to identify which ones contribute to the non-linear relationship.
+
+```{r}
+#| fig-cap: Pattern in residuals indicating a non-linear relationship
+#| fig-height: 3
+#| fig-width: 5 
+#| echo: false
+#| message: false
+
+ggplot(tibble(residuals = resid(model3), yHat = fitted(model3))) + 
+  aes(x = yHat, y = residuals) + 
+  geom_point(color = "steelblue") + 
+  theme_bw() +
+  labs(x = "Estimated Values", y = "Residuals") + 
+  geom_hline(
+    aes(yintercept = 0)
+  ) + 
+  geom_smooth(aes(y = residuals + 0.45*sd(residuals)), method = "loess", se = FALSE, color = "#d9230f", linetype = 2, linewidth = 0.5) +
+  geom_smooth(aes(y = residuals - 0.45*sd(residuals)), method = "loess", se = FALSE, color = "#d9230f", linetype = 2, linewidth = 0.5)
+```
+:::
+
+#### Independence
+
+Most often we assess this assumption based on the data collection process. Only when we know the data has a time aspect --- such as in time series data or when the same unit has been measured multiple times --- we check that the model has accounted for this dependence properly.
+
+A line plot of residuals in observation order can be used to examine independence, but as mentioned, this visualization is only used in special cases. The line plot should show "randomness," meaning no clear patterns in the residuals.
+
+```{r}
+#| fig-cap: Residuals in observation order
+#| fig-height: 3
+#| fig-width: 5 
+
+ggplot(residualData) + 
+  aes(x = 1:nrow(residualData), y = residuals) + 
+  geom_line(color = "steelblue") + 
+  theme_bw() +
+  labs(x = "Obs. index", y = "Residuals") + 
+  geom_hline(
+    aes(yintercept = 0),
+    color = "black"
+  )
+```
+
+Other examples of data with dependence include:
+
+- We collect data from individuals, but some individuals come from the same family, which may create dependence between them.
+- We collect spatial data, such as temperature or rainfall at different locations in Östergötland. It is common for there to be positive correlation (a dependence) between geographically close observations.
+
+### Creating a custom function (`diagnosticPlots`)
+
+You will encounter these residual plots many times when conducting regression analyses, so to simplify their generation we can create a custom function that does all of this for us at once. The `cowplot` package provides a function (`plot_grid`) that can combine multiple plots into one.
+
+```{r}
+#| fig-cap: Residual plots in a single image
+#| fig-height: 3
+#| fig-width: 5 
+#| label: fig-snail-resid
+#| code-fold: false
+
+#' Custom function diagnosticPlots that generate visualizations of residuals
+#' @param model A fitted model object of class "lm"
+#' @param alpha Defines the opacity of the points (0-1)
+#' @param bins  Defines the number of bins in the histogram
+#' @param scaleLocation Boolean if a scale location graph should be added
+
+diagnosticPlots <- 
+  function(
+    model, 
+    alpha = 1, 
+    bins = 10, 
+    scaleLocation = FALSE
+  ) {
+      
+    if (alpha < 0 | alpha > 1) {
+      stop("alpha must be between 0 and 1")
+    }
+    if (bins <= 0) {
+      stop("bins must be a positive number")
+    }
+    
+    # Summarizes the residuals, observed and fitted values in a tibble
+    residualData <- 
+      dplyr::tibble(
+        residuals = residuals(model),
+        # The response variable is the first column in the model's model object
+        y = model$model[,1],
+        yHat = fitted(model)
+      )
+    
+    # Generates the histogram to assess normality
+    p1 <- 
+      ggplot2::ggplot(residualData) + 
+      ggplot2::aes(x = residuals, y = after_stat(density)) +
+      ggplot2::geom_histogram(bins = bins, fill = "steelblue", color = "black") + 
+      ggplot2::theme_bw() + 
+      ggplot2::labs(x = "Residuals", y = "Density")
+    
+    # Generates the scatter plot to assess constant variance
+    p2 <- 
+      ggplot2::ggplot(residualData) + 
+      ggplot2::aes(x = yHat, y = residuals) + 
+      ggplot2::geom_hline(aes(yintercept = 0)) + 
+      ggplot2::geom_point(color = "steelblue", alpha = alpha) + 
+      ggplot2::theme_bw() +
+      ggplot2::labs(x = "Estimated Values", y = "Residuals")
+    
+    # Generates the QQ plot to assess normality
+    p3 <- 
+      ggplot2::ggplot(residualData) + 
+      # Use standardized residuals
+      ggplot2::aes(sample = scale(residuals)) + 
+      ggplot2::geom_qq_line() + 
+      ggplot2::geom_qq(color = "steelblue", alpha = alpha) +
+      ggplot2::theme_bw() + 
+      ggplot2::labs(x= "Theoretical Quantiles", y = "Observed Quantiles")
+    
+    # If scaleLocation is TRUE, add a scale location plot
+    if (scaleLocation) {
+      p4 <- 
+        ggplot2::ggplot(residualData) + 
+        ggplot2::aes(x = yHat, y = sqrt(abs(residuals))) + 
+        ggplot2::geom_point(color = "steelblue", alpha = alpha) + 
+        ggplot2::theme_bw() +
+        ggplot2::labs(x = "Estimated Values", y = expression(sqrt("|Residuals|")))
+      
+      cowplot::plot_grid(p1, p2, p3, p4, nrow = 2)
+      
+    } else {
+      cowplot::plot_grid(p1, p2, p3, nrow = 2)  
+    }
+    
+}
+
+diagnosticPlots(simpleModel)
+```
+
+In summary, @fig-snail-resid shows that the residuals seem to meet the assumptions of normal distribution with mean 0 and constant variance. There are no clear patterns in any plot that suggest otherwise nor that the model fails to capture part of the relationship. A few outliers have been identified, specifically three observations with large estimated values. The conclusion is that the model is a suitable simplification of reality.
+
+### More on diagnostics: Anscombe's quartet {#sec-anscombe}
 
 To further illustrate how diagnostics can be used to visually judge whether the assumptions of linear regression are met, let us take a look at a famous dataset that was designed for precisely this purpose [@Anscombe1973]. The data are built into R (with the name `anscombe`), but are not in the most convenient format:
 
@@ -232,17 +649,18 @@ print(anscombe)
 These are actually four datasets merged into one: `x1` and `y1` are $x$- and $y$-coordinates of the points from the first set, `x2` and `y2` from the second set, and so on. We can use `pivot_longer` to put these data in tidy format:
 
 ```{r}
-ans_long <- anscombe |>
+ansLong <- 
+  anscombe |>
   pivot_longer(cols = everything(), names_to = c(".value", "set"),
                names_pattern = "(.)(.)")
-print(ans_long)
+print(ansLong)
 ```
 
 We can now visualize each set, along with linear fits:
 
 ```{r}
 #| message: false
-ans_long |>
+ansLong |>
   ggplot(aes(x = x, y = y, color = set)) +
   geom_point() +
   geom_smooth(method = lm, se = FALSE) +
@@ -255,10 +673,9 @@ The data have been carefully crafted so that the least-squares regression line h
 ```{r}
 #| warning: false
 #| fig-height: 6
-lm(y ~ x, data = filter(ans_long, set == "1")) |> summary()
-lm(y ~ x, data = filter(ans_long, set == "1")) |>
-  autoplot(smooth.colour = NA, colour = "steelblue") +
-  theme_bw()
+lm(y ~ x, data = filter(ansLong, set == "1")) |> summary()
+lm(y ~ x, data = filter(ansLong, set == "1")) |>
+  diagnosticPlots()
 ```
 
 While the number of data points is small, there is otherwise nothing to suggest in these diagnostic plots that there is anything wrong with the regression.
@@ -268,111 +685,343 @@ The situation changes for the other three sets. Let us look at set 2:
 ```{r}
 #| warning: false
 #| fig-height: 6
-lm(y ~ x, data = filter(ans_long, set == "2")) |> summary()
-lm(y ~ x, data = filter(ans_long, set == "2")) |>
-  autoplot(smooth.colour = NA, colour = "steelblue") +
-  theme_bw()
+lm(y ~ x, data = filter(ansLong, set == "2")) |> summary()
+lm(y ~ x, data = filter(ansLong, set == "2")) |>
+  diagnosticPlots()
 ```
 
-Blindly reading off the p-values without considering the diagnostic plots might lead one to take them seriously. This would be wrong however, as the assumptions of the linear regression are clearly not fulfilled. The left two diagnostics show that the residuals are not independent, and certainly not homoscedastic. The Q-Q plot additionally shows that they are not even normally distributed.
+Blindly reading off the p-values without considering the diagnostic plots might lead one to take them seriously. This would be wrong however, as the assumptions of the linear regression are clearly not fulfilled. The right diagnostics show that the residuals are not independent, and certainly not homoscedastic (equal variance). The QQ plot and histogram additionally shows that they are not even normally distributed.
 
 In set 3, the trends are driven too much by a single outlier:
 
 ```{r}
 #| warning: false
 #| fig-height: 6
-lm(y ~ x, data = filter(ans_long, set == "3")) |> summary()
-lm(y ~ x, data = filter(ans_long, set == "3")) |>
-  autoplot(smooth.colour = NA, colour = "steelblue") +
-  theme_bw()
+lm(y ~ x, data = filter(ansLong, set == "3")) |> summary()
+lm(y ~ x, data = filter(ansLong, set == "3")) |>
+  diagnosticPlots()
 ```
 
-As before, the left two diagnostic plots show that the independence of the residuals is violated. Finally, in set 4, the whole regression is based on a single point whose predictor `x` is different from that of the rest:
+As before, the right diagnostic plots show that the independence of the residuals is violated. Finally, in set 4, the whole regression is based on a single point whose predictor `x` is different from that of the rest:
 
 ```{r}
 #| warning: false
 #| fig-height: 6
-lm(y ~ x, data = filter(ans_long, set == "4")) |> summary()
-lm(y ~ x, data = filter(ans_long, set == "4")) |>
-  autoplot(smooth.colour = NA, colour = "steelblue") +
-  theme_bw()
+lm(y ~ x, data = filter(ansLong, set == "4")) |> summary()
+lm(y ~ x, data = filter(ansLong, set == "4")) |>
+  diagnosticPlots()
 ```
 
 Clearly, the assumption that the residual variances are independent of the predictor is heavily violated.
 
-These examples are there to urge caution when interpreting regression statistics. This problem becomes much more acute when relying on *multiple regression*, where there is more than one predictor variable (@sec-SRH). Since high-dimensional data cannot be visualized as easily as the datasets above, often the diagnostic plots are the only way to tell whether the assumptions of regression hold or not.
+:::{.callout-important}
+These examples are there to urge caution when interpreting regression statistics. This problem becomes much more acute when relying on *multiple regression*, where there is more than one predictor variable. Since high-dimensional data cannot be visualized as easily as the datasets above, often the **diagnostic plots are the only way to tell whether the assumptions of regression hold or not.**
+:::
 
+## Statistical inference {#sec-inference}
 
-## A non-parametric method: Theil--Sen regression {#sec-theilsen}
+Once we have confirmed that the model is suitable, i.e. that it fulfills its assumptions, we can focus on interpreting the model’s results in relation to the population. In regression analysis, we can perform several types of statistical inference: on the entire model, on groups of parameters, or on individual parameters.
 
-The method of linear regression discussed so far is called *least-squares regression*, due to the fact that it relies on minimizing the sum of squared residuals $\sum_i \epsilon_i^2$. A non-parametric alternative to this method is *Theil--Sen regression*. This is generally much more robust against outliers than the least-squares method. It also does not require that the residuals are normally distributed. There are also two disadvantages, the main one being that it can only be used for simple regression (one single predictor). It can also be slower to compute, but with today's computers, this is rarely an issue.
+We can start with an *F-test* for the entire model to determine whether at least one slope parameter is significant --- whether the model is worth investigating further --- and then perform individual *t-tests* for each parameter to assess which explanatory variables have a significant effect on the response variable. Since qualitative variables often consist of multiple parameters, these need to be combined to examine the variable’s overall relationship, which we can do with a *partial F-test*.
 
-The way Theil--Sen regression works is simple:
+:::{.callout-note}
+In the case of simple linear regression the entire model, groups of parameters and individual parameters are all one and the same test because we only include one explanatory variable (one slope parameter) in the model. Once we start adding more variables to the model these three types of inference differ and we choose the one suitable for the analysis we want to perform.
+:::
 
-* A line is fit between all possible pairs of points, and their slopes are recorded.
-* The overall regression slope *m* is the median of all these pairwise slopes.
-* The intercept *b* is the median of all *y*~*i*~ -- *m* *x*~*i*~ values, where *x*~*i*~ is the *i*th measurement of the predictor and *y*~*i*~ the corresponding response.
+Before diving into the details of the different tests, we need to present the *ANOVA* table, which is used to break down the variation in the response variable into the model’s components: the explanatory variables and the error term.
 
-To use the Theil--Sen regression, one has to install the package `mblm` ("median-based linear models"):
+### ANOVA {#sec-regression-anova}
+
+**An**alysis **o**f **Va**riance is a collection of methods that calculate the variation of different model components. The goal of a model is to explain the *total variation* in the response variable as effectively as possible. Everything the explanatory variables help to describe is called the *explained variation*, and what the model fails to explain (the remaining error) is the *unexplained variation*.
+
+$$
+\underbrace{Y}_\text{total variation} = \underbrace{\beta_0 + \beta_1 \cdot X}_\text{explained variation} + \underbrace{\mathbf{\varepsilon}}_\text{unexplained variation}
+$$ {#eq-variation-components}
+
+@eq-variation-components shows that the total variation is the sum of the explained and unexplained variation, which is also reflected in the formulas for each component. Each component is calculated as follows:
+
+$$
+  \text{total variation} = SST = \Sum{n}(Y_i - \bar{Y})^2
+$$
+This corresponds to the numerator for the variance of $Y$. The total variation describes how much variation exist if we were to use the mean of $Y$ as the model.
+
+$$
+  \text{unexplained variation} = SSE = \Sum{n}(Y_i - \hat{Y_i})^2
+$$
+
+We have previously used SSE as a measure of model error (see @eq-sse), describing the variation of the observed and estimated value.
+
+$$
+  \text{explained variation} = SSR = \Sum{n}(\hat{Y_i} - \bar{Y})^2
+$$
+
+SSR describes the variation between the model’s estimated values and the mean of $Y$. This can be interpreted as how much more variation the model explains compared to the mean, or simply, how much better the model is at explaining variation in $Y$ than only its mean.
+
+:::{.callout-note}
+Adding these all together we can simplify its sum as:
+$$
+  \Sum{n}(Y_i - \bar{Y})^2 = \Sum{n}(\underbrace{\hat{Y_i}}_\text{positive estimates} - \bar{Y})^2 + \Sum{n}(Y_i - \underbrace{\hat{Y_i}}_\text{negative estimates})^2
+$$
+where the positive and negative estimates cancel each other out to produce the left hand side.
+:::
+
+We can also visualize this relationship in a stacked bar chart. The total height of the bar is SST, while the different segments show how much of the total variation is explained or unexplained in a given model.
+
+```{r}
+#| fig-cap: Visualization of the different sources of variation
+#| fig-height: 3
+#| fig-width: 5 
+#| echo: false
+
+anovaTable <- anova(simpleModel) |> 
+  rownames_to_column(var = "Source") |> 
+  mutate(Source = factor(Source, levels = Source)) |> 
+  mutate(
+    Source = if_else(Source != "Residuals", "Explained", "Unexplained")
+  ) |> 
+  group_by(Source) |> 
+  summarize(
+    `Sum Sq` = sum(`Sum Sq`)
+  ) |> 
+  ungroup()
+
+ggplot(anovaTable, aes(x = "Total Variation", y = `Sum Sq`, fill = Source)) +
+  geom_bar(width = 0.75, stat = "identity", position = "stack", color = "black") +
+  theme_minimal() +
+  theme(
+    panel.grid.major.x = element_blank()
+  ) +
+  labs(x = "",
+       y = "Sum of Squares") +
+  scale_fill_manual("Variation", values = c("steelblue", "#d9230f"))
+```
+
+#### ANOVA Table {#sec-regression-anova-table}
+
+An ANOVA table is a way to efficiently summarize these components and show additional information, such as *degrees of freedom* ($df$) for each component and *mean squares*.
+
+Degrees of freedom describe how many slope parameters are estimated for each part^[Degrees of freedom actually describe how many pieces of independent information are available for a calculation. Think back to the calculation of sample standard deviation, where the degrees of freedom are $n - 1$, the number of observations minus 1, because we estimate the mean when calculating the standard deviation.] and mean squares show the average variation per degree of freedom, $\frac{SS}{df}$.
 
 ```{r}
 #| echo: false
-library(mblm)
+#| tbl-cap: Simple ANOVA table
+#| tbl-cap-location: top
+#| label: tbl-anova-example
+
+anovaTable <- 
+  tibble(
+    Source = c("Model (Regression)", "Error", "Total"),
+    DF = c("$df_R = k$", "$df_E = n - (k + 1)$", "$df_T = n - 1$"),
+    `Sum of Squares` = c(
+      "$SSR$",
+      "$SSE$",
+      "$SST$"
+    ),
+    `Mean Square` = c("$MSR = \\frac{SSR}{df_R}$", "$MSE = \\frac{SSE}{df_E}$", "")
+  )
+
+kable(anovaTable, format = "markdown", booktabs = TRUE, escape = FALSE, col.names = c("Source", "DF", "Sum of Squares", "Mean Square"), parse = TRUE) 
 ```
+
+A simple ANOVA table like @tbl-anova-example shows only the three main components, but different software may display other breakdowns by default. In a multiple linear regression model, it is common to further divide the explained variation, for example into *sequential sums of squares* (@sec-seq-ss).
+
+Using the different sources of variation, we can calculate tests for the whole model or parts of it using various F-tests, while the individual parameter estimates and their associated standard errors can be used in tests for individual slope parameters.
+
+### F-test for the Model
+
+In linear regression, an F-test for the entire model is a good starting point to determine whether at least one slope parameter is significant. We examine the hypotheses:
+
+\begin{align*}
+H_0&: \beta_1 = \beta_2 = \beta_3 = \cdots = \beta_k = 0\\
+H_a&: \text{At least one of } \beta_j \text{ in } H_0 \text{ is different from } 0
+\end{align*}
+
+If at least one slope parameter is significant, it means there is at least one variable that contributes some explained variation, hence the model is better than using just $\bar{Y}$. The test statistic examines the relationship between explained and unexplained variation via their mean squares:
+
+$$
+F_{test} = \frac{SSR / k}{SSE / (n - (k+1))} = \frac{MSR}{MSE} 
+$$
+
+The test statistic follows an *F-distribution* governed by two degrees of freedom: $df_1$ from the numerator and $df_2$ from the denominator in the calculation, i.e., the model and error degrees of freedom respectively. If $H_0$ is true, the test statistic will be 0, while if $H_a$ is true, the test statistic will be a large positive number. Since both mean squares are positive, the ratio will always be positive, and we can reject $H_0$ if the test statistic is sufficiently far from 0.
 
 ```{r}
-#| eval: false
-install.packages("mblm")
+#| fig-cap: Different F-distributions and their degrees of freedom
+#| fig-height: 4
+#| fig-width: 7
+#| echo: false
 
-library(mblm)
+# Create a function to generate different F-distributions
+generateFdistribution <- function(df1, df2, n = 1000) {
+  x <- seq(0, 5, length.out = n)  
+  y <- df(x, df1, df2)  
+  tibble(x = x, y = y, df1 = df1, df2 = df2)  
+}
+
+# Create a list of different degrees of freedom
+dfs <- list(c(5, 30), c(10, 100), c(20, 50), c(30, 300))
+
+# Generate data
+Fdistributions <- dfs |>
+  purrr::map_df(~generateFdistribution(.x[1], .x[2]), .id = "Distribution") |>
+  mutate(Distribution = paste0("df1 = ", df1, ", df2 = ", df2))
+
+# Plot the F-distributions using ggplot2
+ggplot(Fdistributions) + 
+  aes(x = x, y = y, color = Distribution) +
+  geom_line(linewidth = 1) +
+  labs(
+    x = "F-value",
+    y = "Density",
+    color = "Degrees of Freedom"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(hjust = 0.5, size = 14, face = "bold"),
+    legend.position = "right",
+    legend.title = element_text(face = "bold")
+  ) +
+  scale_color_manual(values = c("steelblue", "#d9230f", "goldenrod", "black"))
 ```
 
-The function performing the regression is itself called `mblm`. A note of caution: its data argument, for some reason, is not called `data` but `dataframe`. Let us apply it to set 3 in the Anscombe dataset (the one with the single strong outlier):
+Using the output from `summary()`, we can find the result of the F-test at the bottom row.
 
 ```{r}
-#| warning: false
-mblm(y ~ x, dataframe = filter(ans_long, set == "3")) |> summary()
+
+summary(simpleModel)
+
 ```
 
-As seen, the predicted intercept and slope are no longer 3 and 0.5, but 4 and 0.35 instead. Also, in the regression table above, the median absolute deviation (MAD) of the parameters is reported instead of their standard error, as the MAD is a non-parametric measure of spread.^[The median absolute deviation (MAD) over a set of data points $x_i$ is defined as $\text{MAD} = \text{median}(|x_i - \text{median}(x)|)$, where $\text{median}(x)$ is the median of the data.] The p-values (`Pr(>|V|)`) in the table are like those in the regression tables from applying `summary` to `lm`---however, since Theil--Sen regression is a non-parametric method, these p-values are based on a Wilcoxon rank sum test instead of a t-test.
+`F-statistic: 5.278 on 1 and 36 DF,  p-value: 0.02752` the p-value can be interpreted as we would any hypothesis test, comparing it against the chosen significance level (**chosen before estimating the model!**). Since the p-value is less than 5 percent, we can reject $H_0$ and conclude that at least one of the variables is associated with the response variable.^[If we had made a different decision (not rejecting the null hypothesis), it would not be relevant to continue with the analysis, or at least the remaining analysis should focus on investigating why a linear regression model we expect to show a relationship based on pairwise scatter plots does not show it collectively.]
 
-We can visualize the Theil--Sen regression alongside the least-squares regression, for a better comparison of what they do:
+### t-test for individual parameters
+
+Even though the F-test for the model and the individual t-test for the slope is the same test in a simple linear regression, this is not the case for a multiple regression model. As such it is not appropriate to look at the ANOVA table when we want to examine individual parameters. Instead, we should use the coefficient table from the `summary()` output.
+
+Formally, the hypotheses are:
+
+$$
+\begin{aligned}
+H_0 &: \beta_j = 0\\
+H_a &: \beta_j \ne 0
+\end{aligned}
+$$
+
+where $j$ is one of the slope parameters in the model.
+
+The test statistic is calculated from the estimated slope parameter and its standard error:
+
+$$
+t_{test} = \frac{b_j - 0}{s_{b_j}}
+$$
+
+The test statistic follows a t-distribution under $H_0$ with $n - (k + 1)$ degrees of freedom.
+
+In R, t-tests are included in the coefficient table, which we can extract from the `summary()` object using `coef()`.
 
 ```{r}
-leastSquaresFit <- lm(y ~ x, data = filter(ans_long, set == "3"))
-TheilSenFit <- mblm(y ~ x, dataframe = filter(ans_long, set == "3"))
+#| tbl-cap: Coefficient table for a model with associated t-tests for individual parameters
+#| tbl-cap-location: top
+#| label: tbl-coef-example
 
-ans_long |>
-  filter(set == "3") |>
-  mutate(`least squares` = predict(leastSquaresFit),
-         `Theil-Sen` = predict(TheilSenFit)) |>
-  pivot_longer(cols = c("least squares", "Theil-Sen"),
-               names_to = "type", values_to = "prediction") |>
-  ggplot() +
-  geom_point(aes(x = x, y = y), color = "steelblue") +
-  geom_line(aes(x = x, y = prediction), color = "goldenrod") +
-  facet_grid(. ~ type) +
-  theme_bw()
+summary(simpleModel) |> 
+  coef() |> 
+  round(4) |> 
+  kable(format = "markdown",
+        col.names = 
+          c(
+            "Variable", 
+            "Estimate", 
+            "Std. Error", 
+            "t-value", 
+            "p-value"
+          ), 
+        parse = TRUE) |> 
+  kable_styling("striped")
 ```
 
-The Theil--Sen regression correctly recognizes the outlier for what it is, and remains unaffected by it.
+In @tbl-coef-example, we see that the p-value for the slope is less than 5 percent which means we can reject $H_0$ at the 5% significance level, meaning the variable has a significant effect on the response variable.
 
-:::{.callout-note}
-In the code above, we relied on a function called `predict`. This simply returns the model-predicted results for each value of the predictor:
+## Simple evaluation metrics {#sec-r-square}
 
-```{r}
-predict(leastSquaresFit)
-predict(TheilSenFit)
-```
+Just because a model is appropriate, meets model assumptions, and contains significant parameters does not mean it is the best model that can explain the response or even that it is a good one. With the help of various evaluation metrics, we can get an overview of how good the model is.
+
+The *coefficient of determination* ($R^2$) describes what proportion of the total variation is explained by the model’s explanatory variables. With this description, we can calculate $R^2$ as:
+
+$$
+R^2 = \frac{SSR}{SST} = 1 - \frac{SSE}{SST}
+$$
+Given that this is a proportion of the total variation its values range from 0 (model is useless at explaining the response) to 1 (model perfectly explains the response) and is interpreted in percent.
+
+The coefficient of determination is called *multiple R-squared* in R and can be found at the second to last line in the `summary()` output. `Multiple R-squared:  0.1279` is interpreted as approximately 13 percent of the total variation in snail shape is explained by the snail size, which is a very low value.
+
+:::{.callout-important}
+Good models typically have an $R^2$ value above 0.5, meaning that at least half of the total variation is explained by the model. However, this is not a strict rule and depends on the context of the analysis. In some fields, such as social sciences, an $R^2$ value of 0.3 or even lower may be considered acceptable.
+
+Whenever we get a low coefficient, we should consider the model structure and whether it is appropriate for the data. We can also consider adding more explanatory variables to the model, transforming existing variables, or using a different type of model altogether.
+
+Sometimes there is just too much variation in the data that cannot be explained by any measured variable, and the best model we can produce is still a poor one. In these cases, we should be careful not to add too many variables or transformations that do not significantly improve the model's predictive power.
 :::
 
+## Predictions {#sec-predictions}
+
+We can also use the estimated model to *predict* new values of the response variable for new observations. From the estimated regression line, we substitute each variable with the observation’s actual value and get a simple sum that describes the response variable’s value on the line.
+
+Predictions involve estimating the value of $Y$ given observed values of $X$ using the estimated regression line. These predictions will fall along the line, which further motivates that the model needs to be appropriate and good. We don’t want a prediction in one area to be more accurate than a prediction in another, or for the regression line to generally be a poor representation of the response variable. The model is based on a specific *domain*, the observed values of $X$, and predictions should be made within this domain. 
+
+There are certain cases, such as in time series analysis, where predictions are made outside the domain, but there is a time dependency that enables these *extrapolations*. In "normal" regression, we should avoid extrapolating the regression line outside the domain.
+
+### Mean of Y for given $X$
+
+If we are interested in the average value of the response variable for all new observations with given values of $X$, we can estimate $\mu_{Y|X_0}$ where $X_0$ contains values for the new observation. We use the estimated regression model and calculate a point prediction of the response variable with the help of `predict()` which substitutes the values of $X_0$ into the regression equation:
+
+```{r}
+
+x0 <- 
+  tibble(
+    size = 23
+  )
+
+predict(
+  simpleModel, 
+  newdata = x0,
+  interval = "confidence"
+  )
+
+```
+
+The interval estimate for a mean becomes a confidence interval because we are making inference of **all** possible new observations with the shell size of 23 units. 
+
+### Individual prediction of Y for given $X$
+
+If we are instead interested in a single value of $Y$ with given values of $X$, we can estimate $Y_{X_0}$. Since the prediction uses the same estimated model the point estimate will be the same as the mean prediction, but the interval estimate will be wider because it accounts for the additional uncertainty of predicting a single value rather than the mean of all possible values. We can use `predict()` with the `interval` argument set to `"prediction"`:
+
+```{r}
+predict(
+  simpleModel, 
+  newdata = x0,
+  interval = "prediction"
+  )
+```
+
+The interval estimate of an individual observation becomes a prediction interval because we only account for one new observation with the shell size of 23 units.
 
 ## Exercises
 
-1. The file [`plant_growth_rate.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/plant_growth_rate.zip) contains individual plant growth data (mm/week), as a function of soil moisture content. Do plants grow better in more moist soils? Visualize the relationship, then perform and interpret a linear regression using the parametric (least squares) method. Use diagnostic plots to check whether the assumptions of the model are satisfied.
+The file [`plant_growth_rate.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/plant_growth_rate.zip) contains individual plant growth data (mm/week), as a function of soil moisture content. 
 
-2. It is difficult to measure the height of a tree. By contrast, the diameter at breast height (DBH) is easy to measure. Can one infer the height of a tree by measuring its DBH? The built-in dataset `trees` contains DBH data (labeled `Girth`), as well as measured height and timber volume of 31 felled black cherry trees. You can ignore timber volume, and focus instead on how well DBH predicts tree height. Plot the relationship, perform least-squares linear regression, and create diagnostic plots. Interpret the results, and summarize how reliable it is to use DBH to infer tree height.
+1. Investigate the type and scale of the variables.
+2. Summarize descriptive statistics for each variable.
+3. Visualize the distribution of each variable.
+4. Create a scatter plot showing the relationship between the two variables in the sample. Interpret it based on the four key pieces of information a scatter plot can provide.
+5. Summarize your observations and justify whether or not you think a simple linear regression model is suitable.
+6. Fit a linear regression model using `lm()` and interpret the regression coefficients.
+7. Create diagnostic plots to check whether the 
+assumptions of the model are satisfied.
+8. Perform an F-test for the model and interpret the result. Do the same for a t-test for the slope parameter.
+9. Summarize your findings along with the coefficient of determination and determine whether or not the model is suitable for predicting plant growth based on soil moisture content.
 
-3. The Galápagos land snail data (@sec-snail) contain seven species. Apart from *Naesiotus nux* and *N. galapaganus* that were analyzed in this chapter, it also has *N. calvus*, *N. invalidus*, *N. rugulosus*, *N. unifasciatus*, and *N. ustulatus*. Perform the analysis of regressing shell shape against shell size for each of these, using least-squares linear regression. Use diagnostic plots to interpret the regression results.
+It is difficult to measure the height of a tree. By contrast, the diameter at breast height (DBH) is easy to measure. Can one infer the height of a tree by measuring its DBH? The built-in dataset `trees` contains DBH data (labeled `Girth`), as well as measured height and timber volume of 31 felled black cherry trees. You can ignore timber volume, and focus instead on how well DBH predicts tree height. 
 
-4. Repeat exercises 1-3 using Theil--Sen regression instead of ordinary least squares. (Hint for interpreting the results: this method makes no assumptions about the normality of the residuals.)
+1. Repeat steps 1-9 from the previous exercise using the `trees` dataset.
+2. Predict the height of a tree with a DBH of 20 cm, and interpret a confidence interval for the mean height of all trees with that DBH.
+
