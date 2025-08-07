@@ -175,7 +175,7 @@ pbinom(q = 2, size = 10, prob = 0.235, lower.tail = FALSE)
 
 The probability of finding at least 3 snails of the *N. calvus* species is approximately `r (pbinom(q = 2, size = 10, prob = 0.235, lower.tail = FALSE)*100) |> round(2)`%.
 
-### Continuous distributions
+### Continuous distributions {#sec-continuous-distributions}
 When the random variable is continuous, the number of unique values becomes infinitely many. The probability of getting an exact number down to the last decimal spot is infinitesimally small because the number of total outcomes is infinitely large, so we need to think about calculating probabilities a bit differently.
 
 Instead of calculating the probability of a specific value of X, we see it solely as a point on a function or curve. The *density function* describes the shape of the continuous distribution and probabilities are calculated by the area under the curve. Within mathematics this would be done by integrating the function between two set points, but the distributions used in statistics tend to have relatively complex functions hence the need of a computer program.
