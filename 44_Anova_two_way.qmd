@@ -44,7 +44,7 @@ $$
 + \beta_1 \cdot (\text{dose is 1})_i
 + \beta_2 \cdot (\text{dose is 2})_i \\ &
 + \beta_3 \cdot (\text{supplement is VC})_i
-+ \epsilon_i
++ \varepsilon_i
 \end{split}
 $$ {#eq-anova2way-noint}
 where the coefficients $\beta_1$, $\beta_2$, and $\beta_3$ are all multiplied by indicator variables which take on the value 1 if a data point belongs in that category and 0 otherwise. As seen from the ANOVA table above, both dosage and supplement type appear to have a real effect on tooth growth.
@@ -70,7 +70,7 @@ $$
 + \beta_3 \cdot (\text{supplement is VC})_i \\ &
 + \beta_4 \cdot (\text{dose is 1})_i \cdot(\text{supplement is VC})_i \\ &
 + \beta_5 \cdot (\text{dose is 2})_i \cdot(\text{supplement is VC})_i
-+ \epsilon_i
++ \varepsilon_i
 \end{split}
 $$ {#eq-anova2way-int}
 where $\beta_4$ and $\beta_5$ are multiplied by products of indicator variables. In other words, the $\beta_4$ term only shows up in the equation if data point $i$ both has a dose of 1 mg/day and a supplement of VC, and $\beta_5$ only appears if data point $i$ has a 2 mg/day dose and VC supplement.

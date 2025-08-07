@@ -31,9 +31,9 @@ book:
       chapters:
       - 40_Intro_adv_statistics.qmd
       - 41_Linear_regression.qmd
-      - 42_Anova.qmd
-      - 43_Anova_two_way.qmd
-      - 44_Nonlinear_regression.qmd
+      - 42_Multiple_and_Nonlinear_regression.qmd
+      - 43_Anova.qmd
+      - 44_Anova_two_way.qmd
       - 45_Intro_map.qmd
       - 46_Multiple_analysis.qmd
     - part: "References"

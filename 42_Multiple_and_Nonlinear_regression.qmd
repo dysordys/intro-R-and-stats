@@ -1,4 +1,209 @@
-# More general linear models; nonlinear regression {#sec-nls}
+# More general linear models; nonlinear regression UNDER CONSTRUCTION {#sec-nls}
+
+**given that all other variables are held constant**. This last part of the interpretation is important to include, as a change in multiple variables would result in a different change in the response variable relative to each coefficient.
+
+### Sequential Sums of Squares {#sec-seq-ss}
+
+The calculations for an ANOVA table are performed automatically in R when we use `lm()`, and we can extract the table from the model object using `anova()` (see @tip-lm-objects).
+
+```{r}
+#| tbl-cap: ANOVA table from R
+#| tbl-cap-location: top
+#| label: tbl-anova-example-R
+
+anova(simpleModel) |> 
+  round(4) |> 
+  kable() |> 
+  kable_styling("striped")
+```
+
+By default, R breaks down the model’s sum of squares (SSR) into the individual explanatory variables using sequential (also called conditional) sums of squares. A sequential sum of squares describes how much variation an explanatory variable contributes given that the model already includes other explanatory variables.
+
+The order presented in @tbl-anova-example-R is the order in which variables are added to the model. For example, the second row shows $SS(\text{bill\_depth\_mm} | \text{species})$, meaning bill depth contributes `r anova(simpleModel)[2,2] |> round(4)` additional unique explained variation in the response variable that species has not already explained. The third row shows $SS(\text{flipper\_length\_mm} | \text{species}, \text{bill\_depth\_mm})$, i.e., how much additional unique variation flipper length explains in a model that includes bill depth and species.
+
+Mathematically, the sequential sum of squares is calculated as the difference in either SSE or SSR between two models—one without the added variable and one with it included. Suppose we want to add variable $X^*$ to a model that already has $k$ other variables, then the calculation is:
+
+$$
+\begin{aligned}
+SS(X^*|X_1, \ldots, X_k) &= SSE_{X_1, \ldots, X_k} - SSE_{X_1, \ldots, X_k, X^*} = \\
+&= SSR_{X_1, \ldots, X_k, X^*} - SSR_{X_1, \ldots, X_k}
+\end{aligned}
+$$ {#eq-seq-ss}
+
+Note that SSR increases with each additional variable added to the model, while SSE always decreases. Variation must always be positive, hence we calculate $SSE_{reduced} - SSE_{full}$ or $SSR_{full} - SSR_{reduced}$.
+
+Sequential sums of squares are affected by the order in which variables are added to the model. Let’s change the order of the explanatory variables when fitting the model:
+
+```{r}
+#| tbl-cap: Different order of model variables
+#| tbl-cap-location: top
+#| label: tbl-anova-example-sex
+
+model <- lm(formula = bill_length_mm ~ sex + ., data = modelData)
+
+anova(model) |> 
+  round(4) |> 
+  kable() |> 
+  kable_styling("striped")
+```
+
+In @tbl-anova-example-sex we see that $SS(\text{sex}) = `r anova(model)[1,2] |> round(4)`$, which is significantly higher than $SS(\text{sex}|\text{species}, \text{bill\_depth\_mm}, \text{flipper\_length\_mm}, \text{body\_mass\_g}) = `r anova(simpleModel)[5,2] |> round(4)`$ from @tbl-anova-example-R. The variable sex contributes a lot of variation when it is alone in a model, but when added to a model that already includes other variables, it does not contribute as much unique information. This means that the variation explained by the variable also appears to be present in the other variables. We will revisit this observation in a later chapter.
+
+One thing that remains the same in both tables is SSE. We have included the same variables in both models, which means SST, SSR, and SSE are overall the same. The sum of all sequential sums of squares should still equal SSR regardless of the order of variables, and due to the additive property of variation, SST and SSE have not changed either.
+
+### Partial F-test for groups of parameters
+
+Sometimes we are interested in examining parts of the model, e.g. a group of slope parameters, whether several variables together contribute explained variation to the model. Instead of examining all slope parameters, we now test a subset which is reflected in the hypothesis:
+
+\begin{align*}
+H_0&: \beta_1 = \beta_2 = \beta_3 = \cdots = \beta_s = 0\\
+H_a&: \text{At least one of } \beta_j \text{ in } H_0 \text{ is different from } 0
+\end{align*}
+
+where $s$ is the number of parameters being tested.
+
+The test statistic for a partial F-test requires a full model (denoted $_F$) and a reduced model (denoted $_R$). The full model includes all variables, while the reduced model assumes $H_0$ is true and excludes the variables being tested. We can use either SSR or SSE to calculate how much explained variation is lost between the two models, following the same principle as @eq-seq-ss.
+
+$$
+F_{test} = \frac{(SSR_F - SSR_R) / s}{SSE_F / (n - (k+1))} = \frac{(SSE_R - SSE_F) / s}{SSE_F / (n - (k+1))}
+$$ {#eq-partial-f}
+
+The test statistic still follows an F-distribution with $s$ and $n - (k+1)$ degrees of freedom.
+
+#### Shortcut for Partial F-tests
+
+Using @eq-seq-ss, @eq-partial-f can be reformulated in a third way that simplifies our analysis process. We can rewrite the difference in explained variation between the full and reduced models as a sequential sum of squares. For example, we may want to investigate whether the variable species is associated with the response variable. Since that variable is transformed into two indicator variables, the hypotheses involve two slope parameters.
+
+\begin{align*}
+H_0&: \beta_{Chinstrap} = \beta_{Gentoo} = 0\\
+H_a&: \text{At least one of } \beta_j \text{ in } H_0 \text{ is different from } 0
+\end{align*}
+
+The reduced model is created assuming $H_0$ is true, i.e., $\beta_{Chinstrap} = \beta_{Gentoo} = 0$, and the explained variation for the two models is denoted:
+
+$$
+\begin{aligned}
+  SSR_{R} &= SSR_{bill\_depth\_mm, flipper\_length\_mm, body\_mass\_g, sex} \\
+  SSR_{F} &= SSR_{bill\_depth\_mm, flipper\_length\_mm, body\_mass\_g, sex, species}
+\end{aligned}
+$$
+
+We can rewrite the numerator in @eq-partial-f as:
+
+$$
+SS(species|bill\_depth\_mm, flipper\_length\_mm, body\_mass\_g, sex)
+$$
+
+In the ANOVA tables presented earlier, we can obtain this sum of squares directly if species is added as the last variable in the model.
+
+```{r}
+#| tbl-cap: ANOVA table from a model where species is added last
+#| tbl-cap-location: top
+#| label: tbl-anova-example-species
+
+model <- lm(bill_length_mm ~ bill_depth_mm + flipper_length_mm + body_mass_g + sex + species, data = modelData)
+
+anova(model) |> 
+  round(4) |> 
+  kable() |> 
+  kable_styling("striped")
+```
+
+An ANOVA table with sequential sums of squares calculates a partial F-test for each variable (and its parameter(s)), examining whether the variable contributes a significant increase in explained variation to a model that already includes the variables above. @tbl-anova-example-species now calculates the partial F-test for species ($F_{test} = `r anova(model)[5, 4] |> round(4)`$), which we were interested in, and we can directly interpret the p-value for the test ($p-value < 0.001$) as indicating that at least one of the slope parameters is significantly different from 0.
+
+If we conduct a partial F-test for **multiple variables**, we cannot use the p-values shown in the table, since the hypotheses involve more slope parameters/variables than the sequential sums of squares represent. Suppose we want to investigate whether species and sex together contribute to the model. The hypothesis test would then involve:
+
+$$
+\begin{aligned}
+H_0&: \beta_{sexMale} = \beta_{Chinstrap} = \beta_{Gentoo} = 0\\
+H_a&: \text{At least one of } \beta_j \text{ in } H_0 \text{ is different from } 0
+\end{aligned}
+$$
+
+The sequential sum of squares we want to use is denoted $SS(species, sex|bill\_depth\_mm, flipper\_length\_mm, body\_mass\_g)$, and we can calculate this value by summing the SS for the two variables from @tbl-anova-example-species:
+
+$$
+\begin{aligned}
+SS(species, sex|bill\_depth\_mm, flipper\_length\_mm, body\_mass\_g) = \\
+SS(species|bill\_depth\_mm, flipper\_length\_mm, body\_mass\_g, sex) + \\
+SS(sex|bill\_depth\_mm, flipper\_length\_mm, body\_mass\_g)
+\end{aligned}
+$$
+
+Alternatively, we can fit two models in R—the full and reduced—and read off SSE or sum SSR from the respective ANOVA tables.
+
+::: {.callout-important}
+If a parameter is not considered significant, it is a justification for removing the variable. We fit a reduced model and begin a new analysis. If a variable is removed, the other parameter estimates will change, and interpretations and inference need to be updated.
+:::
+
+Because SSR always increases as more variables are added to a model, we need to adjust the metric to compare models of different sizes. When we want to compare models of different sizes, we should instead look at the *adjusted coefficient of determination* ($R^2_{a}$) to see which model is best. An improved $R^2_{a}$ means the model has removed unnecessary complexity.
+
+$$
+R^2_a = 1 - \frac{SSE / (n - (k+1))}{SST / (n - 1)}
+$$
+
+## A non-parametric method: Theil--Sen regression {#sec-theilsen}
+
+The method of linear regression discussed so far is called *least-squares regression*, due to the fact that it relies on minimizing the sum of squared residuals $\sum_i \epsilon_i^2$. A non-parametric alternative to this method is *Theil--Sen regression*. This is generally much more robust against outliers than the least-squares method. It also does not require that the residuals are normally distributed. There are also two disadvantages, the main one being that it can only be used for simple regression (one single predictor). It can also be slower to compute, but with today's computers, this is rarely an issue.
+
+The way Theil--Sen regression works is simple:
+
+* A line is fit between all possible pairs of points, and their slopes are recorded.
+* The overall regression slope *m* is the median of all these pairwise slopes.
+* The intercept *b* is the median of all *y*~*i*~ -- *m* *x*~*i*~ values, where *x*~*i*~ is the *i*th measurement of the predictor and *y*~*i*~ the corresponding response.
+
+To use the Theil--Sen regression, one has to install the package `mblm` ("median-based linear models"):
+
+```{r}
+#| echo: false
+library(mblm)
+```
+
+```{r}
+#| eval: false
+install.packages("mblm")
+
+library(mblm)
+```
+
+The function performing the regression is itself called `mblm`. A note of caution: its data argument, for some reason, is not called `data` but `dataframe`. Let us apply it to set 3 in the Anscombe dataset (the one with the single strong outlier):
+
+```{r}
+#| warning: false
+mblm(y ~ x, dataframe = filter(ansLong, set == "3")) |> summary()
+```
+
+As seen, the predicted intercept and slope are no longer 3 and 0.5, but 4 and 0.35 instead. Also, in the regression table above, the median absolute deviation (MAD) of the parameters is reported instead of their standard error, as the MAD is a non-parametric measure of spread.^[The median absolute deviation (MAD) over a set of data points $x_i$ is defined as $\text{MAD} = \text{median}(|x_i - \text{median}(x)|)$, where $\text{median}(x)$ is the median of the data.] The p-values (`Pr(>|V|)`) in the table are like those in the regression tables from applying `summary` to `lm`---however, since Theil--Sen regression is a non-parametric method, these p-values are based on a Wilcoxon rank sum test instead of a t-test.
+
+We can visualize the Theil--Sen regression alongside the least-squares regression, for a better comparison of what they do:
+
+```{r}
+leastSquaresFit <- lm(y ~ x, data = filter(ansLong, set == "3"))
+TheilSenFit <- mblm(y ~ x, dataframe = filter(ansLong, set == "3"))
+
+ansLong |>
+  filter(set == "3") |>
+  mutate(`least squares` = predict(leastSquaresFit),
+         `Theil-Sen` = predict(TheilSenFit)) |>
+  pivot_longer(cols = c("least squares", "Theil-Sen"),
+               names_to = "type", values_to = "prediction") |>
+  ggplot() +
+  geom_point(aes(x = x, y = y), color = "steelblue") +
+  geom_line(aes(x = x, y = prediction), color = "goldenrod") +
+  facet_grid(. ~ type) +
+  theme_bw()
+```
+
+The Theil--Sen regression correctly recognizes the outlier for what it is, and remains unaffected by it.
+
+:::{.callout-note}
+In the code above, we relied on a function called `predict`. This simply returns the model-predicted results for each value of the predictor:
+
+```{r}
+predict(leastSquaresFit)
+predict(TheilSenFit)
+```
+:::
 
 ## Combining categorical and continuous variables in linear models {#sec-ancova}
 
@@ -54,7 +259,7 @@ $$
 + \beta_2 \cdot (\text{Type is Mississippi})_i \\ &
 + \beta_3 \cdot (\text{Treatment is chilled})_i \\ &
 + \beta_4 \cdot (\text{Type is Mississippi})_i \cdot(\text{Treatment is chilled})_i
-+ \epsilon_i
++ \varepsilon_i
 \end{split}
 $$ {#eq-linreg-multiway}
 where $(\text{conc})_i$ is a continuous predictor and not an indicator variable---that is, it takes on the actual value of the CO~2~ concentration in observation $i$. By contrast, $(\text{Type is Mississippi})_i$ and $(\text{Treatment is chilled})_i$ are indicator variables that take on the value 1 if data point $i$ belongs in their category and 0 otherwise.
@@ -92,7 +297,7 @@ $$
 + \beta_6 \cdot (\text{Type is Mississippi})_i \cdot (\text{Treatment is chilled})_i \\ &
 + \beta_7 \cdot (\text{conc})_i \cdot (\text{Type is Mississippi})_i
 \cdot (\text{Treatment is chilled})_i
-+ \epsilon_i
++ \varepsilon_i
 \end{split}
 $$ {#eq-linreg-multiway-2}
 

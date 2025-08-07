@@ -1,5 +1,64 @@
 # The Kruskal--Wallis test and one-way ANOVA {#sec-ANOVA}
 
+## Indicator Variables {#sec-indicator-variable}
+A regression model cannot directly handle qualitative variables, such as $\beta_4 \cdot \text{Species}$, because the variable’s values represent categories, not values from a numerical scale. This applies even if the qualitative variable is numerically coded. A slope parameter describes the constant change in the response variable when the corresponding explanatory variable increases by one unit, but a qualitative variable usually has no unit and no constant changes between adjacent values. Instead, we must transform the qualitative variable into numeric form using *indicator variables* (also called dummy variables).
+
+As the name suggests, indicator variables are used to indicate which category an observation has for the qualitative variable. We need to create a limited number of indicator variables that clearly show exactly one category per observation.
+
+Assume a qualitative variable has 3 categories:
+$$
+\begin{bmatrix}A\\B\\C\end{bmatrix}
+$$
+We can start by creating an indicator variable for category A that takes the value 1 if the observation has category A, and 0 otherwise:
+
+$$
+\begin{bmatrix}A\\B\\C\end{bmatrix} = \begin{bmatrix}1\\0\\0\end{bmatrix}
+$$
+With only one indicator variable, we cannot clearly identify whether an observation has category B or C, since both have the value 0. So we add another indicator variable that takes the value 1 if the observation has category B, and 0 otherwise:
+
+$$
+\begin{bmatrix}A\\B\\C\end{bmatrix} = \begin{bmatrix}1 & 0\\0 & 1\\0 & 0\end{bmatrix}
+$$
+It might seem natural to create an indicator for the last category as well, but it’s not necessary. If both indicators are 0, we’ve successfully identified that the observation has category C, and another variable would just be redundant.
+
+The last category also becomes our *reference category*, the category against which the effects of the other indicator variables are interpreted. When interpreting slope parameters for indicator variables—e.g., the indicator for A—the change in $Y$ is measured when $X = A$ compared to when $X = C$.
+
+::: {.callout-important}
+Mathematically, creating three indicator variables would model a perfect relationship and cause singularity issues in the calculations.
+:::
+
+In general, we create $\text{number of categories} - 1$ indicator variables for each qualitative variable to be included in a regression model. The choice of reference category is arbitrary, but typically the first or last category is used.
+
+To complete the modeling from @eq-penguin-quant, we’ll include Species and Sex in the model. We need to create two and one indicator variables respectively:
+
+\begin{align*}
+  Gentoo &= \begin{cases}
+            1 \quad \text{if species is Gentoo}\\
+            0 \quad \text{otherwise}
+        \end{cases}\\
+  Chinstrap &= \begin{cases}
+      1 \quad \text{if species is Chinstrap}\\
+      0 \quad \text{otherwise}
+  \end{cases}
+\end{align*}
+
+and
+
+\begin{align*}
+  Male &= \begin{cases}
+            1 \quad \text{if male}\\
+            0 \quad \text{otherwise}
+        \end{cases}
+\end{align*}
+
+to finally create the following model:
+
+$$
+\text{Bill Length} = \beta_0 + \beta_1 \cdot \text{Body Weight} + \beta_2 \cdot \text{Flipper Length} + \beta_3 \cdot \text{Bill Depth} + \beta_4 \cdot \text{Gentoo} + \beta_5 \cdot \text{Chinstrap} + \beta_6 \cdot \text{Male} + E
+$$ {#eq-penguin-full-simple}
+
+where Adelie and female act as the reference categories for each qualitative variable.
+
 ## The Kruskal--Wallis and Dunn tests
 
 The tools of  @sec-inference-comparison allow us to compare two groups of data. But what do we do when we have more than two groups? For example, we might wish to know how different treatments influence plant growth, as measured by dry weight. If there are two treatments, then there will be three (instead of two) groups, because the treatments will be compared with a control group which does not receive treatment.
@@ -139,10 +198,10 @@ Let us denote the `weight` of individual $i$ by $y_i$. We wish to predict this b
 
 $$
 y_i
-= \beta_0 + \beta_1 \cdot x_i + \epsilon_i
+= \beta_0 + \beta_1 \cdot x_i + \varepsilon_i
 $$ {#eq-aov1way-basic}
 
-On the surface, this is exactly the same equation as @eq-linreg. But there is one important difference: in an ANOVA, we give a different meaning to the $x_i$. **This variable should take on the value 1 if individual *i* is from the smaller island and the value 0 if it is from the larger island.** (It could also be the other way round; it does not matter as long as we choose one convention and stay consistent.) The $\epsilon_i$ are still the residuals, measuring the deviation of the points from the ideal prediction. What is the "ideal" prediction here? Well, without the $\epsilon_i$ term, @eq-aov1way-basic reads $y_i = \beta_0 + \beta_1 x_i$. If individual $i$ is from the larger island, $x_i = 0$, and we have $y_i = \beta_0$. So the intercept $\beta_0$ corresponds to the mean prediction for the weight of the birds in the larger island. Conversely, if individual $i$ is from the smaller island, then $x_i = 1$, and so $y_i = \beta_0 + \beta_1 \cdot 1 = \beta_0 + \beta_1$. In other words, $\beta_1$ is the *difference* in mean weight between the smaller and the larger island.
+On the surface, this is exactly the same equation as @eq-linreg. But there is one important difference: in an ANOVA, we give a different meaning to the $x_i$. **This variable should take on the value 1 if individual *i* is from the smaller island and the value 0 if it is from the larger island.** (It could also be the other way round; it does not matter as long as we choose one convention and stay consistent.) The $\varepsilon_i$ are still the residuals, measuring the deviation of the points from the ideal prediction. What is the "ideal" prediction here? Well, without the $\varepsilon_i$ term, @eq-aov1way-basic reads $y_i = \beta_0 + \beta_1 x_i$. If individual $i$ is from the larger island, $x_i = 0$, and we have $y_i = \beta_0$. So the intercept $\beta_0$ corresponds to the mean prediction for the weight of the birds in the larger island. Conversely, if individual $i$ is from the smaller island, then $x_i = 1$, and so $y_i = \beta_0 + \beta_1 \cdot 1 = \beta_0 + \beta_1$. In other words, $\beta_1$ is the *difference* in mean weight between the smaller and the larger island.
 
 We can see this in action by running `lm` and then `summary` on these data:
 
@@ -174,7 +233,7 @@ $$
 (\text{weight})_i
 = \beta_0
 + \beta_1 \cdot (\text{bird is from larger island})_i
-+ \epsilon_i
++ \varepsilon_i
 $$ {#eq-aov1way}
 
 What to do when there are more than two groups---say, in the `PlantGrowth` data where we have three? In that case, we have to introduce one more indicator variable. Say, we could have $(\text{group is trt1})_i$ and $(\text{group is trt2})_i$; the first is 1 if the observation is from treatment 1 (and 0 otherwise), and the second is 1 only if the observation is from treatment 2. If the observation is in the control, then both indicator variables are zero. We can thus write the following equation:
@@ -184,7 +243,7 @@ $$
 = \beta_0
 + \beta_1 \cdot (\text{group is trt1})_i
 + \beta_2 \cdot (\text{group is trt2})_i
-+ \epsilon_i
++ \varepsilon_i
 $$ {#eq-aov1way3group}
 
 We can get the usual statistics on them by using `summary`:
