@@ -102,7 +102,7 @@ If the p-value associated with the computed $\chi^2$ statistic (evaluated using 
 This use of the $\chi^2$-test is in practice very similar to the test for independence, but the main difference is what $H_0$ represents --- a specific distribution instead of independence --- and how the expected values are calculated.
 
 ## Exercises
-The material to be analyzed in these exercises is a collection of phosphorus levels in 4189 lakes from different parts of Sweden. The phosphorus levels have been divided into five different condition classes. The data set can be found via [`lake-phosphorus.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/lake-phosphorus.csv).
+The material to be analyzed in these exercises is a collection of phosphorus levels in 4189 lakes from different parts of Sweden. The phosphorus levels have been divided into five different condition classes. The dataset can be found via [`lake-phosphorus.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/lake-phosphorus.csv).
 
 This task aims to analyze the collected data from the Swedish lakes. What we want to investigate is whether there is a dependency between condition class and region.
 
