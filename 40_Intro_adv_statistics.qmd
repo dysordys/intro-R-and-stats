@@ -35,7 +35,7 @@ where:
 - $\varepsilon$ is the model's *error term*, the distance between the observed value of $Y$ and the model's estimated value $\hat{Y}$.
 
 :::{.callout-important}
-If multiple explanatory variables are assumed to affect the response variable, the linear model is extended with several $\beta_j$, one for each explanatory variable $X_j$. More on that in @sec-nls.
+If multiple explanatory variables are assumed to affect the response variable, the linear model is extended with several $\beta_j$, one for each explanatory variable $X_j$. More on that in @sec-adv-reg.
 :::
 
 ### Model assumptions {#sec-model-assumptions}
