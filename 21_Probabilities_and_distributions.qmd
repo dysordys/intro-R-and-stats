@@ -359,10 +359,6 @@ For the exercises we will return to the `iris` dataset seen in earlier chapters 
 #| message: FALSE
 #| warning: FALSE
 
-
-require(knitr, quietly = TRUE)
-require(kableExtra, quietly = TRUE)
-
 irisPop <- 
   tibble(
     species = iris$Species |> unique(),
