@@ -72,6 +72,9 @@ options(knitr.kable.NA = '', knitr.table.html.attr = "quarto-disable-processing=
 #' @param scaleLocation Boolean if a scale location graph should be added
 
 diagnosticPlots <- function(model, alpha = 1, bins = 10, scaleLocation = FALSE) {
+  if (model |> class() != "lm") {
+    stop("model must be an lm object")
+  }
   if (alpha < 0 | alpha > 1) {
     stop("alpha must be between 0 and 1")
   }

@@ -176,6 +176,116 @@ ToothGrowth |>
 Note that this test is skeptical about the role of the supplement type, and definitely thinks that the interaction between it and dosage is not different from what one might get by pure chance. This illustrates one problem with the test: it is not very powerful in detecting patterns, even when they are there. To make matters worse, there is no appropriate post-hoc test available in conjunction with the Scheirer--Ray--Hare test. For these reasons, its use is more restricted than of other non-parametric tests, like the Wilcoxon rank sum and Kruskal--Wallis tests. It is good to know about it as an option, but often one must rely on other methods, such as the parametric two-way ANOVA.
 
 
+## Combining categorical and continuous variables in linear models {#sec-ancova}
+
+So far we have used at most two predictors when dealing with linear models (`lm`). This was in @sec-SRH, where we looked the effects of two categorical variables, as well as their interaction. @sec-linreg introduced the idea of using a continuous, instead of a categorical, predictor. But we have not been combining these.
+
+In fact, one can build arbitrarily complicated linear models from an arbitrary combination of continuous and categorical variables, and their interactions. Let us consider the built-in `CO2` dataset as an example, which was already used before in an exercise (@sec-exercises-anova-two-way). Briefly, the data contain measurements from an experiment on the cold tolerance of the grass species [*Echinochloa crus-galli*](https://en.wikipedia.org/wiki/Echinochloa_crus-galli). The dataset has five columns: `Plant` (a unique identifier for each plant individual), `Type` (either `Quebec` or `Mississippi` depending on the origin of the plant), `Treatment` (whether the plant individual was `chilled` or `nonchilled` for the experiment), `conc` (ambient carbon dioxide concentration), and `uptake` (carbon dioxide uptake rate by the plant).
+
+```{r}
+#| message: false
+library(tidyverse)
+as_tibble(CO2)
+```
+
+We can plot the observed distributions of CO~2~ uptake rates for each type and treatment:
+
+```{r}
+as_tibble(CO2) |>
+  ggplot(aes(x = 0, y = uptake)) +
+  geom_boxplot(color = "steelblue", fill = "steelblue",
+               alpha = 0.2, outlier.shape = NA) +
+  geom_jitter(color = "steelblue", alpha = 0.5, width = 0.05) +
+  facet_grid(Type ~ Treatment) +
+  labs(y = "uptake rate") +
+  theme_bw() +
+  theme(axis.title.x = element_blank(), # The x-axis is meaningless here,
+        axis.ticks.x = element_blank(), # so remove title, tick marks,
+        axis.text.x = element_blank())  # and labels from it
+```
+
+This, however, is only part of the story, as becomes obvious if we also plot the ambient CO~2~ concentrations (`conc`) along the x-axis:
+
+```{r}
+as_tibble(CO2) |>
+  ggplot(aes(x = conc, y = uptake)) +
+  geom_point(color = "steelblue", alpha = 0.8) +
+  facet_grid(Type ~ Treatment) +
+  labs(x = "concentration", y = "uptake rate") +
+  theme_bw()
+```
+
+We see that there is also a clear, saturating relationship between CO~2~ concentration and uptake rates that is definitely not linear. This does not mean that a linear model is useless for analyzing these data: the trend of whether the data increase or decrease can still be captured (although it is not recommended to use the model for numerical prediction purposes). One model that may come to mind is as follows:
+
+```{r}
+lm(uptake ~ conc + Type * Treatment, data = CO2) |> anova()
+```
+
+In other words, the uptake rates are modeled via a combination of the effect of concentration (a continuous variable) plus the interaction of type and treatment (two categorical variables). Recall that `Type * Treatment` is shorthand for `Type + Treatment + Type:Treatment`, the sum of the main effects and the interaction between them. Mathematically, the equation for the model reads:
+$$
+\begin{split}
+(\text{uptake})_i &
+= \beta_0
++ \beta_1 \cdot (\text{conc})_i
++ \beta_2 \cdot (\text{Type is Mississippi})_i \\ &
++ \beta_3 \cdot (\text{Treatment is chilled})_i \\ &
++ \beta_4 \cdot (\text{Type is Mississippi})_i \cdot(\text{Treatment is chilled})_i
++ \varepsilon_i
+\end{split}
+$$ {#eq-linreg-multiway}
+where $(\text{conc})_i$ is a continuous predictor and not an indicator variable---that is, it takes on the actual value of the CO~2~ concentration in observation $i$. By contrast, $(\text{Type is Mississippi})_i$ and $(\text{Treatment is chilled})_i$ are indicator variables that take on the value 1 if data point $i$ belongs in their category and 0 otherwise.
+
+The rationale for having chosen the model `uptake ~ conc + Type * Treatment` is that the box plots above reveal a potential interaction between the two factors `Type` and `Treatment` (the effect of changing `Treatment` from chilled to nonchilled depends on whether the `Type` was Quebec or Mississippi), and on top of this, we also want to capture the positive dependence on CO~2~ concentration. The ANOVA table above concurs: each of these categories come out with low p-values, indicating that what we see is unlikely to be due to just chance. To make sure that the assumptions on which this interpretation rests are held, we look at the diagnostic plots:
+
+```{r}
+#| warning: false
+#| fig-height: 6
+library(ggfortify)
+
+lm(uptake ~ conc + Type * Treatment, data = CO2) |>
+  autoplot(smooth.colour = NA, colour = "steelblue", alpha = 0.7) +
+  theme_bw()
+```
+
+The Q-Q plot is not good: in the lower quantiles, the realized residuals are consistently larger in magnitude than the theoretical expectation based on the assumption of normality. This, of course, is a consequence of the data depending on concentrations in a manifestly nonlinear way. Apart from the Q-Q plot however, the diagnostics look surprisingly good. We will come back to the point about nonlinearity in @sec-nonlin-regression.
+
+It is also informative to apply the function `summary` on the model fit in addition to `anova`, to obtain the regression slopes and intercept (the $\beta$ parameters of @eq-linreg-multiway):
+
+```{r}
+lm(uptake ~ conc + Type * Treatment, data = CO2) |> summary()
+```
+
+Regardless of how good this model looks, one can argue based on the plot of the data that there could also be an interaction between `conc` and the other two factors. After all, the saturation levels of the uptake rate are always higher in Quebec than in Mississippi, and the effect of chilling also depends on `Type`. A model which accounts for all these effects and their interactions is `uptake ~ conc * Type * Treatment`. Mathematically:
+$$
+\begin{split}
+(\text{uptake})_i &
+= \beta_0
++ \beta_1 \cdot (\text{conc})_i
++ \beta_2 \cdot (\text{Type is Mississippi})_i \\ &
++ \beta_3 \cdot (\text{Treatment is chilled})_i \\ &
++ \beta_4 \cdot (\text{conc})_i \cdot (\text{Type is Mississippi})_i \\ &
++ \beta_5 \cdot (\text{conc})_i \cdot (\text{Treatment is chilled})_i \\ &
++ \beta_6 \cdot (\text{Type is Mississippi})_i \cdot (\text{Treatment is chilled})_i \\ &
++ \beta_7 \cdot (\text{conc})_i \cdot (\text{Type is Mississippi})_i
+\cdot (\text{Treatment is chilled})_i
++ \varepsilon_i
+\end{split}
+$$ {#eq-linreg-multiway-2}
+
+(The $\beta_7$ term is multiplied by a three-way interaction of concentration, type, and treatment.) Fitting the model and creating diagnostic plots:
+
+```{r}
+#| warning: false
+#| fig-height: 6
+lm(uptake ~ conc * Type * Treatment, data = CO2) |> anova()
+lm(uptake ~ conc * Type * Treatment, data = CO2) |> summary()
+lm(uptake ~ conc * Type * Treatment, data = CO2) |>
+  autoplot(smooth.colour = NA, colour = "steelblue", alpha = 0.7) +
+  theme_bw()
+```
+
+This confirms what we saw on the plot of the data: that the basic shape of the relationship between concentration and uptake is unaffected by either `Type` or `Treatment` (i.e., the term `conc:Type:Treatment` in the ANOVA table has a high associated p-value). It also illustrates the general point that there are very often multiple candidate models, and choosing between them is a question of judgment, trial-and-error, and successively improving the model structure based on results from earlier modeling attempts.
+
 ## Exercises {#sec-exercises-anova-two-way}
 
 1. The file [`cow_growth.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/cow_growth.zip) has data on the growth of individual cows which have received different grains (wheat, oats, or barley) and, independently, one of four different dietary supplements (one of which is no supplement, for control). Each of these diet combinations (twelve diets: three grains, times four supplements) had four cows observed. Is there any effect of these treatments on cow growth? Is there any interaction between the grain and the supplement given to the cows---some secret super-combination which makes the cows grow especially well (or poorly)?
