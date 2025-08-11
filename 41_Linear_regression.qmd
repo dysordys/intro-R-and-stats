@@ -199,10 +199,20 @@ summary(simpleModel)
 Not a very clean output
 :::
 
+:::{.callout-note}
+`kable()` is a function from the `knitr` package which produces \latex or HTML style formatted tables within R. Alongside `knitr`, we can also customize the design of the table with the help of functions from the `kableExtra` package, for example `kable_styling()` that is used in the below example.
+
+`xtable()` comes from the `xtable` package and is used to create \latex style tables, most often used for non-web resources. 
+:::
+
 ```{r}
 #| tbl-cap: A clean table of the model's estimated parameters
 #| tbl-cap-location: top
 #| label: tbl-reg-summary-good
+#| message: false
+
+require(knitr)
+require(kableExtra)
 
 summary(simpleModel) |> 
   coef() |> 
@@ -318,59 +328,108 @@ We can consider the assumption of normality to be violated if these plots show s
 
 ```{r}
 #| fig-cap: Distribution of a sample from the actual normal distribution
-#| fig-height: 3
+#| fig-height: 5
 #| fig-width: 5 
+#| echo: false
 set.seed(1234)
 
-tibble(
-  x = rnorm(30)
-) |> 
- ggplot() + 
+data <- 
+  tibble(
+    x = rnorm(30)
+  ) 
+
+p1 <- 
+  data |> 
+  ggplot() + 
   aes(x = x, y = after_stat(density)) +
   geom_histogram(bins = 10, fill = "steelblue", color = "black") + 
   theme_bw() + 
   labs(x = "x", y = "Density")
+
+p2 <- 
+  data |> 
+  ggplot() + 
+  aes(sample = scale(x)) + 
+  geom_qq_line() +
+  geom_qq(color = "steelblue") +
+  theme_bw() + 
+  labs(x = "Theoretical Quantiles", y = "Observed Quantiles")
+
+cowplot::plot_grid(p1, p2, ncol = 1)
 ```
 
 Strong deviations from normality may include, for example, multiple areas of high density:
 
 ```{r}
-#| fig-cap: Distribution of a sample from other distributions
-#| fig-height: 3
+#| fig-cap: Distribution of a sample from another distribution than the normal
+#| fig-height: 5
 #| fig-width: 5 
+#| echo: false
 set.seed(1234)
 
-tibble(
-  x = runif(30)
-) |> 
- ggplot() + 
+data <- 
+  tibble(
+    x = runif(30)
+  ) 
+
+p1 <- 
+  data |> 
+  ggplot() + 
   aes(x = x, y = after_stat(density)) +
   geom_histogram(bins = 10, fill = "steelblue", color = "black") + 
   theme_bw() + 
   labs(x = "x", y = "Density")
+
+p2 <- 
+  data |> 
+  ggplot() + 
+  aes(sample = scale(x)) + 
+  geom_qq_line() +
+  geom_qq(color = "steelblue") +
+  theme_bw() + 
+  labs(x = "Theoretical Quantiles", y = "Observed Quantiles")
+
+cowplot::plot_grid(p1, p2, ncol = 1)
 ```
 
 or a highly skewed distribution:
 
 ```{r}
-#| fig-cap: Distribution of a sample from other distributions
-#| fig-height: 3
+#| fig-cap: Distribution of a sample from another distribution than the normal
+#| fig-height: 5
 #| fig-width: 5
+#| echo: false
 set.seed(1234)
 
-tibble(
-  x = rchisq(30, df = 2)
-) |> 
- ggplot() + 
+
+data <- 
+  tibble(
+    x = rchisq(30, df = 2)
+  ) 
+
+p1 <- 
+  data |> 
+  ggplot() + 
   aes(x = x, y = after_stat(density)) +
   geom_histogram(bins = 10, fill = "steelblue", color = "black") + 
   theme_bw() + 
   labs(x = "x", y = "Density")
+
+p2 <- 
+  data |> 
+  ggplot() + 
+  aes(sample = scale(x)) + 
+  geom_qq_line() +
+  geom_qq(color = "steelblue") +
+  theme_bw() + 
+  labs(x = "Theoretical Quantiles", y = "Observed Quantiles")
+
+cowplot::plot_grid(p1, p2, ncol = 1)
 ```
 
-These plots suggest that the model is missing an explanatory variable or needs to be transformed in some way to meet the assumption.
+These plots suggest that the model is missing an explanatory variable or the data needs to be transformed in some way to meet the assumption.
 
-If the QQ plot shows clear patterns that deviate from the line --- for example if the points curve around the line --- it means the model does not meet the assumption of a linear relationship.
+On top of non-normality, the QQ plot can also indicate if the model deviates from the assumption of linearity. If the QQ plot shows clear symmetrical patterns --- for example if the points curve around the line as in the example below --- it means the model does not meet the assumption of a linear relationship. In this example we are trying to model a sinus function with a linear model.
 
 ```{r}
 #| echo: false
@@ -381,7 +440,7 @@ If the QQ plot shows clear patterns that deviate from the line --- for example i
 data <- 
   tibble(
     x = seq(0, 10, by = 0.1),
-    y = sin(x) + rnorm(n = 101, sd = 0.2)
+    y = sin(x)*2 + rnorm(n = 101, sd = 0.1)
   )
 
 exModel <- lm(y ~ x, data = data)
@@ -393,6 +452,8 @@ ggplot(tibble(residuals = resid(exModel))) +
   geom_qq(color = "steelblue") +
   theme_bw() + 
   labs(x = "Theoretical Quantiles", y = "Observed Quantiles")
+
+
 ```
 :::
 
@@ -548,7 +609,7 @@ Other examples of data with dependence include:
 - We collect data from individuals, but some individuals come from the same family, which may create dependence between them.
 - We collect spatial data, such as temperature or rainfall at different locations in Östergötland. It is common for there to be positive correlation (a dependence) between geographically close observations.
 
-### Creating a custom function (`diagnosticPlots`)
+### Creating a custom function (`diagnosticPlots`) {#sec-diag-plots}
 
 You will encounter these residual plots many times when conducting regression analyses, so to simplify their generation we can create a custom function that does all of this for us at once. The `cowplot` package provides a function (`plot_grid`) that can combine multiple plots into one.
 
@@ -572,7 +633,9 @@ diagnosticPlots <-
     bins = 10, 
     scaleLocation = FALSE
   ) {
-      
+    if (model |> class() != "lm") {
+      stop("model must be an lm object")
+    }
     if (alpha < 0 | alpha > 1) {
       stop("alpha must be between 0 and 1")
     }
@@ -675,7 +738,7 @@ The data have been carefully crafted so that the least-squares regression line h
 #| fig-height: 6
 lm(y ~ x, data = filter(ansLong, set == "1")) |> summary()
 lm(y ~ x, data = filter(ansLong, set == "1")) |>
-  diagnosticPlots()
+  diagnosticPlots(bins = 5)
 ```
 
 While the number of data points is small, there is otherwise nothing to suggest in these diagnostic plots that there is anything wrong with the regression.
@@ -687,7 +750,7 @@ The situation changes for the other three sets. Let us look at set 2:
 #| fig-height: 6
 lm(y ~ x, data = filter(ansLong, set == "2")) |> summary()
 lm(y ~ x, data = filter(ansLong, set == "2")) |>
-  diagnosticPlots()
+  diagnosticPlots(bins = 5)
 ```
 
 Blindly reading off the p-values without considering the diagnostic plots might lead one to take them seriously. This would be wrong however, as the assumptions of the linear regression are clearly not fulfilled. The right diagnostics show that the residuals are not independent, and certainly not homoscedastic (equal variance). The QQ plot and histogram additionally shows that they are not even normally distributed.
@@ -699,7 +762,7 @@ In set 3, the trends are driven too much by a single outlier:
 #| fig-height: 6
 lm(y ~ x, data = filter(ansLong, set == "3")) |> summary()
 lm(y ~ x, data = filter(ansLong, set == "3")) |>
-  diagnosticPlots()
+  diagnosticPlots(bins = 5)
 ```
 
 As before, the right diagnostic plots show that the independence of the residuals is violated. Finally, in set 4, the whole regression is based on a single point whose predictor `x` is different from that of the rest:
@@ -709,7 +772,7 @@ As before, the right diagnostic plots show that the independence of the residual
 #| fig-height: 6
 lm(y ~ x, data = filter(ansLong, set == "4")) |> summary()
 lm(y ~ x, data = filter(ansLong, set == "4")) |>
-  diagnosticPlots()
+  diagnosticPlots(bins = 5)
 ```
 
 Clearly, the assumption that the residual variances are independent of the predictor is heavily violated.
@@ -1005,7 +1068,7 @@ predict(
 
 The interval estimate of an individual observation becomes a prediction interval because we only account for one new observation with the shell size of 23 units.
 
-## Exercises
+## Exercises {#sec-exercises-regression}
 
 The file [`plant_growth_rate.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/plant_growth_rate.zip) contains individual plant growth data (mm/week), as a function of soil moisture content. 
 
@@ -1015,8 +1078,7 @@ The file [`plant_growth_rate.csv`](https://raw.githubusercontent.com/dysordys/in
 4. Create a scatter plot showing the relationship between the two variables in the sample. Interpret it based on the four key pieces of information a scatter plot can provide.
 5. Summarize your observations and justify whether or not you think a simple linear regression model is suitable.
 6. Fit a linear regression model using `lm()` and interpret the regression coefficients.
-7. Create diagnostic plots to check whether the 
-assumptions of the model are satisfied.
+7. Create diagnostic plots to check whether the assumptions of the model are satisfied.
 8. Perform an F-test for the model and interpret the result. Do the same for a t-test for the slope parameter.
 9. Summarize your findings along with the coefficient of determination and determine whether or not the model is suitable for predicting plant growth based on soil moisture content.
 
