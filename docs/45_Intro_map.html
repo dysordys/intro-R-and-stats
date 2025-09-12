@@ -317,7 +317,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -402,7 +402,7 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse) <span class="co"># Loading the tidyverse, before doing anything else</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>In <a href="03_Functions.html" class="quarto-xref"><span>Chapter 3</span></a> we learned how to create user-defined functions. An example was provided in <a href="43_Anova.html#sec-onewayanova" class="quarto-xref"><span>Section 19.3</span></a>, where we made our life easier by eliminating the need to always call <code>aov</code> before performing a Tukey test with <code>TukeyHSD</code>. Without the function, we must write:</p>
+<p>In <a href="03_Functions.html" class="quarto-xref"><span>Chapter 3</span></a> we learned how to create user-defined functions. An example was provided in <span class="quarto-unresolved-ref">?sec-onewayanova</span>, where we made our life easier by eliminating the need to always call <code>aov</code> before performing a Tukey test with <code>TukeyHSD</code>. Without the function, we must write:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth) <span class="sc">|&gt;</span> <span class="fu">aov</span>() <span class="sc">|&gt;</span> <span class="fu">TukeyHSD</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">

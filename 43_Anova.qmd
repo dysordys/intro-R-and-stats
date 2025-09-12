@@ -1,67 +1,118 @@
-# The Kruskal--Wallis test and one-way ANOVA {#sec-ANOVA}
+---
+filters: 
+  - shinylive
+---
 
-## Indicator Variables {#sec-indicator-variable}
-A regression model cannot directly handle qualitative variables, such as $\beta_4 \cdot \text{Species}$, because the variable’s values represent categories, not values from a numerical scale. This applies even if the qualitative variable is numerically coded. A slope parameter describes the constant change in the response variable when the corresponding explanatory variable increases by one unit, but a qualitative variable usually has no unit and no constant changes between adjacent values. Instead, we must transform the qualitative variable into numeric form using *indicator variables* (also called dummy variables).
+# Analysis of Variance {#sec-ANOVA}
 
-As the name suggests, indicator variables are used to indicate which category an observation has for the qualitative variable. We need to create a limited number of indicator variables that clearly show exactly one category per observation.
+In the previous chapters we studied the relationship between a continuous response variable and one or more explanatory variables. Within multiple linear regression we allow the explanatory variables to be a mix of continuous and qualitative variables and can fit the regression model using indicator variables.
 
-Assume a qualitative variable has 3 categories:
+If a regression model solely contain qualitative explanatory variables, it is equivalent to compare means of different groups of those variables. This can be simplified into an *Analysis of Variance*, or *ANOVA*-model, which is often used in experimental studies. Within this family of models, we now call the explanatory variables *factors* and their different values *levels*. 
+
+Something to keep in mind when reading this chapter is that an ANOVA-model is just a simplified version of a regression model.
+
+## One-way ANOVA
+An ANOVA-model containing only one factor is called a *one-way ANOVA*. We can formulate the model mathematically similar to that of a regression model:
 $$
-\begin{bmatrix}A\\B\\C\end{bmatrix}
-$$
-We can start by creating an indicator variable for category A that takes the value 1 if the observation has category A, and 0 otherwise:
+  \begin{aligned}
+    Y_{ij} = \beta_0 + \beta_1 \cdot X_{1j} + \dots + \beta_{A-1}\cdot X_{(A-1)j} + \varepsilon_{ij}
+  \end{aligned}
+$$ {#eq-indicator-oneway}
 
-$$
-\begin{bmatrix}A\\B\\C\end{bmatrix} = \begin{bmatrix}1\\0\\0\end{bmatrix}
-$$
-With only one indicator variable, we cannot clearly identify whether an observation has category B or C, since both have the value 0. So we add another indicator variable that takes the value 1 if the observation has category B, and 0 otherwise:
+where
 
-$$
-\begin{bmatrix}A\\B\\C\end{bmatrix} = \begin{bmatrix}1 & 0\\0 & 1\\0 & 0\end{bmatrix}
-$$
-It might seem natural to create an indicator for the last category as well, but it’s not necessary. If both indicators are 0, we’ve successfully identified that the observation has category C, and another variable would just be redundant.
+- $j$ is the observation index for the $j$:th observation in level $i$ of the factor, ranging from 1 to $n_i$, the number of observations in total within that level
+- $A$ is the number of levels within the factor,
+- all $X_{ij}$ are indicator coded variables that each indicate level $i$ of the factor.
 
-The last category also becomes our *reference category*, the category against which the effects of the other indicator variables are interpreted. When interpreting slope parameters for indicator variables—e.g., the indicator for A—the change in $Y$ is measured when $X = A$ compared to when $X = C$.
-
-::: {.callout-important}
-Mathematically, creating three indicator variables would model a perfect relationship and cause singularity issues in the calculations.
+:::{.callout-note}
+The difference in an ANOVA-model compared to a standard regression model is the fact we now have two indexes, $i$ and $j$. We will encounter more ANOVA-models with more factors that increase this even further, but one thing to keep in mind is that the last index is considered the observation index within a specific combination of factor levels.
 :::
 
-In general, we create $\text{number of categories} - 1$ indicator variables for each qualitative variable to be included in a regression model. The choice of reference category is arbitrary, but typically the first or last category is used.
-
-To complete the modeling from @eq-penguin-quant, we’ll include Species and Sex in the model. We need to create two and one indicator variables respectively:
-
-\begin{align*}
-  Gentoo &= \begin{cases}
-            1 \quad \text{if species is Gentoo}\\
-            0 \quad \text{otherwise}
-        \end{cases}\\
-  Chinstrap &= \begin{cases}
-      1 \quad \text{if species is Chinstrap}\\
-      0 \quad \text{otherwise}
-  \end{cases}
-\end{align*}
-
-and
-
-\begin{align*}
-  Male &= \begin{cases}
-            1 \quad \text{if male}\\
-            0 \quad \text{otherwise}
-        \end{cases}
-\end{align*}
-
-to finally create the following model:
+This model will in practice predict the same value for all observations of the same level because an indicator variable is the same value for all observations therein. We can simplify the predicted values as:
 
 $$
-\text{Bill Length} = \beta_0 + \beta_1 \cdot \text{Body Weight} + \beta_2 \cdot \text{Flipper Length} + \beta_3 \cdot \text{Bill Depth} + \beta_4 \cdot \text{Gentoo} + \beta_5 \cdot \text{Chinstrap} + \beta_6 \cdot \text{Male} + E
-$$ {#eq-penguin-full-simple}
+  \begin{aligned}
+    Y_{i = 1} = \mu_1 &= \beta_0 + \beta_1 \cdot 1 + \beta_2 \cdot 0 + \dots + \beta_{A-1} \cdot 0 = \beta_0 + \beta_1\\
+    Y_{i = 2} = \mu_2 &= \beta_0 + \beta_1 \cdot 0 + \beta_2 \cdot 1 + \dots + \beta_{A-1} \cdot 0 = \beta_0 + \beta_2\\
+    &\quad \vdots \\
+    Y_{i = A-1} = \mu_{A-1} &= \beta_0 + \beta_1 \cdot 0 + \beta_2 \cdot 0 + \dots + \beta_{A-1} \cdot 1 = \beta_0 + \beta_{A-1}\\
+    Y_{i = A} = \mu_A &= \beta_0 + \beta_1 \cdot 0 + \beta_2 \cdot 0 + \dots + \beta_{A-1} \cdot 0 = \beta_0
+  \end{aligned}
+$$
 
-where Adelie and female act as the reference categories for each qualitative variable.
+:::{.callout-important}
+Some literature may use another variant of the model, called the *cell means* model.
 
-## The Kruskal--Wallis and Dunn tests
+$$
+  \begin{aligned}
+    Y_{ij} = \mu_i + \varepsilon_{ij}
+  \end{aligned}
+$$
+where $j$ is the observation index within each level, $\mu_i$ is the mean for level $i$ of the factor. 
+:::
 
-The tools of  @sec-inference-comparison allow us to compare two groups of data. But what do we do when we have more than two groups? For example, we might wish to know how different treatments influence plant growth, as measured by dry weight. If there are two treatments, then there will be three (instead of two) groups, because the treatments will be compared with a control group which does not receive treatment.
+As mentioned multiple times but is worth repeating, an ANOVA-model is a special case of a regression model which means that the model assumptions $\varepsilon_{ij} \overset{\mathrm{iid}}{\sim} N(0, \sigma^2)$ still apply and that the model should be evaluated using residual analysis before moving forward to statistical inference. One of the main differences with an ANOVA-model is that the residuals will be grouped to the different levels of the factor and that it can be a bit tough to assess if the homoscedasticity assumption hold.
+
+### Alternative to indicator coding
+There exists many other ways to code our indicator variables that simplifies the mathematical calculations when fitting a model. One such way is using a *factor effect* coding system that has two main benefits; firstly it provides accurate parameter estimates in more complex ANOVA-models, secondly it changes the way we interpret an estimate for a specific level. 
+
+Indicator coded variables are interpreted as "the effect of this level compared to the chosen reference level" and the estimated parameters will numerically change based on the, most often arbitrarily, chosen reference level. Factor effect coding instead provides the same numerical parameter estimates regardless of the level that is "skipped" and is interpreted as "the effect of this level compared to the overall mean".
+
+We can define this new model in its regression form as:
+$$
+  \begin{aligned}
+    Y_{ij} = \mu + \beta_1 \cdot X_{1j} + \dots + \beta_{A-1}\cdot X_{(A-1)j} + \varepsilon_{ij}
+  \end{aligned}
+$$ {#eq-factor-oneway}
+
+which is very similar to @eq-indicator-oneway except that the intercept is now written as $\mu$. Mathematically the differences are: 
+
+- $\mu$ is the **unweighted** overall mean of $Y_{ij}$ calculated as:
+$$
+\begin{aligned}
+  \mu &= \frac{\mu_1 + \mu_2 + \cdots + \mu_A}{A}
+\end{aligned}
+$$
+- $\beta_i$ is the difference or effect of level $i$ on the overall mean calculated as: 
+
+  $$
+  \begin{aligned}
+    \beta_i = \mu_i - \mu
+  \end{aligned}
+  $$
+- $X_{ij}$ is factor effect coded as: 
+$$
+\begin{aligned}
+    X_{ij} = 
+    \begin{cases}
+        1 \quad &\text{if level i}\\
+        -1      &\text{if level A}\\
+        0       &\text{otherwise}
+    \end{cases}
+\end{aligned}
+$$
+With the help of this coding we can show that the effect of level $A$ can be calculated as the negative sum of the other parameters, even though that effect is not specifically defined in the model.
+
+$$
+\begin{aligned}
+  \beta_A = -(\beta_1 + \beta_2 + \cdots + \beta_{A-1}) = \mu_A - \mu
+\end{aligned}
+$$
+
+:::{#nte-anova-formulation .callout-important}
+Some literature starts at this time to change the labels of the model parameters, for example the factor effect for level $i$ is defined as $\alpha_i$ instead. 
+$$
+  \begin{aligned}
+    Y_{ij} = \mu + \sum_{i = 1}^{A-1}\alpha_i + \varepsilon_{ij}
+  \end{aligned}
+$$
+
+Throughout this book we will keep on using the regression formulation and define each instance of $X_{ij}$ to clearly separate the models from one another.
+:::
+
+## The ANOVA-model
+The tools of @sec-inference-comparison allow us to compare two groups of data. But what do we do when we have more than two groups? As an example, we might wish to know how different treatments influence plant growth, as measured by dry weight. If there are two treatments, then there will be three (instead of two) groups, because the treatments will be compared with a control group which does not receive treatment.
 
 Such a dataset is in fact built into R, and is called `PlantGrowth`:
 
@@ -69,10 +120,16 @@ Such a dataset is in fact built into R, and is called `PlantGrowth`:
 #| message: false
 library(tidyverse)
 
-PlantGrowth |> as_tibble() |> print(n = Inf)
+PlantGrowth |> 
+  as_tibble() |> 
+  print(n = Inf)
 ```
 
-(The `PlantGrowth` data are in the form of a data frame instead of a tibble; hence we convert it above by using `as_tibble`.) We see that each group consists of ten observations, and we have three groups: the control (`ctrl`) treatment 1 (`trt1`), and treatment 2 (`trt2`). As usual, we visualize the data first, before doing any tests:
+:::{.callout-note}
+The `PlantGrowth` data are in the form of a data frame instead of a tibble; hence we convert it above by using `as_tibble`.
+:::
+
+We see that each group consists of ten observations, and we have three groups: the control (`ctrl`) treatment 1 (`trt1`), and treatment 2 (`trt2`). As usual, we visualize the data first, before doing any modeling or tests:
 
 ```{r}
 PlantGrowth |>
@@ -83,9 +140,310 @@ PlantGrowth |>
   theme_bw()
 ```
 
-There are two questions one can ask, and they naturally build on each other. First, we might wonder if the observed differences between the distribution of the data in the different groups is meaningful. Could it be that all data points are actually drawn from the same underlying distribution, and the observed differences are simply due to chance? If so, what is the likelihood of that situation? And second, provided we can reject the idea that the data in the different groups are identically distributed, which groups are the ones that differ from one another? For example, based on the figure above, it appears reasonable to expect a real difference between treatment 1 and treatment 2, but it is unclear whether the control truly differs from any of the treatments.
+There are two questions one can ask, and they naturally build on each other. 
 
-Starting with the first of these questions, there exists an analogue to the Wilcoxon rank sum test which works when there are more than two groups of data. This is the *Kruskal--Wallis test*, which can be used with any number of groups as long as those groups vary within a single factor.^[In @sec-SRH we will see examples where multiple independent factors are varied, and each possible combination results in a separate group. For example, if the effects of three different dosages of vitamin C are examined on the tooth growth of Guinea pigs, and the vitamin is also supplied in two distinct forms of either orange juice or raw ascorbic acid, then there will be $3 \cdot 2 = 6$ groups, defined by the two factors of dosage and form of supplement.] The Kruskal--Wallis test is non-parametric, and therefore does not rely on assumptions such as the normality of the residuals. Its implementation in R, `kruskal.test`, is analogous to `wilcox.test`, `t.test` `lm`, or `mblm`: it takes a formula and the data as inputs. Therefore, to perform the test on the `PlantGrowth` data, we write:
+First, we might wonder if the observed differences between the distribution of the data in the different groups is meaningful. Could it be that all data points are actually drawn from the same underlying distribution, and the observed differences are simply due to chance? If so, what is the likelihood of that situation? 
+
+And second, provided we can reject the idea that the data in the different groups are identically distributed, which groups are the ones that differ from one another? For example, based on the figure above, it appears reasonable to expect a real difference between treatment 1 and treatment 2, but it is unclear whether the control truly differs from any of the treatments. What we will in practice be calculating is the difference in means between all three groups, whether they is any at all, and if so, which ones differ from each other. 
+
+Assuming we are using the factor effect coding, the model can be given as:
+
+$$
+\begin{aligned}
+    Y_{ij} = \mu + \beta_1 \cdot X_{1j} + \beta_{2}\cdot X_{2j} + \varepsilon_{ij}
+\end{aligned}
+$$ {#eq-factor-anova-example}
+
+where 
+
+$$
+\begin{aligned}
+    \mu &= \frac{\mu_1 + \mu_2 + \mu_3}{3} \\
+    X_{1j} &= 
+    \begin{cases}
+        1 \quad &\text{if control}\\
+        -1      &\text{if treatment 2}\\
+        0       &\text{otherwise}
+    \end{cases} \\
+    X_{2j} &= 
+    \begin{cases}
+        1 \quad &\text{if treatment 1}\\
+        -1      &\text{if treatment 2}\\
+        0       &\text{otherwise}
+    \end{cases} 
+\end{aligned}
+$$
+and $\varepsilon_{ij} \sim N(0, \sigma^2)$.
+
+Before moving on the with model estimation we need to make sure that R reads the variable containing our factor of interest as a `factor` type. This can be seen in the tibble output where `group` is seen as a `fct`, a factor variable. In order to create the factor effect coding we make use of the function `contr.sum(A)` where A is the number of levels of the factor.
+
+```{r}
+
+## Shows the factor effect coding matrix
+contr.sum(3)
+
+## Shows the current/default coding matrix for the factor
+contrasts(PlantGrowth$group)
+
+## Saves the factor effect coding matrix into the factor
+contrasts(PlantGrowth$group) <- contr.sum(3)
+
+## Shows the new coding matrix
+contrasts(PlantGrowth$group)
+
+```
+
+The default order in `contr.sum` is that the last level is considered the "missing" one, but we could reorder the factor levels (using `factor(levels = new order)` and/or `relevel()`) before adjusting the coding matrix to get any order we like. 
+
+Perhaps unsurprisingly, the function in R that estimates an ANOVA model is the same `lm` that we have used in @sec-linreg for performing linear regression:
+
+```{r}
+
+model <- lm(weight ~ group, data = PlantGrowth) 
+
+model |> 
+  summary()
+```
+
+The output takes some care to interpret correctly: out of the three coefficients listed, `(Intercept)` is the overall mean weight of all the plants; `group1` is the *difference* of the mean weight in the control from the overall mean; and `group2` is the difference of the mean weight in treatment 1 from the overall mean. 
+
+```{r}
+#| fig-width: 5
+#| fig-height: 3
+#| fig-cap: Residual analysis of the PlantGrowth model
+
+diagnosticPlots(model, alpha = 1, bins = 5)
+```
+
+Given the fact that there are only 30 observations, the interpretation of these plots is going to be approximate. Unless there is clear indications of violations we usually assume that the assumptions are fulfilled. In this specific case, there are no clear indications that we are violating the normality assumption however there is an indication that the variance of the residuals are reduced for higher values of the weight. 
+
+At this point in the book we do not have any tools at our disposal to handle this so we will (unfortunately) disregard this observation and assume the residuals are homoscedastic (constant variance).
+
+<!-- !TODO ADD A CHAPTER SOMEWHERE ABOUT BOX-COX TRANSFORMATIONS -->
+## Statistical inference in an ANOVA model
+Recall back to the two questions we asked ourselves in the exploratory phase; are the observed differences between the groups meaningful, and which groups differ from each other. Assuming that the residual analysis enforces that the model assumptions hold, these two questions can be answered by statistical inference. 
+
+To get more information, one can pass the result of `lm` to a function called `anova`. Despite its name, the role of this function is not to actually estimate the ANOVA model (that was done by `lm`), but to display its results using the sum-of-squares table, which is also known as the ANOVA table. In this table, each factor, as well as their interactions (if present), get one row each:
+
+```{r}
+model |> 
+  anova()
+```
+
+### Overall F-test
+An F-test can be used to determine whether a factor as a whole has a significant impact on the response variable, similar to that of the F-test in @sec-inference. Using the model @eq-factor-oneway we can write the hypotheses as:
+
+$$
+\begin{aligned}
+    H_0&: \beta_1 = \beta_2 = \dots = \beta_{A-1} = 0 \\
+    H_A&: \text{At least one of } \beta_i \text{ in } H_0 \ne 0
+\end{aligned}
+$$
+
+The null hypothesis can be interpreted as no factor level mean differ from the overall mean if all model parameters are 0. In practice this means that the factor has no effect on the response variable. The alternative hypothesis indicate that at least one factor level mean differ from the overall mean, which in contrast results in the factor having an effect on the response variable. 
+
+:::{.callout-note}
+Since we can simplify the model to a mean for each factor level, the hypotheses are equivalent to:
+$$
+\begin{aligned}
+    H_0&: \mu_1 = \mu_2 = \dots = \mu_{A-1} = \mu_A \\
+    H_A&: \text{At least two of } \mu_i \text{ in } H_0 \text{ differ}
+\end{aligned}
+$$
+This can be seen as an extension of the two sample t-test presented in @sec-example-comparison.
+:::
+
+This is where we are starting to see the reason for the name "Analysis of Variance". Even though we are comparing means between groups, the complexity of actually comparing the means as we would in a two sample t-test would be all to complicated. We can instead make use of the sources of variation introduced in @sec-regression-anova that simplified for an ANOVA-model summarize the differences in means.
+
+$$
+\begin{aligned}
+  SSY &= \sum_{i=1}^A\sum_{j=1}^{n_i}{(Y_{ij} - \overline{Y})^2} \\
+  SSA &= \sum_{i=1}^A{n_i \cdot (\overline{Y}_i - \overline{Y})^2} \\
+  SSE &= \sum_{i=1}^A\sum_{j=1}^{n_i}{(Y_{ij} - \overline{Y}_i)^2}
+\end{aligned}
+$$ {#eq-anova-sum-squares}
+where
+
+- $SSY$ is the total variation of the response variable written as the difference between each observation $Y_{ij}$ and the total mean $\overline{Y}$.
+- $SSA$ is the explained variation of each of the factor level means written as the difference between the level mean $\overline{Y}_{i}$ and the total mean $\overline{Y}$.
+- $SSE$ is the unexplained variation written as the difference between each observation $Y_{ij}$ and the level mean $\overline{Y}_{i}$.
+
+If $H_0$ was true the difference in factor level mean and overall mean would be 0, so $SSA$ would be 0. On the other hand if $H_A$ was true we would see a non-zero sum in $SSA$. In order to assess whether the difference in means is large enough to not attribute it to chance, we define the test variable as:
+
+$$
+  \begin{aligned}
+    F_{test} = \frac{SSA / df_A}{SSE / df_E} = \frac{MSA}{MSE}
+  \end{aligned}
+$$
+where $df_A$ and $df_E$ are the degrees of freedom of the factor and error respectively. In the ANOVA table output we can see the result of this calculation in the `F value` column and its corresponding p-value in the `Pr(>F)` column. 
+
+:::{.callout-tip}
+Below is an interactive visualization using simulations of the relationship between the two sources of variation. The simulation assumes we have four groups with known population means^[Each group is actually $N(\mu_i, \sigma^2 = 1)$.] we draw a sample from, visualize each group's distribution and mean (black line) against the overall mean (red line), and finally calculate the sum of squares, the test variable and the p-value.
+
+```{shinylive-r}
+#| standalone: true
+#| viewerHeight: 1000
+
+require(shiny)
+require(bslib)
+require(ggplot2)
+require(tidyr)
+require(dplyr)
+require(stringr)
+require(munsell)
+
+# Define UI for app that draws a histogram ----
+ui <- page_sidebar(
+  sidebar = sidebar(open = "open",
+    sliderInput("group_1", "Population mean Group 1", min = -1, max = 1, value = 0, step = 0.1),
+    sliderInput("group_2", "Population mean Group 2", min = -1, max = 1, value = 0, step = 0.1),
+    sliderInput("group_3", "Population mean Group 3", min = -1, max = 1, value = 0, step = 0.1),
+    sliderInput("group_4", "Population mean Group 4", min = -1, max = 1, value = 0, step = 0.1),
+    numericInput("sample_size", "Sample size", value = 30, min = 1, step = 1),
+    actionButton("new_sample", "Draw a new sample"),
+    uiOutput("variances"),
+  ),
+  plotOutput("plot", height = "600px", width = "60%")
+)
+
+server <- function(input, output, session) {
+  data_input <- reactive({
+    means <- c(input$group_1, input$group_2, input$group_3, input$group_4)
+    seed <- input$new_sample
+    set.seed(seed = seed)
+    samples <- sapply(means, FUN = function(x) {
+        rnorm(n = input$sample_size, mean = x, sd = 1)
+    }) %>% 
+      as.data.frame()
+    data_samples <- pivot_longer(samples, cols = everything()) %>% 
+      mutate(
+        name = str_replace(name, "V", "Group ")
+      )
+  })
+  
+  output$plot <- renderPlot({
+    data_samples <- data_input()
+    sample_means <- aggregate(value ~ name, data_samples, mean)
+
+    ggplot2::ggplot(data = data_samples) + aes(x = value) + 
+    geom_histogram(binwidth = 0.25, color = "black", fill = "steelblue") +
+    geom_vline(data = sample_means, aes(xintercept = value), linetype = 2, linewidth = 1.2) +
+    geom_vline(aes(xintercept = mean(value)), color = "#d9230f", linewidth = 1) +
+            scale_x_continuous(breaks = seq(-20, 20, by = 1)) +
+            facet_grid(rows = vars(name)) + theme_bw() +
+            theme(strip.text.y = element_text(angle = 0, color = "white", size = 14),
+                  strip.background.y = element_rect(fill = "black"),
+                  axis.title.y = element_blank()) +
+            labs(x = "Y") 
+  })
+
+  output$variances <- renderUI({
+    data_samples <- data_input()
+    sample_means <- aggregate(value ~ name, data_samples, mean)
+    sample_sizes <- aggregate(value ~ name, data_samples, length)
+
+    SSY <- sum((data_samples$value - mean(data_samples$value))^2)
+
+    SSR <- sum(sample_sizes$value * (sample_means$value - mean(data_samples$value))^2)
+    MSR <- SSR/(nrow(sample_means) - 1)
+
+    SSE <- SSY-SSR
+    MSE <- SSE/(nrow(data_samples) - nrow(sample_means))
+    
+    pvalue <- pf(
+      round(MSR / MSE, 3), 
+      df1 = (nrow(sample_means) - 1), 
+      df2 = (nrow(data_samples) - nrow(sample_means)),
+      lower.tail = FALSE
+    )
+
+    withMathJax(
+      paste("$$SSY = ", round(SSY, 3), "\\\\",
+            "SSA = ", round(SSR, 3), "\\\\",
+            "SSE = ", round(SSE, 3), "\\\\",
+            "F_{test} = ", round(MSR / MSE, 3), "\\\\",
+            "\\text{p-value} = ", pvalue %>% round(3), "$$")
+    )
+  })
+}
+
+# Create Shiny app ----
+shinyApp(ui = ui, server = server)
+
+```
+
+Initially the population means of the four groups are set at the same level and the sample drawn show factor level means very close to the overall mean and each other. If we adjust one (or more) of the population means to something else, we directly see the impact on the drawn sample. The factor level mean is now further away than the overall mean as well as the other level means. By this logic we can see that a change in at least one mean also changes the relation between the explained and unexplained variation.
+:::
+
+In our model, the p-value of the overall F-test is $0.01591$ which is lower than a significance level of 5%. This means that we can conclude that the observed differences are significant and we expect at least two of the three population means to differ from one another.
+
+### Multiple comparisons
+If $H_0$ is rejected, we do not yet know which factor levels differ from each other just that at least two does. One could look at this problem as doing multiple pairwise t-tests between each pair of factor levels but this causes two main issues if we want to draw conclusions from all tests at once.
+
+First the method of using repeated t-tests works fine in our example, there are some problems with this approach. One is that it can quickly get out of hand, because having $n$ groups means there will be $n (n - 1) / 2$ pairs to consider. For instance, if the number of groups is 12 (not a particularly large number), then there are 66 unique pairs already. It would not be pleasant to perform this many tests, even if any single test is quite simple to run.
+
+The second relates to the risk of making the wrong decision. Recall the Type I and II errors discussed in @sec-inference-errors. Using a 5% level of significance, we have a 5% chance of our sample being one of the infinite amount of samples that rejects this specific $H_0$ even though it is true. In practice this means that we risk having observed differences that occur purely by chance. 
+Very simply put, the problem is that if sufficiently many groups are compared, then we might find at least one pair with a low p-value---not because the null hypothesis is false, but because across a large number of observations some p-values will turn out lower than others just by chance. The p-values measure, in effect, the probability that the observed differences are too stark to be due to simple coincidence. But if we create sufficiently many opportunities for such a coincidence to arise, then of course one eventually will. One of the best explanations of this point is in the following cartoon by [xkcd](https://xkcd.com/):
+
+![](significant.png)
+
+Fortunately, there is a way of solving both the problem of automating many pairwise comparisons, as well as adjusting the p-values to account for multiple testing. The way forward is to perform a *post hoc* (Latin "after this") test.
+
+#### Tukey family confidence
+The Tukey(-Kramer) method is used to adjust the p-values of all pairwise comparisions of factor level means. We will make use of the package `emmeans` and its different functions to first create a table of the estimated means and their corresponding standard errors and then the pairwise comparisons with the Tukey post-hoc adjustment.
+
+```{r tukey}
+
+require(emmeans)
+
+## Calculates the factor level means of the specified factor
+factorMeans <- emmeans(model, specs = ~ group)
+
+## Calculates the pairwise comparisons with a Tukey adjustment
+tukey <- pairs(factorMeans, adjust = "tukey") 
+
+## Presents the pairwise comparisons sorted by the estimated difference
+tukey |> 
+  as_tibble()  |>  
+  arrange(
+    abs(estimate) |>
+      desc()
+  )
+
+```
+
+
+The table shows three *contrasts*, which is the three pairwise comparisons between each factor level and the adjusted p-values of each comparison. The hypotheses tested are:
+
+$$
+  \begin{aligned}
+  H_0&: \mu_i - \mu_{j} = 0\\
+  H_A&: \mu_i - \mu_{j} \ne 0\\
+  \end{aligned}
+$$
+where $i \ne j$. 
+
+What has the post hoc Tukey test revealed? Precisely what we have been suspecting: that the only difference worth noting is the one between the two treatments (first row of the table, where the adjusted p-value is sufficiently small to have a chance of pointing at a real difference).
+
+#### Dunnett's test against control
+Considering we have a control group, there exist a specific test that looks at all pairwise comparisons of factor levels only against the control group. This is called a *Dunnett's* test.
+
+Changing the method argument to `dunnett` and specifying which factor level contains the control group in `ref` we now focus on the two comparisons against the control.
+
+```{r}
+contrast(factorMeans, method = "dunnett", ref = 1) |> 
+  as_tibble() |> 
+  arrange(
+    abs(estimate) |> 
+      desc()
+  )
+```
+It shows that neither treatment has significant differences against the control on a 5% significance level. 
+
+## The Kruskal--Wallis and Dunn tests
+What happens if the regression model assumptions are not fulfilled? Starting with the first of these questions, there exists an analogue to the Wilcoxon rank sum test which works when there are more than two groups of data. This is the *Kruskal--Wallis test*^[The Kruskal--Wallis test is sometimes referred to as "non-parametric ANOVA". While this is perfectly fine as a label, one should be aware that it is, strictly speaking, a misnomer: the Kruskal--Wallis test does not rely on computing variances at all.] , which can be used with any number of groups as long as those groups vary within a single factor.^[In @sec-SRH we will see examples where multiple independent factors are varied, and each possible combination results in a separate group. For example, if the effects of three different dosages of vitamin C are examined on the tooth growth of Guinea pigs, and the vitamin is also supplied in two distinct forms of either orange juice or raw ascorbic acid, then there will be $3 \cdot 2 = 6$ groups, defined by the two factors of dosage and form of supplement.] 
+
+*The Kruskal--Wallis* test is non-parametric, and therefore does not rely on assumptions such as the normality of the residuals. Its implementation in R, `kruskal.test`, is analogous to `wilcox.test`, `t.test` `lm`, or `mblm`: it takes a formula and the data as inputs. Therefore, to perform the test on the `PlantGrowth` data, we write:
 
 ```{r}
 kruskal.test(weight ~ group, data = PlantGrowth)
@@ -93,32 +451,9 @@ kruskal.test(weight ~ group, data = PlantGrowth)
 
 The null hypothesis of the Kruskal--Wallis test is that the observations from all groups were sampled from the same underlying distribution---that is, that there are no differences between the groups other than those attributed to random noise. Consequently, when the p-value is low (like above), this means that it is unlikely that the data in all groups come from the same distribution, and thus that *at least* one group differs from the others.
 
-Now that we can be reasonably confident about the first question (do all the data come from the same distribution or not?), we can go on to the second: are there differences between particular pairs of groups? One way of finding out could be to perform pairwise Wilcoxon rank sum tests between each pair of groups. This, in fact, would be quite feasible here, because there are only three comparisons to be made (control vs. treatment 1; control vs. treatment 2, and treatment 1 vs. treatment 2). Here are the results of doing this:
+The p-value above, in the row belonging to the factor `group`, under the column `Pr(>F)`, is the analogue of the p-value calculated by the F-test (which was 0.01591). We can see that the two tests agree qualitatively.
 
-```{r}
-#| warning: false
-as_tibble(PlantGrowth) |> # The PlantGrowth dataset, converted to a tibble
-  filter(group != "trt2") |> # Keep only the control and treatment 1
-  wilcox.test(weight ~ group, data = _, conf.int = TRUE)
-
-as_tibble(PlantGrowth) |>
-  filter(group != "trt1") |> # Keep only the control and treatment 2
-  wilcox.test(weight ~ group, data = _, conf.int = TRUE)
-
-as_tibble(PlantGrowth) |>
-  filter(group != "ctrl") |> # Keep only treatments 1 and 2
-  wilcox.test(weight ~ group, data = _, conf.int = TRUE)
-```
-
-As expected, the difference between the control and the two treatments is not particularly credible (especially in the case of treatment 1), but there is good indication that the difference between the two treatments is not just due to chance.
-
-While the method of using repeated Wilcoxon rank sum tests works fine in our example, there are some problems with this approach. One is that it can quickly get out of hand, because having $n$ groups means there will be $n (n - 1) / 2$ pairs to consider. For instance, if the number of groups is 12 (not a particularly large number), then there are 66 unique pairs already. It would not be pleasant to perform this many tests, even if any single test is quite simple to run.
-
-The other problem has to do with *multiple testing* and its influence on the interpretation of p-values. Very simply put, the problem is that if sufficiently many groups are compared, then we might find at least one pair with a low p-value---not because the null hypothesis is false, but because across a large number of observations some p-values will turn out lower than others just by chance. The p-values measure, in effect, the probability that the observed differences are too stark to be due to simple coincidence. But if we create sufficiently many opportunities for such a coincidence to arise, then of course one eventually will. One of the best explanations of this point is in the following cartoon by [xkcd](https://xkcd.com/):
-
-![](significant.png)
-
-Fortunately, there is a way of solving both the problem of automating many pairwise comparisons, as well as adjusting the p-values to account for multiple testing. The way forward is to perform a *post hoc* (Latin "after this") test. In this case, the *Dunn test* is one such post hoc test. This test is implemented in R, but not in any of the basic packages. To use it, one must first install the `FSA` package:
+In this case, the *Dunn test* is the non-parametric post hoc test we want to use to determine which group(s) differ. This test is implemented in R, but not in any of the basic packages. To use it, one must first install the `FSA` package:
 
 ```{r}
 #| eval: false
@@ -129,7 +464,7 @@ Once it is installed, the package should be loaded:
 
 ```{r}
 #| message: false
-library(FSA)
+require(FSA)
 ```
 
 And then, the Dunn test (`dunnTest`) follows the familiar syntax of receiving a formula and the data:
@@ -140,153 +475,9 @@ dunnTest(weight ~ group, data = PlantGrowth)
 
 The table above is the output of the test, and has four columns. The first column shows which two groups are being compared. The next column, called `Z`, is the value of the test statistic, which we need not concern ourselves with here. Next, we have the unadjusted p-values; and finally, the adjusted p-values (`P.adj`), which have been corrected to account for the multiple testing problem mentioned above. Therefore, the adjusted p-values will always be as large or larger than the unadjusted ones.
 
-What has the post hoc Dunn test revealed? Precisely what we have been suspecting: that the only difference worth noting is the one between the two treatments (last row of the table, where the adjusted p-value is sufficiently small to have a chance of pointing at a real difference).
+What has the post hoc Dunn test revealed? Precisely what we have been suspecting: that the only difference worth noting is the one between the two treatments (last row of the table, where the adjusted p-value is sufficiently small to have a chance of pointing at a real difference). 
 
-
-## One-way ANOVA and Tukey's test {#sec-onewayanova}
-
-The Kruskal--Wallis test is the non-parametric analogue of *one-way ANOVA* (ANalysis Of VAriance). The "one-way" in the name refers to the property that there is a single factor indexing the groups, as discussed earlier. ANOVA relies on assumptions such as normality of the residuals and having the same number of observations in each group (balanced design). Otherwise, it is much like the Kruskal--Wallis test.^[The Kruskal--Wallis test is sometimes referred to as "non-parametric ANOVA". While this is perfectly fine as a label, one should be aware that it is, strictly speaking, a misnomer: the Kruskal--Wallis test does not rely on computing variances at all.] Perhaps surprisingly, the function in R that performs an ANOVA is the same `lm` that we have used in @sec-linreg for performing linear regression:
-
-```{r}
-lm(weight ~ group, data = PlantGrowth)
-```
-
-The output takes some care to interpret correctly: out of the three coefficients listed, `(Intercept)` is the mean weight in the control group; `grouptrt1` is the *difference* of the mean weight in treatment 1 from the control; and `grouptrt2` is the difference of the mean weight in treatment 2 from the control. (We will come back to this, as well as why the `lm` function was used, in @sec-lmaov.) To get more information, one can pass the result of `lm` to a function called `anova`. Despite its name, the role of this function is not to actually perform the ANOVA (that was done by `lm`), but to display its results using the sum-of-squares table, which is also known as the ANOVA table. In this table, each factor indexing the groups, as well as their interactions (if present), get one row:
-
-```{r}
-lm(weight ~ group, data = PlantGrowth) |> anova()
-```
-
-The p-value above, in the row belonging to the factor `group`, under the column `Pr(>F)`, is the analogue of the p-value calculated by the Kruskal--Wallis test (which was 0.01842). We can see that the two tests agree qualitatively.
-
-Just as the Dunn test is a post-hoc test for the Kruskal--Wallis test, Tukey's honest significance test is a post-hoc test for an ANOVA. The corresponding function in R is called `TukeyHSD`, and it should be applied to the result of the `lm` function---with one caveat. Tukey's test requires the output of the ANOVA to be in a particular format. Therefore, before passing the result of `lm` to `TukeyHSD`, we first have to pass it to a helper function called `aov` ("analysis of variance"). Like this:
-
-```{r}
-lm(weight ~ group, data = PlantGrowth) |> aov() |> TukeyHSD()
-```
-
-The table is similar to the one produced by the Dunn test, with a few differences. The first column tells us which groups of data are compared. The second column is the raw difference between the group means, the third and fourth are the lower and upper limits of a 95% confidence interval for the difference, and the last one are the p-values (adjusted for multiple comparisons). In this case, the results from the Dunn test and the Tukey test are in agreement: only the difference between the two control groups stands out as having a reasonable chance of being real. The fact that the Kruskal--Wallis test and an ANOVA lead to the same conclusion increases the trust we can place in their results being correct.
-
-The `aov` function serves no purpose above, except to put the data in a format which `TukeyHSD` can work with. In case using this intermediary feels like a hassle, one can easily make life simpler, by writing a helper function which automatically calls it, together with the Tukey test:
-
-```{r}
-tukey.test <- function(lmFit) {
-  lmFit |> aov() |> TukeyHSD()
-}
-```
-
-(See @sec-functions to review how functions are written.) Here `lmFit` is a model fit object returned by the `lm` function. Using this, we can rewrite the above more simply:
-
-```{r}
-lm(weight ~ group, data = PlantGrowth) |> tukey.test()
-```
-
-
-## ANOVA and linear regression {#sec-lmaov}
-
-At first glance, it appears strange that the function performing an ANOVA is the same as the one doing linear regression, `lm`. Aren't the two methods very different from one another? After all, ANOVA compares data in different groups, whereas linear regression fits a line to a bunch of data points.
-
-As surprising as it may sound, the two are not different. There is a way of formulating an ANOVA which is exactly analogous to a linear model. To illustrate this idea, let us first consider a dataset with just two groups of data. The fictive bird data from @sec-inference-comparison ([`fictive_bird_example.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/fictive_bird_example.zip)) will work well:
-
-```{r}
-#| message: false
-bird <- read_csv("fictive_bird_example.csv")
-print(bird, n = Inf)
-```
-
-Let us denote the `weight` of individual $i$ by $y_i$. We wish to predict this based on whether the island is large or small, using a linear model. This can be done in full analogy with @eq-linreg, using the following equation:
-
-$$
-y_i
-= \beta_0 + \beta_1 \cdot x_i + \varepsilon_i
-$$ {#eq-aov1way-basic}
-
-On the surface, this is exactly the same equation as @eq-linreg. But there is one important difference: in an ANOVA, we give a different meaning to the $x_i$. **This variable should take on the value 1 if individual *i* is from the smaller island and the value 0 if it is from the larger island.** (It could also be the other way round; it does not matter as long as we choose one convention and stay consistent.) The $\varepsilon_i$ are still the residuals, measuring the deviation of the points from the ideal prediction. What is the "ideal" prediction here? Well, without the $\varepsilon_i$ term, @eq-aov1way-basic reads $y_i = \beta_0 + \beta_1 x_i$. If individual $i$ is from the larger island, $x_i = 0$, and we have $y_i = \beta_0$. So the intercept $\beta_0$ corresponds to the mean prediction for the weight of the birds in the larger island. Conversely, if individual $i$ is from the smaller island, then $x_i = 1$, and so $y_i = \beta_0 + \beta_1 \cdot 1 = \beta_0 + \beta_1$. In other words, $\beta_1$ is the *difference* in mean weight between the smaller and the larger island.
-
-We can see this in action by running `lm` and then `summary` on these data:
-
-```{r}
-lm(weight ~ island, data = bird) |> summary()
-```
-
-The intercept, 22.185, is the mean weight on the larger island. To get the mean weight on the smaller one, we must add the intercept to the other coefficient, labelled `islandsmaller` in the table. That sum is 19.161. Indeed, if we compute the means of the two groups, we get exactly the same answers:
-
-```{r}
-#| echo: false
-options(pillar.sigfig = 5)
-```
-
-```{r}
-bird |>
-  group_by(island) |>
-  summarize(mean = mean(weight)) |>
-  ungroup()
-```
-
-The rest of the regression table now reads exactly as it would in performing simple linear regression. For example, the p-values are the probability of getting coefficients at least as large as the inferred ones just by chance (assuming normal and independent residuals with equal variance across the groups).
-
-There is just one question left: why was the `"larger"` island automatically designated as the one corresponding to the intercept? The reason is that R proceeds in alphabetical order, and since `"larger"` comes before `"smaller"` alphabetically, it is automatically treated as the intercept (that is, the group corresponding to $x_i = 0$ instead of $x_i = 1$). One can override this by using factors (@sec-factors), in which case the lowest factor level will correspond to the intercept.
-
-So now we have established an analogy between linear regression and ANOVA for the special case when there are only two groups to compare. The main idea was to introduce the indicator variable $x_i$ which is 1 if observation $i$ belongs in `larger` and 0 otherwise. We can rewrite @eq-aov1way-basic with more expressive notation for $x_i$ and $y_i$, to make this idea more transparent:
-
-$$
-(\text{weight})_i
-= \beta_0
-+ \beta_1 \cdot (\text{bird is from larger island})_i
-+ \varepsilon_i
-$$ {#eq-aov1way}
-
-What to do when there are more than two groups---say, in the `PlantGrowth` data where we have three? In that case, we have to introduce one more indicator variable. Say, we could have $(\text{group is trt1})_i$ and $(\text{group is trt2})_i$; the first is 1 if the observation is from treatment 1 (and 0 otherwise), and the second is 1 only if the observation is from treatment 2. If the observation is in the control, then both indicator variables are zero. We can thus write the following equation:
-
-$$
-(\text{weight})_i
-= \beta_0
-+ \beta_1 \cdot (\text{group is trt1})_i
-+ \beta_2 \cdot (\text{group is trt2})_i
-+ \varepsilon_i
-$$ {#eq-aov1way3group}
-
-We can get the usual statistics on them by using `summary`:
-
-```{r}
-lm(weight ~ group, data = PlantGrowth) |> summary()
-```
-
-Since `ctrl` comes earliest in the alphabet, it serves as the intercept. Its estimated value, 5.032, is the mean plant weight in the control group. The estimates in the rows `grouptrt1` and `grouptrt2` (these names were created by mushing together the name of the column in which the factor is found with the factors' names themselves) are the $\beta_1$ and $\beta_2$ coefficients of @eq-aov1way3group, respectively. That is, they are the deviations from the baseline provided by `(Intercept)`. So we can surmise that the estimated mean of `trt1` is 5.032 - 0.371 = 4.661, and that of `trt2` is 5.032 + 0.494 = 5.526. Indeed, this is what we find relying on simple summaries computing the means in each group:
-
-```{r}
-PlantGrowth |>
-  group_by(group) |>
-  summarize(meanWeight = mean(weight)) |>
-  ungroup()
-```
-
-```{r}
-#| echo: false
-options(pillar.sigfig = 3)
-```
-
-It may be clear from the above, but it is good to point out nevertheless, that one does not need to specify the individual indicator variables $(\text{group is trt1})_i$ and $(\text{group is trt2})_i$ and so on by hand. Instead, when defining the model formula as `weight ~ group`, R automatically assigns them based on the entries of `group`. It will also automatically name the corresponding coefficients: $\beta_1$ will instead be `grouptrt1` and $\beta_2$ `grouptrt2`, in this example. This is very convenient, but it is important to be aware that this substitution is what really goes on under the hood when performing an ANOVA.
-
-More generally, the same procedure can be followed for any number of groups the predictor may come from. For $n$ groups of data, we introduce $n-1$ indicator variables which take the value 1 if a data point belongs in the corresponding group, and the value 0 otherwise. Again, R will create these variables automatically, so we do not need to worry about them when defining a linear model.
-
-
-## Using diagnostic plots on an ANOVA {#sec-diagnostic-anova}
-
-Since ANOVA is just linear regression in disguise, the same assumptions must be fulfilled about the residuals: their variance should not depend on the group, they should be independent, and they should be normally distributed. We can use the same diagnostic plots as we did in @sec-diagnostics:
-
-```{r}
-#| fig-height: 6
-#| warning: false
-library(ggfortify)
-
-lm(weight ~ group, data = PlantGrowth) |>
-  autoplot(smooth.colour = NA, colour = "steelblue", alpha = 0.7) +
-  theme_bw()
-```
-
-The only difference is that, since the data are arranged in groups, the fitted values can only take on well-defined discrete values---the inferred means in each. Otherwise, the plots are read and evaluated just as before. In this case, we can see that the assumptions are fulfilled beautifully: the residuals have equal variance in the groups, there is no trend in them, and the quantile-quantile plot shows that they are normally distributed.
-
+In this case, the results from the Dunn test and the Tukey test are in agreement: only the difference between the two treatment groups stands out as having a reasonable chance of being real. 
 
 ## Exercises
 

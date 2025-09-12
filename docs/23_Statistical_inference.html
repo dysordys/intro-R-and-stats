@@ -283,7 +283,7 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./43_Anova.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">The Kruskal–Wallis test and one-way ANOVA</span></span></a>
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">Analysis of Variance</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -340,7 +340,7 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#checking-assumptions" id="toc-checking-assumptions" class="nav-link" data-scroll-target="#checking-assumptions"><span class="header-section-number">12.2.1.1</span> Checking assumptions</a></li>
   <li><a href="#the-hypotheses" id="toc-the-hypotheses" class="nav-link" data-scroll-target="#the-hypotheses"><span class="header-section-number">12.2.1.2</span> The hypotheses</a></li>
-  <li><a href="#the-risk-of-making-a-wrong-decision" id="toc-the-risk-of-making-a-wrong-decision" class="nav-link" data-scroll-target="#the-risk-of-making-a-wrong-decision"><span class="header-section-number">12.2.1.3</span> The risk of making a wrong decision</a></li>
+  <li><a href="#sec-inference-errors" id="toc-sec-inference-errors" class="nav-link" data-scroll-target="#sec-inference-errors"><span class="header-section-number">12.2.1.3</span> The risk of making a wrong decision</a></li>
   <li><a href="#the-collected-evidence" id="toc-the-collected-evidence" class="nav-link" data-scroll-target="#the-collected-evidence"><span class="header-section-number">12.2.1.4</span> The collected evidence</a></li>
   <li><a href="#sec-p-value" id="toc-sec-p-value" class="nav-link" data-scroll-target="#sec-p-value"><span class="header-section-number">12.2.1.5</span> The decision boundary</a></li>
   <li><a href="#conclusions-and-interpretations" id="toc-conclusions-and-interpretations" class="nav-link" data-scroll-target="#conclusions-and-interpretations"><span class="header-section-number">12.2.1.6</span> Conclusions and interpretations</a></li>
@@ -426,8 +426,8 @@ Note
 <p>The null hypothesis is the currently considered truth — or status quo — which we want to falsify while the alternative hypothesis is, as the name implies, the alternative to it describing something else. One thing to keep in mind when formulating these hypotheses is that the null hypothesis can never be proven directly, it can only be falsified or not. “Not falsifying” a null hypothesis is philosophically not the same as “proving” it, even though looking at the language of the two words one can assume they are equivalent.</p>
 <p>In contrast to the philosophical theory, statistical hypotheses require a quite strict formulation, most often directly related to specific mathematical values. We also restrict the two hypotheses to cover all possible outcomes, which means we cannot use one set of hypotheses to test multiple different alternatives.</p>
 </section>
-<section id="the-risk-of-making-a-wrong-decision" class="level4" data-number="12.2.1.3">
-<h4 data-number="12.2.1.3" class="anchored" data-anchor-id="the-risk-of-making-a-wrong-decision"><span class="header-section-number">12.2.1.3</span> The risk of making a wrong decision</h4>
+<section id="sec-inference-errors" class="level4" data-number="12.2.1.3">
+<h4 data-number="12.2.1.3" class="anchored" data-anchor-id="sec-inference-errors"><span class="header-section-number">12.2.1.3</span> The risk of making a wrong decision</h4>
 <p>Similar to the confidence level from <a href="#sec-confidence-interval" class="quarto-xref"><span>Section 12.1</span></a>, we will never be able to conclude the correct hypothesis with absolute certainty so we need to take into account some risk.</p>
 <p>The <em>significance level</em> (<span class="math inline">\(\alpha\)</span>) — calculated as 1 - confidence level — describes the risk of rejecting a true null hypothesis. It is commonly set to 0.01, 0.05 or 0.10, which means we are willing to accept a 1%, 5% or 10% risk of rejecting the null hypothesis when it is actually true.</p>
 <p>This is only one of the types of errors we can make, called the <em>Type I error</em>, the other being the failure to reject a null hypothesis that is in fact false, the <em>Type II error</em>. We can visualize the four possible scenarios in a table:</p>

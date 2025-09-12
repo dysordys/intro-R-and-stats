@@ -63,7 +63,7 @@ The null hypothesis is the currently considered truth --- or status quo --- whic
 
 In contrast to the philosophical theory, statistical hypotheses require a quite strict formulation, most often directly related to specific mathematical values. We also restrict the two hypotheses to cover all possible outcomes, which means we cannot use one set of hypotheses to test multiple different alternatives. 
 
-#### The risk of making a wrong decision
+#### The risk of making a wrong decision {#sec-inference-errors}
 Similar to the confidence level from @sec-confidence-interval, we will never be able to conclude the correct hypothesis with absolute certainty so we need to take into account some risk. 
 
 The *significance level* ($\alpha$) --- calculated as 1 - confidence level --- describes the risk of rejecting a true null hypothesis. It is commonly set to 0.01, 0.05 or 0.10, which means we are willing to accept a 1%, 5% or 10% risk of rejecting the null hypothesis when it is actually true.
