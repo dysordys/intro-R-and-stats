@@ -33,11 +33,15 @@ This model will in practice predict the same value for all observations of the s
 
 $$
   \begin{aligned}
-    Y_{i = 1} = \mu_1 &= \beta_0 + \beta_1 \cdot 1 + \beta_2 \cdot 0 + \dots + \beta_{A-1} \cdot 0 = \beta_0 + \beta_1\\
-    Y_{i = 2} = \mu_2 &= \beta_0 + \beta_1 \cdot 0 + \beta_2 \cdot 1 + \dots + \beta_{A-1} \cdot 0 = \beta_0 + \beta_2\\
+    Y_{i = 1} = \mu_1 &= \beta_0 + \beta_1 \cdot 1 + \beta_2 \cdot 0 + \dots + \beta_{A-1} \cdot 0 \\
+    &= \beta_0 + \beta_1\\
+    Y_{i = 2} = \mu_2 &= \beta_0 + \beta_1 \cdot 0 + \beta_2 \cdot 1 + \dots + \beta_{A-1} \cdot 0 \\
+    &= \beta_0 + \beta_2\\
     &\quad \vdots \\
-    Y_{i = A-1} = \mu_{A-1} &= \beta_0 + \beta_1 \cdot 0 + \beta_2 \cdot 0 + \dots + \beta_{A-1} \cdot 1 = \beta_0 + \beta_{A-1}\\
-    Y_{i = A} = \mu_A &= \beta_0 + \beta_1 \cdot 0 + \beta_2 \cdot 0 + \dots + \beta_{A-1} \cdot 0 = \beta_0
+    Y_{i = A-1} = \mu_{A-1} &= \beta_0 + \beta_1 \cdot 0 + \beta_2 \cdot 0 + \dots + \beta_{A-1} \cdot 1 \\
+    &= \beta_0 + \beta_{A-1}\\
+    Y_{i = A} = \mu_A &= \beta_0 + \beta_1 \cdot 0 + \beta_2 \cdot 0 + \dots + \beta_{A-1} \cdot 0 \\
+    &= \beta_0
   \end{aligned}
 $$
 
@@ -49,15 +53,17 @@ $$
     Y_{ij} = \mu_i + \varepsilon_{ij}
   \end{aligned}
 $$
-where $j$ is the observation index within each level, $\mu_i$ is the mean for level $i$ of the factor. 
+where $j$ is the observation index within each level, $\mu_i$ is the mean for level $i$ of the factor. It can be shown using the above simplification that this is just another way to write the regression model. 
 :::
 
-As mentioned multiple times but is worth repeating, an ANOVA-model is a special case of a regression model which means that the model assumptions $\varepsilon_{ij} \overset{\mathrm{iid}}{\sim} N(0, \sigma^2)$ still apply and that the model should be evaluated using residual analysis before moving forward to statistical inference. One of the main differences with an ANOVA-model is that the residuals will be grouped to the different levels of the factor and that it can be a bit tough to assess if the homoscedasticity assumption hold.
+As mentioned multiple times but is worth repeating, an ANOVA-model is a special case of a regression model which means that the model assumptions $\varepsilon_{ij} \overset{\mathrm{iid}}{\sim} N(0, \sigma^2)$ still apply and that the model should be evaluated using residual analysis (see @sec-residual-analysis) before moving forward to statistical inference. One of the main differences with an ANOVA-model is that the residuals will be grouped to the different levels of the factor and that it can be a bit tough to assess if the homoscedasticity (equal variance) assumption hold, we will see an example of this a bit later in this text.
 
 ### Alternative to indicator coding
-There exists many other ways to code our indicator variables that simplifies the mathematical calculations when fitting a model. One such way is using a *factor effect* coding system that has two main benefits; firstly it provides accurate parameter estimates in more complex ANOVA-models, secondly it changes the way we interpret an estimate for a specific level. 
+There exist many other ways to code our variables that simplifies the mathematical calculations when fitting a model. One such way is using a *factor effect* coding system that has two main benefits; firstly it provides accurate parameter estimates in more complex ANOVA-models, secondly it changes the way we interpret an estimate for a specific level to something more consistent. 
 
-Indicator coded variables are interpreted as "the effect of this level compared to the chosen reference level" and the estimated parameters will numerically change based on the, most often arbitrarily, chosen reference level. Factor effect coding instead provides the same numerical parameter estimates regardless of the level that is "skipped" and is interpreted as "the effect of this level compared to the overall mean".
+Indicator coded variables are interpreted as "the effect of this level compared to the chosen reference level" and the estimated parameters will numerically change based on the, most often arbitrarily, chosen reference level. 
+
+Factor effect coding instead provides the same numerical parameter estimates (for the same factor level) regardless of the level that is "skipped". These effects are interpreted as "the effect of this level compared to the overall mean".
 
 We can define this new model in its regression form as:
 $$
@@ -68,7 +74,7 @@ $$ {#eq-factor-oneway}
 
 which is very similar to @eq-indicator-oneway except that the intercept is now written as $\mu$. Mathematically the differences are: 
 
-- $\mu$ is the **unweighted** overall mean of $Y_{ij}$ calculated as:
+- $\mu$ is the **unweighted**^[Unweighted in this case simply means that we take the average of all factor level means regardless of the number of observations within them. If all factor levels contain the same number of observations, this corresponds to the standard mean of all observations.] overall mean of $Y_{ij}$ calculated as:
 $$
 \begin{aligned}
   \mu &= \frac{\mu_1 + \mu_2 + \cdots + \mu_A}{A}
@@ -101,17 +107,17 @@ $$
 $$
 
 :::{#nte-anova-formulation .callout-important}
-Some literature starts at this time to change the labels of the model parameters, for example the factor effect for level $i$ is defined as $\alpha_i$ instead. 
+Some literature starts at this time to change the labels of the model parameters, for example the factor effect for level $i$ is defined as $\alpha_i$ and no reference to the coded variables are given: 
 $$
   \begin{aligned}
     Y_{ij} = \mu + \sum_{i = 1}^{A-1}\alpha_i + \varepsilon_{ij}
   \end{aligned}
 $$
 
-Throughout this book we will keep on using the regression formulation and define each instance of $X_{ij}$ to clearly separate the models from one another.
+Throughout this book we will keep on using the regression formulation and define each instance of $X_{ij}$ to clearly separate the indicator and factor effect coded models from one another.
 :::
 
-## The ANOVA-model
+## Estimating an ANOVA-model
 The tools of @sec-inference-comparison allow us to compare two groups of data. But what do we do when we have more than two groups? As an example, we might wish to know how different treatments influence plant growth, as measured by dry weight. If there are two treatments, then there will be three (instead of two) groups, because the treatments will be compared with a control group which does not receive treatment.
 
 Such a dataset is in fact built into R, and is called `PlantGrowth`:
@@ -175,6 +181,10 @@ $$
 $$
 and $\varepsilon_{ij} \sim N(0, \sigma^2)$.
 
+:::{.callout-tip}
+The order of the coding in this example, that control is defined as $X_{1j}$, comes purely from the fact that R treats factors in alphabetical order by default and automatically uses the last level as the -1 code. 
+:::
+
 Before moving on the with model estimation we need to make sure that R reads the variable containing our factor of interest as a `factor` type. This can be seen in the tibble output where `group` is seen as a `fct`, a factor variable. In order to create the factor effect coding we make use of the function `contr.sum(A)` where A is the number of levels of the factor.
 
 ```{r}
@@ -205,7 +215,7 @@ model |>
   summary()
 ```
 
-The output takes some care to interpret correctly: out of the three coefficients listed, `(Intercept)` is the overall mean weight of all the plants; `group1` is the *difference* of the mean weight in the control from the overall mean; and `group2` is the difference of the mean weight in treatment 1 from the overall mean. 
+The output takes some care to interpret correctly: out of the three coefficients listed, `(Intercept)` is the overall mean weight of all the plants; `group1` is the *difference* of the mean weight in the control from the overall mean; and `group2` is the *difference* of the mean weight in treatment 1 from the overall mean. Since both of these coefficients are negative, the effect of treatment 2 against the overall mean would be positive, $-[(-0.041) + (-0.4120)] = 0.453$.
 
 ```{r}
 #| fig-width: 5
@@ -215,12 +225,14 @@ The output takes some care to interpret correctly: out of the three coefficients
 diagnosticPlots(model, alpha = 1, bins = 5)
 ```
 
-Given the fact that there are only 30 observations, the interpretation of these plots is going to be approximate. Unless there is clear indications of violations we usually assume that the assumptions are fulfilled. In this specific case, there are no clear indications that we are violating the normality assumption however there is an indication that the variance of the residuals are reduced for higher values of the weight. 
+In these diagnostic plots we see the grouped observations clearly in the top right figure. Since all observations pertaining to a specific factor level will have the same estimated value of $Y$, the points are grouped horizontally.
+
+Given the fact that there are only 30 observations in total, the interpretation of these plots is going to be approximate. Unless there is clear indications of violations we usually assume that the assumptions are fulfilled. In this specific case, there are no clear indications that we are violating the normality assumption however there is an indication that the variance of the residuals are reduced for higher values of the weight. 
 
 At this point in the book we do not have any tools at our disposal to handle this so we will (unfortunately) disregard this observation and assume the residuals are homoscedastic (constant variance).
 
 <!-- !TODO ADD A CHAPTER SOMEWHERE ABOUT BOX-COX TRANSFORMATIONS -->
-## Statistical inference in an ANOVA model
+## Statistical inference in ANOVA
 Recall back to the two questions we asked ourselves in the exploratory phase; are the observed differences between the groups meaningful, and which groups differ from each other. Assuming that the residual analysis enforces that the model assumptions hold, these two questions can be answered by statistical inference. 
 
 To get more information, one can pass the result of `lm` to a function called `anova`. Despite its name, the role of this function is not to actually estimate the ANOVA model (that was done by `lm`), but to display its results using the sum-of-squares table, which is also known as the ANOVA table. In this table, each factor, as well as their interactions (if present), get one row each:
@@ -481,10 +493,11 @@ In this case, the results from the Dunn test and the Tukey test are in agreement
 
 ## Exercises
 
-1. The file [`daphnia_growth.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/daphnia_growth.zip) contains data on the growth rate of *Daphnia* populations that are infected with various parasites. There are four groups of observations: the control (no parasites), infection with *Metschnikowia bicuspidata*, infection with *Pansporella perplexa*, and finally, infection with *Pasteuria ramosa*. Each group has ten replicate observations. Are growth rates affected by parasite load?
-    * Before doing any tests, visualize and explore the data, and make sure you have a solid expectation for the results of any statistical analysis.
-    * Answer the question whether growth rates affected by parasite load by first applying a non-parametric test (and a subsequent non-parametric post-hoc test if needed).
-    * Next, apply a parametric test in the same way: by applying the test and running post-hoc tests if needed.
-    * Do not forget to create diagnostic plots, to see if the assumptions behind the parametric test are satisfied to an acceptable degree. Is that the case? And do the results from the parametric and non-parametric tests agree with one another?
+The file [`daphnia_growth.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/daphnia_growth.zip) contains data on the growth rate of *Daphnia* populations that are infected with various parasites. There are four groups of observations: the control (no parasites), infection with *Metschnikowia bicuspidata*, infection with *Pansporella perplexa*, and finally, infection with *Pasteuria ramosa*. Each group has ten replicate observations. Are growth rates affected by parasite load?
 
-2. In [`ponds.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/ponds.zip), measured acidity data (pH) is reported from four different ponds. Do the ponds differ in acidity, and if so, which ones from which others? Answer using both non-parametric and parametric tests, with appropriate post-hoc analyses. Check whether these different methods of analysis agree, and make sure that the assumptions behind the parametric test are satisfied using diagnostic plots. (Note: in this dataset, some values are missing.)
+1. Before doing any tests, visualize and explore the data, and make sure you have a solid expectation/guide for the results of any statistical analysis.
+2. Answer the question whether growth rates affected by parasite load by first applying a non-parametric test (and a subsequent non-parametric post-hoc test if needed). 
+3. Estimate a parametric ANOVA model and create diagnostic plots to see if the assumptions behind the parametric test are satisfied to an acceptable degree.
+4. Apply a parametric test in the same way as 2.: by applying the test and running post-hoc tests if needed. Do the results from the parametric and non-parametric tests agree with one another?
+
+In [`ponds.csv`](https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/ponds.zip), measured acidity data (pH) is reported from four different ponds. Do the ponds differ in acidity, and if so, which ones from which others? Answer using both non-parametric and parametric tests, with appropriate post-hoc analyses. Check whether these different methods of analysis agree, and make sure that the assumptions behind the parametric test are satisfied using diagnostic plots. (Note: in this dataset, some values are missing.)

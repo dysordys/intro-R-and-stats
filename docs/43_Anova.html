@@ -376,8 +376,8 @@ window.Quarto = {
   <ul>
   <li><a href="#alternative-to-indicator-coding" id="toc-alternative-to-indicator-coding" class="nav-link" data-scroll-target="#alternative-to-indicator-coding"><span class="header-section-number">19.1.1</span> Alternative to indicator coding</a></li>
   </ul></li>
-  <li><a href="#the-anova-model" id="toc-the-anova-model" class="nav-link" data-scroll-target="#the-anova-model"><span class="header-section-number">19.2</span> The ANOVA-model</a></li>
-  <li><a href="#statistical-inference-in-an-anova-model" id="toc-statistical-inference-in-an-anova-model" class="nav-link" data-scroll-target="#statistical-inference-in-an-anova-model"><span class="header-section-number">19.3</span> Statistical inference in an ANOVA model</a>
+  <li><a href="#estimating-an-anova-model" id="toc-estimating-an-anova-model" class="nav-link" data-scroll-target="#estimating-an-anova-model"><span class="header-section-number">19.2</span> Estimating an ANOVA-model</a></li>
+  <li><a href="#statistical-inference-in-anova" id="toc-statistical-inference-in-anova" class="nav-link" data-scroll-target="#statistical-inference-in-anova"><span class="header-section-number">19.3</span> Statistical inference in ANOVA</a>
   <ul>
   <li><a href="#overall-f-test" id="toc-overall-f-test" class="nav-link" data-scroll-target="#overall-f-test"><span class="header-section-number">19.3.1</span> Overall F-test</a></li>
   <li><a href="#multiple-comparisons" id="toc-multiple-comparisons" class="nav-link" data-scroll-target="#multiple-comparisons"><span class="header-section-number">19.3.2</span> Multiple comparisons</a>
@@ -445,11 +445,15 @@ Note
 <p>This model will in practice predict the same value for all observations of the same level because an indicator variable is the same value for all observations therein. We can simplify the predicted values as:</p>
 <p><span class="math display">\[
   \begin{aligned}
-    Y_{i = 1} = \mu_1 &amp;= \beta_0 + \beta_1 \cdot 1 + \beta_2 \cdot 0 + \dots + \beta_{A-1} \cdot 0 = \beta_0 + \beta_1\\
-    Y_{i = 2} = \mu_2 &amp;= \beta_0 + \beta_1 \cdot 0 + \beta_2 \cdot 1 + \dots + \beta_{A-1} \cdot 0 = \beta_0 + \beta_2\\
+    Y_{i = 1} = \mu_1 &amp;= \beta_0 + \beta_1 \cdot 1 + \beta_2 \cdot 0 + \dots + \beta_{A-1} \cdot 0 \\
+    &amp;= \beta_0 + \beta_1\\
+    Y_{i = 2} = \mu_2 &amp;= \beta_0 + \beta_1 \cdot 0 + \beta_2 \cdot 1 + \dots + \beta_{A-1} \cdot 0 \\
+    &amp;= \beta_0 + \beta_2\\
     &amp;\quad \vdots \\
-    Y_{i = A-1} = \mu_{A-1} &amp;= \beta_0 + \beta_1 \cdot 0 + \beta_2 \cdot 0 + \dots + \beta_{A-1} \cdot 1 = \beta_0 + \beta_{A-1}\\
-    Y_{i = A} = \mu_A &amp;= \beta_0 + \beta_1 \cdot 0 + \beta_2 \cdot 0 + \dots + \beta_{A-1} \cdot 0 = \beta_0
+    Y_{i = A-1} = \mu_{A-1} &amp;= \beta_0 + \beta_1 \cdot 0 + \beta_2 \cdot 0 + \dots + \beta_{A-1} \cdot 1 \\
+    &amp;= \beta_0 + \beta_{A-1}\\
+    Y_{i = A} = \mu_A &amp;= \beta_0 + \beta_1 \cdot 0 + \beta_2 \cdot 0 + \dots + \beta_{A-1} \cdot 0 \\
+    &amp;= \beta_0
   \end{aligned}
 \]</span></p>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -467,14 +471,15 @@ Important
   \begin{aligned}
     Y_{ij} = \mu_i + \varepsilon_{ij}
   \end{aligned}
-\]</span> where <span class="math inline">\(j\)</span> is the observation index within each level, <span class="math inline">\(\mu_i\)</span> is the mean for level <span class="math inline">\(i\)</span> of the factor.</p>
+\]</span> where <span class="math inline">\(j\)</span> is the observation index within each level, <span class="math inline">\(\mu_i\)</span> is the mean for level <span class="math inline">\(i\)</span> of the factor. It can be shown using the above simplification that this is just another way to write the regression model.</p>
 </div>
 </div>
-<p>As mentioned multiple times but is worth repeating, an ANOVA-model is a special case of a regression model which means that the model assumptions <span class="math inline">\(\varepsilon_{ij} \overset{\mathrm{iid}}{\sim} N(0, \sigma^2)\)</span> still apply and that the model should be evaluated using residual analysis before moving forward to statistical inference. One of the main differences with an ANOVA-model is that the residuals will be grouped to the different levels of the factor and that it can be a bit tough to assess if the homoscedasticity assumption hold.</p>
+<p>As mentioned multiple times but is worth repeating, an ANOVA-model is a special case of a regression model which means that the model assumptions <span class="math inline">\(\varepsilon_{ij} \overset{\mathrm{iid}}{\sim} N(0, \sigma^2)\)</span> still apply and that the model should be evaluated using residual analysis (see <a href="41_Linear_regression.html#sec-residual-analysis" class="quarto-xref"><span>Section 17.3</span></a>) before moving forward to statistical inference. One of the main differences with an ANOVA-model is that the residuals will be grouped to the different levels of the factor and that it can be a bit tough to assess if the homoscedasticity (equal variance) assumption hold, we will see an example of this a bit later in this text.</p>
 <section id="alternative-to-indicator-coding" class="level3" data-number="19.1.1">
 <h3 data-number="19.1.1" class="anchored" data-anchor-id="alternative-to-indicator-coding"><span class="header-section-number">19.1.1</span> Alternative to indicator coding</h3>
-<p>There exists many other ways to code our indicator variables that simplifies the mathematical calculations when fitting a model. One such way is using a <em>factor effect</em> coding system that has two main benefits; firstly it provides accurate parameter estimates in more complex ANOVA-models, secondly it changes the way we interpret an estimate for a specific level.</p>
-<p>Indicator coded variables are interpreted as “the effect of this level compared to the chosen reference level” and the estimated parameters will numerically change based on the, most often arbitrarily, chosen reference level. Factor effect coding instead provides the same numerical parameter estimates regardless of the level that is “skipped” and is interpreted as “the effect of this level compared to the overall mean”.</p>
+<p>There exist many other ways to code our variables that simplifies the mathematical calculations when fitting a model. One such way is using a <em>factor effect</em> coding system that has two main benefits; firstly it provides accurate parameter estimates in more complex ANOVA-models, secondly it changes the way we interpret an estimate for a specific level to something more consistent.</p>
+<p>Indicator coded variables are interpreted as “the effect of this level compared to the chosen reference level” and the estimated parameters will numerically change based on the, most often arbitrarily, chosen reference level.</p>
+<p>Factor effect coding instead provides the same numerical parameter estimates (for the same factor level) regardless of the level that is “skipped”. These effects are interpreted as “the effect of this level compared to the overall mean”.</p>
 <p>We can define this new model in its regression form as: <span id="eq-factor-oneway"><span class="math display">\[
   \begin{aligned}
     Y_{ij} = \mu + \beta_1 \cdot X_{1j} + \dots + \beta_{A-1}\cdot X_{(A-1)j} + \varepsilon_{ij}
@@ -482,7 +487,7 @@ Important
 \tag{19.2}\]</span></span></p>
 <p>which is very similar to <a href="#eq-indicator-oneway" class="quarto-xref">Equation&nbsp;<span>19.1</span></a> except that the intercept is now written as <span class="math inline">\(\mu\)</span>. Mathematically the differences are:</p>
 <ul>
-<li><p><span class="math inline">\(\mu\)</span> is the <strong>unweighted</strong> overall mean of <span class="math inline">\(Y_{ij}\)</span> calculated as: <span class="math display">\[
+<li><p><span class="math inline">\(\mu\)</span> is the <strong>unweighted</strong><a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> overall mean of <span class="math inline">\(Y_{ij}\)</span> calculated as: <span class="math display">\[
 \begin{aligned}
 \mu &amp;= \frac{\mu_1 + \mu_2 + \cdots + \mu_A}{A}
 \end{aligned}
@@ -519,18 +524,18 @@ Important&nbsp;19.1
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Some literature starts at this time to change the labels of the model parameters, for example the factor effect for level <span class="math inline">\(i\)</span> is defined as <span class="math inline">\(\alpha_i\)</span> instead. <span class="math display">\[
+<p>Some literature starts at this time to change the labels of the model parameters, for example the factor effect for level <span class="math inline">\(i\)</span> is defined as <span class="math inline">\(\alpha_i\)</span> and no reference to the coded variables are given: <span class="math display">\[
   \begin{aligned}
     Y_{ij} = \mu + \sum_{i = 1}^{A-1}\alpha_i + \varepsilon_{ij}
   \end{aligned}
 \]</span></p>
-<p>Throughout this book we will keep on using the regression formulation and define each instance of <span class="math inline">\(X_{ij}\)</span> to clearly separate the models from one another.</p>
+<p>Throughout this book we will keep on using the regression formulation and define each instance of <span class="math inline">\(X_{ij}\)</span> to clearly separate the indicator and factor effect coded models from one another.</p>
 </div>
 </div>
 </section>
 </section>
-<section id="the-anova-model" class="level2" data-number="19.2">
-<h2 data-number="19.2" class="anchored" data-anchor-id="the-anova-model"><span class="header-section-number">19.2</span> The ANOVA-model</h2>
+<section id="estimating-an-anova-model" class="level2" data-number="19.2">
+<h2 data-number="19.2" class="anchored" data-anchor-id="estimating-an-anova-model"><span class="header-section-number">19.2</span> Estimating an ANOVA-model</h2>
 <p>The tools of <a href="25_Statistical_inference_two.html" class="quarto-xref"><span>Chapter 14</span></a> allow us to compare two groups of data. But what do we do when we have more than two groups? As an example, we might wish to know how different treatments influence plant growth, as measured by dry weight. If there are two treatments, then there will be three (instead of two) groups, because the treatments will be compared with a control group which does not receive treatment.</p>
 <p>Such a dataset is in fact built into R, and is called <code>PlantGrowth</code>:</p>
 <div class="cell">
@@ -631,6 +636,19 @@ Note
     \end{cases}
 \end{aligned}
 \]</span> and <span class="math inline">\(\varepsilon_{ij} \sim N(0, \sigma^2)\)</span>.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The order of the coding in this example, that control is defined as <span class="math inline">\(X_{1j}\)</span>, comes purely from the fact that R treats factors in alphabetical order by default and automatically uses the last level as the -1 code.</p>
+</div>
+</div>
 <p>Before moving on the with model estimation we need to make sure that R reads the variable containing our factor of interest as a <code>factor</code> type. This can be seen in the tibble output where <code>group</code> is seen as a <code>fct</code>, a factor variable. In order to create the factor effect coding we make use of the function <code>contr.sum(A)</code> where A is the number of levels of the factor.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Shows the factor effect coding matrix</span></span>
@@ -690,7 +708,7 @@ Multiple R-squared:  0.2641,    Adjusted R-squared:  0.2096
 F-statistic: 4.846 on 2 and 27 DF,  p-value: 0.01591</code></pre>
 </div>
 </div>
-<p>The output takes some care to interpret correctly: out of the three coefficients listed, <code>(Intercept)</code> is the overall mean weight of all the plants; <code>group1</code> is the <em>difference</em> of the mean weight in the control from the overall mean; and <code>group2</code> is the difference of the mean weight in treatment 1 from the overall mean.</p>
+<p>The output takes some care to interpret correctly: out of the three coefficients listed, <code>(Intercept)</code> is the overall mean weight of all the plants; <code>group1</code> is the <em>difference</em> of the mean weight in the control from the overall mean; and <code>group2</code> is the <em>difference</em> of the mean weight in treatment 1 from the overall mean. Since both of these coefficients are negative, the effect of treatment 2 against the overall mean would be positive, <span class="math inline">\(-[(-0.041) + (-0.4120)] = 0.453\)</span>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">diagnosticPlots</span>(model, <span class="at">alpha =</span> <span class="dv">1</span>, <span class="at">bins =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -702,12 +720,13 @@ F-statistic: 4.846 on 2 and 27 DF,  p-value: 0.01591</code></pre>
 </div>
 </div>
 </div>
-<p>Given the fact that there are only 30 observations, the interpretation of these plots is going to be approximate. Unless there is clear indications of violations we usually assume that the assumptions are fulfilled. In this specific case, there are no clear indications that we are violating the normality assumption however there is an indication that the variance of the residuals are reduced for higher values of the weight.</p>
+<p>In these diagnostic plots we see the grouped observations clearly in the top right figure. Since all observations pertaining to a specific factor level will have the same estimated value of <span class="math inline">\(Y\)</span>, the points are grouped horizontally.</p>
+<p>Given the fact that there are only 30 observations in total, the interpretation of these plots is going to be approximate. Unless there is clear indications of violations we usually assume that the assumptions are fulfilled. In this specific case, there are no clear indications that we are violating the normality assumption however there is an indication that the variance of the residuals are reduced for higher values of the weight.</p>
 <p>At this point in the book we do not have any tools at our disposal to handle this so we will (unfortunately) disregard this observation and assume the residuals are homoscedastic (constant variance).</p>
 <!-- !TODO ADD A CHAPTER SOMEWHERE ABOUT BOX-COX TRANSFORMATIONS -->
 </section>
-<section id="statistical-inference-in-an-anova-model" class="level2" data-number="19.3">
-<h2 data-number="19.3" class="anchored" data-anchor-id="statistical-inference-in-an-anova-model"><span class="header-section-number">19.3</span> Statistical inference in an ANOVA model</h2>
+<section id="statistical-inference-in-anova" class="level2" data-number="19.3">
+<h2 data-number="19.3" class="anchored" data-anchor-id="statistical-inference-in-anova"><span class="header-section-number">19.3</span> Statistical inference in ANOVA</h2>
 <p>Recall back to the two questions we asked ourselves in the exploratory phase; are the observed differences between the groups meaningful, and which groups differ from each other. Assuming that the residual analysis enforces that the model assumptions hold, these two questions can be answered by statistical inference.</p>
 <p>To get more information, one can pass the result of <code>lm</code> to a function called <code>anova</code>. Despite its name, the role of this function is not to actually estimate the ANOVA model (that was done by <code>lm</code>), but to display its results using the sum-of-squares table, which is also known as the ANOVA table. In this table, each factor, as well as their interactions (if present), get one row each:</p>
 <div class="cell">
@@ -781,7 +800,7 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Below is an interactive visualization using simulations of the relationship between the two sources of variation. The simulation assumes we have four groups with known population means<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> we draw a sample from, visualize each group’s distribution and mean (black line) against the overall mean (red line), and finally calculate the sum of squares, the test variable and the p-value.</p>
+<p>Below is an interactive visualization using simulations of the relationship between the two sources of variation. The simulation assumes we have four groups with known population means<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> we draw a sample from, visualize each group’s distribution and mean (black line) against the overall mean (red line), and finally calculate the sum of squares, the test variable and the p-value.</p>
 <pre class="shinylive-r" data-engine="r"><code>#| '!! shinylive warning !!': |
 #|   shinylive does not work in self-contained HTML documents.
 #|   Please set `embed-resources: false` in your metadata.
@@ -948,7 +967,7 @@ shinyApp(ui = ui, server = server)
 </section>
 <section id="the-kruskalwallis-and-dunn-tests" class="level2" data-number="19.4">
 <h2 data-number="19.4" class="anchored" data-anchor-id="the-kruskalwallis-and-dunn-tests"><span class="header-section-number">19.4</span> The Kruskal–Wallis and Dunn tests</h2>
-<p>What happens if the regression model assumptions are not fulfilled? Starting with the first of these questions, there exists an analogue to the Wilcoxon rank sum test which works when there are more than two groups of data. This is the <em>Kruskal–Wallis test</em><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> , which can be used with any number of groups as long as those groups vary within a single factor.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p>What happens if the regression model assumptions are not fulfilled? Starting with the first of these questions, there exists an analogue to the Wilcoxon rank sum test which works when there are more than two groups of data. This is the <em>Kruskal–Wallis test</em><a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> , which can be used with any number of groups as long as those groups vary within a single factor.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
 <p><em>The Kruskal–Wallis</em> test is non-parametric, and therefore does not rely on assumptions such as the normality of the residuals. Its implementation in R, <code>kruskal.test</code>, is analogous to <code>wilcox.test</code>, <code>t.test</code> <code>lm</code>, or <code>mblm</code>: it takes a formula and the data as inputs. Therefore, to perform the test on the <code>PlantGrowth</code> data, we write:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kruskal.test</span>(weight <span class="sc">~</span> group, <span class="at">data =</span> PlantGrowth)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -992,25 +1011,24 @@ Kruskal-Wallis chi-squared = 7.9882, df = 2, p-value = 0.01842</code></pre>
 </section>
 <section id="exercises" class="level2" data-number="19.5">
 <h2 data-number="19.5" class="anchored" data-anchor-id="exercises"><span class="header-section-number">19.5</span> Exercises</h2>
+<p>The file <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/daphnia_growth.zip"><code>daphnia_growth.csv</code></a> contains data on the growth rate of <em>Daphnia</em> populations that are infected with various parasites. There are four groups of observations: the control (no parasites), infection with <em>Metschnikowia bicuspidata</em>, infection with <em>Pansporella perplexa</em>, and finally, infection with <em>Pasteuria ramosa</em>. Each group has ten replicate observations. Are growth rates affected by parasite load?</p>
 <ol type="1">
-<li>The file <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/daphnia_growth.zip"><code>daphnia_growth.csv</code></a> contains data on the growth rate of <em>Daphnia</em> populations that are infected with various parasites. There are four groups of observations: the control (no parasites), infection with <em>Metschnikowia bicuspidata</em>, infection with <em>Pansporella perplexa</em>, and finally, infection with <em>Pasteuria ramosa</em>. Each group has ten replicate observations. Are growth rates affected by parasite load?
-<ul>
-<li>Before doing any tests, visualize and explore the data, and make sure you have a solid expectation for the results of any statistical analysis.</li>
+<li>Before doing any tests, visualize and explore the data, and make sure you have a solid expectation/guide for the results of any statistical analysis.</li>
 <li>Answer the question whether growth rates affected by parasite load by first applying a non-parametric test (and a subsequent non-parametric post-hoc test if needed).</li>
-<li>Next, apply a parametric test in the same way: by applying the test and running post-hoc tests if needed.</li>
-<li>Do not forget to create diagnostic plots, to see if the assumptions behind the parametric test are satisfied to an acceptable degree. Is that the case? And do the results from the parametric and non-parametric tests agree with one another?</li>
-</ul></li>
-<li>In <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/ponds.zip"><code>ponds.csv</code></a>, measured acidity data (pH) is reported from four different ponds. Do the ponds differ in acidity, and if so, which ones from which others? Answer using both non-parametric and parametric tests, with appropriate post-hoc analyses. Check whether these different methods of analysis agree, and make sure that the assumptions behind the parametric test are satisfied using diagnostic plots. (Note: in this dataset, some values are missing.)</li>
+<li>Estimate a parametric ANOVA model and create diagnostic plots to see if the assumptions behind the parametric test are satisfied to an acceptable degree.</li>
+<li>Apply a parametric test in the same way as 2.: by applying the test and running post-hoc tests if needed. Do the results from the parametric and non-parametric tests agree with one another?</li>
 </ol>
+<p>In <a href="https://raw.githubusercontent.com/dysordys/intro-R-and-stats/main/data/ponds.zip"><code>ponds.csv</code></a>, measured acidity data (pH) is reported from four different ponds. Do the ponds differ in acidity, and if so, which ones from which others? Answer using both non-parametric and parametric tests, with appropriate post-hoc analyses. Check whether these different methods of analysis agree, and make sure that the assumptions behind the parametric test are satisfied using diagnostic plots. (Note: in this dataset, some values are missing.)</p>
 
 
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>Each group is actually <span class="math inline">\(N(\mu_i, \sigma^2 = 1)\)</span>.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>The Kruskal–Wallis test is sometimes referred to as “non-parametric ANOVA”. While this is perfectly fine as a label, one should be aware that it is, strictly speaking, a misnomer: the Kruskal–Wallis test does not rely on computing variances at all.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>In <a href="44_Anova_two_way.html" class="quarto-xref"><span>Chapter 20</span></a> we will see examples where multiple independent factors are varied, and each possible combination results in a separate group. For example, if the effects of three different dosages of vitamin C are examined on the tooth growth of Guinea pigs, and the vitamin is also supplied in two distinct forms of either orange juice or raw ascorbic acid, then there will be <span class="math inline">\(3 \cdot 2 = 6\)</span> groups, defined by the two factors of dosage and form of supplement.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>Unweighted in this case simply means that we take the average of all factor level means regardless of the number of observations within them. If all factor levels contain the same number of observations, this corresponds to the standard mean of all observations.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Each group is actually <span class="math inline">\(N(\mu_i, \sigma^2 = 1)\)</span>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>The Kruskal–Wallis test is sometimes referred to as “non-parametric ANOVA”. While this is perfectly fine as a label, one should be aware that it is, strictly speaking, a misnomer: the Kruskal–Wallis test does not rely on computing variances at all.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>In <a href="44_Anova_two_way.html" class="quarto-xref"><span>Chapter 20</span></a> we will see examples where multiple independent factors are varied, and each possible combination results in a separate group. For example, if the effects of three different dosages of vitamin C are examined on the tooth growth of Guinea pigs, and the vitamin is also supplied in two distinct forms of either orange juice or raw ascorbic acid, then there will be <span class="math inline">\(3 \cdot 2 = 6\)</span> groups, defined by the two factors of dosage and form of supplement.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
