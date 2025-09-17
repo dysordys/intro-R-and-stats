@@ -1,8 +1,8 @@
 # Two-way ANOVA and the Scheirer--Ray--Hare test {#sec-SRH}
 
-## Two-way ANOVA
-
 @sec-ANOVA discussed techniques for analyzing data which fall into multiple categories, but those categories are levels of a single factor. Here we go further and work with data classified by two independent factors.
+
+## Two-way ANOVA
 
 A good example is provided by the built-in dataset `ToothGrowth`, which contains data on the tooth growth of Guinea pigs in response to receiving vitamin C.
 
@@ -10,12 +10,16 @@ A good example is provided by the built-in dataset `ToothGrowth`, which contains
 #| message: false
 library(tidyverse)
 
-as_tibble(ToothGrowth) |> print(n = Inf)
+as_tibble(ToothGrowth) |> 
+  print(n = Inf)
 ```
 
-As seen, there are three dosage levels (0.5, 1, and 2) and two types of supplement (`VC` for vitamin C in the form of raw ascorbic acid, and `OJ` for orange juice). As usual, we first visualize the data. In doing so, it is useful to convert `dose` to a factor (@sec-factors): the three dosage levels play the role of a categorical variable ("low", "medium" ,and "high" levels of vitamin C dosage), and we are not so interested in the actual magnitudes of those dosages.
+As seen, there are three dosage levels (0.5, 1, and 2) and two types of supplement (`VC` for vitamin C in the form of raw ascorbic acid, and `OJ` for orange juice). As usual, we first visualize the data. In doing so, it is important to convert `dose` to a factor (@sec-factors): the three dosage levels play the role of a categorical variable ("low", "medium" ,and "high" levels of vitamin C dosage), and we are not so interested in the actual magnitudes of those dosages.
 
 ```{r}
+#| label: fig-tooth-growth
+#| fig-cap: Distribution of tooth growth for all combinations of factors
+
 as_tibble(ToothGrowth) |>
   mutate(dose = as_factor(dose)) |>
   ggplot(aes(x = supp, y = len)) +
@@ -27,127 +31,209 @@ as_tibble(ToothGrowth) |>
   theme_bw()
 ```
 
-Intuitively, we would expect there to be an effect of dosage, because the higher the dosage the longer the teeth become. We would also expect an effect of supplement type, because orange juice seems to perform better (at least no worse) than raw ascorbic acid in facilitating tooth growth. Continuing with the linear models from @sec-ANOVA, it is easy to include two factors:
+Our interpretation of the figure show that in general the higher the dosage the longer the teeth become, indicating there is some kind of effect. We would also expect an effect of supplement type, because orange juice seems to perform better (at least no worse) than raw ascorbic acid in facilitating tooth growth. 
+
+Continuing with the linear models from @sec-ANOVA, we should first provide a factor effect coding to the two variables and then estimate a model:
 
 ```{r}
+
+ToothGrowth <- 
+  ToothGrowth |> 
+  mutate(dose = as_factor(dose))
+
+contrasts(ToothGrowth$supp) <- contr.sum(2)
+contrasts(ToothGrowth$dose) <- contr.sum(3)
+
 ToothGrowth |>
-  mutate(dose = as_factor(dose)) |>
   lm(len ~ dose + supp, data = _) |>
   anova()
 ```
 
 The new feature above is the inclusion of `dose + supp` as the predictor, instead of just a single one. Mathematically, this translates to the following model:
+
 $$
-\begin{split}
-(\text{length})_i &
-= \beta_0
-+ \beta_1 \cdot (\text{dose is 1})_i
-+ \beta_2 \cdot (\text{dose is 2})_i \\ &
-+ \beta_3 \cdot (\text{supplement is VC})_i
-+ \varepsilon_i
-\end{split}
+  \begin{aligned}
+    Y_{ijk} = \mu + \underbrace{\beta_1 \cdot X_{1jk} + \beta_{2}\cdot X_{2jk}}_{\text{Factor Dose}} + \underbrace{\beta_3 \cdot X_{i1k}}_{\text{Factor Supplement}} + \varepsilon_{ijk}
+  \end{aligned}
 $$ {#eq-anova2way-noint}
-where the coefficients $\beta_1$, $\beta_2$, and $\beta_3$ are all multiplied by indicator variables which take on the value 1 if a data point belongs in that category and 0 otherwise. As seen from the ANOVA table above, both dosage and supplement type appear to have a real effect on tooth growth.
 
-However, this model ignores something that might be potentially relevant: the *interaction* between the two factors. This means that the nature of the relationship between tooth length and one of the predictors depends on the value of the other predictor. For the Guinea pig data, a case can be made based on the plot above that the effect of the supplement type depends on dosage: when the dosage level is either 0.5 or 1 mg/day, orange juice leads to longer teeth than ascorbic acid---but this benefit disappears at the highest dosage level of 2 mg/day.
+where 
 
-Accounting for interaction terms in a statistical model is easy. All one needs to do is add one more term to the formula, denoted `dose:supp`:
+$$
+\begin{aligned}
+    X_{1jk} &= 
+    \begin{cases}
+        1 \quad &\text{if dose 0.5}\\
+        -1      &\text{if dose 2}\\
+        0       &\text{otherwise}
+    \end{cases} \\
+    X_{2jk} &= 
+    \begin{cases}
+        1 \quad &\text{if dose 1}\\
+        -1      &\text{if dose 2}\\
+        0       &\text{otherwise}
+    \end{cases} \\
+    X_{i1k} &= 
+    \begin{cases}
+        1 \quad &\text{if supp OJ}\\
+        -1      &\text{if supp VC}\\
+        0       &\text{otherwise}
+    \end{cases}
+\end{aligned} 
+$$
+As seen from the ANOVA table above, both dosage and supplement type appear to have a real effect on tooth growth using a 5% level of significance.
+
+### Interactions
+However, this model ignores something that might be potentially relevant: the *interaction* between the two factors. This means that the nature of the relationship between tooth length and one of the predictors depends on the value of the other predictor. For the Guinea pig data, a case can be made based on @fig-tooth-growth that the effect of the supplement type depends on dosage: when the dosage level is either 0.5 or 1 mg/day, orange juice leads to longer teeth than ascorbic acid---but this benefit disappears at the highest dosage level of 2 mg/day.
+
+This is more easily seen in an *interaction plot* that uses the cell means as a representation of the effect for each combination of factor levels. If the lines diverge or come together --- i.e. they are not parallel --- we have an indication that there might be some interaction effects happening.
+
+```{r}
+#| fig-cap: Interaction plot of the cell means
+#| fig-height: 3
+#| fig-width: 5 
+#| message: false
+#| label: fig-interaction-plot
+
+# Calculates cell means
+means <- 
+  ToothGrowth |> 
+  group_by(supp, dose) |> 
+  summarize(
+    mean = mean(len)
+  ) |> 
+  ungroup()
+
+# Shows each cell mean
+ggplot(ToothGrowth) + 
+  aes(x = dose, y = len, group = supp, color = supp) + 
+  geom_point(alpha = 0.5) + theme_bw() + 
+  scale_color_manual("Supplement", values = c("steelblue", "#d9230f")) + 
+  geom_line(
+    data = means,
+    aes(y = mean), 
+    linewidth = 1.2
+  ) + 
+  labs(x = "Dose", y = "Length")
+```
+
+Accounting for interaction terms in a regression model is easy. All one needs to do is add one more term to the formula, denoted `dose:supp`:
 
 ```{r}
 ToothGrowth |>
-  mutate(dose = as_factor(dose)) |>
   lm(len ~ dose + supp + dose:supp, data = _) |>
   anova()
 ```
 
-The model result confirms that our intuition was likely correct: there does appear to be a real interaction effect between the two factors. Mathematically, the model reads
+The model result confirms that our intuition was likely correct: there does appear to be a real interaction effect between the two factors. Mathematically, the model reads:
+
 $$
-\begin{split}
-(\text{length})_i &
-= \beta_0
-+ \beta_1 \cdot (\text{dose is 1})_i
-+ \beta_2 \cdot (\text{dose is 2})_i
-+ \beta_3 \cdot (\text{supplement is VC})_i \\ &
-+ \beta_4 \cdot (\text{dose is 1})_i \cdot(\text{supplement is VC})_i \\ &
-+ \beta_5 \cdot (\text{dose is 2})_i \cdot(\text{supplement is VC})_i
-+ \varepsilon_i
-\end{split}
+  \begin{aligned}
+    Y_{ijk} = &\mu + \underbrace{\beta_1 \cdot X_{1jk} + \beta_{2} \cdot X_{2jk}}_{\text{Factor Dose}} + \underbrace{\beta_3 \cdot X_{i1k}}_{\text{Factor Supplement}} + \\
+    &\underbrace{\beta_4 \cdot X_{1jk} \cdot X_{i1k} + \beta_5 \cdot X_{2jk} \cdot X_{i1k}}_{\text{Interaction}} + \varepsilon_{ijk}
+  \end{aligned}
 $$ {#eq-anova2way-int}
-where $\beta_4$ and $\beta_5$ are multiplied by products of indicator variables. In other words, the $\beta_4$ term only shows up in the equation if data point $i$ both has a dose of 1 mg/day and a supplement of VC, and $\beta_5$ only appears if data point $i$ has a 2 mg/day dose and VC supplement.
+
+where $\beta_4$ and $\beta_5$ are the effects of the different products of coded variables. The number of added interactions can be calculated using the product of the number of coded variables for each factor, in this case 2 $\cdot$ 1. 
 
 The inclusion of two factors with their interaction is so common in linear models that there is a shorthand notation to make it easier. Writing `dose * supp` is exactly the same as the above `dose + supp + dose:supp`. Let us see this in action:
 
 ```{r}
-ToothGrowth |>
-  mutate(dose = as_factor(dose)) |>
-  lm(len ~ dose * supp, data = _) |>
+model <- 
+  ToothGrowth |>
+  lm(len ~ dose * supp, data = _) 
+
+model |>
   anova()
 ```
 
-The result is identical to what we had before.
+The result is identical to what we had before as we don't change the variation within either variable. The only difference we would see with factor effect coding is the values of the estimated parameters as they are now interpreted against the overall mean.
 
-As in the case of one-way ANOVA, diagnostic plots and post-hoc testing (Tukey test) are useful tools. The diagnostic plots look excellent, so we can be confident about interpreting the p-values and other statistics of the linear model correctly:
+### Residual analysis
+
+As in the case of one-way ANOVA, diagnostic plots and post-hoc testing (Tukey test) are useful tools. The diagnostic plots look ok, there is some differing variance in the residuals depending on the estimated value, but we can be relatively confident about interpreting the p-values and other statistics of the linear model correctly:
 
 ```{r}
 #| warning: false
 #| fig-height: 6
-library(ggfortify)
 
-ToothGrowth |>
-  mutate(dose = as_factor(dose)) |>
-  lm(len ~ dose * supp, data = _) |>
-  autoplot(smooth.colour = NA, colour = "steelblue", alpha = 0.7) +
-  theme_bw()
+model |>
+  diagnosticPlots()
 ```
 
-The Tukey test can be used to compare each factor in isolation, as well as their combinations:
+The F-test is now split into three different components, the interaction and the two main factor effects. Formally they each test the $\beta$ parameters tied to each of the components from @eq-anova2way-int, for example checking for interaction effects means:
+
+$$
+  \begin{aligned}
+  &H_0: \beta_4 = \beta_5 = 0\\
+  &H_a: \text{At least one } \beta \text{ in } H_0 \ne 0
+  \end{aligned}
+$$
+
+:::{.callout-important}
+It is important to start the inference with the interaction terms because the result of that test changes how we interpret the others. 
+
+If the interaction **is** found to be significant, we do not interpret the main factor effects because the interaction affects these main effects. Independently testing for the main effect would not include these interactions and we would most likely draw the wrong conclusions. 
+
+If the interaction **is not** found to be significant, we can move on to interpreting each of the individual main factor effects of factor A and B, in the example "dose" and "supplement". 
+:::
+
+Looking back at the ANOVA-table and the interaction row, the corresponding p-value is less than 5%. This means that there exist a significant interaction between dose and supplement at a 5% level of significance. As such we do not interpret the tests for the main effects.
+
+### Multiple comparisons in two-way ANOVA
+Similar to the interpretations of the F-tests, multiple comparisons are affected by the presence --- or absence --- of an interaction. If the interaction is deemed significant we are no longer interested in comparing the factor level means of each respective factor as we did in the one-way ANOVA model. Instead we need to look at the pairwise differences of the **cell means** as they include the interaction effect. 
+
+The Tukey test can be used to compare each factor in isolation, as well as their combinations by specifying which factor you want to analyze in `specs` of the `emmeans` function. In the case of cell means we specify the interaction between the two factors:
 
 ```{r}
-ToothGrowth |>
-  mutate(dose = as_factor(dose)) |>
-  lm(len ~ dose * supp, data = _) |>
-  aov() |>
-  TukeyHSD()
+
+means <- emmeans(model, specs = ~supp*dose)
+
+means |>
+  pairs(adjust = "tukey") |> 
+  as_tibble() |> 
+  arrange(
+    abs(estimate) |> 
+      desc()
+  )
 ```
 
-(Again, due to how `TukeyHSD` is designed, the `aov` function must be called before one can use it on a linear model fit.) Here we first have a comparison between the dosage levels, averaging over supplement type. Even after this averaging there is a clear difference between the effects of each dosage level, as can be suspected based on a plot which ignores the `supp` factor:
+Formally we test for each row the following hypotheses:
+$$
+  \begin{aligned}
+  &H_0: \mu_{ij} -  \mu_{i'j'} = 0\\
+  &H_A: \mu_{ij} -  \mu_{i'j'} \ne 0
+  \end{aligned}
+$$
+where $i = i'$ and $j = j'$ cannot both be true at the same time^[As that would mean we are testing the same cell mean against itself.].
+
+Since we have sorted the table in descending order of magnitude for the differences we can say that the first 11 pairwise differences of cell means are significant.
+
+:::{.callout-note}
+If the interaction term was not significant, we would instead look at the factor level means similar to the one-way ANOVA model. Using a `list` of each of the factors the `means` object now contains two different tables, one for each factor. We can then do pairwise comparisons for each using a Tukey adjustment.
 
 ```{r}
-as_tibble(ToothGrowth) |>
-  mutate(dose = as_factor(dose)) |>
-  ggplot(aes(x = dose, y = len)) +
-  geom_boxplot(alpha = 0.2, outlier.shape = NA,
-               color = "steelblue", fill = "steelblue") +
-  geom_jitter(alpha = 0.4, width = 0.05, color = "steelblue") +
-  labs(x = "vitamin C dosage [mg/day]", y = "tooth length [mm]") +
-  theme_bw()
+means <- emmeans(model, specs = list("dose", "supp"))
+
+means[[1]] |>
+  pairs(adjust = "tukey") |> 
+  as_tibble() |> 
+  arrange(
+    abs(estimate) |> 
+      desc()
+  )
+
+means[[2]] |>
+  pairs(adjust = "tukey") |> 
+  as_tibble() |> 
+  arrange(
+    abs(estimate) |> 
+      desc()
+  )
 ```
 
-Similarly, the difference between the two supplement types appears to be real (the Tukey test gave `p adj = 0.0002312`), even when not distinguishing by dosage---although this is somewhat less visible on a graph:
-
-```{r}
-as_tibble(ToothGrowth) |>
-  ggplot(aes(x = supp, y = len)) +
-  geom_boxplot(alpha = 0.2, outlier.shape = NA,
-               color = "steelblue", fill = "steelblue") +
-  geom_jitter(alpha = 0.4, width = 0.05, color = "steelblue") +
-  labs(x = "vitamin C dosage [mg/day]", y = "tooth length [mm]") +
-  theme_bw()
-```
-
-Finally, in the `` $`dose:supp` `` part of the table, one can compare every particular experimental group (indexed by both `dose` and `supp`) with every other.
-
-It is possible to use the `summary` function instead of `anova` when running the linear model. However, this table is likely not what we are looking for, because instead of having one row per factor and their interaction, it prints one row per fitted parameter. That said, this can sometimes also be useful:
-
-```{r}
-ToothGrowth |>
-  mutate(dose = as_factor(dose)) |>
-  lm(len ~ dose * supp, data = _) |>
-  summary()
-```
-
-The named coefficients above correspond to the $\beta$ parameters of @eq-anova2way-int: `(Intercept)` is $\beta_0$, `dose1` is $\beta_1$, `dose2` is $\beta_2$, `suppVC` is $\beta_3$, `dose1:suppVC` is $\beta_4$, and `dose2:suppVC` is $\beta_5$.
-
+Note that the function will warn that the model contains an interaction term which might impact the results, but as long as we have concluded the interaction not have a significant effect we can disregard this warning.
+:::
 
 ## The Scheirer--Ray--Hare test
 
@@ -169,14 +255,13 @@ And now, we can use the function `scheirerRayHare` much like `kruskal.test` or `
 
 ```{r}
 ToothGrowth |>
-  mutate(dose = as_factor(dose)) |>
   scheirerRayHare(len ~ dose * supp, data = _)
 ```
 
 Note that this test is skeptical about the role of the supplement type, and definitely thinks that the interaction between it and dosage is not different from what one might get by pure chance. This illustrates one problem with the test: it is not very powerful in detecting patterns, even when they are there. To make matters worse, there is no appropriate post-hoc test available in conjunction with the Scheirer--Ray--Hare test. For these reasons, its use is more restricted than of other non-parametric tests, like the Wilcoxon rank sum and Kruskal--Wallis tests. It is good to know about it as an option, but often one must rely on other methods, such as the parametric two-way ANOVA.
 
-
-## Combining categorical and continuous variables in linear models {#sec-ancova}
+## Combining categorical and continuous variables {#sec-ancova}
+Combining the information 
 
 So far we have used at most two predictors when dealing with linear models (`lm`). This was in @sec-SRH, where we looked the effects of two categorical variables, as well as their interaction. @sec-linreg introduced the idea of using a continuous, instead of a categorical, predictor. But we have not been combining these.
 
