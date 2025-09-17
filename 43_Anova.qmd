@@ -429,11 +429,11 @@ The table shows three *contrasts*, which is the three pairwise comparisons betwe
 
 $$
   \begin{aligned}
-  H_0&: \mu_i - \mu_{j} = 0\\
-  H_A&: \mu_i - \mu_{j} \ne 0\\
+  H_0&: \mu_i - \mu_{i'} = 0\\
+  H_A&: \mu_i - \mu_{i'} \ne 0\\
   \end{aligned}
 $$
-where $i \ne j$. 
+where $i \ne i'$. 
 
 What has the post hoc Tukey test revealed? Precisely what we have been suspecting: that the only difference worth noting is the one between the two treatments (first row of the table, where the adjusted p-value is sufficiently small to have a chance of pointing at a real difference).
 
