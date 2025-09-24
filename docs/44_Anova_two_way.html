@@ -369,12 +369,12 @@ window.Quarto = {
   <ul>
   <li><a href="#two-way-anova" id="toc-two-way-anova" class="nav-link active" data-scroll-target="#two-way-anova"><span class="header-section-number">20.1</span> Two-way ANOVA</a>
   <ul>
-  <li><a href="#interactions" id="toc-interactions" class="nav-link" data-scroll-target="#interactions"><span class="header-section-number">20.1.1</span> Interactions</a></li>
+  <li><a href="#sec-interactions" id="toc-sec-interactions" class="nav-link" data-scroll-target="#sec-interactions"><span class="header-section-number">20.1.1</span> Interactions</a></li>
   <li><a href="#residual-analysis" id="toc-residual-analysis" class="nav-link" data-scroll-target="#residual-analysis"><span class="header-section-number">20.1.2</span> Residual analysis</a></li>
   <li><a href="#multiple-comparisons-in-two-way-anova" id="toc-multiple-comparisons-in-two-way-anova" class="nav-link" data-scroll-target="#multiple-comparisons-in-two-way-anova"><span class="header-section-number">20.1.3</span> Multiple comparisons in two-way ANOVA</a></li>
   </ul></li>
   <li><a href="#the-scheirerrayhare-test" id="toc-the-scheirerrayhare-test" class="nav-link" data-scroll-target="#the-scheirerrayhare-test"><span class="header-section-number">20.2</span> The Scheirer–Ray–Hare test</a></li>
-  <li><a href="#sec-ancova" id="toc-sec-ancova" class="nav-link" data-scroll-target="#sec-ancova"><span class="header-section-number">20.3</span> Combining categorical and continuous variables</a></li>
+  <li><a href="#sec-ancova" id="toc-sec-ancova" class="nav-link" data-scroll-target="#sec-ancova"><span class="header-section-number">20.3</span> Interactions in a regression model</a></li>
   <li><a href="#sec-exercises-anova-two-way" id="toc-sec-exercises-anova-two-way" class="nav-link" data-scroll-target="#sec-exercises-anova-two-way"><span class="header-section-number">20.4</span> Exercises</a></li>
   </ul>
 </nav>
@@ -554,8 +554,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
     \end{cases}
 \end{aligned}
 \]</span> As seen from the ANOVA table above, both dosage and supplement type appear to have a real effect on tooth growth using a 5% level of significance.</p>
-<section id="interactions" class="level3" data-number="20.1.1">
-<h3 data-number="20.1.1" class="anchored" data-anchor-id="interactions"><span class="header-section-number">20.1.1</span> Interactions</h3>
+<section id="sec-interactions" class="level3" data-number="20.1.1">
+<h3 data-number="20.1.1" class="anchored" data-anchor-id="sec-interactions"><span class="header-section-number">20.1.1</span> Interactions</h3>
 <p>However, this model ignores something that might be potentially relevant: the <em>interaction</em> between the two factors. This means that the nature of the relationship between tooth length and one of the predictors depends on the value of the other predictor. For the Guinea pig data, a case can be made based on <a href="#fig-tooth-growth" class="quarto-xref">Figure&nbsp;<span>20.1</span></a> that the effect of the supplement type depends on dosage: when the dosage level is either 0.5 or 1 mg/day, orange juice leads to longer teeth than ascorbic acid—but this benefit disappears at the highest dosage level of 2 mg/day.</p>
 <p>This is more easily seen in an <em>interaction plot</em> that uses the cell means as a representation of the effect for each combination of factor levels. If the lines diverge or come together — i.e.&nbsp;they are not parallel — we have an indication that there might be some interaction effects happening.</p>
 <div class="cell">
@@ -802,10 +802,16 @@ Residuals 54  4021.1               </code></pre>
 <p>Note that this test is skeptical about the role of the supplement type, and definitely thinks that the interaction between it and dosage is not different from what one might get by pure chance. This illustrates one problem with the test: it is not very powerful in detecting patterns, even when they are there. To make matters worse, there is no appropriate post-hoc test available in conjunction with the Scheirer–Ray–Hare test. For these reasons, its use is more restricted than of other non-parametric tests, like the Wilcoxon rank sum and Kruskal–Wallis tests. It is good to know about it as an option, but often one must rely on other methods, such as the parametric two-way ANOVA.</p>
 </section>
 <section id="sec-ancova" class="level2" data-number="20.3">
-<h2 data-number="20.3" class="anchored" data-anchor-id="sec-ancova"><span class="header-section-number">20.3</span> Combining categorical and continuous variables</h2>
-<p>Combining the information</p>
-<p>So far we have used at most two predictors when dealing with linear models (<code>lm</code>). This was in <a href="#sec-SRH" class="quarto-xref"><span>Chapter 20</span></a>, where we looked the effects of two categorical variables, as well as their interaction. <a href="41_Linear_regression.html" class="quarto-xref"><span>Chapter 17</span></a> introduced the idea of using a continuous, instead of a categorical, predictor. But we have not been combining these.</p>
-<p>In fact, one can build arbitrarily complicated linear models from an arbitrary combination of continuous and categorical variables, and their interactions. Let us consider the built-in <code>CO2</code> dataset as an example, which was already used before in an exercise (<a href="#sec-exercises-anova-two-way" class="quarto-xref"><span>Section 20.4</span></a>). Briefly, the data contain measurements from an experiment on the cold tolerance of the grass species <a href="https://en.wikipedia.org/wiki/Echinochloa_crus-galli"><em>Echinochloa crus-galli</em></a>. The dataset has five columns: <code>Plant</code> (a unique identifier for each plant individual), <code>Type</code> (either <code>Quebec</code> or <code>Mississippi</code> depending on the origin of the plant), <code>Treatment</code> (whether the plant individual was <code>chilled</code> or <code>nonchilled</code> for the experiment), <code>conc</code> (ambient carbon dioxide concentration), and <code>uptake</code> (carbon dioxide uptake rate by the plant).</p>
+<h2 data-number="20.3" class="anchored" data-anchor-id="sec-ancova"><span class="header-section-number">20.3</span> Interactions in a regression model</h2>
+<p>In <a href="42_Multiple_and_Nonlinear_regression.html#sec-multiple-regression" class="quarto-xref"><span>Section 18.1</span></a> we introduced adding multiple quantitative and qualitative explanatory variables to a model but we did not include the use of interactions. In <a href="#sec-interactions" class="quarto-xref"><span>Section 20.1.1</span></a> we allowed for the two factors to interact and together help explain the response variable and in a multiple regression model we can do the same for any and all combination of quantitative and qualitative variables. The purpose of interactions is to explain more complex — most often non-linear — relationships in a linear model. In fact, one can build arbitrarily complicated linear models from an arbitrary combination of quantitative and qualitative variables, and their interactions.</p>
+<p>Let us consider the built-in <code>CO2</code> dataset as an example, which was already used before in <a href="42_Multiple_and_Nonlinear_regression.html#sec-nonlin-regression" class="quarto-xref"><span>Section 18.3</span></a>. Briefly, the data contain measurements from an experiment on the cold tolerance of the grass species <a href="https://en.wikipedia.org/wiki/Echinochloa_crus-galli"><em>Echinochloa crus-galli</em></a>. The dataset has five variables:</p>
+<ul>
+<li><code>Plant</code> (a unique identifier for each plant individual),</li>
+<li><code>Type</code> (either <code>Quebec</code> or <code>Mississippi</code> depending on the origin of the plant),</li>
+<li><code>Treatment</code> (whether the plant individual was <code>chilled</code> or <code>nonchilled</code> for the experiment),</li>
+<li><code>conc</code> (ambient carbon dioxide concentration),</li>
+<li><code>uptake</code> (carbon dioxide uptake rate by the plant).</li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(CO2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -847,7 +853,7 @@ Residuals 54  4021.1               </code></pre>
 </div>
 </div>
 </div>
-<p>This, however, is only part of the story, as becomes obvious if we also plot the ambient CO<sub>2</sub> concentrations (<code>conc</code>) along the x-axis:</p>
+<p>However this is only part of the story, as becomes obvious if we also plot the ambient CO<sub>2</sub> concentrations (<code>conc</code>) along the x-axis:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as_tibble</span>(CO2) <span class="sc">|&gt;</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> conc, <span class="at">y =</span> uptake)) <span class="sc">+</span></span>
@@ -865,51 +871,8 @@ Residuals 54  4021.1               </code></pre>
 </div>
 <p>We see that there is also a clear, saturating relationship between CO<sub>2</sub> concentration and uptake rates that is definitely not linear. This does not mean that a linear model is useless for analyzing these data: the trend of whether the data increase or decrease can still be captured (although it is not recommended to use the model for numerical prediction purposes). One model that may come to mind is as follows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(uptake <span class="sc">~</span> conc <span class="sc">+</span> Type <span class="sc">*</span> Treatment, <span class="at">data =</span> CO2) <span class="sc">|&gt;</span> <span class="fu">anova</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Analysis of Variance Table
-
-Response: uptake
-               Df Sum Sq Mean Sq F value    Pr(&gt;F)    
-conc            1 2285.0  2285.0 63.5032 1.002e-11 ***
-Type            1 3365.5  3365.5 93.5330 4.787e-15 ***
-Treatment       1  988.1   988.1 27.4611 1.300e-06 ***
-Type:Treatment  1  225.7   225.7  6.2733   0.01432 *  
-Residuals      79 2842.6    36.0                      
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
-</div>
-</div>
-<p>In other words, the uptake rates are modeled via a combination of the effect of concentration (a continuous variable) plus the interaction of type and treatment (two categorical variables). Recall that <code>Type * Treatment</code> is shorthand for <code>Type + Treatment + Type:Treatment</code>, the sum of the main effects and the interaction between them. Mathematically, the equation for the model reads: <span id="eq-linreg-multiway"><span class="math display">\[
-\begin{split}
-(\text{uptake})_i &amp;
-= \beta_0
-+ \beta_1 \cdot (\text{conc})_i
-+ \beta_2 \cdot (\text{Type is Mississippi})_i \\ &amp;
-+ \beta_3 \cdot (\text{Treatment is chilled})_i \\ &amp;
-+ \beta_4 \cdot (\text{Type is Mississippi})_i \cdot(\text{Treatment is chilled})_i
-+ \varepsilon_i
-\end{split}
-\tag{20.3}\]</span></span> where <span class="math inline">\((\text{conc})_i\)</span> is a continuous predictor and not an indicator variable—that is, it takes on the actual value of the CO<sub>2</sub> concentration in observation <span class="math inline">\(i\)</span>. By contrast, <span class="math inline">\((\text{Type is Mississippi})_i\)</span> and <span class="math inline">\((\text{Treatment is chilled})_i\)</span> are indicator variables that take on the value 1 if data point <span class="math inline">\(i\)</span> belongs in their category and 0 otherwise.</p>
-<p>The rationale for having chosen the model <code>uptake ~ conc + Type * Treatment</code> is that the box plots above reveal a potential interaction between the two factors <code>Type</code> and <code>Treatment</code> (the effect of changing <code>Treatment</code> from chilled to nonchilled depends on whether the <code>Type</code> was Quebec or Mississippi), and on top of this, we also want to capture the positive dependence on CO<sub>2</sub> concentration. The ANOVA table above concurs: each of these categories come out with low p-values, indicating that what we see is unlikely to be due to just chance. To make sure that the assumptions on which this interpretation rests are held, we look at the diagnostic plots:</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggfortify)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(uptake <span class="sc">~</span> conc <span class="sc">+</span> Type <span class="sc">*</span> Treatment, <span class="at">data =</span> CO2) <span class="sc">|&gt;</span></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">smooth.colour =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="44_Anova_two_way_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<p>The Q-Q plot is not good: in the lower quantiles, the realized residuals are consistently larger in magnitude than the theoretical expectation based on the assumption of normality. This, of course, is a consequence of the data depending on concentrations in a manifestly nonlinear way. Apart from the Q-Q plot however, the diagnostics look surprisingly good. We will come back to the point about nonlinearity in <a href="42_Multiple_and_Nonlinear_regression.html#sec-nonlin-regression" class="quarto-xref"><span>Section 18.3</span></a>.</p>
-<p>It is also informative to apply the function <code>summary</code> on the model fit in addition to <code>anova</code>, to obtain the regression slopes and intercept (the <span class="math inline">\(\beta\)</span> parameters of <a href="#eq-linreg-multiway" class="quarto-xref">Equation&nbsp;<span>20.3</span></a>):</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(uptake <span class="sc">~</span> conc <span class="sc">+</span> Type <span class="sc">*</span> Treatment, <span class="at">data =</span> CO2) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(uptake <span class="sc">~</span> conc <span class="sc">+</span> Type <span class="sc">*</span> Treatment, <span class="at">data =</span> CO2) <span class="sc">|&gt;</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -934,7 +897,45 @@ Multiple R-squared:  0.7072,    Adjusted R-squared:  0.6923
 F-statistic: 47.69 on 4 and 79 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
-<p>Regardless of how good this model looks, one can argue based on the plot of the data that there could also be an interaction between <code>conc</code> and the other two factors. After all, the saturation levels of the uptake rate are always higher in Quebec than in Mississippi, and the effect of chilling also depends on <code>Type</code>. A model which accounts for all these effects and their interactions is <code>uptake ~ conc * Type * Treatment</code>. Mathematically: <span id="eq-linreg-multiway-2"><span class="math display">\[
+<p>In other words, the uptake rates are modeled via a combination of the effect of concentration (a continuous variable) plus the interaction of type and treatment (two categorical variables). Recall that <code>Type * Treatment</code> is shorthand for <code>Type + Treatment + Type:Treatment</code>, the sum of the main effects and the interaction between them. Mathematically, the equation for the model reads: <span id="eq-linreg-multiway"><span class="math display">\[
+\begin{split}
+(\text{uptake})_i &amp;
+= \beta_0
++ \beta_1 \cdot (\text{conc})_i
++ \beta_2 \cdot (\text{Type is Mississippi})_i \\ &amp;
++ \beta_3 \cdot (\text{Treatment is chilled})_i \\ &amp;
++ \beta_4 \cdot (\text{Type is Mississippi})_i \cdot(\text{Treatment is chilled})_i
++ \varepsilon_i
+\end{split}
+\tag{20.3}\]</span></span> where <span class="math inline">\((\text{conc})_i\)</span> is a continuous predictor and not an indicator variable—that is, it takes on the actual value of the CO<sub>2</sub> concentration in observation <span class="math inline">\(i\)</span>. By contrast, <span class="math inline">\((\text{Type is Mississippi})_i\)</span> and <span class="math inline">\((\text{Treatment is chilled})_i\)</span> are indicator variables that take on the value 1 if data point <span class="math inline">\(i\)</span> belongs in their category and 0 otherwise.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>We could just as easily use factor effect coding even in a regression model. The choice of coding is generally at the will of the analyst but we must take into account how the coding changes the interpretations of the parameter estimates.</p>
+</div>
+</div>
+<p>The rationale for having chosen the model <code>uptake ~ conc + Type * Treatment</code> is that the box plots above reveal a potential interaction between the two factors <code>Type</code> and <code>Treatment</code> (the effect of changing <code>Treatment</code> from chilled to nonchilled depends on whether the <code>Type</code> was Quebec or Mississippi), and on top of this, we also want to capture the positive dependence on CO<sub>2</sub> concentration. The coefficient table tend to concur: the only non-significant parameter at 5% significance is Treatment but that is probably on account of the significant interaction term having an influence on the main effect. If the interaction is significant, the main effect needs to be included in the model to help build the interaction.</p>
+<p>To make sure that the assumptions on which this interpretation rests are held, we look at the diagnostic plots:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(uptake <span class="sc">~</span> conc <span class="sc">+</span> Type <span class="sc">*</span> Treatment, <span class="at">data =</span> CO2) <span class="sc">|&gt;</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diagnosticPlots</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="44_Anova_two_way_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The Q-Q plot and histogram are not good: in the lower quantiles, the observed residuals are consistently larger in magnitude — more negative — than the theoretical expectation based on the assumption of normality. This, of course, is a consequence of the data depending on concentrations in a manifestly nonlinear way. We can also be somewhat skeptical about the assumption of equal variance as the residuals seem to be closer together for smaller estimated values and further apart for larger values.</p>
+<p>Regardless of how this model looks, one can argue based on the plot of the data that there could also be an interaction between <code>conc</code> and the other two factors. After all, the saturation levels of the uptake rate are always higher in Quebec than in Mississippi, and the effect of chilling also depends on <code>Type</code>. A model which accounts for all these effects and their interactions is <code>uptake ~ conc * Type * Treatment</code>. Mathematically: <span id="eq-linreg-multiway-2"><span class="math display">\[
 \begin{split}
 (\text{uptake})_i &amp;
 = \beta_0
@@ -949,26 +950,12 @@ F-statistic: 47.69 on 4 and 79 DF,  p-value: &lt; 2.2e-16</code></pre>
 + \varepsilon_i
 \end{split}
 \tag{20.4}\]</span></span></p>
-<p>(The <span class="math inline">\(\beta_7\)</span> term is multiplied by a three-way interaction of concentration, type, and treatment.) Fitting the model and creating diagnostic plots:</p>
+<p>(The <span class="math inline">\(\beta_7\)</span> term is multiplied by a <strong>three-way interaction</strong> of concentration, type, and treatment.) Fitting the model and creating diagnostic plots:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(uptake <span class="sc">~</span> conc <span class="sc">*</span> Type <span class="sc">*</span> Treatment, <span class="at">data =</span> CO2) <span class="sc">|&gt;</span> <span class="fu">anova</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Analysis of Variance Table
-
-Response: uptake
-                    Df Sum Sq Mean Sq  F value    Pr(&gt;F)    
-conc                 1 2285.0  2285.0  68.1766 3.545e-12 ***
-Type                 1 3365.5  3365.5 100.4164 1.516e-15 ***
-Treatment            1  988.1   988.1  29.4821 6.512e-07 ***
-conc:Type            1  208.0   208.0   6.2060   0.01491 *  
-conc:Treatment       1   31.9    31.9   0.9509   0.33258    
-Type:Treatment       1  225.7   225.7   6.7350   0.01134 *  
-conc:Type:Treatment  1   55.5    55.5   1.6570   0.20192    
-Residuals           76 2547.2    33.5                       
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(uptake <span class="sc">~</span> conc <span class="sc">*</span> Type <span class="sc">*</span> Treatment, <span class="at">data =</span> CO2) <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>threewayModel <span class="ot">&lt;-</span> <span class="fu">lm</span>(uptake <span class="sc">~</span> conc <span class="sc">*</span> Type <span class="sc">*</span> Treatment, <span class="at">data =</span> CO2) </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>threewayModel <span class="sc">|&gt;</span> </span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -995,18 +982,50 @@ Residual standard error: 5.789 on 76 degrees of freedom
 Multiple R-squared:  0.7376,    Adjusted R-squared:  0.7134 
 F-statistic: 30.52 on 7 and 76 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">lm</span>(uptake <span class="sc">~</span> conc <span class="sc">*</span> Type <span class="sc">*</span> Treatment, <span class="at">data =</span> CO2) <span class="sc">|&gt;</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">autoplot</span>(<span class="at">smooth.colour =</span> <span class="cn">NA</span>, <span class="at">colour =</span> <span class="st">"steelblue"</span>, <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>threewayModel <span class="sc">|&gt;</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">anova</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: uptake
+                    Df Sum Sq Mean Sq  F value    Pr(&gt;F)    
+conc                 1 2285.0  2285.0  68.1766 3.545e-12 ***
+Type                 1 3365.5  3365.5 100.4164 1.516e-15 ***
+Treatment            1  988.1   988.1  29.4821 6.512e-07 ***
+conc:Type            1  208.0   208.0   6.2060   0.01491 *  
+conc:Treatment       1   31.9    31.9   0.9509   0.33258    
+Type:Treatment       1  225.7   225.7   6.7350   0.01134 *  
+conc:Type:Treatment  1   55.5    55.5   1.6570   0.20192    
+Residuals           76 2547.2    33.5                       
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>threewayModel <span class="sc">|&gt;</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">diagnosticPlots</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="44_Anova_two_way_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="44_Anova_two_way_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>This confirms what we saw on the plot of the data: that the basic shape of the relationship between concentration and uptake is unaffected by either <code>Type</code> or <code>Treatment</code> (i.e., the term <code>conc:Type:Treatment</code> in the ANOVA table has a high associated p-value). It also illustrates the general point that there are very often multiple candidate models, and choosing between them is a question of judgment, trial-and-error, and successively improving the model structure based on results from earlier modeling attempts.</p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>When estimating a multiple regression model, especially one with a variety of interactions, we tend to encounter something called <em>multicollinearity</em>. Simply put, this phenomenon means that we have more than one variable (component) in the model that explains the same “part” of the response and the model overestimates the standard error of its parameters.</p>
+<p>The consequence is that inference for parameters tend to not reject the null hypothesis even though we know the variable has a pairwise effect on the response. We also see this effect in the discrepancy between partial F-tests and simple t-tests for parameters, essentially them not agreeing with one another.</p>
+<p>We will not delve deeper into the topic in this literature, but there are ways of both identifying and mitigating the problems of multicollinearity that should be investigated when estimating a multiple regression model.</p>
+</div>
+</div>
 </section>
 <section id="sec-exercises-anova-two-way" class="level2" data-number="20.4">
 <h2 data-number="20.4" class="anchored" data-anchor-id="sec-exercises-anova-two-way"><span class="header-section-number">20.4</span> Exercises</h2>

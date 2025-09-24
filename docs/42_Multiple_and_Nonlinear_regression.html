@@ -391,7 +391,7 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#multiple-linear-regression" id="toc-multiple-linear-regression" class="nav-link active" data-scroll-target="#multiple-linear-regression"><span class="header-section-number">18.1</span> Multiple linear regression</a>
+  <li><a href="#sec-multiple-regression" id="toc-sec-multiple-regression" class="nav-link active" data-scroll-target="#sec-multiple-regression"><span class="header-section-number">18.1</span> Multiple linear regression</a>
   <ul>
   <li><a href="#visualizing-the-response-variable" id="toc-visualizing-the-response-variable" class="nav-link" data-scroll-target="#visualizing-the-response-variable"><span class="header-section-number">18.1.1</span> Visualizing the response variable</a></li>
   <li><a href="#sec-pairwise-visualization" id="toc-sec-pairwise-visualization" class="nav-link" data-scroll-target="#sec-pairwise-visualization"><span class="header-section-number">18.1.2</span> Pairwise Relationships</a>
@@ -419,9 +419,9 @@ window.Quarto = {
   </ul></li>
   <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises"><span class="header-section-number">18.4</span> Exercises</a>
   <ul>
-  <li><a href="#multiple-linear-regression-1" id="toc-multiple-linear-regression-1" class="nav-link" data-scroll-target="#multiple-linear-regression-1"><span class="header-section-number">18.4.1</span> Multiple linear regression</a></li>
+  <li><a href="#multiple-linear-regression" id="toc-multiple-linear-regression" class="nav-link" data-scroll-target="#multiple-linear-regression"><span class="header-section-number">18.4.1</span> Multiple linear regression</a></li>
   <li><a href="#non-parametric-regression" id="toc-non-parametric-regression" class="nav-link" data-scroll-target="#non-parametric-regression"><span class="header-section-number">18.4.2</span> Non-parametric regression</a></li>
-  <li><a href="#non-linear-regression" id="toc-non-linear-regression" class="nav-link" data-scroll-target="#non-linear-regression"><span class="header-section-number">18.4.3</span> Non-linear regression</a>
+  <li><a href="#sec-exercises-non-linear" id="toc-sec-exercises-non-linear" class="nav-link" data-scroll-target="#sec-exercises-non-linear"><span class="header-section-number">18.4.3</span> Non-linear regression</a>
   <ul class="collapse">
   <li><a href="#exponential-growth" id="toc-exponential-growth" class="nav-link" data-scroll-target="#exponential-growth"><span class="header-section-number">18.4.3.1</span> Exponential growth</a></li>
   <li><a href="#nitrogen-uptake" id="toc-nitrogen-uptake" class="nav-link" data-scroll-target="#nitrogen-uptake"><span class="header-section-number">18.4.3.2</span> Nitrogen uptake</a></li>
@@ -454,8 +454,8 @@ window.Quarto = {
 
 
 <p>In the vast majority of cases, a simple linear regression model will not be sufficient to model a phenomena of a response variable. Instead the more general case involves multiple explanatory variables of different types that together allow us to describe the response. We can extend the theory presented in <a href="41_Linear_regression.html" class="quarto-xref"><span>Chapter 17</span></a> to <strong>multiple linear regression</strong>, expand to <strong>non-linear regression</strong> and <strong>non-parametric regression</strong> methods that does not require the same assumptions of the data or model.</p>
-<section id="multiple-linear-regression" class="level2" data-number="18.1">
-<h2 data-number="18.1" class="anchored" data-anchor-id="multiple-linear-regression"><span class="header-section-number">18.1</span> Multiple linear regression</h2>
+<section id="sec-multiple-regression" class="level2" data-number="18.1">
+<h2 data-number="18.1" class="anchored" data-anchor-id="sec-multiple-regression"><span class="header-section-number">18.1</span> Multiple linear regression</h2>
 <p>Following the steps in simple linear regression we begin with visualizing the data. In the case of multiple linear regression we now have a set of possible explanatory variables at our disposal to visualize and assess their viability in the model.</p>
 <p>As an example we will be using the <code>penguins</code> dataset collected by a research team in Antarctica between 2007 and 2009. The team gathered information on 333 penguins across three islands near the Palmer Research Station. The dataset is available via the <code>palmerpenguins</code> package <span class="citation" data-cites="penguins2020">(<a href="99_References.html#ref-penguins2020" role="doc-biblioref">Horst, Hill, and Gorman 2020</a>)</span> and can be loaded into R using the following code:</p>
 <div class="cell">
@@ -1796,8 +1796,8 @@ Achieved convergence tolerance: 9.722e-06</code></pre>
 <section id="exercises" class="level2" data-number="18.4">
 <h2 data-number="18.4" class="anchored" data-anchor-id="exercises"><span class="header-section-number">18.4</span> Exercises</h2>
 <p>The following exercises focus on all three of the advanced topics of regression.</p>
-<section id="multiple-linear-regression-1" class="level3" data-number="18.4.1">
-<h3 data-number="18.4.1" class="anchored" data-anchor-id="multiple-linear-regression-1"><span class="header-section-number">18.4.1</span> Multiple linear regression</h3>
+<section id="multiple-linear-regression" class="level3" data-number="18.4.1">
+<h3 data-number="18.4.1" class="anchored" data-anchor-id="multiple-linear-regression"><span class="header-section-number">18.4.1</span> Multiple linear regression</h3>
 <p>Use the <code>iris</code> dataset from <a href="05_Basic_data_wrangling.html#sec-wrangling-exercises" class="quarto-xref"><span>Section 5.3</span></a> and complete a regression analysis outlined below focusing on a model describing <code>petal_length</code>.</p>
 <ol type="1">
 <li>Investigate the type and scale of the variables.</li>
@@ -1815,8 +1815,8 @@ Achieved convergence tolerance: 9.722e-06</code></pre>
 <h3 data-number="18.4.2" class="anchored" data-anchor-id="non-parametric-regression"><span class="header-section-number">18.4.2</span> Non-parametric regression</h3>
 <p>Use the plant growth rate data set from <a href="41_Linear_regression.html#sec-exercises-regression" class="quarto-xref"><span>Section 17.7</span></a> and estimate a Theil-Sen regression. How does the relationship differ between the two models?</p>
 </section>
-<section id="non-linear-regression" class="level3" data-number="18.4.3">
-<h3 data-number="18.4.3" class="anchored" data-anchor-id="non-linear-regression"><span class="header-section-number">18.4.3</span> Non-linear regression</h3>
+<section id="sec-exercises-non-linear" class="level3" data-number="18.4.3">
+<h3 data-number="18.4.3" class="anchored" data-anchor-id="sec-exercises-non-linear"><span class="header-section-number">18.4.3</span> Non-linear regression</h3>
 <section id="exponential-growth" class="level4" data-number="18.4.3.1">
 <h4 data-number="18.4.3.1" class="anchored" data-anchor-id="exponential-growth"><span class="header-section-number">18.4.3.1</span> Exponential growth</h4>
 <p>Let <span class="math inline">\(N(t)\)</span> be the population abundance of some organism at time <span class="math inline">\(t\)</span>. An exponentially growing population increases according to <span class="math display">\[ N(t) = N_0 \mathrm{e}^{rt} \]</span> where <span class="math inline">\(N_0\)</span> is the initial population size at time <span class="math inline">\(t=0\)</span>, and <span class="math inline">\(r\)</span> is the exponential rate of increase.</p>

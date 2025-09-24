@@ -2,7 +2,7 @@
 
 In the vast majority of cases, a simple linear regression model will not be sufficient to model a phenomena of a response variable. Instead the more general case involves multiple explanatory variables of different types that together allow us to describe the response. We can extend the theory presented in @sec-linreg to **multiple linear regression**, expand to **non-linear regression** and **non-parametric regression** methods that does not require the same assumptions of the data or model.
 
-## Multiple linear regression
+## Multiple linear regression {#sec-multiple-regression}
 
 Following the steps in simple linear regression we begin with visualizing the data. In the case of multiple linear regression we now have a set of possible explanatory variables at our disposal to visualize and assess their viability in the model.
 
@@ -860,7 +860,7 @@ Use the `iris` dataset from @sec-wrangling-exercises and complete a regression a
 
 Use the plant growth rate data set from @sec-exercises-regression and estimate a Theil-Sen regression. How does the relationship differ between the two models?
 
-### Non-linear regression
+### Non-linear regression {#sec-exercises-non-linear}
 
 #### Exponential growth
 
