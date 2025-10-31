@@ -12,6 +12,13 @@ suppressMessages({
   require(car)
   require(lme4)
   require(tidyverse, quietly = TRUE)
+  require(mblm)
+  require(FSA)
+  require(rcompanion)
+  require(shiny)
+  require(bslib)
+  require(munsell)
+  require(shinylive)
 })
 
 utils::data(penguins)
