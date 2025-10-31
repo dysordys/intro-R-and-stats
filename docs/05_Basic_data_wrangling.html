@@ -1019,7 +1019,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>Verify that there are indeed three distinct species in the data (hint: combine <code>select</code> and <code>distinct</code> in an appropriate way).</p></li>
 <li><p>Select the columns containing petal and sepal length, and species identity.</p></li>
 <li><p>Get those rows of the data with petal length less than 4 cm, but sepal length greater than 4 cm.</p></li>
-<li><p>Sort the data in reverse alphabetical order of species names, but within each species, sort them by increasing petal width. After you are done, add petal length as yet another sorting variable that breaks ties with respect to petal width. If all went well, your result should begin with the following rows:</p>
+<li><p>Sort the data in reverse alphabetical order of species names, but within each species, sort them by increasing petal length. If all went well, your result should begin with the following rows:</p>
 <div class="cell">
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -1033,34 +1033,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td style="text-align: right;">6.1</td>
-<td style="text-align: right;">2.6</td>
-<td style="text-align: right;">5.6</td>
-<td style="text-align: right;">1.4</td>
-<td style="text-align: left;">virginica</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">6.0</td>
-<td style="text-align: right;">2.2</td>
-<td style="text-align: right;">5.0</td>
-<td style="text-align: right;">1.5</td>
-<td style="text-align: left;">virginica</td>
-</tr>
-<tr class="odd">
-<td style="text-align: right;">6.3</td>
-<td style="text-align: right;">2.8</td>
-<td style="text-align: right;">5.1</td>
-<td style="text-align: right;">1.5</td>
-<td style="text-align: left;">virginica</td>
-</tr>
-<tr class="even">
-<td style="text-align: right;">7.2</td>
-<td style="text-align: right;">3.0</td>
-<td style="text-align: right;">5.8</td>
-<td style="text-align: right;">1.6</td>
-<td style="text-align: left;">virginica</td>
-</tr>
 <tr class="odd">
 <td style="text-align: right;">4.9</td>
 <td style="text-align: right;">2.5</td>
@@ -1083,24 +1055,52 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td style="text-align: left;">virginica</td>
 </tr>
 <tr class="even">
+<td style="text-align: right;">5.6</td>
+<td style="text-align: right;">2.8</td>
+<td style="text-align: right;">4.9</td>
+<td style="text-align: right;">2.0</td>
+<td style="text-align: left;">virginica</td>
+</tr>
+<tr class="odd">
 <td style="text-align: right;">6.3</td>
 <td style="text-align: right;">2.7</td>
 <td style="text-align: right;">4.9</td>
 <td style="text-align: right;">1.8</td>
 <td style="text-align: left;">virginica</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: right;">6.1</td>
 <td style="text-align: right;">3.0</td>
 <td style="text-align: right;">4.9</td>
 <td style="text-align: right;">1.8</td>
 <td style="text-align: left;">virginica</td>
 </tr>
+<tr class="odd">
+<td style="text-align: right;">5.7</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">2.0</td>
+<td style="text-align: left;">virginica</td>
+</tr>
 <tr class="even">
-<td style="text-align: right;">5.9</td>
-<td style="text-align: right;">3.0</td>
+<td style="text-align: right;">6.0</td>
+<td style="text-align: right;">2.2</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">1.5</td>
+<td style="text-align: left;">virginica</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">6.3</td>
+<td style="text-align: right;">2.5</td>
+<td style="text-align: right;">5.0</td>
+<td style="text-align: right;">1.9</td>
+<td style="text-align: left;">virginica</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">5.8</td>
+<td style="text-align: right;">2.7</td>
 <td style="text-align: right;">5.1</td>
-<td style="text-align: right;">1.8</td>
+<td style="text-align: right;">1.9</td>
 <td style="text-align: left;">virginica</td>
 </tr>
 </tbody>
