@@ -270,11 +270,11 @@ The `iris` dataset is a built-in table in R. It contains measurements of petal a
 
 6.  Get those rows of the data with petal length less than 4 cm, but sepal length greater than 4 cm.
 
-7.  Sort the data in reverse alphabetical order of species names, but within each species, sort them by increasing petal width. After you are done, add petal length as yet another sorting variable that breaks ties with respect to petal width. If all went well, your result should begin with the following rows:
+7.  Sort the data in reverse alphabetical order of species names, but within each species, sort them by increasing petal length. If all went well, your result should begin with the following rows:
     ```{r}
     #| echo: false
     as_tibble(iris) |>
-      arrange(desc(Species), Petal.Width, Petal.Length) |>
+      arrange(desc(Species), Petal.Length) |>
       head(n = 10) |>
       knitr::kable()
     ```
